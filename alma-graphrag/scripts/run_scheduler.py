@@ -1,0 +1,15 @@
+from src.config import HOTELS_CITIES
+from src.scheduler.jobs import start_scheduler
+
+
+if __name__ == "__main__":
+    start_scheduler(HOTELS_CITIES)
+    print("Scheduler started. Press Ctrl+C to stop.")
+
+    import time
+
+    try:
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        print("Scheduler stopped.")
