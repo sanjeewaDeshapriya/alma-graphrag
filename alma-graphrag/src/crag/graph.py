@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from typing import Dict, TypedDict
-from langgraph.graph import StateGraph, END
+from langgraph.graph import StateGraph, END, START
 from openai import OpenAI
 
 from src.config import CRAG_MAX_RETRIES, CRAG_MIN_SCORE, OPENAI_API_KEY, OPENAI_MODEL
@@ -86,8 +86,15 @@ def _generate(state: GraphState) -> GraphState:
 
 
 def _should_rewrite(state: GraphState) -> str:
-    score = state.get("score", 0.0)
+    # If there's no retrieved context, prefer rewriting the query only if
+    # we haven't exhausted retry attempts; otherwise generate an answer.
     retries = state.get("retries", 0)
+    if not state.get("context"):
+        if retries < CRAG_MAX_RETRIES:
+            return "transform_query"
+        return "generate"
+
+    score = state.get("score", 0.0)
     if score >= CRAG_MIN_SCORE or retries >= CRAG_MAX_RETRIES:
         return "generate"
     return "transform_query"
@@ -100,6 +107,8 @@ def build_crag_app():
     workflow.add_node("transform_query", _transform_query)
     workflow.add_node("generate", _generate)
 
+    # Entry point: start the graph by calling `retrieve`
+    workflow.add_edge(START, "retrieve")
     workflow.add_edge("retrieve", "grade")
     workflow.add_conditional_edges("grade", _should_rewrite)
     workflow.add_edge("transform_query", "retrieve")
@@ -115,12 +124,29 @@ def run_crag(question: str, city: str) -> Dict[str, str]:
     if cached:
         return cached
 
-    app = build_crag_app()
-    final_state = app.invoke({"question": question, "city": city, "retries": 0})
+    # Simple sequential CRAG flow (no StateGraph) to avoid recursion issues
+    min_score = float(os.getenv("CRAG_MIN_SCORE", "0.6"))
+    max_retries = int(os.getenv("CRAG_MAX_RETRIES", "1"))
 
-    result = {
-        "answer": final_state.get("answer", ""),
-        "context": final_state.get("context", ""),
-    }
+    state = {"question": question, "city": city, "retries": 0}
+
+    # initial retrieve
+    state = _retrieve(state)
+
+    # if empty, try one rewrite + retrieve
+    if not state.get("context") and state.get("retries", 0) < max_retries:
+        state = _transform_query(state)
+        state = _retrieve(state)
+
+    state = _grade(state)
+
+    if state.get("score", 0.0) < min_score and state.get("retries", 0) < max_retries:
+        state = _transform_query(state)
+        state = _retrieve(state)
+        state = _grade(state)
+
+    state = _generate(state)
+
+    result = {"answer": state.get("answer", ""), "context": state.get("context", "")}
     cache.set(key, result)
     return result

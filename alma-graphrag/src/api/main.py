@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 from typing import Optional
-from fastapi import FastAPI
+import logging
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from src.config import DEFAULT_CITY, HOTEL_MAX_RESULTS, HOTELS_CITIES
 from crag.graph import run_crag
 from src.ingest.hotel_ingest import ingest_hotels
 from src.ingest.news_rss import fetch_news
 from src.ingest.event_linker import link_events_to_hotels
+
+logger = logging.getLogger("alma.api")
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="ALMA GraphRAG Phase 1")
 
@@ -25,13 +29,16 @@ class QueryResponse(BaseModel):
 @app.post("/query", response_model=QueryResponse)
 def query_graph(req: QueryRequest) -> QueryResponse:
     city = req.city or DEFAULT_CITY
-    result = run_crag(question=f"{req.question} near {city}")
+    logger.info("API /query: question=%s, city=%s", req.question, city)
+    result = run_crag(question=req.question, city=city)
+    logger.info("API /query result: answer_len=%d, context_len=%d", len(result.get("answer", "")), len(result.get("context", "")))
     return QueryResponse(answer=result["answer"], context=result["context"])
 
 
 @app.post("/ingest/trigger")
 def manual_ingest(city: Optional[str] = None) -> dict:
     cities = [city] if city else HOTELS_CITIES
+    logger.info("API /ingest/trigger: cities=%s", cities)
     hotel_count = ingest_hotels(cities, max_results=HOTEL_MAX_RESULTS)
     news_items = fetch_news()
     link_events_to_hotels(news_items, list(cities))

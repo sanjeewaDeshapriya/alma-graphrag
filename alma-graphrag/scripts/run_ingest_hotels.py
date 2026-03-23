@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+# Ensure repo root is on sys.path so `src` imports work when running scripts directly
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 import argparse
 from src.config import DEFAULT_CITY, HOTEL_MAX_RESULTS
 from src.ingest.hotel_ingest import ingest_hotels
