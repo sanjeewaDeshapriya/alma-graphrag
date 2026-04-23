@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+# Ensure repo root is on sys.path so `src` imports work when running scripts directly
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 from src.config import HOTELS_CITIES
 from src.scheduler.jobs import start_scheduler
 

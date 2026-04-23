@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import logging
 from typing import Iterable
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from src.config import HOTEL_MAX_RESULTS
+from src.config import HOTEL_MAX_RESULTS, NEWS_API_KEY, GNEWS_API_KEY
 from src.ingest.hotel_ingest import ingest_hotels
+from src.ingest.news_api import fetch_all_news
 from src.ingest.news_rss import fetch_news
 from src.ingest.event_linker import link_events_to_hotels
+
+logger = logging.getLogger("alma.scheduler")
 
 
 def start_scheduler(cities: Iterable[str]) -> AsyncIOScheduler:
@@ -33,5 +37,13 @@ def start_scheduler(cities: Iterable[str]) -> AsyncIOScheduler:
 
 
 def _ingest_news(cities: Iterable[str]) -> None:
-    news_items = fetch_news()
+    """Fetch news from APIs first, fall back to RSS, then link to hotels."""
+    news_items = fetch_all_news(
+        newsapi_key=NEWS_API_KEY,
+        gnews_key=GNEWS_API_KEY,
+    )
+    if not news_items:
+        logger.info("No API news — falling back to RSS")
+        news_items = fetch_news()
     link_events_to_hotels(news_items, list(cities))
+    logger.info("Scheduled news ingestion: %d items", len(news_items))

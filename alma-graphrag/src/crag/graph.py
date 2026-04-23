@@ -1,15 +1,55 @@
+"""
+CRAG (Corrective RAG) pipeline for ALMA-GraphRAG.
+
+Implements a simple sequential CRAG loop:
+  retrieve → grade → (optional rewrite+retrieve) → generate
+
+The LangGraph StateGraph definition is kept for reference/future use
+but the production `run_crag()` uses a direct sequential flow to avoid
+LangGraph recursion-limit issues.
+"""
 from __future__ import annotations
 
 import hashlib
 import json
+import logging
+import os
 from typing import Dict, TypedDict
+
 from langgraph.graph import StateGraph, END, START
 from openai import OpenAI
 
-from src.config import CRAG_MAX_RETRIES, CRAG_MIN_SCORE, OPENAI_API_KEY, OPENAI_MODEL
+from src.config import (
+    CRAG_MAX_RETRIES,
+    CRAG_MIN_SCORE,
+    OPENAI_API_KEY,
+    OPENAI_MODEL,
+)
 from src.crag.cache import Cache
 from src.graph.query import build_graph_context
 
+logger = logging.getLogger("alma.crag")
+
+# Reusable OpenAI client (avoid re-creating per call)
+_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+
+
+def _extract_json(text: str) -> str:
+    """Strip markdown code fences (```json ... ```) from LLM output.
+
+    gpt-4o-mini often wraps JSON in markdown fences which breaks json.loads().
+    """
+    import re
+    # Match ```json ... ``` or ``` ... ```
+    match = re.search(r"```(?:json)?\s*\n?(.*?)\n?```", text, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return text.strip()
+
+
+# ---------------------------------------------------------------------------
+# State definition
+# ---------------------------------------------------------------------------
 
 class GraphState(TypedDict, total=False):
     question: str
@@ -20,47 +60,74 @@ class GraphState(TypedDict, total=False):
     retries: int
 
 
+# ---------------------------------------------------------------------------
+# CRAG node functions
+# ---------------------------------------------------------------------------
+
 def _retrieve(state: GraphState) -> GraphState:
-    context = build_graph_context(city=state["city"])
+    """Pull structured context from the Neo4j knowledge graph."""
+    city = state.get("city", "")
+    context = ""
+    try:
+        context = build_graph_context(city=city)
+    except Exception as exc:
+        logger.warning("Graph retrieval failed for city=%s: %s", city, exc)
+    logger.info(
+        "CRAG retrieve: question=%s, city=%s, context_len=%d",
+        state.get("question"),
+        city,
+        len(context),
+    )
     return {**state, "context": context}
 
 
 def _grade(state: GraphState) -> GraphState:
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    """Score relevance of retrieved context against the question."""
+    if _client is None:
+        return {**state, "score": 0.5}
     prompt = (
-        "Score the relevance of the graph context to the question from 0 to 1. "
-        "Return JSON: {\"score\": number}.\n\n"
+        "You are a relevance grader. Score how well the graph context answers the question.\n"
+        "Return ONLY raw JSON (no markdown, no code fences): {\"score\": <number between 0 and 1>}\n\n"
         f"Question: {state['question']}\n\n"
-        f"Context:\n{state.get('context', '')}\n"
+        f"Context:\n{state.get('context', '')[:2000]}\n"
     )
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-    )
-    content = response.choices[0].message.content.strip()
-    score = 0.5
     try:
-        parsed = json.loads(content)
-        score = float(parsed.get("score", score))
-    except (json.JSONDecodeError, ValueError, TypeError):
+        response = _client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.0,
+        )
+        content = response.choices[0].message.content.strip()
+        # Strip markdown code fences if present
+        cleaned = _extract_json(content)
+        parsed = json.loads(cleaned)
+        score = float(parsed.get("score", 0.5))
+    except (json.JSONDecodeError, ValueError, TypeError, Exception) as exc:
+        logger.warning("Grading failed (raw response: %s), defaulting to 0.5: %s", content[:200] if 'content' in dir() else '?', exc)
         score = 0.5
+    logger.info("CRAG grade: score=%.2f", score)
     return {**state, "score": score}
 
 
 def _transform_query(state: GraphState) -> GraphState:
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    """Rewrite the question for better graph-retrieval alignment."""
+    if _client is None:
+        return {**state, "retries": state.get("retries", 0) + 1}
     prompt = (
         "Rewrite the question to better match hotel and city graph fields. "
         "Return only the rewritten question.\n\n"
         f"Question: {state['question']}\n"
     )
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-    )
-    rewritten = response.choices[0].message.content.strip()
+    try:
+        response = _client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.0,
+        )
+        rewritten = response.choices[0].message.content.strip()
+    except Exception as exc:
+        logger.warning("Query transform failed: %s", exc)
+        rewritten = state["question"]
     return {
         **state,
         "question": rewritten,
@@ -69,31 +136,41 @@ def _transform_query(state: GraphState) -> GraphState:
 
 
 def _generate(state: GraphState) -> GraphState:
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    """Generate the final answer using the LLM."""
+    if _client is None:
+        return {**state, "answer": "LLM not configured (OPENAI_API_KEY missing)."}
     prompt = (
-        "You are a GraphRAG assistant. Use only the provided graph context. "
-        "If the context is insufficient, say so and suggest next ingestion steps.\n\n"
+        "You are a GraphRAG assistant for Sri Lanka hotel recommendations.\n"
+        "Use the provided graph context (hotel names, ratings, prices, amenities, "
+        "nearby locations, events, and news) to give a detailed, helpful answer.\n"
+        "- Mention specific hotel names, ratings, and price ranges.\n"
+        "- Highlight relevant amenities.\n"
+        "- Note any linked events or news if present.\n"
+        "- If no hotels match the exact criteria, recommend the closest alternatives.\n\n"
         f"Question: {state['question']}\n\n"
         f"Graph context:\n{state.get('context', '')}\n"
     )
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.2,
-    )
-    answer = response.choices[0].message.content.strip()
+    try:
+        response = _client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.2,
+        )
+        answer = response.choices[0].message.content.strip()
+    except Exception as exc:
+        logger.error("Generation failed: %s", exc)
+        answer = f"Sorry, I couldn't generate an answer: {exc}"
     return {**state, "answer": answer}
 
 
+# ---------------------------------------------------------------------------
+# LangGraph definition (kept for reference / future state-machine needs)
+# ---------------------------------------------------------------------------
+
 def _should_rewrite(state: GraphState) -> str:
-    # If there's no retrieved context, prefer rewriting the query only if
-    # we haven't exhausted retry attempts; otherwise generate an answer.
     retries = state.get("retries", 0)
     if not state.get("context"):
-        if retries < CRAG_MAX_RETRIES:
-            return "transform_query"
-        return "generate"
-
+        return "transform_query" if retries < CRAG_MAX_RETRIES else "generate"
     score = state.get("score", 0.0)
     if score >= CRAG_MIN_SCORE or retries >= CRAG_MAX_RETRIES:
         return "generate"
@@ -106,45 +183,60 @@ def build_crag_app():
     workflow.add_node("grade", _grade)
     workflow.add_node("transform_query", _transform_query)
     workflow.add_node("generate", _generate)
-
-    # Entry point: start the graph by calling `retrieve`
     workflow.add_edge(START, "retrieve")
     workflow.add_edge("retrieve", "grade")
     workflow.add_conditional_edges("grade", _should_rewrite)
     workflow.add_edge("transform_query", "retrieve")
     workflow.add_edge("generate", END)
-
     return workflow.compile()
 
 
+# ---------------------------------------------------------------------------
+# Production entry point — sequential CRAG (avoids LangGraph recursion bugs)
+# ---------------------------------------------------------------------------
+
 def run_crag(question: str, city: str) -> Dict[str, str]:
+    """
+    Run the CRAG pipeline and return {"answer": ..., "context": ...}.
+
+    Steps:
+      1. Retrieve graph context
+      2. If empty → rewrite query once → re-retrieve
+      3. Grade relevance
+      4. If score low and retries remain → rewrite → retrieve → re-grade
+      5. Generate answer
+    Results are cached in Redis for 15 minutes.
+    """
     cache = Cache()
     key = hashlib.md5(f"{city}:{question}".encode("utf-8")).hexdigest()
     cached = cache.get(key)
     if cached:
+        logger.info("CRAG cache hit for key=%s", key)
         return cached
 
-    # Simple sequential CRAG flow (no StateGraph) to avoid recursion issues
-    min_score = float(os.getenv("CRAG_MIN_SCORE", "0.6"))
-    max_retries = int(os.getenv("CRAG_MAX_RETRIES", "1"))
+    min_score = CRAG_MIN_SCORE
+    max_retries = CRAG_MAX_RETRIES
 
-    state = {"question": question, "city": city, "retries": 0}
+    state: GraphState = {"question": question, "city": city, "retries": 0}
 
-    # initial retrieve
+    # Step 1: initial retrieve
     state = _retrieve(state)
 
-    # if empty, try one rewrite + retrieve
+    # Step 2: if empty context, try one rewrite + re-retrieve
     if not state.get("context") and state.get("retries", 0) < max_retries:
         state = _transform_query(state)
         state = _retrieve(state)
 
+    # Step 3: grade relevance
     state = _grade(state)
 
+    # Step 4: if score too low and retries remain, try again
     if state.get("score", 0.0) < min_score and state.get("retries", 0) < max_retries:
         state = _transform_query(state)
         state = _retrieve(state)
         state = _grade(state)
 
+    # Step 5: generate final answer
     state = _generate(state)
 
     result = {"answer": state.get("answer", ""), "context": state.get("context", "")}

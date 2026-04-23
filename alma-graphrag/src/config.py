@@ -36,3 +36,11 @@ CRAG_MIN_SCORE = float(os.getenv("CRAG_MIN_SCORE", "0.6"))
 CRAG_MAX_RETRIES = int(os.getenv("CRAG_MAX_RETRIES", "1"))
 
 LLM_EXTRACT_ENABLED = os.getenv("LLM_EXTRACT_ENABLED", "false").lower() == "true"
+
+# News API providers (free tier, optional — falls back to RSS if empty)
+NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
+GNEWS_API_KEY = os.getenv("GNEWS_API_KEY", "")
+
+# Embeddings
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-ada-002")
+HOTEL_VECTOR_INDEX = os.getenv("HOTEL_VECTOR_INDEX", "hotel_embeddings")
