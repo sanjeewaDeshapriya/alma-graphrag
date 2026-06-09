@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALMA Graph Intelligence Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://unpkg.com/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+</head>
+<body>
+  <div class="bg-blur bg-blur-one"></div>
+  <div class="bg-blur bg-blur-two"></div>
+
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="brand-pill">ALMA</div>
+      <div>
+        <h1>Graph Intelligence Console</h1>
+        <p class="muted">Premium visibility for hotels, events, and news-driven graph reasoning</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <label for="cityInput">City</label>
+      <input id="cityInput" type="text" placeholder="Piliyandala" />
+      <label for="limitInput">Limit</label>
+      <input id="limitInput" type="number" min="20" max="600" value="180" />
+      <button id="applyBtn" class="btn btn-accent">Start Ingest</button>
+      <button id="refreshBtn" class="btn btn-primary">Load Graph</button>
+    </div>
+  </header>
+
+  <section class="panel panel-progress">
+    <div class="panel-head">
+      <h2>Ingestion Progress</h2>
+      <p id="progressText" class="muted">Idle</p>
+    </div>
+    <div class="progress-track" aria-label="ingestion progress">
+      <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+    </div>
+    <pre id="debugLog" class="debug-log">[debug] waiting for actions...</pre>
+  </section>
+
+  <main class="layout">
+    <section class="panel panel-query">
+      <div class="panel-head">
+        <h2>Ask GraphRAG</h2>
+      </div>
+      <form id="queryForm" class="query-form">
+        <textarea id="questionInput" rows="4" placeholder="Which top-rated hotels in Colombo have a pool and are near key transport hubs?"></textarea>
+        <button class="btn btn-accent" type="submit">Run Query</button>
+      </form>
+      <div class="answer-block">
+        <h3>Answer</h3>
+        <p id="answerText" class="content-placeholder">Run a query to see AI-assisted recommendations.</p>
+      </div>
+      <div class="context-block">
+        <h3>Context</h3>
+        <pre id="contextText" class="code-window">Graph context will appear here.</pre>
+      </div>
+    </section>
+
+    <section class="panel panel-overview">
+      <div class="panel-head">
+        <h2>Knowledge Graph Overview</h2>
+      </div>
+      <div id="statsGrid" class="stats-grid"></div>
+      <div class="split-view">
+        <div>
+          <h3>Node Labels</h3>
+          <div id="labelList" class="tag-list"></div>
+        </div>
+        <div>
+          <h3>Relationships</h3>
+          <div id="relList" class="tag-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel-graph">
+      <div class="panel-head">
+        <h2>Interactive Graph</h2>
+        <p class="muted">Tap nodes to inspect details</p>
+      </div>
+      <div id="cy"></div>
+      <div class="graph-legend" id="graphLegend"></div>
+    </section>
+
+    <section class="panel panel-nodes">
+      <div class="panel-head">
+        <h2>Node Explorer</h2>
+      </div>
+      <div id="nodesTableWrap" class="table-wrap">
+        <table id="nodesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Labels</th>
+              <th>Name</th>
+              <th>Rating</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside class="panel panel-detail">
+      <div class="panel-head">
+        <h2>Node Details</h2>
+      </div>
+      <div id="nodeMeta" class="kv"></div>
+      <h3>Properties</h3>
+      <pre id="nodeProps" class="code-window">Select a node from graph or table.</pre>
+      <h3>Neighbors</h3>
+      <div id="neighborList" class="neighbor-list"></div>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="./app.js" type="module"></script>
+</body>
+</html>

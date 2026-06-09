@@ -102,13 +102,19 @@ uvicorn src.api.main:app --reload
 GET http://127.0.0.1:8000/health
 ```
 
-9) Optional: start scheduler (daily hotel refresh, 15-min news refresh):
+9) Open web UI:
+
+```
+http://127.0.0.1:8000/ui
+```
+
+10) Optional: start scheduler (daily hotel refresh, 15-min news refresh):
 
 ```
 python scripts\run_scheduler.py
 ```
 
-10) (Optional) Run KG construction + embeddings pipeline:
+11) (Optional) Run KG construction + embeddings pipeline:
 
 ```
 python main.py
@@ -120,8 +126,23 @@ python main.py
 |--------|------|-------------|
 | `GET` | `/health` | Service health / readiness check |
 | `POST` | `/query` | Ask a question against the knowledge graph |
+| `GET` | `/graph/overview` | Get graph summary counts + optional city stats |
+| `POST` | `/graph/network` | Get graph nodes/edges for interactive visualization |
+| `GET` | `/graph/node/{node_id}` | Get one node with neighbor details |
+| `POST` | `/ingest/start` | Start async full ingest by running hotel + news scripts |
+| `GET` | `/ingest/status/{job_id}` | Check async ingestion progress/status |
 | `POST` | `/ingest/trigger` | Trigger full hotel + news ingestion |
 | `POST` | `/ingest/news` | Trigger news-only ingestion (APIs + RSS) |
+
+`GET /ingest/status/{job_id}` includes live UI-friendly fields:
+- `progress` (0-100 overall)
+- `step` (current stage name)
+- `step_index`, `step_total`, `step_progress`
+- `elapsed_seconds`, `eta_seconds`
+
+`POST /ingest/start` runs script commands in order:
+- `python scripts/run_ingest_hotels.py --city <city>`
+- `python scripts/run_ingest_news.py`
 
 ## Example Test Queries
 

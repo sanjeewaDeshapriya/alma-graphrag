@@ -5,7 +5,7 @@ The context string is fed into the CRAG pipeline for LLM grading + generation.
 """
 from __future__ import annotations
 
-from typing import List
+from typing import Any, Dict, List
 import logging
 from neo4j import GraphDatabase
 from src.config import NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD
@@ -45,7 +45,8 @@ def build_graph_context(city: str, limit: int = 30) -> str:
 
         # Build a query that only uses relationship types that exist in the DB
         query_parts = [
-            "MATCH (h:Hotel)-[:LOCATED_IN]->(c:City {name: $city})",
+            "MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)",
+            "WHERE toLower(c.name) = toLower($city)",
             "OPTIONAL MATCH (h)-[:HAS_AMENITY]->(a:Amenity)",
         ]
 
@@ -77,7 +78,8 @@ def build_graph_context(city: str, limit: int = 30) -> str:
         # Also gather city-level stats
         city_stats = session.run(
             """
-            MATCH (h:Hotel)-[:LOCATED_IN]->(c:City {name: $city})
+                 MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)
+                 WHERE toLower(c.name) = toLower($city)
             RETURN count(h) AS hotel_count,
                    avg(h.rating) AS avg_rating,
                    min(h.price_per_night_lkr) AS min_price,
@@ -144,3 +146,261 @@ def build_graph_context(city: str, limit: int = 30) -> str:
     context = "\n".join(lines)
     logger.info("Graph context built: %d hotels, %d chars", len(records), len(context))
     return context
+
+
+def _safe_primitive(value: Any) -> Any:
+    """Keep API payload JSON-safe for frontend rendering."""
+    if value is None:
+        return None
+    if isinstance(value, (str, int, float, bool)):
+        return value
+    return str(value)
+
+
+def _sanitize_properties(props: Dict[str, Any]) -> Dict[str, Any]:
+    """Remove oversized fields and keep values JSON-safe for UI payloads."""
+    cleaned: Dict[str, Any] = {}
+    for key, value in props.items():
+        if key == "embedding":
+            continue
+        cleaned[key] = _safe_primitive(value)
+    return cleaned
+
+
+def get_graph_overview(city: str | None = None) -> Dict[str, Any]:
+    """Return label/relationship counts and key city-level stats for the dashboard."""
+    driver = _get_driver()
+    with driver.session() as session:
+        label_rows = session.run(
+            """
+            MATCH (n)
+            UNWIND labels(n) AS label
+            RETURN label, count(*) AS count
+            ORDER BY count DESC
+            """
+        ).data()
+        rel_rows = session.run(
+            """
+            MATCH ()-[r]->()
+            RETURN type(r) AS type, count(*) AS count
+            ORDER BY count DESC
+            """
+        ).data()
+
+        city_stats = None
+        if city:
+            city_stats = session.run(
+                """
+                MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)
+                WHERE toLower(c.name) = toLower($city)
+                RETURN count(h) AS hotel_count,
+                       avg(h.rating) AS avg_rating,
+                       min(h.price_per_night_lkr) AS min_price,
+                       max(h.price_per_night_lkr) AS max_price
+                """,
+                {"city": city},
+            ).single()
+
+    return {
+        "labels": [
+            {"label": row["label"], "count": int(row["count"])} for row in label_rows
+        ],
+        "relationships": [
+            {"type": row["type"], "count": int(row["count"])} for row in rel_rows
+        ],
+        "city": city,
+        "city_stats": {
+            "hotel_count": int(city_stats["hotel_count"] or 0),
+            "avg_rating": float(city_stats["avg_rating"] or 0),
+            "min_price": _safe_primitive(city_stats["min_price"]),
+            "max_price": _safe_primitive(city_stats["max_price"]),
+        }
+        if city_stats
+        else None,
+    }
+
+
+def get_graph_network(city: str | None = None, limit: int = 180) -> Dict[str, Any]:
+    """Return graph nodes/edges for interactive visualization."""
+    driver = _get_driver()
+    with driver.session() as session:
+        if city:
+            rows = list(session.run(
+                """
+                MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)
+                WHERE toLower(c.name) = toLower($city)
+                WITH h LIMIT $limit
+                OPTIONAL MATCH (h)-[r]-(m)
+                RETURN h AS a, r AS rel, m AS b
+                """,
+                {"city": city, "limit": limit},
+            ))
+        else:
+            rows = list(session.run(
+                """
+                MATCH (a)-[r]->(b)
+                RETURN a AS a, r AS rel, b AS b
+                LIMIT $limit
+                """,
+                {"limit": limit},
+            ))
+
+    nodes: Dict[str, Dict[str, Any]] = {}
+    edges: List[Dict[str, Any]] = []
+
+    def _node_id(node: Any) -> str | None:
+        if node is None:
+            return None
+        element_id = getattr(node, "element_id", None)
+        if element_id:
+            return str(element_id)
+        if isinstance(node, dict):
+            return str(node.get("element_id") or node.get("id") or node.get("name") or "") or None
+        return None
+
+    def _node_labels(node: Any) -> List[str]:
+        if node is None:
+            return []
+        labels = getattr(node, "labels", None)
+        if labels is not None:
+            return list(labels)
+        if isinstance(node, dict):
+            raw = node.get("labels")
+            if isinstance(raw, list):
+                return [str(x) for x in raw]
+        return ["Node"]
+
+    def _node_props(node: Any) -> Dict[str, Any]:
+        if node is None:
+            return {}
+        if isinstance(node, dict):
+            base = node
+        else:
+            base = dict(node)
+        return _sanitize_properties(base)
+
+    def _rel_type(rel: Any) -> str:
+        rel_type = getattr(rel, "type", None)
+        if rel_type:
+            return str(rel_type)
+        if isinstance(rel, dict):
+            return str(rel.get("type") or "RELATED")
+        return "RELATED"
+
+    def _rel_props(rel: Any) -> Dict[str, Any]:
+        if rel is None:
+            return {}
+        if isinstance(rel, dict):
+            base = rel
+        else:
+            base = dict(rel)
+        return _sanitize_properties(base)
+
+    for row in rows:
+        a = row.get("a")
+        b = row.get("b")
+        rel = row.get("rel")
+        if a is None:
+            continue
+
+        a_id = _node_id(a)
+        if not a_id:
+            continue
+
+        if a_id not in nodes:
+            nodes[a_id] = {
+                "id": a_id,
+                "labels": _node_labels(a),
+                "properties": _node_props(a),
+            }
+
+        if b is not None:
+            b_id = _node_id(b)
+            if not b_id:
+                continue
+
+            if b_id not in nodes:
+                nodes[b_id] = {
+                    "id": b_id,
+                    "labels": _node_labels(b),
+                    "properties": _node_props(b),
+                }
+
+            if rel is not None:
+                source = getattr(getattr(rel, "start_node", None), "element_id", None) or a_id
+                target = getattr(getattr(rel, "end_node", None), "element_id", None) or b_id
+                edge_id = getattr(rel, "element_id", None) or f"{source}-{_rel_type(rel)}-{target}"
+                edges.append(
+                    {
+                        "id": str(edge_id),
+                        "source": str(source),
+                        "target": str(target),
+                        "type": _rel_type(rel),
+                        "properties": _rel_props(rel),
+                    }
+                )
+
+    return {
+        "city": city,
+        "node_count": len(nodes),
+        "edge_count": len(edges),
+        "nodes": list(nodes.values()),
+        "edges": edges,
+    }
+
+
+def get_node_details(node_id: str, neighbor_limit: int = 40) -> Dict[str, Any] | None:
+    """Return one node and its neighboring edges/nodes for side-panel inspection."""
+    driver = _get_driver()
+    with driver.session() as session:
+        row = session.run(
+            """
+            MATCH (n)
+            WHERE elementId(n) = $node_id
+            OPTIONAL MATCH (n)-[r]-(m)
+            RETURN n,
+                   collect({
+                     edgeId: CASE WHEN r IS NULL THEN NULL ELSE elementId(r) END,
+                     relType: CASE WHEN r IS NULL THEN NULL ELSE type(r) END,
+                     direction: CASE
+                       WHEN r IS NULL THEN NULL
+                       WHEN startNode(r) = n THEN 'out'
+                       ELSE 'in'
+                     END,
+                     otherId: CASE WHEN m IS NULL THEN NULL ELSE elementId(m) END,
+                     otherLabels: CASE WHEN m IS NULL THEN [] ELSE labels(m) END,
+                     otherProps: CASE WHEN m IS NULL THEN {} ELSE properties(m) END
+                   }) AS neighbors
+            """,
+            {"node_id": node_id},
+        ).single()
+
+    if not row:
+        return None
+
+    n = row["n"]
+    all_neighbors = row["neighbors"] or []
+    cleaned_neighbors = []
+    for item in all_neighbors:
+        if not item.get("edgeId"):
+            continue
+        cleaned_neighbors.append(
+            {
+                "edge_id": item.get("edgeId"),
+                "relationship": item.get("relType"),
+                "direction": item.get("direction"),
+                "other_node": {
+                    "id": item.get("otherId"),
+                    "labels": item.get("otherLabels") or [],
+                    "properties": _sanitize_properties(item.get("otherProps") or {}),
+                },
+            }
+        )
+
+    return {
+        "id": n.element_id,
+        "labels": list(n.labels),
+        "properties": _sanitize_properties(dict(n)),
+        "neighbors": cleaned_neighbors[:neighbor_limit],
+        "total_neighbors": len(cleaned_neighbors),
+    }
