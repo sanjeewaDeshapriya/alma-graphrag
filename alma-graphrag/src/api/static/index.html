@@ -72,6 +72,14 @@
       </section>
 
       <section class="layout">
+        <section class="panel panel-map">
+          <div class="panel-head">
+            <h2>Hotel Map</h2>
+            <p id="mapStatus" class="muted">Waiting for graph data...</p>
+          </div>
+          <div id="hotelMap"></div>
+        </section>
+
         <section class="panel panel-graph">
           <div class="panel-head">
             <h2>Interactive Graph</h2>
@@ -135,6 +143,18 @@
 
   <div id="toast" class="toast"></div>
 
-  <script src="./app.js" type="module"></script>
+  <div id="confirmModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-card">
+      <h3 id="confirmTitle">Clear Graph Data</h3>
+      <p class="muted">Type <strong>DELETE ALL</strong> to remove all Neo4j nodes and relationships.</p>
+      <input id="confirmInput" type="text" placeholder="DELETE ALL" />
+      <div class="modal-actions">
+        <button id="confirmCancelBtn" class="btn btn-primary" type="button">Cancel</button>
+        <button id="confirmOkBtn" class="btn btn-danger" type="button">Clear Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js?v=20260609-3" type="module"></script>
 </body>
 </html>

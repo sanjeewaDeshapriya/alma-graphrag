@@ -290,16 +290,26 @@ textarea:focus {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   grid-template-areas:
+    "map detail"
     "graph detail"
     "nodes detail"
     "query detail";
   gap: 12px;
 }
 
+.panel-map { grid-area: map; }
 .panel-graph { grid-area: graph; }
 .panel-detail { grid-area: detail; }
 .panel-nodes { grid-area: nodes; }
 .panel-query { grid-area: query; }
+
+#hotelMap {
+  width: 100%;
+  height: 320px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #080605;
+}
 
 #cy {
   width: 100%;
@@ -399,6 +409,35 @@ tbody tr:hover {
   transform: translateY(0);
 }
 
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.68);
+  z-index: 60;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-card {
+  width: min(420px, 92vw);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: #0b0807;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 @media (max-width: 1200px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -411,6 +450,7 @@ tbody tr:hover {
   .layout {
     grid-template-columns: 1fr;
     grid-template-areas:
+      "map"
       "graph"
       "detail"
       "nodes"

@@ -27,6 +27,7 @@ from pydantic import BaseModel, Field
 
 from src.config import (
     DEFAULT_CITY,
+    GOOGLE_MAPS_API_KEY,
     HOTEL_MAX_RESULTS,
     HOTELS_CITIES,
     NEWS_API_KEY,
@@ -311,6 +312,15 @@ def graph_node_details(node_id: str, neighbor_limit: int = 40) -> dict:
     if data is None:
         raise HTTPException(status_code=404, detail="Node not found")
     return data
+
+
+@app.get("/client/config")
+def client_config() -> dict:
+    """Expose client-safe runtime config for the web UI."""
+    return {
+        "google_maps_api_key": GOOGLE_MAPS_API_KEY or "",
+        "default_city": DEFAULT_CITY,
+    }
 
 
 @app.post("/graph/clear")

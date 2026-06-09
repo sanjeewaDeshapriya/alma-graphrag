@@ -130,6 +130,7 @@ python main.py
 | `POST` | `/graph/network` | Get graph nodes/edges for interactive visualization |
 | `GET` | `/graph/node/{node_id}` | Get one node with neighbor details |
 | `POST` | `/graph/clear` | Clear all graph nodes + relationships (requires confirmation) |
+| `GET` | `/client/config` | Client-safe UI runtime config (map key, defaults) |
 | `POST` | `/ingest/start` | Start async full ingest by running hotel + news scripts |
 | `GET` | `/ingest/status/{job_id}` | Check async ingestion progress/status |
 | `POST` | `/ingest/trigger` | Trigger full hotel + news ingestion |
@@ -247,3 +248,4 @@ curl -X POST http://127.0.0.1:8000/ingest/news
 - Redis is optional cache for CRAG responses.
 - Set `LLM_EXTRACT_ENABLED=true` to enrich amenities/locations from hotel text.
 - News ingestion tries NewsAPI → GNews → RSS in order; set API keys in `.env`.
+- Set `GOOGLE_MAPS_API_KEY` in `.env` to enable hotel map with zoom/pan (Google Maps + Places library).

@@ -2,6 +2,10 @@ const state = {
   network: null,
   overview: null,
   cy: null,
+  map: null,
+  mapMarkers: [],
+  mapInfoWindow: null,
+  googleMapsPromise: null,
   ingestJobId: null,
   ingestPolling: null,
 };
@@ -12,6 +16,12 @@ const els = {
   applyBtn: document.getElementById("applyBtn"),
   refreshBtn: document.getElementById("refreshBtn"),
   clearBtn: document.getElementById("clearBtn"),
+  hotelMap: document.getElementById("hotelMap"),
+  mapStatus: document.getElementById("mapStatus"),
+  confirmModal: document.getElementById("confirmModal"),
+  confirmInput: document.getElementById("confirmInput"),
+  confirmOkBtn: document.getElementById("confirmOkBtn"),
+  confirmCancelBtn: document.getElementById("confirmCancelBtn"),
   progressText: document.getElementById("progressText"),
   progressFill: document.getElementById("progressFill"),
   debugLog: document.getElementById("debugLog"),
@@ -81,6 +91,186 @@ function setProgress(percent, text, meta = {}) {
     parts.push(`ETA ${eta}`);
   }
   els.progressText.textContent = parts.join(" • ");
+}
+
+function setMapStatus(text) {
+  if (els.mapStatus) {
+    els.mapStatus.textContent = text;
+  }
+}
+
+function clearMapMarkers() {
+  for (const marker of state.mapMarkers) {
+    marker.setMap(null);
+  }
+  state.mapMarkers = [];
+}
+
+function loadGoogleMaps(apiKey) {
+  if (window.google && window.google.maps) {
+    return Promise.resolve();
+  }
+  if (state.googleMapsPromise) {
+    return state.googleMapsPromise;
+  }
+
+  state.googleMapsPromise = new Promise((resolve, reject) => {
+    const timeoutId = window.setTimeout(() => {
+      reject(new Error("Google Maps load timeout"));
+    }, 8000);
+
+    const callbackName = `__almaGoogleMapInit_${Date.now()}`;
+    window[callbackName] = () => {
+      window.clearTimeout(timeoutId);
+      delete window[callbackName];
+      resolve();
+    };
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&callback=${callbackName}`;
+    script.async = true;
+    script.defer = true;
+    script.onerror = () => {
+      window.clearTimeout(timeoutId);
+      reject(new Error("Failed to load Google Maps script"));
+    };
+    document.head.appendChild(script);
+  });
+
+  return state.googleMapsPromise;
+}
+
+async function initHotelMap() {
+  if (state.map) {
+    return true;
+  }
+
+  try {
+    const cfg = await request("/client/config");
+    const apiKey = cfg.google_maps_api_key;
+    if (!apiKey) {
+      setMapStatus("Google Maps API key missing in server config");
+      addDebugLog("map disabled: GOOGLE_MAPS_API_KEY not configured");
+      return false;
+    }
+
+    await loadGoogleMaps(apiKey);
+
+    state.map = new window.google.maps.Map(els.hotelMap, {
+      center: { lat: 7.8731, lng: 80.7718 },
+      zoom: 7,
+      mapTypeControl: false,
+      fullscreenControl: false,
+      streetViewControl: false,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#0b0908" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#0b0908" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#8d7458" }] },
+        { featureType: "road", elementType: "geometry", stylers: [{ color: "#1a120d" }] },
+        { featureType: "water", elementType: "geometry", stylers: [{ color: "#131416" }] },
+      ],
+    });
+
+    state.mapInfoWindow = new window.google.maps.InfoWindow();
+    setMapStatus("Map ready");
+    return true;
+  } catch (err) {
+    setMapStatus("Map unavailable");
+    addDebugLog(`map init failed: ${String(err.message || err)}`);
+    return false;
+  }
+}
+
+async function renderHotelMap(network) {
+  const mapReady = await initHotelMap();
+  if (!mapReady) {
+    return;
+  }
+
+  clearMapMarkers();
+
+  const hotels = (network.nodes || []).filter((node) => {
+    const labels = node.labels || [];
+    const lat = Number(node?.properties?.lat);
+    const lng = Number(node?.properties?.lng);
+    return labels.includes("Hotel") && Number.isFinite(lat) && Number.isFinite(lng);
+  });
+
+  if (!hotels.length) {
+    setMapStatus("No hotel coordinates for current selection");
+    return;
+  }
+
+  const bounds = new window.google.maps.LatLngBounds();
+  for (const hotel of hotels) {
+    const lat = Number(hotel.properties.lat);
+    const lng = Number(hotel.properties.lng);
+    const marker = new window.google.maps.Marker({
+      map: state.map,
+      position: { lat, lng },
+      title: normalizeNodeName(hotel),
+    });
+
+    marker.addListener("click", () => {
+      const price = hotel?.properties?.price_range || "-";
+      const rating = hotel?.properties?.rating || "-";
+      state.mapInfoWindow.setContent(
+        `<div style="font-family:Space Grotesk,sans-serif;color:#2d2317;padding:4px 6px;min-width:170px;"><strong>${normalizeNodeName(hotel)}</strong><div>Rating: ${rating}</div><div>Price: ${price}</div></div>`
+      );
+      state.mapInfoWindow.open({ map: state.map, anchor: marker });
+      loadNode(hotel.id);
+    });
+
+    state.mapMarkers.push(marker);
+    bounds.extend({ lat, lng });
+  }
+
+  state.map.fitBounds(bounds, 60);
+  if (hotels.length === 1) {
+    state.map.setZoom(13);
+  }
+  setMapStatus(`Showing ${hotels.length} hotels`);
+}
+
+function askClearConfirmation() {
+  return new Promise((resolve) => {
+    els.confirmModal.classList.remove("hidden");
+    els.confirmInput.value = "";
+    els.confirmInput.focus();
+
+    const cleanup = () => {
+      els.confirmOkBtn.removeEventListener("click", onOk);
+      els.confirmCancelBtn.removeEventListener("click", onCancel);
+      els.confirmInput.removeEventListener("keydown", onKeyDown);
+      els.confirmModal.classList.add("hidden");
+    };
+
+    const onOk = () => {
+      const value = (els.confirmInput.value || "").trim();
+      cleanup();
+      resolve(value);
+    };
+
+    const onCancel = () => {
+      cleanup();
+      resolve("");
+    };
+
+    const onKeyDown = (evt) => {
+      if (evt.key === "Enter") {
+        evt.preventDefault();
+        onOk();
+      }
+      if (evt.key === "Escape") {
+        evt.preventDefault();
+        onCancel();
+      }
+    };
+
+    els.confirmOkBtn.addEventListener("click", onOk);
+    els.confirmCancelBtn.addEventListener("click", onCancel);
+    els.confirmInput.addEventListener("keydown", onKeyDown);
+  });
 }
 
 async function request(path, options = {}) {
@@ -389,6 +579,7 @@ async function refreshDashboard() {
     renderOverview(overview, network, cityDisplay);
     renderNodeTable(network.nodes || []);
     renderGraph(network);
+    renderHotelMap(network);
 
     if ((network.nodes || []).length > 0) {
       await loadNode(network.nodes[0].id);
@@ -396,6 +587,7 @@ async function refreshDashboard() {
 
     toast("Graph refreshed");
   } catch (err) {
+    setMapStatus("Map not updated");
     toast(`Refresh failed: ${String(err.message || err)}`, true);
   } finally {
     els.refreshBtn.disabled = false;
@@ -497,7 +689,7 @@ async function applyAndIngest() {
 }
 
 async function clearGraph() {
-  const typed = window.prompt("Type DELETE ALL to clear all Neo4j graph data");
+  const typed = await askClearConfirmation();
   if (!typed) {
     return;
   }
@@ -526,6 +718,7 @@ async function clearGraph() {
     renderOverview({ labels: [], relationships: [], city_stats: null }, { node_count: 0, edge_count: 0 }, "All");
     renderNodeTable([]);
     renderGraph({ nodes: [], edges: [] });
+    renderHotelMap({ nodes: [], edges: [] });
     els.nodeMeta.innerHTML = "";
     els.nodeProps.textContent = "Graph is empty.";
     els.neighborList.innerHTML = '<p class="muted">No neighboring nodes found.</p>';
