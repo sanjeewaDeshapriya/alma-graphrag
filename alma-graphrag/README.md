@@ -129,6 +129,7 @@ python main.py
 | `GET` | `/graph/overview` | Get graph summary counts + optional city stats |
 | `POST` | `/graph/network` | Get graph nodes/edges for interactive visualization |
 | `GET` | `/graph/node/{node_id}` | Get one node with neighbor details |
+| `POST` | `/graph/clear` | Clear all graph nodes + relationships (requires confirmation) |
 | `POST` | `/ingest/start` | Start async full ingest by running hotel + news scripts |
 | `GET` | `/ingest/status/{job_id}` | Check async ingestion progress/status |
 | `POST` | `/ingest/trigger` | Trigger full hotel + news ingestion |

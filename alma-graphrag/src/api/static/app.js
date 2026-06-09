@@ -11,6 +11,7 @@ const els = {
   limitInput: document.getElementById("limitInput"),
   applyBtn: document.getElementById("applyBtn"),
   refreshBtn: document.getElementById("refreshBtn"),
+  clearBtn: document.getElementById("clearBtn"),
   progressText: document.getElementById("progressText"),
   progressFill: document.getElementById("progressFill"),
   debugLog: document.getElementById("debugLog"),
@@ -495,6 +496,48 @@ async function applyAndIngest() {
   }
 }
 
+async function clearGraph() {
+  const typed = window.prompt("Type DELETE ALL to clear all Neo4j graph data");
+  if (!typed) {
+    return;
+  }
+
+  if (typed.trim().toUpperCase() !== "DELETE ALL") {
+    toast("Confirmation text mismatch", true);
+    addDebugLog("clear graph cancelled: bad confirmation text");
+    return;
+  }
+
+  try {
+    els.clearBtn.disabled = true;
+    els.clearBtn.textContent = "Clearing...";
+    addDebugLog("clear graph requested");
+
+    const result = await request("/graph/clear", {
+      method: "POST",
+      body: JSON.stringify({ confirm_text: typed }),
+    });
+
+    addDebugLog(
+      `clear complete: nodes=${result.deleted_nodes || 0}, relationships=${result.deleted_relationships || 0}`
+    );
+    toast("Graph data cleared");
+
+    renderOverview({ labels: [], relationships: [], city_stats: null }, { node_count: 0, edge_count: 0 }, "All");
+    renderNodeTable([]);
+    renderGraph({ nodes: [], edges: [] });
+    els.nodeMeta.innerHTML = "";
+    els.nodeProps.textContent = "Graph is empty.";
+    els.neighborList.innerHTML = '<p class="muted">No neighboring nodes found.</p>';
+  } catch (err) {
+    toast(`Clear failed: ${String(err.message || err)}`, true);
+    addDebugLog(`clear graph failed: ${String(err.message || err)}`);
+  } finally {
+    els.clearBtn.disabled = false;
+    els.clearBtn.textContent = "Clear Graph";
+  }
+}
+
 function init() {
   els.cityInput.value = "Piliyandala";
   els.cityInput.addEventListener("keydown", (evt) => {
@@ -506,6 +549,7 @@ function init() {
   els.queryForm.addEventListener("submit", runQuery);
   els.applyBtn.addEventListener("click", applyAndIngest);
   els.refreshBtn.addEventListener("click", refreshDashboard);
+  els.clearBtn.addEventListener("click", clearGraph);
   setProgress(0, "Idle", { step_index: 0, step_total: 3, step_progress: 0 });
   addDebugLog("ui initialized");
   refreshDashboard();

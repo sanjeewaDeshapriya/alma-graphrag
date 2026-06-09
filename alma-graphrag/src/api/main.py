@@ -33,7 +33,7 @@ from src.config import (
     GNEWS_API_KEY,
 )
 from src.crag.graph import run_crag
-from src.graph.query import get_graph_network, get_graph_overview, get_node_details
+from src.graph.query import clear_graph_data, get_graph_network, get_graph_overview, get_node_details
 from src.ingest.hotel_ingest import ingest_hotels
 from src.ingest.news_rss import fetch_news
 from src.ingest.news_api import fetch_all_news
@@ -77,6 +77,10 @@ class GraphFilterRequest(BaseModel):
 
 class IngestStartRequest(BaseModel):
     city: Optional[str] = Field(None, max_length=100)
+
+
+class GraphClearRequest(BaseModel):
+    confirm_text: str = Field(..., min_length=3, max_length=50)
 
 
 _ingest_jobs: Dict[str, dict] = {}
@@ -307,6 +311,22 @@ def graph_node_details(node_id: str, neighbor_limit: int = 40) -> dict:
     if data is None:
         raise HTTPException(status_code=404, detail="Node not found")
     return data
+
+
+@app.post("/graph/clear")
+def graph_clear(req: GraphClearRequest) -> dict:
+    """Delete all graph data after explicit confirmation text."""
+    if req.confirm_text.strip().upper() != "DELETE ALL":
+        raise HTTPException(status_code=400, detail="Invalid confirmation text")
+
+    logger.warning("Graph clear requested: deleting all Neo4j data")
+    try:
+        result = clear_graph_data()
+    except Exception as exc:
+        logger.exception("Graph clear failed")
+        raise HTTPException(status_code=500, detail=f"Graph clear error: {exc}") from exc
+
+    return {"status": "ok", **result}
 
 
 @app.post("/ingest/start")

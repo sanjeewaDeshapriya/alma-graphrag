@@ -404,3 +404,22 @@ def get_node_details(node_id: str, neighbor_limit: int = 40) -> Dict[str, Any] |
         "neighbors": cleaned_neighbors[:neighbor_limit],
         "total_neighbors": len(cleaned_neighbors),
     }
+
+
+def clear_graph_data() -> Dict[str, int]:
+    """Delete all nodes and relationships in the active Neo4j database."""
+    driver = _get_driver()
+    with driver.session() as session:
+        counts = session.run(
+            """
+            MATCH (n)
+            OPTIONAL MATCH (n)-[r]-()
+            RETURN count(DISTINCT n) AS nodes, count(DISTINCT r) AS relationships
+            """
+        ).single()
+        session.run("MATCH (n) DETACH DELETE n")
+
+    return {
+        "deleted_nodes": int((counts or {}).get("nodes") or 0),
+        "deleted_relationships": int((counts or {}).get("relationships") or 0),
+    }
