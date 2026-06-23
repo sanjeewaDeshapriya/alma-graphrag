@@ -18,6 +18,12 @@ CREATE CONSTRAINT amenity_name IF NOT EXISTS
 CREATE CONSTRAINT location_name IF NOT EXISTS
   FOR (l:Location) REQUIRE l.name IS UNIQUE;
 
+CREATE CONSTRAINT roomtype_id IF NOT EXISTS
+  FOR (rt:RoomType) REQUIRE rt.id IS UNIQUE;
+
+CREATE CONSTRAINT boardtype_name IF NOT EXISTS
+  FOR (b:BoardType) REQUIRE b.name IS UNIQUE;
+
 CREATE CONSTRAINT road_name IF NOT EXISTS
   FOR (r:RoadSegment) REQUIRE r.name IS UNIQUE;
 
@@ -42,6 +48,9 @@ CREATE INDEX hotel_name IF NOT EXISTS
 
 CREATE INDEX hotel_city IF NOT EXISTS
   FOR (h:Hotel) ON (h.city_name);
+
+CREATE INDEX hotel_source IF NOT EXISTS
+  FOR (h:Hotel) ON (h.source);
 
 CREATE INDEX event_type IF NOT EXISTS
   FOR (e:Event) ON (e.type);
