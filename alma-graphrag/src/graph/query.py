@@ -56,17 +56,30 @@ def build_graph_context(city: str, limit: int = 30) -> str:
             query_parts.append("OPTIONAL MATCH (e)-[:MENTIONED_IN]->(n:NewsSignal)")
         if "NEAR" in rels:
             query_parts.append("OPTIONAL MATCH (h)-[:NEAR]->(l:Location)")
+        if "HAS_ROOM" in rels:
+            query_parts.append("OPTIONAL MATCH (h)-[:HAS_ROOM]->(rt:RoomType)")
+        if "OFFERS_BOARD" in rels:
+            query_parts.append("OPTIONAL MATCH (h)-[:OFFERS_BOARD]->(b:BoardType)")
 
         events_expr = "collect(DISTINCT e.title) AS events" if "AFFECTED_BY" in rels else "[] AS events"
         news_expr = "collect(DISTINCT n.title) AS news" if "MENTIONED_IN" in rels else "[] AS news"
         locations_expr = "collect(DISTINCT l.name) AS locations" if "NEAR" in rels else "[] AS locations"
+        rooms_expr = (
+            "collect(DISTINCT {name: rt.name, price: rt.price, currency: rt.currency, "
+            "board: rt.board_name, refundable: rt.refundable}) AS rooms"
+            if "HAS_ROOM" in rels
+            else "[] AS rooms"
+        )
+        boards_expr = "collect(DISTINCT b.name) AS boards" if "OFFERS_BOARD" in rels else "[] AS boards"
 
         query = "\n".join(query_parts)
         query += (
             "\nRETURN h, collect(DISTINCT a.name) AS amenities,"
             f"\n         {events_expr},"
             f"\n         {news_expr},"
-            f"\n         {locations_expr}"
+            f"\n         {locations_expr},"
+            f"\n         {rooms_expr},"
+            f"\n         {boards_expr}"
             "\nORDER BY h.rating DESC"
             "\nLIMIT $limit"
         )
@@ -107,12 +120,13 @@ def build_graph_context(city: str, limit: int = 30) -> str:
 
     # City summary
     if city_stats:
+        avg_rating = city_stats.get("avg_rating") or 0.0
         lines.append(f"=== City: {city} ===")
         lines.append(
-            f"Total hotels: {city_stats.get('hotel_count', 0)} | "
-            f"Avg rating: {city_stats.get('avg_rating', 0):.1f} | "
-            f"Price range: {city_stats.get('min_price', '?')}-{city_stats.get('max_price', '?')} LKR | "
-            f"Categories: {', '.join(city_stats.get('price_ranges', []))}"
+            f"Total hotels: {city_stats.get('hotel_count', 0) or 0} | "
+            f"Avg rating: {avg_rating:.1f} | "
+            f"Price range: {city_stats.get('min_price') or '?'}-{city_stats.get('max_price') or '?'} LKR | "
+            f"Categories: {', '.join([p for p in (city_stats.get('price_ranges') or []) if p])}"
         )
         lines.append("")
 
@@ -123,13 +137,37 @@ def build_graph_context(city: str, limit: int = 30) -> str:
         events = ", ".join(row.get("events") or []) or "None"
         news = ", ".join(row.get("news") or []) or "None"
         locations = ", ".join(row.get("locations") or []) or "None"
+        boards = ", ".join([b for b in (row.get("boards") or []) if b]) or "None"
+
+        # Format LiteAPI room/rate plans, if any.
+        rooms_raw = [r for r in (row.get("rooms") or []) if r and r.get("name")]
+        if rooms_raw:
+            room_strs = []
+            for r in rooms_raw:
+                price = r.get("price")
+                cur = r.get("currency") or ""
+                refund = "refundable" if r.get("refundable") else "non-refundable"
+                price_str = f"{price:.0f} {cur}".strip() if price else "price N/A"
+                room_strs.append(
+                    f"{r.get('name')} ({price_str}, {r.get('board') or 'RO'}, {refund})"
+                )
+            rooms = "; ".join(room_strs)
+        else:
+            rooms = "None"
+
+        star = h.get("star_rating")
+        star_str = f"{star:.0f}-star | " if star else ""
+        source = h.get("source", "?")
 
         hotel_line = (
-            f"Hotel: {h.get('name')} | "
+            f"Hotel: {h.get('name')} [{source}] | "
+            f"{star_str}"
             f"Rating: {h.get('rating', 'N/A')}/5 | "
             f"Price: {h.get('price_range', 'N/A')} ({h.get('price_per_night_lkr', 'N/A')} LKR/night) | "
             f"Address: {h.get('address', 'N/A')} | "
             f"Amenities: [{amenities}] | "
+            f"Rooms: [{rooms}] | "
+            f"Board: [{boards}] | "
             f"Near: [{locations}] | "
             f"Events: [{events}] | "
             f"News: [{news}]"
