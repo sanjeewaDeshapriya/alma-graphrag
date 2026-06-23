@@ -12,6 +12,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 import re
+import os
 import subprocess
 import sys
 from threading import Lock
@@ -127,6 +128,10 @@ def _run_script_with_logs(job_id: str, args: list[str]) -> list[str]:
     logger.info("Ingest job %s running command: %s", job_id, command_text)
     _append_job_log(job_id, f"run: {command_text}")
 
+    # Force UTF-8 in the child so titles with non-cp1252 chars (e.g. ₹) don't
+    # crash its print()/stdout on Windows, and decode its output as UTF-8 here.
+    child_env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
+
     lines: list[str] = []
     process = subprocess.Popen(
         command,
@@ -134,7 +139,10 @@ def _run_script_with_logs(job_id: str, args: list[str]) -> list[str]:
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         bufsize=1,
+        env=child_env,
     )
 
     if process.stdout is not None:
@@ -206,9 +214,9 @@ def _run_ingest_job(job_id: str, city: str) -> None:
         )
         hotel_lines = _run_script_with_logs(
             job_id,
-            ["scripts/run_ingest_hotels.py", "--city", city],
+            ["scripts/run_ingest_hotels.py", "--city", city, "--source", "both"],
         )
-        hotels_ingested = _extract_count(hotel_lines, r"total\s+hotels\s+ingested:\s*(\d+)")
+        hotels_ingested = _extract_count(hotel_lines, r"total\s+hotels\s+ingested[^:]*:\s*(\d+)")
 
         _set_job_state(
             job_id,
