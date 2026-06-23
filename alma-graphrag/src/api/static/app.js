@@ -8,6 +8,7 @@ const state = {
   googleMapsPromise: null,
   ingestJobId: null,
   ingestPolling: null,
+  seenLogCount: 0,
 };
 
 const els = {
@@ -56,10 +57,12 @@ function toast(message, isError = false) {
   window.setTimeout(() => els.toast.classList.remove("show"), 2600);
 }
 
-function addDebugLog(message) {
-  const stamp = new Date().toLocaleTimeString();
+function addDebugLog(message, ts) {
+  const stamp = ts
+    ? new Date(ts * 1000).toLocaleTimeString()
+    : new Date().toLocaleTimeString();
   const line = `[${stamp}] ${message}`;
-  const current = (els.debugLog.textContent || "").split("\n").slice(-18);
+  const current = (els.debugLog.textContent || "").split("\n").slice(-60);
   current.push(line);
   els.debugLog.textContent = current.join("\n");
   els.debugLog.scrollTop = els.debugLog.scrollHeight;
@@ -599,11 +602,16 @@ async function pollIngestStatus(jobId) {
   try {
     const status = await request(`/ingest/status/${encodeURIComponent(jobId)}`);
     setProgress(status.progress || 0, status.step || status.status || "In progress", status);
-    if (Array.isArray(status.logs) && status.logs.length) {
-      const tail = status.logs.slice(-1)[0];
-      if (tail && tail.message) {
-        addDebugLog(`status: ${tail.message}`);
+
+    // Stream all new log lines we haven't shown yet
+    if (Array.isArray(status.logs) && status.logs.length > state.seenLogCount) {
+      const newLines = status.logs.slice(state.seenLogCount);
+      for (const entry of newLines) {
+        if (entry && entry.message) {
+          addDebugLog(entry.message, entry.ts);
+        }
       }
+      state.seenLogCount = status.logs.length;
     }
 
     if (status.status === "completed") {
@@ -612,10 +620,13 @@ async function pollIngestStatus(jobId) {
         state.ingestPolling = null;
       }
       state.ingestJobId = null;
+      state.seenLogCount = 0;
       els.applyBtn.disabled = false;
       els.applyBtn.textContent = "Start Ingest";
       toast("Ingestion complete. Loading graph...");
-      addDebugLog(`completed: city=${status.result?.city || "-"}, hotels=${status.result?.hotels_ingested || 0}, news=${status.result?.news_ingested || 0}`);
+      addDebugLog(
+        `completed: city=${status.result?.city || "-"}, hotels=${status.result?.hotels_ingested || 0}, news=${status.result?.news_ingested || 0}`
+      );
       await refreshDashboard();
       return;
     }
@@ -626,6 +637,7 @@ async function pollIngestStatus(jobId) {
         state.ingestPolling = null;
       }
       state.ingestJobId = null;
+      state.seenLogCount = 0;
       els.applyBtn.disabled = false;
       els.applyBtn.textContent = "Start Ingest";
       setProgress(100, status.error || "Failed");
@@ -638,6 +650,7 @@ async function pollIngestStatus(jobId) {
       state.ingestPolling = null;
     }
     state.ingestJobId = null;
+    state.seenLogCount = 0;
     els.applyBtn.disabled = false;
     els.applyBtn.textContent = "Start Ingest";
     toast("Unable to check ingestion status", true);
@@ -660,6 +673,8 @@ async function applyAndIngest() {
   try {
     els.applyBtn.disabled = true;
     els.applyBtn.textContent = "Starting...";
+    state.seenLogCount = 0;
+    els.debugLog.textContent = "";
     setProgress(0, "Queued", { step_index: 0, step_total: 3, step_progress: 0 });
     addDebugLog(`starting ingest for city=${city}`);
 
