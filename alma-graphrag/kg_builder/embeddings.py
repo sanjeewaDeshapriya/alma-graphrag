@@ -5,6 +5,11 @@ from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings
 from neo4j import GraphDatabase
 from kg_builder.node_models import EmbeddingChunkNode
+from src.config import (
+    ACTIVE_EMBEDDING_API_KEY,
+    ACTIVE_EMBEDDING_BASE_URL,
+    ACTIVE_EMBEDDING_MODEL,
+)
 
 load_dotenv()
 
@@ -13,12 +18,16 @@ class EmbeddingPipeline:
     """
     Generates embeddings for Hotel, Event, and NewsSignal nodes.
     Stores vectors on nodes and optionally as EmbeddingChunk nodes.
+
+    Provider (OpenAI / Gemini) is resolved from LLM_PROVIDER in src.config;
+    Gemini is reached via its OpenAI-compatible embeddings endpoint.
     """
 
     def __init__(self):
         self.embedder = OpenAIEmbeddings(
-            model=os.getenv("EMBEDDING_MODEL", "text-embedding-ada-002"),
-            openai_api_key=os.getenv("OPENAI_API_KEY"),
+            model=ACTIVE_EMBEDDING_MODEL,
+            openai_api_key=ACTIVE_EMBEDDING_API_KEY,
+            base_url=ACTIVE_EMBEDDING_BASE_URL,
         )
         self.driver = GraphDatabase.driver(
             os.getenv("NEO4J_URI", "bolt://localhost:7687"),
