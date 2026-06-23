@@ -39,7 +39,7 @@ class GraphLoader:
             session.run(
                 """
                 MATCH (h:Hotel {id: $id})
-                MATCH (c:City {name: $city_name})
+                MERGE (c:City {name: $city_name})
                 MERGE (h)-[r:LOCATED_IN]->(c)
                 SET r.distance_from_center_km = $distance_from_center_km,
                     r.confidence = $confidence
@@ -53,6 +53,91 @@ class GraphLoader:
                     "confidence": 0.9,
                 },
             )
+
+    def upsert_hotel_extras(self, hotel_id: str, extras: Dict[str, Any]) -> None:
+        """Set source-specific hotel attributes (e.g. LiteAPI rate metadata)."""
+        with self.driver.session() as session:
+            session.run(
+                """
+                MATCH (h:Hotel {id: $id})
+                SET h.star_rating = $star_rating,
+                    h.price_currency = $price_currency,
+                    h.price_per_night = $price_per_night,
+                    h.refundable_available = $refundable_available,
+                    h.board_types = $board_types
+                """,
+                {
+                    "id": hotel_id,
+                    "star_rating": extras.get("star_rating", 0.0),
+                    "price_currency": extras.get("price_currency", "LKR"),
+                    "price_per_night": extras.get("price_per_night", 0.0),
+                    "refundable_available": extras.get("refundable_available", False),
+                    "board_types": extras.get("board_types", []),
+                },
+            )
+
+    def upsert_room_types(
+        self, hotel_id: str, room_types: List[Dict[str, Any]]
+    ) -> None:
+        """Create RoomType nodes (rate plans) linked to a hotel via HAS_ROOM."""
+        with self.driver.session() as session:
+            for rt in room_types:
+                room_key = f"{hotel_id}:{rt.get('room_type_id') or rt.get('name')}"
+                session.run(
+                    """
+                    MERGE (rt:RoomType {id: $room_key})
+                    SET rt.name = $name,
+                        rt.price = $price,
+                        rt.currency = $currency,
+                        rt.board_name = $board_name,
+                        rt.refundable = $refundable,
+                        rt.rate_type = $rate_type
+                    """,
+                    {
+                        "room_key": room_key,
+                        "name": rt.get("name", "Room"),
+                        "price": rt.get("price", 0.0),
+                        "currency": rt.get("currency", "LKR"),
+                        "board_name": rt.get("board_name", ""),
+                        "refundable": rt.get("refundable", False),
+                        "rate_type": rt.get("rate_type", "standard"),
+                    },
+                )
+                session.run(
+                    """
+                    MATCH (h:Hotel {id: $hotel_id})
+                    MATCH (rt:RoomType {id: $room_key})
+                    MERGE (h)-[r:HAS_ROOM]->(rt)
+                    SET r.price = $price, r.currency = $currency
+                    """,
+                    {
+                        "hotel_id": hotel_id,
+                        "room_key": room_key,
+                        "price": rt.get("price", 0.0),
+                        "currency": rt.get("currency", "LKR"),
+                    },
+                )
+
+    def upsert_board_types(
+        self, hotel_id: str, board_types: Iterable[str]
+    ) -> None:
+        """Create BoardType nodes (meal plans) linked via OFFERS_BOARD."""
+        with self.driver.session() as session:
+            for name in board_types:
+                if not name:
+                    continue
+                session.run(
+                    "MERGE (b:BoardType {name: $name})",
+                    {"name": name},
+                )
+                session.run(
+                    """
+                    MATCH (h:Hotel {id: $hotel_id})
+                    MATCH (b:BoardType {name: $name})
+                    MERGE (h)-[:OFFERS_BOARD]->(b)
+                    """,
+                    {"hotel_id": hotel_id, "name": name},
+                )
 
     def upsert_amenities(self, hotel_id: str, amenities: Iterable[str]) -> None:
         with self.driver.session() as session:
@@ -107,6 +192,75 @@ class GraphLoader:
                         "walk_time_min": loc.get("walk_time_min"),
                         "transport_cost_lkr": loc.get("transport_cost_lkr"),
                     },
+                )
+
+    def upsert_neighborhoods(
+        self, hotel_id: str, neighborhoods: List[Dict[str, Any]]
+    ) -> None:
+        """Create Neighborhood nodes linked to a hotel via IN_NEIGHBORHOOD."""
+        with self.driver.session() as session:
+            for nb in neighborhoods:
+                name = nb.get("name")
+                if not name:
+                    continue
+                session.run(
+                    "MERGE (n:Neighborhood {name: $name}) SET n.type = $type",
+                    {"name": name, "type": nb.get("type", "district")},
+                )
+                session.run(
+                    """
+                    MATCH (h:Hotel {id: $hotel_id})
+                    MATCH (n:Neighborhood {name: $name})
+                    MERGE (h)-[:IN_NEIGHBORHOOD]->(n)
+                    """,
+                    {"hotel_id": hotel_id, "name": name},
+                )
+
+    def upsert_attraction_types(
+        self, hotel_id: str, attraction_types: List[str]
+    ) -> None:
+        """Create AttractionType nodes linked to a hotel via NEAR_ATTRACTION."""
+        with self.driver.session() as session:
+            for atype in attraction_types:
+                if not atype:
+                    continue
+                session.run(
+                    "MERGE (a:AttractionType {name: $name})",
+                    {"name": atype},
+                )
+                session.run(
+                    """
+                    MATCH (h:Hotel {id: $hotel_id})
+                    MATCH (a:AttractionType {name: $name})
+                    MERGE (h)-[:NEAR_ATTRACTION]->(a)
+                    """,
+                    {"hotel_id": hotel_id, "name": atype},
+                )
+
+    def upsert_ner_landmarks(
+        self, hotel_id: str, landmarks: List[Dict[str, Any]]
+    ) -> None:
+        """Create Landmark nodes (from NER) linked to a hotel via NEAR."""
+        with self.driver.session() as session:
+            for lm in landmarks:
+                name = lm.get("name")
+                if not name:
+                    continue
+                session.run(
+                    """
+                    MERGE (l:Location {name: $name})
+                    SET l.type = $type
+                    """,
+                    {"name": name, "type": lm.get("type", "landmark")},
+                )
+                session.run(
+                    """
+                    MATCH (h:Hotel {id: $hotel_id})
+                    MATCH (l:Location {name: $name})
+                    MERGE (h)-[r:NEAR]->(l)
+                    SET r.source = 'ner'
+                    """,
+                    {"hotel_id": hotel_id, "name": name},
                 )
 
     def upsert_news_signal(self, news: Dict[str, Any]) -> None:

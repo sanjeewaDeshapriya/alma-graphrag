@@ -4,14 +4,14 @@ import json
 from typing import Any, Dict, List
 from openai import OpenAI
 
-from src.config import OPENAI_API_KEY, OPENAI_MODEL
+from src.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL, LLM_PROVIDER
 
 
 class LLMExtractor:
     def __init__(self) -> None:
-        if not OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY is not set")
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
+        if not LLM_API_KEY:
+            raise ValueError(f"No API key set for LLM provider '{LLM_PROVIDER}'")
+        self.client = OpenAI(api_key=LLM_API_KEY, base_url=LLM_BASE_URL)
 
     def extract(self, hotel: Dict[str, Any]) -> Dict[str, Any]:
         prompt = (
@@ -24,7 +24,7 @@ class LLMExtractor:
         )
 
         response = self.client.chat.completions.create(
-            model=OPENAI_MODEL,
+            model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
         )

@@ -22,16 +22,19 @@ from openai import OpenAI
 from src.config import (
     CRAG_MAX_RETRIES,
     CRAG_MIN_SCORE,
-    OPENAI_API_KEY,
-    OPENAI_MODEL,
+    LLM_API_KEY,
+    LLM_BASE_URL,
+    LLM_MODEL,
 )
 from src.crag.cache import Cache
 from src.graph.query import build_graph_context
 
 logger = logging.getLogger("alma.crag")
 
-# Reusable OpenAI client (avoid re-creating per call)
-_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+# Reusable LLM client (OpenAI or Gemini via OpenAI-compatible endpoint)
+_client = (
+    OpenAI(api_key=LLM_API_KEY, base_url=LLM_BASE_URL) if LLM_API_KEY else None
+)
 
 
 def _extract_json(text: str) -> str:
@@ -93,7 +96,7 @@ def _grade(state: GraphState) -> GraphState:
     )
     try:
         response = _client.chat.completions.create(
-            model=OPENAI_MODEL,
+            model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
         )
@@ -120,7 +123,7 @@ def _transform_query(state: GraphState) -> GraphState:
     )
     try:
         response = _client.chat.completions.create(
-            model=OPENAI_MODEL,
+            model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
         )
@@ -138,7 +141,7 @@ def _transform_query(state: GraphState) -> GraphState:
 def _generate(state: GraphState) -> GraphState:
     """Generate the final answer using the LLM."""
     if _client is None:
-        return {**state, "answer": "LLM not configured (OPENAI_API_KEY missing)."}
+        return {**state, "answer": "LLM not configured (no API key for the selected provider)."}
     prompt = (
         "You are a GraphRAG assistant for Sri Lanka hotel recommendations.\n"
         "Use the provided graph context (hotel names, ratings, prices, amenities, "
@@ -152,7 +155,7 @@ def _generate(state: GraphState) -> GraphState:
     )
     try:
         response = _client.chat.completions.create(
-            model=OPENAI_MODEL,
+            model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
         )
