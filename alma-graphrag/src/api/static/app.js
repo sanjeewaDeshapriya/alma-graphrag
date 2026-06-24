@@ -9,6 +9,7 @@ const state = {
   ingestJobId: null,
   ingestPolling: null,
   seenLogCount: 0,
+  clientConfig: null,
 };
 
 const els = {
@@ -48,6 +49,9 @@ const labelPalette = {
   NewsSignal: "#7fa8ff",
   Amenity: "#9de06a",
   Location: "#b68bff",
+  TrafficSignal: "#ff4444",
+  RoadSegment: "#ff9900",
+  TransportMode: "#66ccff",
 };
 
 function toast(message, isError = false) {
@@ -228,11 +232,61 @@ async function renderHotelMap(network) {
     bounds.extend({ lat, lng });
   }
 
+  // --- Traffic signal markers ---
+  const trafficNodes = (network.nodes || []).filter((node) => {
+    const labels = node.labels || [];
+    const lat = Number(node?.properties?.lat);
+    const lng = Number(node?.properties?.lng);
+    return labels.includes("TrafficSignal") && Number.isFinite(lat) && lat !== 0 && Number.isFinite(lng) && lng !== 0;
+  });
+
+  for (const signal of trafficNodes) {
+    const lat = Number(signal.properties.lat);
+    const lng = Number(signal.properties.lng);
+    const severity = signal.properties?.severity || "light";
+    const color = severity === "heavy" ? "#ff0000" : severity === "moderate" ? "#ff9900" : "#ffcc00";
+
+    const marker = new window.google.maps.Marker({
+      map: state.map,
+      position: { lat, lng },
+      title: `Traffic: ${severity} at ${signal.properties?.location_name || "Unknown"}`,
+      icon: {
+        path: window.google.maps.SymbolPath.CIRCLE,
+        scale: 7,
+        fillColor: color,
+        fillOpacity: 0.85,
+        strokeWeight: 1.5,
+        strokeColor: "#333",
+      },
+    });
+
+    marker.addListener("click", () => {
+      const loc = signal.properties?.location_name || "Unknown";
+      const eta = signal.properties?.eta_change_min || 0;
+      const congestion = signal.properties?.congestion_ratio
+        ? (Number(signal.properties.congestion_ratio) * 100).toFixed(0) + "%"
+        : "-";
+      state.mapInfoWindow.setContent(
+        `<div style="font-family:Space Grotesk,sans-serif;color:#2d2317;padding:4px 6px;min-width:180px;">` +
+          `<strong style="color:${color};">⬤</strong> <strong>Traffic: ${severity.toUpperCase()}</strong>` +
+          `<div>Location: ${loc}</div>` +
+          `<div>ETA impact: +${eta} min</div>` +
+          `<div>Flow: ${congestion}</div>` +
+        `</div>`
+      );
+      state.mapInfoWindow.open({ map: state.map, anchor: marker });
+    });
+
+    state.mapMarkers.push(marker);
+    bounds.extend({ lat, lng });
+  }
+
   state.map.fitBounds(bounds, 60);
-  if (hotels.length === 1) {
+  if (hotels.length === 1 && !trafficNodes.length) {
     state.map.setZoom(13);
   }
-  setMapStatus(`Showing ${hotels.length} hotels`);
+  const trafficStr = trafficNodes.length ? ` | ${trafficNodes.length} traffic signals` : "";
+  setMapStatus(`Showing ${hotels.length} hotels${trafficStr}`);
 }
 
 function askClearConfirmation() {
@@ -588,6 +642,7 @@ async function refreshDashboard() {
       await loadNode(network.nodes[0].id);
     }
 
+    fetchTrafficStatus();
     toast("Graph refreshed");
   } catch (err) {
     setMapStatus("Map not updated");
@@ -624,9 +679,15 @@ async function pollIngestStatus(jobId) {
       els.applyBtn.disabled = false;
       els.applyBtn.textContent = "Start Ingest";
       toast("Ingestion complete. Loading graph...");
+      const trafficStr = state.clientConfig?.traffic_enabled
+        ? `, traffic=${status.result?.traffic_ingested || 0}`
+        : "";
       addDebugLog(
-        `completed: city=${status.result?.city || "-"}, hotels=${status.result?.hotels_ingested || 0}, news=${status.result?.news_ingested || 0}`
+        `completed: city=${status.result?.city || "-"}, hotels=${status.result?.hotels_ingested || 0}, news=${status.result?.news_ingested || 0}${trafficStr}`
       );
+      if (state.clientConfig?.traffic_enabled) {
+        fetchTrafficStatus();
+      }
       await refreshDashboard();
       return;
     }
@@ -675,8 +736,9 @@ async function applyAndIngest() {
     els.applyBtn.textContent = "Starting...";
     state.seenLogCount = 0;
     els.debugLog.textContent = "";
-    setProgress(0, "Queued", { step_index: 0, step_total: 3, step_progress: 0 });
-    addDebugLog(`starting ingest for city=${city}`);
+    const stepTotal = state.clientConfig?.traffic_enabled ? 4 : 3;
+    setProgress(0, "Queued", { step_index: 0, step_total: stepTotal, step_progress: 0 });
+    addDebugLog(`starting ingest for city=${city}${state.clientConfig?.traffic_enabled ? " (traffic enabled)" : ""}`);
 
     const start = await request("/ingest/start", {
       method: "POST",
@@ -697,7 +759,8 @@ async function applyAndIngest() {
     state.ingestJobId = null;
     els.applyBtn.disabled = false;
     els.applyBtn.textContent = "Start Ingest";
-    setProgress(0, "Idle", { step_index: 0, step_total: 3, step_progress: 0 });
+    const stepTotalErr = state.clientConfig?.traffic_enabled ? 4 : 3;
+    setProgress(0, "Idle", { step_index: 0, step_total: stepTotalErr, step_progress: 0 });
     toast("Failed to start ingestion", true);
     addDebugLog(`start error: ${String(err.message || err)}`);
   }
@@ -746,7 +809,94 @@ async function clearGraph() {
   }
 }
 
-function init() {
+async function fetchClientConfig() {
+  try {
+    state.clientConfig = await request("/client/config");
+  } catch (err) {
+    addDebugLog(`config fetch error: ${String(err.message || err)}`);
+  }
+}
+
+async function fetchTrafficStatus() {
+  const trafficPanel = document.getElementById("trafficPanel");
+  const trafficStatsGrid = document.getElementById("trafficStatsGrid");
+  const trafficProvider = document.getElementById("trafficProvider");
+  const trafficSeverityBars = document.getElementById("trafficSeverityBars");
+  const trafficIncidentInfo = document.getElementById("trafficIncidentInfo");
+
+  if (!state.clientConfig?.traffic_enabled) {
+    if (trafficPanel) trafficPanel.style.display = "none";
+    return;
+  }
+
+  if (trafficPanel) trafficPanel.style.display = "";
+
+  const city = getCurrentCity();
+  try {
+    const data = await request(`/traffic/status${city ? `?city=${encodeURIComponent(city)}` : ""}`);
+
+    if (trafficProvider) {
+      trafficProvider.textContent = `Provider: ${(data.traffic_provider || "-").toUpperCase()}${data.city ? ` · ${data.city}` : ""}`;
+    }
+
+    const stats = [
+      { key: "Hotels w/ Travel Data", val: data.hotels_with_travel_time || 0 },
+      { key: "Avg Distance", val: data.avg_distance_km ? `${data.avg_distance_km} km` : "-" },
+      { key: "Avg Travel Time", val: data.avg_travel_min ? `${data.avg_travel_min} min` : "-" },
+      { key: "Avg w/ Traffic", val: data.avg_travel_traffic_min ? `${data.avg_travel_traffic_min} min` : "-" },
+    ];
+
+    if (trafficStatsGrid) {
+      trafficStatsGrid.innerHTML = stats
+        .map((item) => `<div class="stat"><p>${item.key}</p><strong>${item.val}</strong></div>`)
+        .join("");
+    }
+
+    if (trafficSeverityBars) {
+      const total = Math.max(1, data.signal_count || 1);
+      const bars = [
+        { label: "Heavy", count: data.heavy || 0, color: "#ff4444" },
+        { label: "Moderate", count: data.moderate || 0, color: "#ff9900" },
+        { label: "Light", count: data.light || 0, color: "#ffcc00" },
+      ];
+      trafficSeverityBars.innerHTML = bars
+        .map((b) => {
+          const pct = Math.round((b.count / total) * 100);
+          return `<div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:70px;font-size:0.78rem;color:var(--muted);">${b.label}</span>
+            <div style="flex:1;height:8px;border-radius:4px;background:#090605;border:1px solid var(--line);overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:${b.color};border-radius:4px;"></div>
+            </div>
+            <span style="width:30px;font-size:0.78rem;color:var(--muted);text-align:right;">${b.count}</span>
+          </div>`;
+        })
+        .join("");
+    }
+
+    if (trafficIncidentInfo) {
+      const ic = data.incident_count || 0;
+      const sc = data.signal_count || 0;
+      let infoHtml = "";
+      if (sc > 0) {
+        infoHtml += `<div class="stat" style="margin-bottom:8px;"><p>Traffic Signals</p><strong>${sc}</strong></div>`;
+        infoHtml += `<div style="font-size:0.78rem;color:var(--muted);margin-bottom:6px;">Heavy: ${data.heavy || 0} · Moderate: ${data.moderate || 0} · Light: ${data.light || 0}</div>`;
+      }
+      if (ic > 0) {
+        infoHtml += `<div class="stat" style="border-color:rgba(154,63,63,0.55);"><p>Active Incidents</p><strong style="color:#e6b3b3;">${ic}</strong></div>`;
+      }
+      if (!infoHtml) {
+        infoHtml = `<p class="muted">No active traffic signals or incidents.</p>`;
+      }
+      trafficIncidentInfo.innerHTML = infoHtml;
+    }
+  } catch (err) {
+    if (trafficStatsGrid) {
+      trafficStatsGrid.innerHTML = `<p class="muted">Unable to load traffic status.</p>`;
+    }
+  }
+}
+
+async function init() {
   els.cityInput.value = "Piliyandala";
   els.cityInput.addEventListener("keydown", (evt) => {
     if (evt.key === "Enter") {
@@ -758,9 +908,14 @@ function init() {
   els.applyBtn.addEventListener("click", applyAndIngest);
   els.refreshBtn.addEventListener("click", refreshDashboard);
   els.clearBtn.addEventListener("click", clearGraph);
-  setProgress(0, "Idle", { step_index: 0, step_total: 3, step_progress: 0 });
-  addDebugLog("ui initialized");
+
+  await fetchClientConfig();
+  const stepTotal = state.clientConfig?.traffic_enabled ? 4 : 3;
+  setProgress(0, "Idle", { step_index: 0, step_total: stepTotal, step_progress: 0 });
+  addDebugLog("ui initialized" + (state.clientConfig?.traffic_enabled ? " (traffic enabled)" : ""));
+
   refreshDashboard();
+  fetchTrafficStatus();
 }
 
 init();
