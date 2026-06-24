@@ -145,9 +145,12 @@ def _generate(state: GraphState) -> GraphState:
     prompt = (
         "You are a GraphRAG assistant for Sri Lanka hotel recommendations.\n"
         "Use the provided graph context (hotel names, ratings, prices, amenities, "
-        "nearby locations, events, and news) to give a detailed, helpful answer.\n"
+        "nearby locations, events, news, traffic conditions, and road access) "
+        "to give a detailed, helpful answer.\n"
         "- Mention specific hotel names, ratings, and price ranges.\n"
         "- Highlight relevant amenities.\n"
+        "- Include traffic conditions and travel times when available.\n"
+        "- Warn about road closures or heavy congestion if present.\n"
         "- Note any linked events or news if present.\n"
         "- If no hotels match the exact criteria, recommend the closest alternatives.\n\n"
         f"Question: {state['question']}\n\n"
