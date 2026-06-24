@@ -31,8 +31,13 @@ from src.config import (
     GOOGLE_MAPS_API_KEY,
     HOTEL_MAX_RESULTS,
     HOTELS_CITIES,
+    NEO4J_URI,
+    NEO4J_USER,
+    NEO4J_PASSWORD,
     NEWS_API_KEY,
     GNEWS_API_KEY,
+    TRAFFIC_ENABLED,
+    TRAFFIC_PROVIDER,
 )
 from src.crag.graph import run_crag
 from src.graph.query import clear_graph_data, get_graph_network, get_graph_overview, get_node_details
@@ -40,6 +45,8 @@ from src.ingest.hotel_ingest import ingest_hotels
 from src.ingest.news_rss import fetch_news
 from src.ingest.news_api import fetch_all_news
 from src.ingest.event_linker import link_events_to_hotels
+from src.ingest.traffic import fetch_all_traffic
+from src.ingest.traffic_linker import link_traffic_to_hotels, cleanup_stale_signals
 
 logger = logging.getLogger("alma.api")
 logging.basicConfig(level=logging.INFO)
@@ -194,22 +201,23 @@ def _set_job_state(job_id: str, **updates) -> None:
 
 def _run_ingest_job(job_id: str, city: str) -> None:
     """Background ingestion pipeline that runs ingest scripts with live console logs."""
+    total_steps = 4 if TRAFFIC_ENABLED else 3
     _set_job_state(
         job_id,
         status="running",
         progress=10,
         step="Starting ingestion",
         step_index=1,
-        step_total=3,
+        step_total=total_steps,
         step_progress=100,
     )
     try:
         _set_job_state(
             job_id,
-            progress=25,
+            progress=20,
             step="Running hotel ingest script",
             step_index=2,
-            step_total=3,
+            step_total=total_steps,
             step_progress=15,
         )
         hotel_lines = _run_script_with_logs(
@@ -220,10 +228,10 @@ def _run_ingest_job(job_id: str, city: str) -> None:
 
         _set_job_state(
             job_id,
-            progress=65,
+            progress=50,
             step="Running news ingest script",
             step_index=3,
-            step_total=3,
+            step_total=total_steps,
             step_progress=50,
         )
         news_lines = _run_script_with_logs(
@@ -232,19 +240,42 @@ def _run_ingest_job(job_id: str, city: str) -> None:
         )
         news_ingested = _extract_count(news_lines, r"ingested\s+(\d+)\s+news\s+items")
 
+        traffic_ingested = 0
+        if TRAFFIC_ENABLED:
+            _set_job_state(
+                job_id,
+                progress=75,
+                step="Running traffic ingest",
+                step_index=4,
+                step_total=total_steps,
+                step_progress=50,
+            )
+            try:
+                city_data, hotel_data = _fetch_traffic_graph_data([city])
+                if hotel_data:
+                    traffic_data = fetch_all_traffic(city_data, hotel_data, provider=TRAFFIC_PROVIDER)
+                    counts = link_traffic_to_hotels(traffic_data, hotel_data)
+                    traffic_ingested = sum(counts.values())
+                    cleanup_stale_signals()
+                _append_job_log(job_id, f"Traffic ingested: {traffic_ingested} items")
+            except Exception as exc:
+                logger.warning("Traffic ingestion failed (non-fatal): %s", exc)
+                _append_job_log(job_id, f"Traffic ingestion warning: {exc}")
+
         _set_job_state(
             job_id,
             status="completed",
             progress=100,
             step="Ingestion completed",
-            step_index=3,
-            step_total=3,
+            step_index=total_steps,
+            step_total=total_steps,
             step_progress=100,
             finished_at=time(),
             result={
                 "city": city,
                 "hotels_ingested": hotels_ingested,
                 "news_ingested": news_ingested,
+                "traffic_ingested": traffic_ingested,
             },
         )
     except Exception as exc:  # noqa: BLE001 - capture any failure and expose via job status
@@ -254,8 +285,8 @@ def _run_ingest_job(job_id: str, city: str) -> None:
             status="failed",
             progress=100,
             step="Ingestion failed",
-            step_index=3,
-            step_total=3,
+            step_index=total_steps,
+            step_total=total_steps,
             step_progress=100,
             finished_at=time(),
             error=str(exc),
@@ -328,6 +359,8 @@ def client_config() -> dict:
     return {
         "google_maps_api_key": GOOGLE_MAPS_API_KEY or "",
         "default_city": DEFAULT_CITY,
+        "traffic_enabled": TRAFFIC_ENABLED,
+        "traffic_provider": TRAFFIC_PROVIDER if TRAFFIC_ENABLED else None,
     }
 
 
@@ -361,7 +394,7 @@ def start_ingest_job(req: IngestStartRequest, background_tasks: BackgroundTasks)
             "progress": 0,
             "step": "Queued",
             "step_index": 0,
-            "step_total": 3,
+            "step_total": 4 if TRAFFIC_ENABLED else 3,
             "step_progress": 0,
             "result": None,
             "error": None,
@@ -424,7 +457,142 @@ def ingest_news_only() -> dict:
     return {"status": "ok", "news_ingested": len(news_items)}
 
 
+@app.post("/ingest/traffic")
+def ingest_traffic(city: Optional[str] = None) -> dict:
+    """Trigger traffic data ingestion from configured provider."""
+    if not TRAFFIC_ENABLED:
+        raise HTTPException(status_code=400, detail="Traffic ingestion is disabled (set TRAFFIC_ENABLED=true)")
+
+    cities_list = [city] if city else list(HOTELS_CITIES)
+    logger.info("API /ingest/traffic: cities=%s, provider=%s", cities_list, TRAFFIC_PROVIDER)
+
+    try:
+        city_data, hotel_data = _fetch_traffic_graph_data(cities_list)
+        if not hotel_data:
+            return {"status": "ok", "message": "No hotels found in graph", "counts": {}}
+
+        traffic_data = fetch_all_traffic(city_data, hotel_data, provider=TRAFFIC_PROVIDER)
+        counts = link_traffic_to_hotels(traffic_data, hotel_data)
+        cleanup_stale_signals()
+
+        return {"status": "ok", "counts": counts}
+    except Exception as exc:
+        logger.exception("Traffic ingestion failed")
+        raise HTTPException(status_code=500, detail=f"Traffic ingestion error: {exc}") from exc
+
+
+@app.get("/traffic/status")
+def traffic_status(city: Optional[str] = None) -> dict:
+    """Return a summary of current traffic signals in the graph."""
+    from neo4j import GraphDatabase
+    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+    try:
+        with driver.session() as session:
+            if city:
+                row = session.run(
+                    """
+                    MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)
+                    WHERE toLower(c.name) = toLower($city)
+                    OPTIONAL MATCH (h)-[:HAS_SIGNAL]->(t:TrafficSignal)
+                    WITH collect(DISTINCT t) AS signals
+                    RETURN size(signals) AS signal_count,
+                           size([s IN signals WHERE s.severity = 'heavy']) AS heavy_count,
+                           size([s IN signals WHERE s.severity = 'moderate']) AS moderate_count,
+                           size([s IN signals WHERE s.severity = 'light']) AS light_count
+                    """,
+                    {"city": city},
+                ).single()
+            else:
+                row = session.run(
+                    """
+                    MATCH (t:TrafficSignal)
+                    RETURN count(t) AS signal_count,
+                           count(CASE WHEN t.severity = 'heavy' THEN 1 END) AS heavy_count,
+                           count(CASE WHEN t.severity = 'moderate' THEN 1 END) AS moderate_count,
+                           count(CASE WHEN t.severity = 'light' THEN 1 END) AS light_count
+                    """
+                ).single()
+
+            # Count traffic incidents
+            incident_row = session.run(
+                """
+                MATCH (e:Event {type: 'traffic_incident'})
+                RETURN count(e) AS incident_count
+                """
+            ).single()
+
+            # Count hotels with travel time data on LOCATED_IN edges
+            if city:
+                travel_row = session.run(
+                    """
+                    MATCH (h:Hotel)-[r:LOCATED_IN]->(c:City)
+                    WHERE toLower(c.name) = toLower($city) AND r.travel_time_min IS NOT NULL
+                    RETURN count(h) AS hotels_with_travel,
+                           avg(r.travel_time_min) AS avg_travel_min,
+                           avg(r.travel_time_traffic_min) AS avg_travel_traffic_min,
+                           avg(r.distance_km) AS avg_distance_km
+                    """,
+                    {"city": city},
+                ).single()
+            else:
+                travel_row = session.run(
+                    """
+                    MATCH (h:Hotel)-[r:LOCATED_IN]->(c:City)
+                    WHERE r.travel_time_min IS NOT NULL
+                    RETURN count(h) AS hotels_with_travel,
+                           avg(r.travel_time_min) AS avg_travel_min,
+                           avg(r.travel_time_traffic_min) AS avg_travel_traffic_min,
+                           avg(r.distance_km) AS avg_distance_km
+                    """
+                ).single()
+
+        return {
+            "traffic_enabled": TRAFFIC_ENABLED,
+            "traffic_provider": TRAFFIC_PROVIDER,
+            "city": city,
+            "signal_count": int((row or {}).get("signal_count", 0)),
+            "heavy": int((row or {}).get("heavy_count", 0)),
+            "moderate": int((row or {}).get("moderate_count", 0)),
+            "light": int((row or {}).get("light_count", 0)),
+            "incident_count": int((incident_row or {}).get("incident_count", 0)),
+            "hotels_with_travel_time": int((travel_row or {}).get("hotels_with_travel", 0)),
+            "avg_travel_min": round(float((travel_row or {}).get("avg_travel_min") or 0), 1),
+            "avg_travel_traffic_min": round(float((travel_row or {}).get("avg_travel_traffic_min") or 0), 1),
+            "avg_distance_km": round(float((travel_row or {}).get("avg_distance_km") or 0), 1),
+        }
+    finally:
+        driver.close()
+
+
 # --- Helpers ------------------------------------------------------------------
+
+def _fetch_traffic_graph_data(cities: list[str]) -> tuple[list[dict], list[dict]]:
+    """Read city/hotel coords from Neo4j for traffic ingestion."""
+    from neo4j import GraphDatabase
+    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+    city_data: list[dict] = []
+    hotel_data: list[dict] = []
+    with driver.session() as session:
+        for city_name in cities:
+            hotel_rows = session.run(
+                """
+                MATCH (h:Hotel)-[:LOCATED_IN]->(c:City {name: $city})
+                RETURN h.id AS id, h.name AS name, h.lat AS lat, h.lng AS lng, c.name AS city_name
+                """,
+                {"city": city_name},
+            ).data()
+
+            lats = [r["lat"] for r in hotel_rows if r.get("lat")]
+            lngs = [r["lng"] for r in hotel_rows if r.get("lng")]
+            if lats and lngs:
+                city_data.append({
+                    "name": city_name,
+                    "lat": sum(lats) / len(lats),
+                    "lng": sum(lngs) / len(lngs),
+                })
+            hotel_data.extend(hotel_rows)
+    driver.close()
+    return city_data, hotel_data
 
 def _fetch_news_combined() -> list:
     """

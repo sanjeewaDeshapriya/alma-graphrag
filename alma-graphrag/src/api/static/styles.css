@@ -226,7 +226,9 @@ textarea:focus {
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.76rem;
   white-space: pre-wrap;
-  overflow: auto;
+  word-break: break-all;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .debug-log {

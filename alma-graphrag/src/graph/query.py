@@ -45,7 +45,7 @@ def build_graph_context(city: str, limit: int = 30) -> str:
 
         # Build a query that only uses relationship types that exist in the DB
         query_parts = [
-            "MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)",
+            "MATCH (h:Hotel)-[loc_rel:LOCATED_IN]->(c:City)",
             "WHERE toLower(c.name) = toLower($city)",
             "OPTIONAL MATCH (h)-[:HAS_AMENITY]->(a:Amenity)",
         ]
@@ -60,6 +60,10 @@ def build_graph_context(city: str, limit: int = 30) -> str:
             query_parts.append("OPTIONAL MATCH (h)-[:HAS_ROOM]->(rt:RoomType)")
         if "OFFERS_BOARD" in rels:
             query_parts.append("OPTIONAL MATCH (h)-[:OFFERS_BOARD]->(b:BoardType)")
+        if "HAS_SIGNAL" in rels:
+            query_parts.append("OPTIONAL MATCH (h)-[:HAS_SIGNAL]->(ts:TrafficSignal)")
+        if "ACCESSIBLE_VIA" in rels:
+            query_parts.append("OPTIONAL MATCH (h)-[av:ACCESSIBLE_VIA]->(rs:RoadSegment)")
 
         events_expr = "collect(DISTINCT e.title) AS events" if "AFFECTED_BY" in rels else "[] AS events"
         news_expr = "collect(DISTINCT n.title) AS news" if "MENTIONED_IN" in rels else "[] AS news"
@@ -71,6 +75,18 @@ def build_graph_context(city: str, limit: int = 30) -> str:
             else "[] AS rooms"
         )
         boards_expr = "collect(DISTINCT b.name) AS boards" if "OFFERS_BOARD" in rels else "[] AS boards"
+        traffic_expr = (
+            "collect(DISTINCT {severity: ts.severity, location: ts.location_name, "
+            "eta_change: ts.eta_change_min, congestion: ts.congestion_ratio}) AS traffic_signals"
+            if "HAS_SIGNAL" in rels
+            else "[] AS traffic_signals"
+        )
+        roads_expr = (
+            "collect(DISTINCT {road: rs.name, condition: rs.condition, "
+            "travel_time: av.travel_time_min, quality: av.road_quality}) AS road_access"
+            if "ACCESSIBLE_VIA" in rels
+            else "[] AS road_access"
+        )
 
         query = "\n".join(query_parts)
         query += (
@@ -79,7 +95,12 @@ def build_graph_context(city: str, limit: int = 30) -> str:
             f"\n         {news_expr},"
             f"\n         {locations_expr},"
             f"\n         {rooms_expr},"
-            f"\n         {boards_expr}"
+            f"\n         {boards_expr},"
+            f"\n         {traffic_expr},"
+            f"\n         {roads_expr},"
+            "\n         loc_rel.distance_km AS travel_distance_km,"
+            "\n         loc_rel.travel_time_min AS travel_time_min,"
+            "\n         loc_rel.travel_time_traffic_min AS travel_time_traffic_min"
             "\nORDER BY h.rating DESC"
             "\nLIMIT $limit"
         )
@@ -155,6 +176,44 @@ def build_graph_context(city: str, limit: int = 30) -> str:
         else:
             rooms = "None"
 
+        # Traffic conditions
+        traffic_raw = [t for t in (row.get("traffic_signals") or []) if t and t.get("severity")]
+        if traffic_raw:
+            traffic_strs = [
+                f"{t.get('location', '?')}: {t.get('severity', '?')} (+{t.get('eta_change', 0):.0f}min)"
+                for t in traffic_raw
+            ]
+            traffic = "; ".join(traffic_strs)
+        else:
+            traffic = "No live data"
+
+        # Road access
+        roads_raw = [r for r in (row.get("road_access") or []) if r and r.get("road")]
+        if roads_raw:
+            road_strs = [
+                f"{r.get('road', '?')} ({r.get('condition', '?')}, {r.get('travel_time', '?')}min)"
+                for r in roads_raw
+            ]
+            roads = "; ".join(road_strs)
+        else:
+            roads = "None"
+
+        # Travel time from LOCATED_IN edge
+        travel_dist = row.get("travel_distance_km")
+        travel_time = row.get("travel_time_min")
+        travel_traffic = row.get("travel_time_traffic_min")
+        if travel_time:
+            travel_parts = [f"{travel_dist:.1f}km" if travel_dist else ""]
+            travel_parts.append(f"{travel_time:.0f}min normal")
+            if travel_traffic:
+                travel_parts.append(f"{travel_traffic:.0f}min with traffic")
+                diff = travel_traffic - travel_time
+                if diff > 1:
+                    travel_parts.append(f"+{diff:.0f}min delay")
+            travel_info = ", ".join([p for p in travel_parts if p])
+        else:
+            travel_info = "No data"
+
         star = h.get("star_rating")
         star_str = f"{star:.0f}-star | " if star else ""
         source = h.get("source", "?")
@@ -165,10 +224,13 @@ def build_graph_context(city: str, limit: int = 30) -> str:
             f"Rating: {h.get('rating', 'N/A')}/5 | "
             f"Price: {h.get('price_range', 'N/A')} ({h.get('price_per_night_lkr', 'N/A')} LKR/night) | "
             f"Address: {h.get('address', 'N/A')} | "
+            f"Travel from {city}: [{travel_info}] | "
             f"Amenities: [{amenities}] | "
             f"Rooms: [{rooms}] | "
             f"Board: [{boards}] | "
             f"Near: [{locations}] | "
+            f"Traffic: [{traffic}] | "
+            f"Road Access: [{roads}] | "
             f"Events: [{events}] | "
             f"News: [{news}]"
         )

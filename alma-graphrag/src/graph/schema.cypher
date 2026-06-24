@@ -42,6 +42,9 @@ CREATE CONSTRAINT user_id IF NOT EXISTS
 CREATE CONSTRAINT chunk_id IF NOT EXISTS
   FOR (c:EmbeddingChunk) REQUIRE c.id IS UNIQUE;
 
+CREATE CONSTRAINT traffic_signal_id IF NOT EXISTS
+  FOR (t:TrafficSignal) REQUIRE t.id IS UNIQUE;
+
 // --- STANDARD INDEXES ---
 CREATE INDEX hotel_name IF NOT EXISTS
   FOR (h:Hotel) ON (h.name);
@@ -57,6 +60,12 @@ CREATE INDEX event_type IF NOT EXISTS
 
 CREATE INDEX news_published IF NOT EXISTS
   FOR (n:NewsSignal) ON (n.published_at);
+
+CREATE INDEX traffic_signal_timestamp IF NOT EXISTS
+  FOR (t:TrafficSignal) ON (t.timestamp);
+
+CREATE INDEX traffic_signal_severity IF NOT EXISTS
+  FOR (t:TrafficSignal) ON (t.severity);
 
 // --- FULLTEXT INDEXES ---
 CREATE FULLTEXT INDEX hotel_fulltext IF NOT EXISTS

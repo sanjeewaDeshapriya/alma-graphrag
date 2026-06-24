@@ -73,6 +73,15 @@ LLM_EXTRACT_ENABLED = os.getenv("LLM_EXTRACT_ENABLED", "false").lower() == "true
 NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
 GNEWS_API_KEY = os.getenv("GNEWS_API_KEY", "")
 
+# Traffic API integration
+TRAFFIC_PROVIDER = os.getenv("TRAFFIC_PROVIDER", "google").lower()  # google | tomtom | both
+TOMTOM_API_KEY = os.getenv("TOMTOM_API_KEY", "")
+TRAFFIC_ENABLED = os.getenv("TRAFFIC_ENABLED", "false").lower() == "true"
+TRAFFIC_REFRESH_MINUTES = int(os.getenv("TRAFFIC_REFRESH_MINUTES", "30"))
+TRAFFIC_SIGNAL_TTL_HOURS = int(os.getenv("TRAFFIC_SIGNAL_TTL_HOURS", "6"))
+TRAFFIC_RADIUS_KM = float(os.getenv("TRAFFIC_RADIUS_KM", "5.0"))
+TRAFFIC_MAX_HOTELS_PER_BATCH = int(os.getenv("TRAFFIC_MAX_HOTELS_PER_BATCH", "25"))
+
 # Embeddings
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-ada-002")
 HOTEL_VECTOR_INDEX = os.getenv("HOTEL_VECTOR_INDEX", "hotel_embeddings")

@@ -304,14 +304,147 @@ class GraphLoader:
                 {"event_id": event_id, "news_url": news_url},
             )
 
-    def link_hotel_event(self, hotel_id: str, event_id: str) -> None:
+    def link_hotel_event(self, hotel_id: str, event_id: str, impact_type: str = "news") -> None:
         with self.driver.session() as session:
             session.run(
                 """
                 MATCH (h:Hotel {id: $hotel_id})
                 MATCH (e:Event {id: $event_id})
                 MERGE (h)-[r:AFFECTED_BY]->(e)
-                SET r.impact_score = 0.5, r.impact_type = 'news'
+                SET r.impact_score = 0.5, r.impact_type = $impact_type
                 """,
-                {"hotel_id": hotel_id, "event_id": event_id},
+                {"hotel_id": hotel_id, "event_id": event_id, "impact_type": impact_type},
             )
+
+    # ------------------------------------------------------------------
+    # Traffic integration
+    # ------------------------------------------------------------------
+
+    def upsert_traffic_signal(self, signal: Dict[str, Any]) -> None:
+        with self.driver.session() as session:
+            session.run(
+                """
+                MERGE (t:TrafficSignal {id: $id})
+                SET t.timestamp = $timestamp,
+                    t.location_name = $location_name,
+                    t.severity = $severity,
+                    t.eta_change_min = $eta_change_min,
+                    t.lat = $lat,
+                    t.lng = $lng,
+                    t.source = $source,
+                    t.congestion_ratio = $congestion_ratio
+                """,
+                {
+                    "id": signal["id"],
+                    "timestamp": signal.get("timestamp", ""),
+                    "location_name": signal.get("location_name", ""),
+                    "severity": signal.get("severity", "unknown"),
+                    "eta_change_min": signal.get("eta_change_min", 0.0),
+                    "lat": signal.get("lat", 0.0),
+                    "lng": signal.get("lng", 0.0),
+                    "source": signal.get("source", "unknown"),
+                    "congestion_ratio": signal.get("congestion_ratio", 1.0),
+                },
+            )
+
+    def upsert_road_segment(self, road: Dict[str, Any]) -> None:
+        with self.driver.session() as session:
+            session.run(
+                """
+                MERGE (r:RoadSegment {name: $name})
+                SET r.road_type = $road_type,
+                    r.surface = $surface,
+                    r.condition = $condition,
+                    r.avg_travel_time_min = $avg_travel_time_min,
+                    r.last_checked = $last_checked
+                """,
+                {
+                    "name": road["name"],
+                    "road_type": road.get("road_type", "road"),
+                    "surface": road.get("surface", "paved"),
+                    "condition": road.get("condition", "unknown"),
+                    "avg_travel_time_min": road.get("avg_travel_time_min", 0.0),
+                    "last_checked": road.get("last_checked", ""),
+                },
+            )
+
+    def link_hotel_traffic_signal(
+        self, hotel_id: str, signal_id: str, severity: str
+    ) -> None:
+        with self.driver.session() as session:
+            session.run(
+                """
+                MATCH (h:Hotel {id: $hotel_id})
+                MATCH (t:TrafficSignal {id: $signal_id})
+                MERGE (h)-[r:HAS_SIGNAL]->(t)
+                SET r.severity = $severity
+                """,
+                {
+                    "hotel_id": hotel_id,
+                    "signal_id": signal_id,
+                    "severity": severity,
+                },
+            )
+
+    def link_hotel_road(
+        self,
+        hotel_id: str,
+        road_name: str,
+        travel_time_min: float,
+        road_quality: str = "unknown",
+    ) -> None:
+        with self.driver.session() as session:
+            session.run(
+                """
+                MATCH (h:Hotel {id: $hotel_id})
+                MATCH (r:RoadSegment {name: $road_name})
+                MERGE (h)-[rel:ACCESSIBLE_VIA]->(r)
+                SET rel.travel_time_min = $travel_time_min,
+                    rel.road_quality = $road_quality
+                """,
+                {
+                    "hotel_id": hotel_id,
+                    "road_name": road_name,
+                    "travel_time_min": travel_time_min,
+                    "road_quality": road_quality,
+                },
+            )
+
+    def update_located_in_travel_time(
+        self,
+        hotel_id: str,
+        city_name: str,
+        distance_km: float,
+        travel_time_min: float,
+        travel_time_traffic_min: float | None = None,
+    ) -> None:
+        with self.driver.session() as session:
+            session.run(
+                """
+                MATCH (h:Hotel {id: $hotel_id})-[r:LOCATED_IN]->(c:City {name: $city_name})
+                SET r.distance_km = $distance_km,
+                    r.travel_time_min = $travel_time_min,
+                    r.travel_time_traffic_min = $travel_time_traffic_min,
+                    r.last_traffic_check = datetime()
+                """,
+                {
+                    "hotel_id": hotel_id,
+                    "city_name": city_name,
+                    "distance_km": distance_km,
+                    "travel_time_min": travel_time_min,
+                    "travel_time_traffic_min": travel_time_traffic_min,
+                },
+            )
+
+    def cleanup_stale_traffic(self, max_age_hours: int = 6) -> int:
+        with self.driver.session() as session:
+            result = session.run(
+                """
+                MATCH (t:TrafficSignal)
+                WHERE datetime(t.timestamp) < datetime() - duration({hours: $max_age_hours})
+                DETACH DELETE t
+                RETURN count(t) AS deleted
+                """,
+                {"max_age_hours": max_age_hours},
+            ).single()
+            return int((result or {}).get("deleted", 0))
