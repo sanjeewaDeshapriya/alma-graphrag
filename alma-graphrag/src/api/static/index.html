@@ -20,6 +20,7 @@
         <a class="nav-link" href="#">Graph</a>
         <a class="nav-link" href="#">Nodes</a>
         <a class="nav-link" href="#">Ingestion</a>
+        <a class="nav-link" href="#">Traffic</a>
         <a class="nav-link" href="#">Query</a>
       </nav>
       <p class="sidebar-note">Neo4j GraphRAG Studio</p>
@@ -67,6 +68,26 @@
           <div>
             <h3>Relationships</h3>
             <div id="relList" class="tag-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-traffic" id="trafficPanel" style="display:none;">
+        <div class="panel-head">
+          <h2>Traffic Status</h2>
+          <p id="trafficProvider" class="muted">Provider: -</p>
+        </div>
+        <div id="trafficStatsGrid" class="stats-grid"></div>
+        <div class="split-view">
+          <div>
+            <h3>Severity Breakdown</h3>
+            <div id="trafficSeverityBars" style="display:grid;gap:8px;margin-top:8px;"></div>
+          </div>
+          <div>
+            <h3>Signals &amp; Incidents</h3>
+            <div id="trafficIncidentInfo" style="margin-top:8px;">
+              <p class="muted">No data available.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -155,6 +176,6 @@
     </div>
   </div>
 
-  <script src="./app.js?v=20260609-3" type="module"></script>
+  <script src="./app.js?v=20260623-2" type="module"></script>
 </body>
 </html>
