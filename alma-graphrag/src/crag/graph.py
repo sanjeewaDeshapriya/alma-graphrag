@@ -16,7 +16,6 @@ import logging
 import os
 from typing import Dict, TypedDict
 
-from langgraph.graph import StateGraph, END, START
 from openai import OpenAI
 
 from src.config import (
@@ -27,7 +26,9 @@ from src.config import (
     LLM_MODEL,
 )
 from src.crag.cache import Cache
+from src.crag.query_parser import parse_query
 from src.graph.query import build_graph_context
+from src.graph.retriever import WeightedRetriever, format_retrieval_context
 
 logger = logging.getLogger("alma.crag")
 
@@ -35,6 +36,9 @@ logger = logging.getLogger("alma.crag")
 _client = (
     OpenAI(api_key=LLM_API_KEY, base_url=LLM_BASE_URL) if LLM_API_KEY else None
 )
+
+# Feasibility-first weighted GraphRAG retriever (proposal Algorithm 1)
+_retriever = WeightedRetriever()
 
 
 def _extract_json(text: str) -> str:
@@ -61,6 +65,7 @@ class GraphState(TypedDict, total=False):
     score: float
     answer: str
     retries: int
+    ranked_ids: list  # ordered hotel ids from weighted retrieval (for evaluation)
 
 
 # ---------------------------------------------------------------------------
@@ -68,20 +73,46 @@ class GraphState(TypedDict, total=False):
 # ---------------------------------------------------------------------------
 
 def _retrieve(state: GraphState) -> GraphState:
-    """Pull structured context from the Neo4j knowledge graph."""
+    """Feasibility-first weighted multi-hop retrieval (proposal Algorithm 1).
+
+    1. Parse the natural-language question into a structured QueryIntent
+       (safe NL->Cypher slot-filling).
+    2. Run the weighted multi-hop retriever to rank hotels by a composite of
+       spatial / accessibility / facility / economic / disruption scores.
+    3. Format the ranked, score-annotated hotels as LLM context.
+
+    Falls back to the legacy context-dump if weighted retrieval yields nothing.
+    """
+    question = state.get("question", "")
     city = state.get("city", "")
     context = ""
+    ranked_ids: list = []
+
     try:
-        context = build_graph_context(city=city)
-    except Exception as exc:
-        logger.warning("Graph retrieval failed for city=%s: %s", city, exc)
+        intent = parse_query(question, default_city=city or None)
+        # Keep the city the caller asked for if the parser didn't find one.
+        if not intent.city:
+            intent.city = city or None
+        result = _retriever.retrieve(intent, limit=10)
+        if result.hotels:
+            context = format_retrieval_context(result)
+            ranked_ids = [h.id for h in result.hotels]
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Weighted retrieval failed for city=%s: %s", city, exc)
+
+    # Fallback: legacy full-context dump if the weighted path produced nothing.
+    if not context:
+        try:
+            context = build_graph_context(city=city)
+            logger.info("CRAG retrieve: used legacy context-dump fallback")
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Legacy graph retrieval also failed for city=%s: %s", city, exc)
+
     logger.info(
-        "CRAG retrieve: question=%s, city=%s, context_len=%d",
-        state.get("question"),
-        city,
-        len(context),
+        "CRAG retrieve: question=%s, city=%s, ranked=%d, context_len=%d",
+        question, city, len(ranked_ids), len(context),
     )
-    return {**state, "context": context}
+    return {**state, "context": context, "ranked_ids": ranked_ids}
 
 
 def _grade(state: GraphState) -> GraphState:
@@ -144,15 +175,18 @@ def _generate(state: GraphState) -> GraphState:
         return {**state, "answer": "LLM not configured (no API key for the selected provider)."}
     prompt = (
         "You are a GraphRAG assistant for Sri Lanka hotel recommendations.\n"
-        "Use the provided graph context (hotel names, ratings, prices, amenities, "
-        "nearby locations, events, news, traffic conditions, and road access) "
-        "to give a detailed, helpful answer.\n"
+        "The context contains hotels already RANKED by a feasibility-first weighted "
+        "retriever, each with a composite score, a per-component score breakdown "
+        "(spatial / accessibility / facility / economic / disruption) and a 'Why' line.\n"
+        "- Respect the ranking order; present the top matches first.\n"
+        "- Explain WHY each recommended hotel ranks where it does, using its score "
+        "breakdown and 'Why' reasons (e.g. fast access in traffic, within budget, "
+        "low disruption, matched amenities).\n"
         "- Mention specific hotel names, ratings, and price ranges.\n"
-        "- Highlight relevant amenities.\n"
-        "- Include traffic conditions and travel times when available.\n"
-        "- Warn about road closures or heavy congestion if present.\n"
-        "- Note any linked events or news if present.\n"
-        "- If no hotels match the exact criteria, recommend the closest alternatives.\n\n"
+        "- Include travel times and traffic conditions when available.\n"
+        "- Warn about heavy congestion or nearby events if flagged in the breakdown.\n"
+        "- Do not invent hotels or attributes not present in the context.\n"
+        "- If the context notes filters were relaxed, say so honestly.\n\n"
         f"Question: {state['question']}\n\n"
         f"Graph context:\n{state.get('context', '')}\n"
     )
@@ -184,6 +218,10 @@ def _should_rewrite(state: GraphState) -> str:
 
 
 def build_crag_app():
+    # Lazy import: langgraph is optional and only needed for this reference
+    # state-machine. Production uses the sequential run_crag() below.
+    from langgraph.graph import StateGraph, END, START
+
     workflow = StateGraph(GraphState)
     workflow.add_node("retrieve", _retrieve)
     workflow.add_node("grade", _grade)
@@ -245,6 +283,10 @@ def run_crag(question: str, city: str) -> Dict[str, str]:
     # Step 5: generate final answer
     state = _generate(state)
 
-    result = {"answer": state.get("answer", ""), "context": state.get("context", "")}
+    result = {
+        "answer": state.get("answer", ""),
+        "context": state.get("context", ""),
+        "ranked_ids": state.get("ranked_ids", []),
+    }
     cache.set(key, result)
     return result
