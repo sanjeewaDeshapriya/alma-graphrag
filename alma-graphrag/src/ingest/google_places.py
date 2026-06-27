@@ -12,6 +12,7 @@ from src.config import (
     DEFAULT_COUNTRY,
     HOTEL_MAX_RESULTS,
 )
+from src.ingest.canonicalize import canonical_city
 
 
 class GooglePlacesClient:
@@ -77,7 +78,19 @@ class GooglePlacesClient:
     def normalize_hotel(self, raw: Dict, city: str) -> Dict:
         price_map = {0: "Budget", 1: "Budget", 2: "Mid-Range", 3: "Luxury", 4: "Luxury"}
         price_lkr_map = {0: 2000, 1: 3500, 2: 9000, 3: 20000, 4: 40000}
-        price_level = raw.get("price_level", 1)
+
+        # Google Places usually OMITS price_level. Previously we defaulted it to
+        # 1, which fabricated a uniform 3,500 LKR for every hotel and corrupted
+        # the economic ranking signal. Now: only derive a (coarse, flagged)
+        # estimate when Google actually returns price_level; otherwise leave it
+        # unknown so the retriever treats it as neutral rather than "cheap".
+        price_level = raw.get("price_level")
+        if price_level is not None:
+            price_range = price_map.get(price_level, "Mid-Range")
+            price_lkr = float(price_lkr_map.get(price_level, 8000))
+        else:
+            price_range = None
+            price_lkr = None
 
         summary = raw.get("editorial_summary", {}).get("overview", "")
         reviews = raw.get("reviews", [])
@@ -91,10 +104,12 @@ class GooglePlacesClient:
             "name": raw.get("name", "Unknown Hotel"),
             "description": description[:1000],
             "rating": float(raw.get("rating", 0.0)),
-            "price_range": price_map.get(price_level, "Mid-Range"),
-            "price_per_night_lkr": price_lkr_map.get(price_level, 8000),
+            "price_range": price_range,
+            "price_per_night_lkr": price_lkr,
+            # Google prices are coarse price-level buckets, not live nightly rates.
+            "price_estimated": True,
             "address": raw.get("formatted_address", ""),
-            "city_name": city,
+            "city_name": canonical_city(city),
             "lat": float(geo.get("lat", 0.0)),
             "lng": float(geo.get("lng", 0.0)),
             "phone": raw.get("formatted_phone_number"),

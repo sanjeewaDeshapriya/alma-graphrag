@@ -50,31 +50,34 @@ def link_traffic_to_hotels(
             )
             counts["distances"] += 1
 
-        # 2. Traffic signals → TrafficSignal nodes linked to nearby hotels
+        # 2. Traffic signals → TrafficSignal nodes linked to hotels.
+        #    Two link modes:
+        #      - Google route signal (has hotel_id): 1:1 link to its destination
+        #        hotel — the congestion is specific to that hotel's access route.
+        #      - TomTom point signal (geographic): link to every hotel within
+        #        TRAFFIC_RADIUS_KM, since a real congestion point affects all
+        #        nearby hotels.
         for signal in traffic_data.get("signals", []):
             loader.upsert_traffic_signal(signal)
+            severity = signal.get("severity", "unknown")
+
+            target_hotel_id = signal.get("hotel_id")
+            if target_hotel_id:
+                loader.link_hotel_traffic_signal(target_hotel_id, signal["id"], severity)
+                counts["signals"] += 1
+                continue
 
             sig_lat = signal.get("lat", 0.0)
             sig_lng = signal.get("lng", 0.0)
+            if not sig_lat and not sig_lng:
+                continue
 
             for h in hotels:
                 h_lat, h_lng = h.get("lat"), h.get("lng")
                 if not h_lat or not h_lng:
                     continue
-                if sig_lat == 0.0 and sig_lng == 0.0:
-                    # Google-derived signal without coords — match by hotel_id in signal metadata
-                    if signal.get("location_name", "").endswith(h.get("name", "__none__")):
-                        loader.link_hotel_traffic_signal(
-                            h["id"], signal["id"], signal.get("severity", "unknown")
-                        )
-                        counts["signals"] += 1
-                    continue
-
-                dist = haversine(sig_lat, sig_lng, h_lat, h_lng)
-                if dist <= TRAFFIC_RADIUS_KM:
-                    loader.link_hotel_traffic_signal(
-                        h["id"], signal["id"], signal.get("severity", "unknown")
-                    )
+                if haversine(sig_lat, sig_lng, h_lat, h_lng) <= TRAFFIC_RADIUS_KM:
+                    loader.link_hotel_traffic_signal(h["id"], signal["id"], severity)
                     counts["signals"] += 1
 
         # 3. Incidents → Event nodes linked to nearby hotels via AFFECTED_BY

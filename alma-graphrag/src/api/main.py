@@ -41,6 +41,7 @@ from src.config import (
 )
 from src.crag.graph import run_crag
 from src.crag.query_parser import parse_query
+from src.crag.user_profile import ActiveEvent, get_profile, list_profiles
 from src.graph.retriever import WeightedRetriever, format_retrieval_context
 from src.graph.query import clear_graph_data, get_graph_network, get_graph_overview, get_node_details
 from src.ingest.hotel_ingest import ingest_hotels
@@ -368,6 +369,69 @@ def retrieve_debug(req: RetrieveDebugRequest) -> dict:
             for i, h in enumerate(result.hotels)
         ],
         "context_preview": format_retrieval_context(result),
+    }
+
+
+class EventModel(BaseModel):
+    name: str = Field(..., max_length=120)
+    lat: float
+    lng: float
+    impact_radius_km: float = Field(3.0, ge=0.1, le=50)
+    severity: str = Field("high", max_length=10)
+
+
+class PersonalizedRequest(BaseModel):
+    question: str = Field(..., min_length=3, max_length=500)
+    city: Optional[str] = Field(None, max_length=100)
+    profile: Optional[str] = Field(None, max_length=40, description="Preset profile id, e.g. quiet_seeker")
+    event: Optional[EventModel] = None
+    limit: int = Field(10, ge=1, le=50)
+
+
+@app.get("/profiles")
+def get_profiles() -> dict:
+    """List available personalisation profiles (presets)."""
+    return {"profiles": list_profiles()}
+
+
+@app.post("/recommend/personalized")
+def recommend_personalized(req: PersonalizedRequest) -> dict:
+    """Personalised, disruption-aware recommendation.
+
+    Combines the weighted GraphRAG retriever with a UserProfile (fixed weights +
+    event preference) and an optional ActiveEvent impact zone — the deterministic
+    form of the 'same event -> opposite recommendations' demo.
+    """
+    city = req.city or DEFAULT_CITY
+    profile = get_profile(req.profile)
+    event = ActiveEvent(**req.event.model_dump()) if req.event else None
+    try:
+        intent = parse_query(req.question, default_city=city)
+        if not intent.city:
+            intent.city = city
+        result = _weighted_retriever.retrieve(intent, limit=req.limit, profile=profile, event=event)
+    except Exception as exc:
+        logger.exception("Personalized retrieval failed")
+        raise HTTPException(status_code=500, detail=f"Personalized retrieval error: {exc}") from exc
+
+    return {
+        "city": result.city,
+        "profile": profile.to_dict() if profile else None,
+        "event": event.to_dict() if event else None,
+        "weights": result.weights.to_dict(),
+        "ranked": [
+            {
+                "rank": i + 1,
+                "id": h.id,
+                "name": h.name,
+                "score": h.score,
+                "components": h.components,
+                "reasons": h.reasons,
+                "price_lkr": h.raw.get("price"),
+                "rating": h.raw.get("rating"),
+            }
+            for i, h in enumerate(result.hotels)
+        ],
     }
 
 

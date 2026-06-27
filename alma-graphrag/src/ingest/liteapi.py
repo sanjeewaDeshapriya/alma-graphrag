@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
+from src.ingest.canonicalize import canonical_city
 from src.config import (
     DEFAULT_COUNTRY_CODE,
     LITEAPI_ADULTS,
@@ -180,10 +181,12 @@ class LiteApiClient:
             "price_per_night_lkr": price_per_night
             if LITEAPI_CURRENCY == "LKR"
             else 0.0,
+            # LiteAPI prices are live nightly rates, not estimates.
+            "price_estimated": False,
             "price_currency": LITEAPI_CURRENCY,
             "price_per_night": price_per_night,
             "address": meta.get("address", ""),
-            "city_name": city,
+            "city_name": canonical_city(city),
             "lat": geo_lat,
             "lng": geo_lng,
             "phone": meta.get("phone"),

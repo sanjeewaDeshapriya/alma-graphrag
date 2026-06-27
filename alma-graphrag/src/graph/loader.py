@@ -15,6 +15,8 @@ class GraphLoader:
         self.driver.close()
 
     def upsert_hotel(self, hotel: Dict[str, Any]) -> None:
+        # Default optional flags so callers that don't set them still work.
+        hotel.setdefault("price_estimated", False)
         with self.driver.session() as session:
             session.run(
                 """
@@ -24,6 +26,7 @@ class GraphLoader:
                     h.rating = $rating,
                     h.price_range = $price_range,
                     h.price_per_night_lkr = $price_per_night_lkr,
+                    h.price_estimated = $price_estimated,
                     h.address = $address,
                     h.city_name = $city_name,
                     h.lat = $lat,

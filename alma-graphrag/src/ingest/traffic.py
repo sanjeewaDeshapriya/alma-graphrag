@@ -397,8 +397,11 @@ def fetch_all_traffic(
                 h_lat, h_lng = hotel_coords.get(d.get("hotel_id", ""), (0.0, 0.0))
                 result["signals"].append({
                     "id": _make_id("google_traffic", d.get("hotel_id", ""), d.get("origin_name", ""), _now_iso()[:13]),
+                    # Google signals are per-route (city -> this hotel), so carry
+                    # the destination hotel id for a 1:1 link in the linker.
+                    "hotel_id": d.get("hotel_id", ""),
                     "timestamp": _now_iso(),
-                    "location_name": f"{d.get('origin_name', '?')} → {d.get('hotel_name', '?')}",
+                    "location_name": f"{d.get('origin_name', '?')} -> {d.get('hotel_name', '?')}",
                     "severity": severity,
                     "eta_change_min": round(eta_diff, 1),
                     "lat": h_lat or 0.0,

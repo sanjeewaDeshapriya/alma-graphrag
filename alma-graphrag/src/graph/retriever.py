@@ -42,9 +42,13 @@ class ScoringWeights:
     facility: float = 0.25
     economic: float = 0.15
     disruption: float = 0.15
+    event: float = 0.0  # only active when an ActiveEvent is in play
 
     def normalised(self) -> "ScoringWeights":
-        total = self.spatial + self.accessibility + self.facility + self.economic + self.disruption
+        total = (
+            self.spatial + self.accessibility + self.facility
+            + self.economic + self.disruption + self.event
+        )
         if total <= 0:
             return ScoringWeights()
         return ScoringWeights(
@@ -53,16 +57,20 @@ class ScoringWeights:
             facility=self.facility / total,
             economic=self.economic / total,
             disruption=self.disruption / total,
+            event=self.event / total,
         )
 
     def to_dict(self) -> Dict[str, float]:
-        return {
+        d = {
             "spatial": round(self.spatial, 3),
             "accessibility": round(self.accessibility, 3),
             "facility": round(self.facility, 3),
             "economic": round(self.economic, 3),
             "disruption": round(self.disruption, 3),
         }
+        if self.event:
+            d["event"] = round(self.event, 3)
+        return d
 
 
 def weights_for_intent(intent: QueryIntent) -> ScoringWeights:
@@ -101,6 +109,38 @@ def weights_for_intent(intent: QueryIntent) -> ScoringWeights:
     w.economic = max(0.0, w.economic)
     w.disruption = max(0.0, w.disruption)
     return w.normalised()
+
+
+def weights_for_profile(profile: Any, intent: QueryIntent, event_active: bool) -> ScoringWeights:
+    """Resolve scoring weights for a personalised request.
+
+    A UserProfile (duck-typed: .weights, .event_preference) overrides the
+    intent-derived weights. When an event is in play and the profile expresses a
+    seek/avoid preference, an ``event`` weight is added and everything is
+    renormalised.
+    """
+    if profile is not None and getattr(profile, "weights", None) is not None:
+        base = profile.weights
+        w = ScoringWeights(
+            spatial=base.spatial, accessibility=base.accessibility,
+            facility=base.facility, economic=base.economic,
+            disruption=base.disruption, event=base.event,
+        )
+    else:
+        w = weights_for_intent(intent)
+
+    if event_active and profile is not None and getattr(profile, "event_preference", "neutral") in ("seek", "avoid"):
+        w.event = 0.30  # strong event influence on a personalised ranking
+    return w.normalised()
+
+
+def _haversine_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    from math import radians, sin, cos, sqrt, atan2
+    R = 6371.0
+    la1, lo1, la2, lo2 = map(radians, [lat1, lng1, lat2, lng2])
+    dlat, dlon = la2 - la1, lo2 - lo1
+    a = sin(dlat / 2) ** 2 + cos(la1) * cos(la2) * sin(dlon / 2) ** 2
+    return R * 2 * atan2(sqrt(a), sqrt(1 - a))
 
 
 # ---------------------------------------------------------------------------
@@ -155,6 +195,8 @@ RETURN h.id                                AS id,
        h.price_range                       AS price_range,
        h.address                           AS address,
        h.source                            AS source,
+       h.lat                               AS lat,
+       h.lng                               AS lng,
        coalesce(loc.distance_km, loc.distance_from_center_km) AS distance_km,
        loc.travel_time_min                 AS travel_time_min,
        loc.travel_time_traffic_min         AS travel_time_traffic_min,
@@ -190,13 +232,27 @@ def _norm_lower_better(v: Optional[float], lo: float, hi: float, default: float 
 class WeightedRetriever:
     """Multi-hop weighted GraphRAG retriever (proposal Algorithm 1)."""
 
-    def retrieve(self, intent: QueryIntent, limit: int = 10) -> RetrievalResult:
+    def retrieve(
+        self,
+        intent: QueryIntent,
+        limit: int = 10,
+        profile: Any = None,
+        event: Any = None,
+    ) -> RetrievalResult:
         city = intent.city
         if not city:
             return RetrievalResult(city=None, intent=intent, weights=ScoringWeights(), hotels=[])
 
+        # A user profile overrides the proximity preference (e.g. quiet seeker
+        # wants distance from the centre / event).
+        if profile is not None and getattr(profile, "proximity_preference", "any") != "any":
+            intent.proximity_preference = profile.proximity_preference
+
         candidates = self._fetch_candidates(city)
-        weights = weights_for_intent(intent)
+        if profile is not None:
+            weights = weights_for_profile(profile, intent, event_active=event is not None)
+        else:
+            weights = weights_for_intent(intent)
 
         result = RetrievalResult(
             city=city, intent=intent, weights=weights, hotels=[],
@@ -211,12 +267,13 @@ class WeightedRetriever:
             filtered = candidates
             result.filters_relaxed = True
 
-        scored = self._score(filtered, intent, weights)
+        scored = self._score(filtered, intent, weights, profile=profile, event=event)
         scored.sort(key=lambda h: h.score, reverse=True)
         result.hotels = scored[:limit]
         logger.info(
-            "Weighted retrieve: city=%s candidates=%d filtered=%d returned=%d weights=%s",
+            "Weighted retrieve: city=%s candidates=%d filtered=%d returned=%d weights=%s profile=%s event=%s",
             city, len(candidates), len(filtered), len(result.hotels), weights.to_dict(),
+            getattr(profile, "id", None), getattr(event, "name", None),
         )
         return result
 
@@ -256,6 +313,8 @@ class WeightedRetriever:
         cands: List[Dict[str, Any]],
         intent: QueryIntent,
         weights: ScoringWeights,
+        profile: Any = None,
+        event: Any = None,
     ) -> List[ScoredHotel]:
         # Precompute min/max for normalisation across the candidate set.
         dist_lo, dist_hi = _minmax([c.get("distance_km") for c in cands])
@@ -268,6 +327,16 @@ class WeightedRetriever:
 
         req_amen = {a.lower() for a in intent.required_amenities}
         req_attr = {a.lower() for a in intent.near_attractions}
+
+        # --- Event impact zone: distance from each hotel to the event ----------
+        event_pref = getattr(profile, "event_preference", "neutral") if profile else "neutral"
+        ev_dist: Dict[str, float] = {}
+        if event is not None:
+            for c in cands:
+                lat, lng = c.get("lat"), c.get("lng")
+                if lat and lng:
+                    ev_dist[str(c.get("id"))] = _haversine_km(event.lat, event.lng, float(lat), float(lng))
+            ed_lo, ed_hi = _minmax(list(ev_dist.values()))
 
         scored: List[ScoredHotel] = []
         for c in cands:
@@ -321,17 +390,51 @@ class WeightedRetriever:
                 economic = 0.5  # unknown price = neutral
 
             # --- disruption (traffic signals + active events) -------------
+            # Combine coarse severity buckets with a graded penalty from the
+            # actual route-delay minutes, so disruption discriminates even when
+            # signals are nominally "light".
             disruption = 1.0
             sev = [s for s in (c.get("signal_severities") or []) if s]
             heavy = sum(1 for s in sev if s == "heavy")
             moderate = sum(1 for s in sev if s == "moderate")
             events = int(c.get("event_count") or 0)
+            etas = [float(e) for e in (c.get("signal_etas") or []) if e]
+            max_eta = max(etas) if etas else 0.0
             disruption -= 0.40 * heavy + 0.20 * moderate + 0.30 * min(events, 2)
+            disruption -= min(max_eta / 20.0, 0.5)  # +10 min route delay -> -0.5
             disruption = max(0.0, min(1.0, disruption))
             if heavy:
-                reasons.append(f"⚠ heavy traffic nearby (x{heavy})")
+                reasons.append(f"heavy traffic on route (x{heavy})")
+            elif max_eta >= 3:
+                reasons.append(f"+{max_eta:.0f} min traffic delay on route")
             elif disruption > 0.85:
                 reasons.append("low disruption / stable conditions")
+
+            # --- event affinity (personalised, only when an event is active) ---
+            event_affinity = 0.0
+            if event is not None and weights.event > 0:
+                ed = ev_dist.get(str(c.get("id")))
+                if ed is None:
+                    event_affinity = 0.5  # unknown location = neutral
+                else:
+                    norm_far = 0.5 if ed_hi <= ed_lo else (ed - ed_lo) / (ed_hi - ed_lo)
+                    in_zone = ed <= event.impact_radius_km
+                    if event_pref == "seek":
+                        event_affinity = 1.0 - norm_far  # closer = better
+                        if in_zone:
+                            event_affinity = min(1.0, event_affinity + 0.15)
+                            reasons.append(f"inside {event.name} zone ({ed:.1f} km) - great for attending")
+                    elif event_pref == "avoid":
+                        event_affinity = norm_far  # farther = better
+                        if in_zone:
+                            # The event inflates traffic/noise in its zone.
+                            sev_pen = {"high": 0.45, "medium": 0.30, "low": 0.15}.get(event.severity, 0.30)
+                            disruption = max(0.0, disruption - sev_pen)
+                            reasons.append(f"inside {event.name} impact zone ({ed:.1f} km) - crowds/traffic")
+                        else:
+                            reasons.append(f"{ed:.1f} km from {event.name} - calm")
+                    else:
+                        event_affinity = 0.5
 
             components = {
                 "spatial": round(spatial, 3),
@@ -347,6 +450,9 @@ class WeightedRetriever:
                 "economic": economic * weights.economic,
                 "disruption": disruption * weights.disruption,
             }
+            if event is not None and weights.event > 0:
+                components["event"] = round(event_affinity, 3)
+                weighted["event"] = event_affinity * weights.event
             total = sum(weighted.values())
 
             scored.append(ScoredHotel(

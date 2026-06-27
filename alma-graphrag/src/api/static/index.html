@@ -16,12 +16,13 @@
       <div class="logo">ALMA</div>
       <div class="menu-title">Console</div>
       <nav>
-        <a class="nav-link active" href="#">Overview</a>
-        <a class="nav-link" href="#">Graph</a>
-        <a class="nav-link" href="#">Nodes</a>
-        <a class="nav-link" href="#">Ingestion</a>
-        <a class="nav-link" href="#">Traffic</a>
-        <a class="nav-link" href="#">Query</a>
+        <a class="nav-link active" href="#overview" data-target="overview">Overview</a>
+        <a class="nav-link" href="#recommend" data-target="recommend">Recommend</a>
+        <a class="nav-link" href="#traffic" data-target="traffic">Traffic</a>
+        <a class="nav-link" href="#graph" data-target="graph">Graph</a>
+        <a class="nav-link" href="#nodes" data-target="nodes">Nodes</a>
+        <a class="nav-link" href="#ingest" data-target="ingest">Ingestion</a>
+        <a class="nav-link" href="#query" data-target="query">Query</a>
       </nav>
       <p class="sidebar-note">Neo4j GraphRAG Studio</p>
     </aside>
@@ -44,7 +45,7 @@
         </div>
       </header>
 
-      <section class="panel panel-progress">
+      <section class="panel panel-progress" id="ingest">
         <div class="panel-head">
           <h2>Ingestion Progress</h2>
           <p id="progressText" class="muted">Idle</p>
@@ -55,7 +56,7 @@
         <pre id="debugLog" class="debug-log">[debug] waiting for actions...</pre>
       </section>
 
-      <section class="panel panel-overview">
+      <section class="panel panel-overview" id="overview">
         <div class="panel-head">
           <h2>Knowledge Graph Overview</h2>
         </div>
@@ -72,7 +73,43 @@
         </div>
       </section>
 
-      <section class="panel panel-traffic" id="trafficPanel" style="display:none;">
+      <section class="panel panel-recommend" id="recommend">
+        <div class="panel-head">
+          <h2>Smart Recommendations</h2>
+          <p class="muted">Feasibility-first weighted GraphRAG · disruption-aware personalization</p>
+        </div>
+        <div class="rec-form">
+          <textarea id="recQuestion" rows="2" placeholder="e.g. budget hotels with easy access in Colombo"></textarea>
+          <div class="rec-row">
+            <div class="rec-field">
+              <label for="recProfile">Traveler profile</label>
+              <select id="recProfile">
+                <option value="">Balanced (no profile)</option>
+              </select>
+            </div>
+            <label class="rec-check"><input type="checkbox" id="recEventOn" /> Simulate live event</label>
+            <button id="recBtn" class="btn btn-accent">Recommend</button>
+          </div>
+          <p id="recProfileDesc" class="muted rec-desc"></p>
+          <div id="recEventFields" class="rec-event" style="display:none;">
+            <input id="recEventName" placeholder="Event name" value="F1 Street Race" />
+            <input id="recEventLat" placeholder="lat" value="6.9244" />
+            <input id="recEventLng" placeholder="lng" value="79.8487" />
+            <input id="recEventRadius" type="number" step="0.5" placeholder="radius km" value="3" />
+            <select id="recEventSeverity">
+              <option value="high">high</option>
+              <option value="medium">medium</option>
+              <option value="low">low</option>
+            </select>
+          </div>
+        </div>
+        <div id="recWeights" class="rec-weights"></div>
+        <div id="recResults" class="rec-results">
+          <p class="content-placeholder">Pick a profile (and optionally an event), then ask for recommendations.</p>
+        </div>
+      </section>
+
+      <section class="panel panel-traffic" id="traffic" style="display:none;">
         <div class="panel-head">
           <h2>Traffic Status</h2>
           <p id="trafficProvider" class="muted">Provider: -</p>
@@ -101,7 +138,7 @@
           <div id="hotelMap"></div>
         </section>
 
-        <section class="panel panel-graph">
+        <section class="panel panel-graph" id="graph">
           <div class="panel-head">
             <h2>Interactive Graph</h2>
             <p class="muted">Tap nodes to inspect details</p>
@@ -121,7 +158,7 @@
           <div id="neighborList" class="neighbor-list"></div>
         </aside>
 
-        <section class="panel panel-nodes">
+        <section class="panel panel-nodes" id="nodes">
           <div class="panel-head">
             <h2>Node Explorer</h2>
           </div>
@@ -141,7 +178,7 @@
           </div>
         </section>
 
-        <section class="panel panel-query">
+        <section class="panel panel-query" id="query">
           <div class="panel-head">
             <h2>Ask GraphRAG</h2>
           </div>
@@ -176,6 +213,6 @@
     </div>
   </div>
 
-  <script src="./app.js?v=20260623-2" type="module"></script>
+  <script src="./app.js?v=20260624-1" type="module"></script>
 </body>
 </html>
