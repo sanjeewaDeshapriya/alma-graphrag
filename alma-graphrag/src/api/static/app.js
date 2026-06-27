@@ -10,6 +10,7 @@ const state = {
   ingestPolling: null,
   seenLogCount: 0,
   clientConfig: null,
+  profiles: {},
 };
 
 const els = {
@@ -818,7 +819,7 @@ async function fetchClientConfig() {
 }
 
 async function fetchTrafficStatus() {
-  const trafficPanel = document.getElementById("trafficPanel");
+  const trafficPanel = document.getElementById("traffic");
   const trafficStatsGrid = document.getElementById("trafficStatsGrid");
   const trafficProvider = document.getElementById("trafficProvider");
   const trafficSeverityBars = document.getElementById("trafficSeverityBars");
@@ -896,8 +897,177 @@ async function fetchTrafficStatus() {
   }
 }
 
+// --- Sidebar navigation: scroll to section + active highlight -------------
+function setupNav() {
+  const links = Array.from(document.querySelectorAll(".nav-link"));
+  for (const link of links) {
+    link.addEventListener("click", (evt) => {
+      evt.preventDefault();
+      const target = document.getElementById(link.dataset.target);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      links.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
+    });
+  }
+}
+
+// --- Smart Recommendations (weighted GraphRAG + personalization) ----------
+async function populateProfiles() {
+  const sel = document.getElementById("recProfile");
+  if (!sel) return;
+  try {
+    const data = await request("/profiles");
+    state.profiles = {};
+    for (const p of data.profiles || []) {
+      state.profiles[p.id] = p;
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.name;
+      sel.appendChild(opt);
+    }
+  } catch (err) {
+    addDebugLog(`profiles load error: ${String(err.message || err)}`);
+  }
+}
+
+function recProfileDescription() {
+  const sel = document.getElementById("recProfile");
+  const desc = document.getElementById("recProfileDesc");
+  if (!sel || !desc) return;
+  const p = state.profiles?.[sel.value];
+  desc.textContent = p ? p.description : "Balanced ranking — adapts weights to the question only.";
+}
+
+const COMPONENT_ORDER = ["spatial", "accessibility", "facility", "economic", "disruption", "event"];
+
+function renderRecommendations(data) {
+  const weightsEl = document.getElementById("recWeights");
+  const resultsEl = document.getElementById("recResults");
+  if (!resultsEl) return;
+
+  if (weightsEl) {
+    const w = data.weights || {};
+    weightsEl.innerHTML = COMPONENT_ORDER.filter((k) => k in w)
+      .map((k) => `<span class="rec-weight-chip">${k}: ${w[k]}</span>`)
+      .join("");
+  }
+
+  const ranked = data.ranked || [];
+  if (!ranked.length) {
+    resultsEl.innerHTML = `<p class="content-placeholder">No hotels found for this city.</p>`;
+    return;
+  }
+
+  resultsEl.innerHTML = ranked
+    .map((h) => {
+      const comps = h.components || {};
+      const bars = COMPONENT_ORDER.filter((k) => k in comps)
+        .map((k) => {
+          const v = Number(comps[k] || 0);
+          return `<div class="rec-bar">
+            <span class="rec-bar-label">${k}</span>
+            <div class="rec-bar-track"><div class="rec-bar-fill" style="width:${Math.round(v * 100)}%"></div></div>
+            <span class="rec-bar-val">${v.toFixed(2)}</span>
+          </div>`;
+        })
+        .join("");
+      const reasons = (h.reasons || [])
+        .map((r) => {
+          const warn = /heavy|crowd|delay|impact/i.test(r) ? " warn" : "";
+          return `<span class="rec-reason${warn}">${r}</span>`;
+        })
+        .join("");
+      const price = h.price_lkr ? `${Math.round(h.price_lkr).toLocaleString()} LKR/night` : "price N/A";
+      const rating = h.rating ? `${h.rating}/5` : "rating N/A";
+      return `<div class="rec-card">
+        <div class="rec-card-head">
+          <div class="rec-card-title"><span class="rec-rank">#${h.rank}</span>${h.name}</div>
+          <span class="rec-score">score ${Number(h.score).toFixed(3)}</span>
+        </div>
+        <div class="rec-meta">${rating} · ${price}</div>
+        <div class="rec-bars">${bars}</div>
+        <div class="rec-reasons">${reasons || '<span class="rec-reason">—</span>'}</div>
+      </div>`;
+    })
+    .join("");
+}
+
+async function runRecommend() {
+  const btn = document.getElementById("recBtn");
+  const resultsEl = document.getElementById("recResults");
+  const question = (document.getElementById("recQuestion").value || "").trim();
+  const city = getCurrentCity();
+  if (!question) {
+    toast("Enter what you're looking for", true);
+    return;
+  }
+  if (!city) {
+    toast("Enter a city first", true);
+    return;
+  }
+
+  const payload = {
+    question,
+    city,
+    profile: document.getElementById("recProfile").value || null,
+    limit: 8,
+  };
+  if (document.getElementById("recEventOn")?.checked) {
+    payload.event = {
+      name: document.getElementById("recEventName").value || "Live Event",
+      lat: Number(document.getElementById("recEventLat").value),
+      lng: Number(document.getElementById("recEventLng").value),
+      impact_radius_km: Number(document.getElementById("recEventRadius").value) || 3,
+      severity: document.getElementById("recEventSeverity").value || "high",
+    };
+  }
+
+  try {
+    btn.disabled = true;
+    btn.textContent = "Ranking...";
+    resultsEl.innerHTML = `<p class="content-placeholder">Running weighted GraphRAG retrieval...</p>`;
+    const data = await request("/recommend/personalized", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    renderRecommendations(data);
+    toast(`Ranked ${data.ranked?.length || 0} hotels`);
+  } catch (err) {
+    resultsEl.innerHTML = `<p class="content-placeholder">Recommendation failed: ${String(err.message || err)}</p>`;
+    toast("Recommendation failed", true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Recommend";
+  }
+}
+
+function setupRecommend() {
+  const btn = document.getElementById("recBtn");
+  const profileSel = document.getElementById("recProfile");
+  const eventOn = document.getElementById("recEventOn");
+  const eventFields = document.getElementById("recEventFields");
+  if (btn) btn.addEventListener("click", runRecommend);
+  if (profileSel) profileSel.addEventListener("change", recProfileDescription);
+  if (eventOn && eventFields) {
+    eventOn.addEventListener("change", () => {
+      eventFields.style.display = eventOn.checked ? "flex" : "none";
+    });
+  }
+  const q = document.getElementById("recQuestion");
+  if (q) {
+    q.addEventListener("keydown", (evt) => {
+      if (evt.key === "Enter" && (evt.metaKey || evt.ctrlKey)) {
+        evt.preventDefault();
+        runRecommend();
+      }
+    });
+  }
+}
+
 async function init() {
-  els.cityInput.value = "Piliyandala";
+  els.cityInput.value = "Colombo";
   els.cityInput.addEventListener("keydown", (evt) => {
     if (evt.key === "Enter") {
       evt.preventDefault();
@@ -908,8 +1078,12 @@ async function init() {
   els.applyBtn.addEventListener("click", applyAndIngest);
   els.refreshBtn.addEventListener("click", refreshDashboard);
   els.clearBtn.addEventListener("click", clearGraph);
+  setupNav();
+  setupRecommend();
 
   await fetchClientConfig();
+  await populateProfiles();
+  recProfileDescription();
   const stepTotal = state.clientConfig?.traffic_enabled ? 4 : 3;
   setProgress(0, "Idle", { step_index: 0, step_total: stepTotal, step_progress: 0 });
   addDebugLog("ui initialized" + (state.clientConfig?.traffic_enabled ? " (traffic enabled)" : ""));
