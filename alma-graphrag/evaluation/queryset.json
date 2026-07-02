@@ -1,0 +1,67 @@
+{
+  "description": "Pilot evaluation query set for ALMA-GraphRAG. Gold relevance is rule-based over objective hotel attributes (price/rating/star/travel_time). Replace `gold` with expert annotations to upgrade to a human-judged gold standard.",
+  "city": "Colombo",
+  "k": 10,
+  "queries": [
+    {
+      "id": "q01",
+      "question": "cheap budget hotels in Colombo under 25000 LKR a night",
+      "gold": {"max_price": 25000},
+      "category": "economic"
+    },
+    {
+      "id": "q02",
+      "question": "very affordable hotels under 18000 rupees",
+      "gold": {"max_price": 18000},
+      "category": "economic"
+    },
+    {
+      "id": "q03",
+      "question": "top-rated hotels in Colombo with a rating above 4.5",
+      "gold": {"min_rating": 4.5},
+      "category": "quality"
+    },
+    {
+      "id": "q04",
+      "question": "luxury 5 star hotels in Colombo",
+      "gold": {"min_star": 5},
+      "category": "quality"
+    },
+    {
+      "id": "q05",
+      "question": "hotels with quick easy access and low travel time from the city",
+      "gold": {"max_travel_time": 5.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q06",
+      "question": "well rated hotels with good road access and stable ETA",
+      "gold": {"min_rating": 4.3, "max_travel_time": 6.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q07",
+      "question": "budget friendly hotels that are also easy to reach quickly",
+      "gold": {"max_price": 30000, "max_travel_time": 6.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q08",
+      "question": "highly rated mid-range hotels under 45000 LKR",
+      "gold": {"min_rating": 4.4, "max_price": 45000},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q09",
+      "question": "premium high quality hotels rated 4.6 or higher",
+      "gold": {"min_rating": 4.6},
+      "category": "quality"
+    },
+    {
+      "id": "q10",
+      "question": "affordable well located hotels with fast access under 35000",
+      "gold": {"max_price": 35000, "max_travel_time": 7.0},
+      "category": "multi_dimensional"
+    }
+  ]
+}
