@@ -1,0 +1,7 @@
+# Minimal dependency set for running the unit test suite (no torch/langchain).
+pytest>=8.0
+python-dotenv==1.0.1
+neo4j>=5.25.0,<6.0.0
+openai==1.51.2
+pydantic==2.9.2
+scikit-learn>=1.4
