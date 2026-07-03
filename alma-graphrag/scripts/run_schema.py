@@ -3,8 +3,8 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from kg_builder.schema_init import run_schema_file
+from src.graph.schema_init import run_schema_file
 
 if __name__ == "__main__":
-    run_schema_file("neo4j_import/schema.cypher")
+    run_schema_file(Path(__file__).resolve().parents[1] / "src" / "graph" / "schema.cypher")
     print("Schema applied.")
