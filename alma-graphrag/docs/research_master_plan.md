@@ -148,7 +148,28 @@ Make the CRAG skeleton real: plan (decompose query) → retrieve (weighted trave
 
 ---
 
-## Part 8 — Immediate next actions (this month)
+## Part 8 — The 10-step path to global-level impact (condensed sequence)
+
+Global-top research = producing something the field **must engage with**. Three routes: (a) a benchmark everyone evaluates on, (b) a method that wins on shared benchmarks, (c) a surprising, rigorous finding. Solo researcher + modest compute → lead with (a) and (c); (b) comes via the learned-ranking track.
+
+| # | Step | Done when |
+|---|---|---|
+| 1 | **Lock the claim.** One-paragraph positioning ("first public benchmark + system study of recommendation over a live temporal KG under disruption"); set Google Scholar alerts (temporal GraphRAG, disruption-aware recommendation, dynamic KG recommendation) to detect scooping early | Statement written, alerts running |
+| 2 | **Fix data credibility.** Peak-hour traffic sampling, retrieval logging, nightly snapshots | 2+ weeks of real peak-hour observations |
+| 3 | **Human gold labels.** 50 queries, 3 annotators, written guideline | Krippendorff's α ≥ 0.6 |
+| 4 | **First international submission.** Workshop paper (RecTour @ RecSys / RecSys-LBR) | Submitted (feedback > acceptance) |
+| 5 | **Senior collaborator.** Email 10 authors of the Part-2 papers with the workshop paper attached; offer benchmark co-authorship | One active collaboration |
+| 6 | **Release DisruptRec.** 3 cities, 150+ queries, dual disruption tracks, Zenodo DOI, leaderboard; submit to a *resource track* (CIKM/SIGIR) | Public release + resource paper |
+| 7 | **Win honestly.** LTR + bandits w/ OPE on DisruptRec **and** external benchmarks (TP-RAG, TripTailor); report losses where they occur | A-venue full-paper submission with significance tests |
+| 8 | **Reproducibility armor.** One-command Docker reproduction, pinned snapshots + seeds; target ACM artifact-evaluation badges | Stranger reproduces Table 1 in < 1 h |
+| 9 | **Humans + deployment.** 15–20-user study (SUS, task success); design-partner pilot logs | User-study section + industry-track option |
+| 10 | **Compound.** PhD applications with 2–3 publications + cited benchmark | Applications out (Months 15–18) |
+
+**Failure modes to guard against:** building forever without submitting (deadlines are the forcing function); spreading across all four pillars at once (sequence them); treating "world's best" as a plan (it is an outcome of steps 1–9 compounding); staying solo (top venues are collaborative).
+
+**The Sri Lanka angle is an asset, not a limitation:** nearly all benchmarks are US/EU/China-centric; Colombo's genuine infrastructure volatility is a *better* natural laboratory for disruption-aware ranking than any orderly Western city, and geographic novelty strengthens a resource-paper narrative.
+
+## Part 9 — Immediate next actions (this month)
 1. Switch traffic scheduler to peak-hour sampling windows (unblocks everything temporal).
 2. Add retrieval logging (query, intent, ranking, clicked result) to the API — future training data starts accruing *now*.
 3. Write annotation guideline v1 + recruit 3 annotators; expand queryset to 50.
