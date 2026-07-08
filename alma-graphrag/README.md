@@ -114,12 +114,6 @@ http://127.0.0.1:8000/ui
 python scripts\run_scheduler.py
 ```
 
-11) (Optional) Run KG construction + embeddings pipeline:
-
-```
-python main.py
-```
-
 ## API Endpoints
 
 | Method | Path | Description |

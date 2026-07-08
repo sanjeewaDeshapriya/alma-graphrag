@@ -1,0 +1,2222 @@
+{
+  "city": "Colombo",
+  "k": 10,
+  "seed": 42,
+  "queries": {
+    "q01": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lpc08f9",
+          "lp655a9e91",
+          "lpa2274",
+          "lp81760",
+          "lp72a36",
+          "lp6e625",
+          "lpa40ff",
+          "lp73ace",
+          "lp6f005",
+          "lp3f0a0"
+        ],
+        "VectorRAG": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lpa2274",
+          "lp1bc0d",
+          "lp3e58e",
+          "lp65589ffb",
+          "lp6557c6e0",
+          "lp76eba",
+          "lp1c1ea",
+          "lp656d40c7",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "lpc08f9",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lp3f0a0",
+          "lpa40ff",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "lp6e625",
+          "lp81760"
+        ],
+        "random_extras": [
+          "ChIJN-exN95b4joRx1sC7LHuGdc",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk"
+        ]
+      }
+    },
+    "q02": {
+      "pool_size": 20,
+      "provenance": {
+        "Filter": [
+          "lp81760",
+          "lp6e625",
+          "lpa40ff",
+          "lp3f0a0"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp3f0a0",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6e625",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM"
+        ],
+        "random_extras": [
+          "lp1c1ea",
+          "lp102b02"
+        ]
+      }
+    },
+    "q03": {
+      "pool_size": 24,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lpa2274",
+          "lp1bc0d",
+          "lp65589ffb",
+          "lp3e58e",
+          "lp76eba",
+          "lp6557c6e0",
+          "lp1c1ea",
+          "lp656d40c7",
+          "lpa40ff",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lpa0a8a",
+          "lp656d40c7",
+          "lp6574b103",
+          "lp6557c6e0",
+          "lp67286",
+          "lp102b02",
+          "lp33ddb",
+          "lp803e1"
+        ],
+        "random_extras": [
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJId3V219Z4joRUrzZ_yfqajo"
+        ]
+      }
+    },
+    "q04": {
+      "pool_size": 23,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "lp102b02",
+          "lpa0a8a",
+          "lp6575aad2",
+          "lp6574b103",
+          "lp33ddb",
+          "lp96bf6"
+        ],
+        "VectorRAG": [
+          "lpa2274",
+          "lp1bc0d",
+          "lp65589ffb",
+          "lp3e58e",
+          "lp76eba",
+          "lp6557c6e0",
+          "lp1c1ea",
+          "lp656d40c7",
+          "lpa40ff",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "lpa0a8a",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "lp6574b103",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp30277",
+          "lp102b02",
+          "lp33ddb",
+          "lpa2274",
+          "lp1c1ea"
+        ],
+        "random_extras": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "lp81760"
+        ]
+      }
+    },
+    "q05": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp6f005",
+          "lp656d3aa9",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "lp6575aad2",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp656d4b1f",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp6557c6e0"
+        ],
+        "random_extras": [
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "lp803e1"
+        ]
+      }
+    },
+    "q06": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "lpc08f9",
+          "lp655a9e91"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp656d4b1f",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp6557c6e0"
+        ],
+        "random_extras": [
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g"
+        ]
+      }
+    },
+    "q07": {
+      "pool_size": 30,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp67286",
+          "lp3ca7d",
+          "lp656d4b1f",
+          "lpa0a8a"
+        ],
+        "random_extras": [
+          "ChIJI146xSBZ4joRZ_W0TXLD71Y",
+          "ChIJP8keRbhb4joRKlyNwAwMUdc"
+        ]
+      }
+    },
+    "q08": {
+      "pool_size": 24,
+      "provenance": {
+        "Filter": [
+          "lp65589ffb",
+          "lp6557c6e0",
+          "lp102b02",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp803e1",
+          "lp6574b103",
+          "lp33ddb",
+          "lp96bf6"
+        ],
+        "VectorRAG": [
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "lpa2274"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "lp741c5",
+          "lp656d3aa9",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6557c6e0",
+          "lpa2274",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lp67286",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp102b02"
+        ],
+        "random_extras": [
+          "lp1c1ea",
+          "lpa0a8a"
+        ]
+      }
+    },
+    "q09": {
+      "pool_size": 29,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJI146xSBZ4joRZ_W0TXLD71Y",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "lp6e625",
+          "lp3f0a0"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp6575aad2",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM"
+        ]
+      }
+    },
+    "q10": {
+      "pool_size": 23,
+      "provenance": {
+        "Filter": [
+          "lp6557c6e0",
+          "lp102b02",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp655a9e91",
+          "lpa2274",
+          "lp656d3aa9",
+          "lp81760",
+          "lp72a36"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp81760",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lpa40ff",
+          "lp656d3aa9",
+          "lp6f005",
+          "lp81760",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lpa2274",
+          "lp3f0a0"
+        ],
+        "random_extras": [
+          "lpb1537",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo"
+        ]
+      }
+    },
+    "q11": {
+      "pool_size": 23,
+      "provenance": {
+        "Filter": [
+          "lp81760",
+          "lp6e625",
+          "lpa40ff",
+          "lp73ace",
+          "lp3f0a0"
+        ],
+        "VectorRAG": [
+          "ChIJP8keRbhb4joRKlyNwAwMUdc",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "lp81760",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "lpa40ff",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc"
+        ],
+        "random_extras": [
+          "lpa0a8a",
+          "lp6f005"
+        ]
+      }
+    },
+    "q12": {
+      "pool_size": 19,
+      "provenance": {
+        "Filter": [
+          "lp6e625",
+          "lp3f0a0"
+        ],
+        "VectorRAG": [
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp3f0a0",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc"
+        ],
+        "random_extras": [
+          "lp3e58e",
+          "lp741c5"
+        ]
+      }
+    },
+    "q13": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "ChIJId3V219Z4joRUrzZ_yfqajo"
+        ]
+      }
+    },
+    "q14": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp65589ffb",
+          "lp656d40c7",
+          "lp102b02",
+          "lp741c5",
+          "lp803e1",
+          "lp6574b103",
+          "lp33ddb",
+          "lp96bf6",
+          "lp30277",
+          "lp656d4b1f"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lp102b02",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp803e1",
+          "lp656d4b1f",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "lp30277",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lp96bf6"
+        ],
+        "random_extras": [
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "ChIJN-exN95b4joRx1sC7LHuGdc"
+        ]
+      }
+    },
+    "q15": {
+      "pool_size": 22,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65774d7d"
+        ],
+        "VectorRAG": [
+          "ChIJP8keRbhb4joRKlyNwAwMUdc",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "lp81760",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk"
+        ],
+        "random_extras": [
+          "lp72a36",
+          "lp656d4b1f"
+        ]
+      }
+    },
+    "q16": {
+      "pool_size": 24,
+      "provenance": {
+        "Filter": [
+          "lp65589ffb",
+          "lp6557c6e0",
+          "lp102b02",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp803e1",
+          "lp6574b103",
+          "lp96bf6",
+          "lp655a9e91"
+        ],
+        "VectorRAG": [
+          "ChIJN-exN95b4joRx1sC7LHuGdc",
+          "lp81760",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "lp741c5",
+          "lp656d3aa9",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6f005",
+          "lp6557c6e0",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lpa2274",
+          "lpa40ff"
+        ],
+        "random_extras": [
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk"
+        ]
+      }
+    },
+    "q17": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp6f005",
+          "lp656d3aa9",
+          "lp6575aad2",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "lp741c5",
+          "lp656d3aa9",
+          "lp6f005",
+          "lp6557c6e0",
+          "lp67286",
+          "lp3ca7d",
+          "lp6574b103",
+          "lpa2274",
+          "lp102b02"
+        ],
+        "random_extras": [
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0",
+          "lp3f0a0"
+        ]
+      }
+    },
+    "q18": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc"
+        ]
+      }
+    },
+    "q19": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g"
+        ]
+      }
+    },
+    "q20": {
+      "pool_size": 27,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp67286",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp102b02",
+          "lp30277"
+        ],
+        "random_extras": [
+          "lp6f005",
+          "lp3f0a0"
+        ]
+      }
+    },
+    "q21": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "lp6557c6e0",
+          "lp102b02",
+          "lpa0a8a",
+          "lp6575aad2",
+          "lpc08f9"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp72a36"
+        ]
+      }
+    },
+    "q22": {
+      "pool_size": 29,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp655a9e91",
+          "ChIJN-exN95b4joRx1sC7LHuGdc"
+        ]
+      }
+    },
+    "q23": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lpa0a8a",
+          "lp656d3aa9",
+          "lp6f005",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "lp6574b103",
+          "lp6557c6e0",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp96bf6",
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U"
+        ]
+      }
+    },
+    "q24": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0",
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "ChIJN-exN95b4joRx1sC7LHuGdc",
+          "lp6f005",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "lp6557c6e0",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "lp33ddb"
+        ]
+      }
+    },
+    "q25": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp67286",
+          "lp1bc0d"
+        ]
+      }
+    },
+    "q26": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "lp102b02",
+          "lpa0a8a",
+          "lp6575aad2",
+          "lp6574b103",
+          "lp33ddb",
+          "lp96bf6"
+        ],
+        "VectorRAG": [
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp81760",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0"
+        ],
+        "WeightedGraphRAG": [
+          "lpa0a8a",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "lp6574b103",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp30277",
+          "lp102b02",
+          "lp33ddb",
+          "lpa2274",
+          "lp1c1ea"
+        ],
+        "random_extras": [
+          "lp6557c6e0",
+          "ChIJP8keRbhb4joRKlyNwAwMUdc"
+        ]
+      }
+    },
+    "q27": {
+      "pool_size": 27,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp81760",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc"
+        ]
+      }
+    },
+    "q28": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp30277",
+          "ChIJI146xSBZ4joRZ_W0TXLD71Y"
+        ]
+      }
+    },
+    "q29": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp81760",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp6e625",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk"
+        ]
+      }
+    },
+    "q30": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJP8keRbhb4joRKlyNwAwMUdc",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "lp81760",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp656d4b1f",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp6557c6e0"
+        ],
+        "random_extras": [
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lp76eba"
+        ]
+      }
+    },
+    "q31": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp656d4b1f",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp6557c6e0"
+        ],
+        "random_extras": [
+          "ChIJI146xSBZ4joRZ_W0TXLD71Y",
+          "lp72a36"
+        ]
+      }
+    },
+    "q32": {
+      "pool_size": 29,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp81760",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp656d4b1f",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp6557c6e0"
+        ],
+        "random_extras": [
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc"
+        ]
+      }
+    },
+    "q33": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0"
+        ]
+      }
+    },
+    "q34": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp81760",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp3e58e",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk"
+        ]
+      }
+    },
+    "q35": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lpa2274",
+          "lp1bc0d",
+          "lp3e58e",
+          "lp6e625",
+          "lp8a969",
+          "lp65589ffb",
+          "lp76eba",
+          "lp6557c6e0",
+          "lp1c1ea",
+          "lp656d40c7"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp6574b103",
+          "lp6557c6e0",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "lp67286"
+        ],
+        "random_extras": [
+          "lp3ca7d",
+          "lp33ddb"
+        ]
+      }
+    },
+    "q36": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp65589ffb",
+          "lp6557c6e0",
+          "lp102b02",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp803e1",
+          "lp6574b103",
+          "lp96bf6",
+          "lp655a9e91"
+        ],
+        "VectorRAG": [
+          "lpa2274",
+          "lp1bc0d",
+          "lp3e58e",
+          "lp6e625",
+          "lp8a969",
+          "lp65589ffb",
+          "lp76eba",
+          "lp6557c6e0",
+          "lp1c1ea",
+          "lp656d40c7"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "lp741c5",
+          "lp656d3aa9",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6f005",
+          "lp6557c6e0",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lpa2274",
+          "lpa40ff"
+        ],
+        "random_extras": [
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y"
+        ]
+      }
+    },
+    "q37": {
+      "pool_size": 30,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0",
+          "ChIJP8keRbhb4joRKlyNwAwMUdc",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "lp76eba",
+          "lp73ace"
+        ]
+      }
+    },
+    "q38": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "lpa2274",
+          "lp1bc0d",
+          "lp3e58e",
+          "lp6e625",
+          "lp8a969",
+          "lp65589ffb",
+          "lp76eba",
+          "lp6557c6e0",
+          "lp1c1ea"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJP8keRbhb4joRKlyNwAwMUdc"
+        ]
+      }
+    },
+    "q39": {
+      "pool_size": 21,
+      "provenance": {
+        "Filter": [
+          "lp6557c6e0",
+          "lpc08f9",
+          "lp67286",
+          "lp655a9e91",
+          "lpa2274",
+          "lp656d3aa9",
+          "lp81760",
+          "lp72a36",
+          "lp76eba",
+          "lp9855f"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lpa40ff",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "lp81760",
+          "lp3f0a0",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp6f005",
+          "lp656d3aa9"
+        ],
+        "random_extras": [
+          "lp8a969",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo"
+        ]
+      }
+    },
+    "q40": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp81760",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp656d4b1f",
+          "lp6574b103",
+          "lp6557c6e0",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp67286"
+        ],
+        "random_extras": [
+          "ChIJI146xSBZ4joRZ_W0TXLD71Y",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y"
+        ]
+      }
+    },
+    "q41": {
+      "pool_size": 21,
+      "provenance": {
+        "Filter": [
+          "lpc08f9",
+          "lp655a9e91",
+          "lpa2274",
+          "lp81760",
+          "lp72a36",
+          "lp6e625",
+          "lpa40ff",
+          "lp73ace",
+          "lp6f005",
+          "lp3f0a0"
+        ],
+        "VectorRAG": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp81760",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lpc08f9",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lpa40ff",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "lp3f0a0",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp81760"
+        ],
+        "random_extras": [
+          "lp656d40c7",
+          "lp1c1ea"
+        ]
+      }
+    },
+    "q42": {
+      "pool_size": 24,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "lp102b02",
+          "lpa0a8a",
+          "lp6575aad2",
+          "lp6574b103",
+          "lp33ddb",
+          "lp96bf6"
+        ],
+        "VectorRAG": [
+          "lp6f005",
+          "lp656d3aa9",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "lp6575aad2",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJg5nQ7Ltb4joRV-2u4bOYJJo"
+        ],
+        "WeightedGraphRAG": [
+          "lpa0a8a",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "lp6574b103",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp30277",
+          "lp102b02",
+          "lp33ddb",
+          "lpa2274",
+          "lp1c1ea"
+        ],
+        "random_extras": [
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "lp6557c6e0"
+        ]
+      }
+    },
+    "q43": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lpa2274",
+          "lp1bc0d",
+          "lp3e58e",
+          "lp6e625",
+          "lp8a969",
+          "lp65589ffb",
+          "lp76eba",
+          "lp6557c6e0",
+          "lp1c1ea",
+          "lp656d40c7"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0"
+        ]
+      }
+    },
+    "q44": {
+      "pool_size": 19,
+      "provenance": {
+        "Filter": [
+          "lp6557c6e0",
+          "lp102b02",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp655a9e91",
+          "lpa2274",
+          "lp656d3aa9",
+          "lp81760",
+          "lp72a36"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp3f0a0",
+          "lp6e625",
+          "lp81760",
+          "lpa40ff",
+          "lp73ace",
+          "lpc08f9",
+          "lpa2274",
+          "lp655a9e91",
+          "lp6f005",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs"
+        ],
+        "random_extras": [
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJtZJD3aVb4joROkc91MuElUk"
+        ]
+      }
+    },
+    "q45": {
+      "pool_size": 26,
+      "provenance": {
+        "Filter": [
+          "lp65589ffb",
+          "lp656d40c7",
+          "lp6557c6e0",
+          "lp102b02",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp803e1",
+          "lp6574b103",
+          "lp33ddb"
+        ],
+        "VectorRAG": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJT0w2CTtZ4joRFlxN8qE_wX0",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJsXWHzh9Z4joR9sK4oqwEe1Y",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "lp741c5",
+          "lp656d3aa9",
+          "lp6f005",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6557c6e0",
+          "lpa2274",
+          "lp67286",
+          "lp3ca7d",
+          "lp6574b103"
+        ],
+        "random_extras": [
+          "lp76eba",
+          "lp3f0a0"
+        ]
+      }
+    },
+    "q46": {
+      "pool_size": 18,
+      "provenance": {
+        "Filter": [
+          "lp81760",
+          "lp6e625"
+        ],
+        "VectorRAG": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJf5jjgiZZ4joRW1f6vCdi71U",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJGdojdIZb4joRW--6quQ02HQ",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJtZJD3aVb4joROkc91MuElUk"
+        ],
+        "WeightedGraphRAG": [
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "ChIJB0RFo2NZ4joRum8BVRCF28g",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJId3V219Z4joRUrzZ_yfqajo",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6e625",
+          "ChIJOZCsQWBZ4joR29AzAwfi6zk",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc",
+          "ChIJPUmFLhNZ4joRqBRIpk7g1Qk"
+        ],
+        "random_extras": [
+          "ChIJP8keRbhb4joRKlyNwAwMUdc",
+          "lp33ddb"
+        ]
+      }
+    },
+    "q47": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "lp6557c6e0",
+          "lp102b02",
+          "lpa0a8a",
+          "lpc08f9",
+          "lp67286",
+          "lp741c5",
+          "lp803e1"
+        ],
+        "VectorRAG": [
+          "lp81760",
+          "lp9855f",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace",
+          "lpa40ff",
+          "lp3f0a0",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lp6f005",
+          "lp6557c6e0",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp67286",
+          "lp656d4b1f",
+          "lpa0a8a"
+        ],
+        "random_extras": [
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "ChIJP8keRbhb4joRKlyNwAwMUdc"
+        ]
+      }
+    },
+    "q48": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "lp81760",
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "lp656d3aa9",
+          "lpa2274",
+          "lpc08f9",
+          "lp655a9e91",
+          "lp73ace"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "lpa0a8a",
+          "lp6f005",
+          "lp656d4b1f",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6574b103",
+          "lp656d40c7",
+          "lp6557c6e0"
+        ],
+        "random_extras": [
+          "lp3e58e",
+          "ChIJv1bUJj1Z4joRyDlJ1LITJZc"
+        ]
+      }
+    },
+    "q49": {
+      "pool_size": 28,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "ChIJCTk-y-FY4joR5FuWdAYeK_I",
+          "ChIJDeMdNSRZ4joRymwzaUU7Zwk",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJPz9sxUJZ4joRqbp1iLsl3CU",
+          "ChIJ2f38AMNb4joR8DHB0F5ClVc",
+          "ChIJI146xSBZ4joRZ_W0TXLD71Y",
+          "ChIJ-2jwaXRZ4joRijx-9hZDsUM",
+          "lp1bc0d",
+          "lp8a969",
+          "lp6e625"
+        ],
+        "WeightedGraphRAG": [
+          "lp741c5",
+          "lpc08f9",
+          "lp656d3aa9",
+          "ChIJIxlaBGlZ4joRCOu-FjV-KDs",
+          "lp6f005",
+          "lpa0a8a",
+          "lp6557c6e0",
+          "lp6574b103",
+          "lp656d4b1f",
+          "lp656d40c7"
+        ],
+        "random_extras": [
+          "ChIJtZJD3aVb4joROkc91MuElUk",
+          "lp9855f"
+        ]
+      }
+    },
+    "q50": {
+      "pool_size": 25,
+      "provenance": {
+        "Filter": [
+          "lp8a969",
+          "lp65589ffb",
+          "lp65774d7d",
+          "lp656d40c7",
+          "lp1c1ea",
+          "lpb1537",
+          "ChIJG5Tx5xNZ4joRgaxNnUPfgqI",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp6557c6e0",
+          "lp102b02"
+        ],
+        "VectorRAG": [
+          "lp72a36",
+          "ChIJ2e3NszhZ4joRgMEx0M0swC8",
+          "ChIJ05FiLL5Z4joRjHO4Z-Ea1uk",
+          "lp1bc0d",
+          "lp6e625",
+          "lp8a969",
+          "lp6557c6e0",
+          "lp76eba",
+          "lp656d40c7",
+          "lpc08f9"
+        ],
+        "WeightedGraphRAG": [
+          "lpc08f9",
+          "lp741c5",
+          "lp656d3aa9",
+          "lp6f005",
+          "lp6557c6e0",
+          "lp67286",
+          "lp3ca7d",
+          "lp6574b103",
+          "lpa2274",
+          "lp102b02"
+        ],
+        "random_extras": [
+          "lp81760",
+          "ChIJN-exN95b4joRx1sC7LHuGdc"
+        ]
+      }
+    }
+  }
+}

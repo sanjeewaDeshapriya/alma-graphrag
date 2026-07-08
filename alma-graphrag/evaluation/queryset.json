@@ -1,5 +1,5 @@
 {
-  "description": "Pilot evaluation query set for ALMA-GraphRAG. Gold relevance is rule-based over objective hotel attributes (price/rating/star/travel_time). Replace `gold` with expert annotations to upgrade to a human-judged gold standard.",
+  "description": "Evaluation query set for ALMA-GraphRAG (50 queries). q01-q10 are the original pilot set (kept verbatim for comparability). Gold relevance is rule-based over objective hotel attributes (price/rating/star/travel_time/amenities) and serves as the bootstrap standard; human annotation (evaluation/annotation/) supersedes it per-query when evaluation/gold_human.json is present.",
   "city": "Colombo",
   "k": 10,
   "queries": [
@@ -61,6 +61,246 @@
       "id": "q10",
       "question": "affordable well located hotels with fast access under 35000",
       "gold": {"max_price": 35000, "max_travel_time": 7.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q11",
+      "question": "hotels below 20000 LKR per night",
+      "gold": {"max_price": 20000},
+      "category": "economic"
+    },
+    {
+      "id": "q12",
+      "question": "somewhere cheap to stay, less than Rs 15000",
+      "gold": {"max_price": 15000},
+      "category": "economic"
+    },
+    {
+      "id": "q13",
+      "question": "stays that won't break the bank",
+      "gold": {"max_price": 25000},
+      "category": "economic"
+    },
+    {
+      "id": "q14",
+      "question": "mid-range hotels between 30000 and 60000 LKR",
+      "gold": {"min_price": 30000, "max_price": 60000},
+      "category": "economic"
+    },
+    {
+      "id": "q15",
+      "question": "upscale hotels above 80000 rupees a night",
+      "gold": {"min_price": 80000},
+      "category": "economic"
+    },
+    {
+      "id": "q16",
+      "question": "value for money hotels under 40000",
+      "gold": {"max_price": 40000},
+      "category": "economic"
+    },
+    {
+      "id": "q17",
+      "question": "cheapest possible accommodation in the city",
+      "gold": {"max_price": 18000},
+      "category": "economic"
+    },
+    {
+      "id": "q18",
+      "question": "hotels costing at most 50000 LKR",
+      "gold": {"max_price": 50000},
+      "category": "economic"
+    },
+    {
+      "id": "q19",
+      "question": "hotels rated at least 4.0",
+      "gold": {"min_rating": 4.0},
+      "category": "quality"
+    },
+    {
+      "id": "q20",
+      "question": "excellent hotels with rating 4.4 or better",
+      "gold": {"min_rating": 4.4},
+      "category": "quality"
+    },
+    {
+      "id": "q21",
+      "question": "4 star or better hotels",
+      "gold": {"min_star": 4},
+      "category": "quality"
+    },
+    {
+      "id": "q22",
+      "question": "really well reviewed places to stay",
+      "gold": {"min_rating": 4.5},
+      "category": "quality"
+    },
+    {
+      "id": "q23",
+      "question": "high end five star properties",
+      "gold": {"min_star": 5},
+      "category": "quality"
+    },
+    {
+      "id": "q24",
+      "question": "hotels that guests love",
+      "gold": {"min_rating": 4.6},
+      "category": "quality"
+    },
+    {
+      "id": "q25",
+      "question": "decent hotels rated above 3.8",
+      "gold": {"min_rating": 3.8},
+      "category": "quality"
+    },
+    {
+      "id": "q26",
+      "question": "premium 5 star hotels rated over 4.5",
+      "gold": {"min_star": 5, "min_rating": 4.5},
+      "category": "quality"
+    },
+    {
+      "id": "q27",
+      "question": "hotels I can reach quickly even in traffic",
+      "gold": {"max_travel_time": 6.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q28",
+      "question": "places with the shortest drive from the center",
+      "gold": {"max_travel_time": 4.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q29",
+      "question": "hotels with reliable fast road access",
+      "gold": {"max_travel_time": 5.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q30",
+      "question": "avoid traffic - hotels that are easy to get to",
+      "gold": {"max_travel_time": 6.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q31",
+      "question": "hotels with a stable ETA under heavy traffic",
+      "gold": {"max_travel_time": 7.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q32",
+      "question": "quick access hotels with low commute time",
+      "gold": {"max_travel_time": 5.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q33",
+      "question": "hotels that are not stuck in congestion",
+      "gold": {"max_travel_time": 6.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q34",
+      "question": "easily reachable hotels within 8 minutes drive",
+      "gold": {"max_travel_time": 8.0},
+      "category": "accessibility"
+    },
+    {
+      "id": "q35",
+      "question": "hotels with air conditioning",
+      "gold": {"required_amenities": ["air conditioning"]},
+      "category": "amenity"
+    },
+    {
+      "id": "q36",
+      "question": "air conditioned hotels under 40000",
+      "gold": {"required_amenities": ["air conditioning"], "max_price": 40000},
+      "category": "amenity"
+    },
+    {
+      "id": "q37",
+      "question": "hotels with hot water",
+      "gold": {"required_amenities": ["hot water"]},
+      "category": "amenity"
+    },
+    {
+      "id": "q38",
+      "question": "hotels with a 24 hour front desk",
+      "gold": {"required_amenities": ["front desk"]},
+      "category": "amenity"
+    },
+    {
+      "id": "q39",
+      "question": "affordable hotels under 30000 rated above 4",
+      "gold": {"max_price": 30000, "min_rating": 4.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q40",
+      "question": "top rated hotels with fast access, rating 4.3 or higher within 6 minutes",
+      "gold": {"min_rating": 4.3, "max_travel_time": 6.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q41",
+      "question": "budget hotels below 25000 that are easy to reach",
+      "gold": {"max_price": 25000, "max_travel_time": 7.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q42",
+      "question": "luxury 5 star hotels with quick city access",
+      "gold": {"min_star": 5, "max_travel_time": 7.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q43",
+      "question": "well rated air conditioned hotels",
+      "gold": {"min_rating": 4.2, "required_amenities": ["air conditioning"]},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q44",
+      "question": "cheap quiet hotels away from traffic under 35000",
+      "gold": {"max_price": 35000, "max_travel_time": 6.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q45",
+      "question": "good hotels under 60000 rated at least 4.4 with low travel time",
+      "gold": {"max_price": 60000, "min_rating": 4.4, "max_travel_time": 7.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q46",
+      "question": "highly rated budget stays below 20000",
+      "gold": {"max_price": 20000, "min_rating": 4.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q47",
+      "question": "4 star hotels under 70000 LKR",
+      "gold": {"min_star": 4, "max_price": 70000},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q48",
+      "question": "hotels above 4.5 rating with easy access",
+      "gold": {"min_rating": 4.5, "max_travel_time": 6.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q49",
+      "question": "comfortable mid range hotel with good reviews, not too far out",
+      "gold": {"max_price": 60000, "min_rating": 4.2, "max_travel_time": 8.0},
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "q50",
+      "question": "best overall hotel: affordable, well rated and quick to reach",
+      "gold": {"max_price": 45000, "min_rating": 4.3, "max_travel_time": 7.0},
       "category": "multi_dimensional"
     }
   ]

@@ -35,12 +35,27 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate retrieval baselines")
     parser.add_argument("--queryset", default="evaluation/queryset.json")
     parser.add_argument("--out", default="evaluation/results.json")
+    parser.add_argument("--gold-human", default="evaluation/gold_human.json",
+                        help="human annotation file; used per-query when present "
+                             "(--no-human forces rule-based gold)")
+    parser.add_argument("--no-human", action="store_true",
+                        help="ignore human gold even if the file exists")
     args = parser.parse_args()
 
     spec = json.loads(Path(args.queryset).read_text(encoding="utf-8"))
     city = spec["city"]
     k = int(spec.get("k", 10))
     queries = spec["queries"]
+
+    # Human gold (evaluation/annotation/aggregate.py output) supersedes the
+    # rule-based bootstrap for every query it covers.
+    human_gold: Dict[str, List[str]] = {}
+    if not args.no_human and Path(args.gold_human).exists():
+        human = json.loads(Path(args.gold_human).read_text(encoding="utf-8"))
+        human_gold = human.get("relevant", {})
+        print(f"Using human gold for {len(human_gold)} queries "
+              f"(alpha={human.get('krippendorff_alpha_interval')}, "
+              f"{args.gold_human}); rule-based gold for the rest.")
 
     # Full city pool — used to compute gold relevant sets once per query.
     pool = fetch_city_hotels(city)
@@ -56,11 +71,17 @@ def main() -> None:
     per_query_out: List[Dict[str, Any]] = []
 
     for q in queries:
-        gold_set = relevant_set(pool, q["gold"])
+        if q["id"] in human_gold:
+            gold_set = set(human_gold[q["id"]])
+            gold_source = "human"
+        else:
+            gold_set = relevant_set(pool, q["gold"])
+            gold_source = "rule"
         row_out: Dict[str, Any] = {
             "id": q["id"], "question": q["question"],
             "category": q.get("category", "general"),
-            "gold": q["gold"], "n_relevant": len(gold_set), "scores": {},
+            "gold": q["gold"], "gold_source": gold_source,
+            "n_relevant": len(gold_set), "scores": {},
         }
         for b in baselines:
             ranked = b.retrieve(q["question"], city, k)
