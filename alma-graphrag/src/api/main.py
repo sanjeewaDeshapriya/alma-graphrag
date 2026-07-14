@@ -39,6 +39,7 @@ from src.config import (
     TRAFFIC_ENABLED,
     TRAFFIC_PROVIDER,
 )
+from src.api.eval_routes import router as eval_router
 from src.crag.graph import run_crag
 from src.crag.query_parser import parse_query
 from src.crag.user_profile import ActiveEvent, get_profile, list_profiles
@@ -68,6 +69,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- Sub-routers --------------------------------------------------------------
+app.include_router(eval_router)
 
 
 # --- Request / Response models ------------------------------------------------
