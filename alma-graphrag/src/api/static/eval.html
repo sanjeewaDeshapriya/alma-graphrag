@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALMA · Evaluation Walkthrough</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./eval.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">ALMA</div>
+      <div class="menu-title">Evaluation</div>
+      <nav>
+        <a class="nav-link step-nav active" href="#" data-step="1">1 · Query Set &amp; Gold</a>
+        <a class="nav-link step-nav" href="#" data-step="2">2 · The Systems</a>
+        <a class="nav-link step-nav" href="#" data-step="3">3 · Metrics</a>
+        <a class="nav-link step-nav" href="#" data-step="4">4 · Run &amp; Results</a>
+        <a class="nav-link step-nav" href="#" data-step="5">5 · Per-Query Inspector</a>
+      </nav>
+      <a class="nav-link back-link" href="./index.html">← Back to Console</a>
+      <p class="sidebar-note">Comparative retrieval evaluation</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-head panel">
+        <div>
+          <p class="kicker">Studio · RQ3 · Phase 5</p>
+          <h1>Evaluation Walkthrough</h1>
+          <p class="muted">How ALMA-GraphRAG is measured against a filter baseline and a vector-RAG baseline — step by step, on live data.</p>
+        </div>
+        <div class="toolbar">
+          <span class="pill" id="pillCity">city · —</span>
+          <span class="pill" id="pillK">K · —</span>
+          <span class="pill" id="pillGold">gold · —</span>
+        </div>
+      </header>
+
+      <!-- Stepper -->
+      <div class="stepper" id="stepper">
+        <button class="step-chip active" data-step="1"><b>1</b> Query Set &amp; Gold</button>
+        <button class="step-chip" data-step="2"><b>2</b> The Systems</button>
+        <button class="step-chip" data-step="3"><b>3</b> Metrics</button>
+        <button class="step-chip" data-step="4"><b>4</b> Run &amp; Results</button>
+        <button class="step-chip" data-step="5"><b>5</b> Inspector</button>
+      </div>
+
+      <!-- STEP 1 — QUERY SET & GOLD -->
+      <section class="step-panel active" data-step="1">
+        <div class="panel">
+          <div class="panel-head"><h2>Step 1 — The query set &amp; gold standard</h2></div>
+          <p class="muted step-lead">
+            Evaluation replays a fixed set of natural-language traveller questions against the
+            same city hotel pool for every system, so any difference in scores reflects the
+            <b>retrieval method only</b>. Each query ships with a <b>gold standard</b>: the set of
+            hotels that <i>should</i> be returned. Gold is currently <b>rule-based</b> — a hotel is
+            relevant iff it satisfies every objective constraint of the query (price / rating /
+            star / travel-time / amenity). Human relevance labels supersede it per-query when
+            <code>gold_human.json</code> is present.
+          </p>
+          <div id="qsStats" class="stats-grid"></div>
+          <h3 class="block-title">Query categories</h3>
+          <div id="qsCategories" class="tag-list"></div>
+          <h3 class="block-title">All queries</h3>
+          <div class="table-wrap tall">
+            <table id="qsTable">
+              <thead>
+                <tr><th>ID</th><th>Question</th><th>Category</th><th>Gold constraints</th><th class="num"># rel</th><th>Source</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2 — SYSTEMS -->
+      <section class="step-panel" data-step="2">
+        <div class="panel">
+          <div class="panel-head"><h2>Step 2 — The three systems being compared</h2></div>
+          <p class="muted step-lead">
+            All three retrieve from the identical candidate pool and return a ranked top-K list of
+            hotel ids. They differ only in <b>what evidence they can see</b>.
+          </p>
+          <div class="sys-cards">
+            <div class="sys-card">
+              <h3>Filter <span class="sys-tag">baseline</span></h3>
+              <p class="muted">Traditional filter-and-sort — the real-world OTA behaviour. Applies the structured constraints parsed from the query, then ranks survivors by rating (cheaper first on ties).</p>
+              <div class="sys-see">
+                <span class="chip good">price</span><span class="chip good">rating</span><span class="chip good">star</span>
+              </div>
+              <div class="sys-see">
+                <span class="chip blind">spatial</span><span class="chip blind">live traffic</span><span class="chip blind">disruption</span>
+              </div>
+            </div>
+            <div class="sys-card">
+              <h3>VectorRAG <span class="sys-tag">baseline</span></h3>
+              <p class="muted">Vector retrieval — TF-IDF cosine similarity between the query and each hotel's text (name, description, amenities, attractions). Lexical-dense; swappable for dense embeddings.</p>
+              <div class="sys-see">
+                <span class="chip good">text</span><span class="chip good">amenities</span><span class="chip good">attractions</span>
+              </div>
+              <div class="sys-see">
+                <span class="chip blind">numeric price</span><span class="chip blind">travel time</span><span class="chip blind">disruption</span>
+              </div>
+            </div>
+            <div class="sys-card highlight">
+              <h3>WeightedGraphRAG <span class="sys-tag accent">proposed</span></h3>
+              <p class="muted">Feasibility-first weighted multi-hop retriever. Scores each hotel on a composite of five sub-scores whose weights adapt to the query intent and traveller profile.</p>
+              <div class="sys-see">
+                <span class="chip good">spatial</span><span class="chip good">accessibility</span><span class="chip good">facility</span><span class="chip good">economic</span><span class="chip good">disruption</span>
+              </div>
+              <div class="sys-see">
+                <span class="chip good">live traffic</span><span class="chip good">events</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3 — METRICS -->
+      <section class="step-panel" data-step="3">
+        <div class="panel">
+          <div class="panel-head"><h2>Step 3 — How each ranked list is scored</h2></div>
+          <p class="muted step-lead">
+            Binary relevance (a hotel is either in the gold set or not), evaluated at
+            <b>K = 10</b>. Every metric is computed per query, then averaged across all queries.
+          </p>
+          <div class="metric-cards">
+            <div class="metric-card">
+              <h3>Precision@10</h3>
+              <div class="formula">P@10 = (relevant hotels in top-10) / 10</div>
+              <p class="muted">Of what we showed, how much was right. Rewards a clean top-10.</p>
+            </div>
+            <div class="metric-card">
+              <h3>Recall@10</h3>
+              <div class="formula">R@10 = (relevant in top-10) / (all relevant)</div>
+              <p class="muted">Of everything relevant, how much we surfaced. Rewards coverage.</p>
+            </div>
+            <div class="metric-card">
+              <h3>nDCG@10</h3>
+              <div class="formula">DCG = Σ  rel<sub>i</sub> / log<sub>2</sub>(i + 1)  ·  nDCG = DCG / ideal-DCG</div>
+              <p class="muted">Rank-sensitive: a relevant hotel at rank 1 is worth more than at rank 10. The headline metric.</p>
+            </div>
+            <div class="metric-card">
+              <h3>MRR</h3>
+              <div class="formula">MRR = 1 / (rank of first relevant hotel)</div>
+              <p class="muted">How quickly the first good answer appears. 1.0 means rank 1.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4 — RUN & RESULTS -->
+      <section class="step-panel" data-step="4">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Step 4 — Run the evaluation</h2>
+            <div class="toolbar">
+              <button id="loadResultsBtn" class="btn btn-primary">Load latest</button>
+              <button id="runLiveBtn" class="btn btn-accent">Run live</button>
+            </div>
+          </div>
+          <p id="runStatus" class="muted step-lead">Load the last saved results, or run the harness live against Neo4j.</p>
+          <div id="overallStats" class="stats-grid"></div>
+          <h3 class="block-title">Overall — mean over all queries</h3>
+          <div class="table-wrap">
+            <table id="overallTable">
+              <thead><tr><th>System</th><th class="num">P@10</th><th class="num">R@10</th><th class="num">nDCG@10</th><th class="num">MRR</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <h3 class="block-title">By category — mean nDCG@10</h3>
+          <div class="table-wrap">
+            <table id="categoryTable">
+              <thead><tr id="catHeadRow"><th>System</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 5 — INSPECTOR -->
+      <section class="step-panel" data-step="5">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Step 5 — Inspect a single query</h2>
+            <div class="toolbar">
+              <select id="inspectSelect"></select>
+              <button id="inspectBtn" class="btn btn-accent">Inspect</button>
+            </div>
+          </div>
+          <p class="muted step-lead">
+            Pick a query to see exactly what each system returned, which results are gold hits
+            (<span class="hit-dot"></span> = relevant), and — for GraphRAG — the composite-score
+            components behind every ranking. This is the retrieval working live, end to end.
+          </p>
+          <div id="inspectHead" class="inspect-head"></div>
+          <div id="inspectGrid" class="inspect-grid">
+            <p class="content-placeholder">Choose a query above and press Inspect.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="./eval.js" type="module"></script>
+</body>
+</html>
