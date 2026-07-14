@@ -3,6 +3,16 @@
   "k": 10,
   "n_queries": 50,
   "pool_size": 57,
+  "system_order": [
+    "Filter",
+    "VectorRAG",
+    "WeightedGraphRAG"
+  ],
+  "gold_meta": {
+    "used_human": false,
+    "human_queries": 0,
+    "alpha": null
+  },
   "overall": {
     "Filter": {
       "P@10": 0.7559999999999999,
@@ -125,6 +135,8 @@
       }
     }
   },
+  "best_system": "Filter",
+  "best_ndcg": 0.7449,
   "per_query": [
     {
       "id": "q01",
