@@ -3,6 +3,8 @@ Script: Comparative evaluation of retrieval baselines (proposal RQ3 / Phase 5).
 
 Runs Filter, VectorRAG, and WeightedGraphRAG over the evaluation query set and
 reports Precision@K, Recall@K, nDCG@K, MRR — overall and per query category.
+Computation lives in evaluation/harness.py so this CLI and the /eval API return
+identical numbers.
 
 Usage:
     python evaluation/run_eval.py
@@ -16,12 +18,9 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 import argparse
 import json
 import logging
-from collections import defaultdict
-from typing import Any, Dict, List
+from typing import Dict, List
 
-from evaluation.baselines import all_baselines, fetch_city_hotels
-from evaluation.gold import relevant_set
-from evaluation.metrics import evaluate_ranking, mean_metrics
+from evaluation.harness import run_evaluation
 
 logging.basicConfig(level=logging.WARNING)  # keep the table clean
 
@@ -42,95 +41,42 @@ def main() -> None:
                         help="ignore human gold even if the file exists")
     args = parser.parse_args()
 
-    spec = json.loads(Path(args.queryset).read_text(encoding="utf-8"))
-    city = spec["city"]
-    k = int(spec.get("k", 10))
-    queries = spec["queries"]
-
-    # Human gold (evaluation/annotation/aggregate.py output) supersedes the
-    # rule-based bootstrap for every query it covers.
-    human_gold: Dict[str, List[str]] = {}
-    if not args.no_human and Path(args.gold_human).exists():
-        human = json.loads(Path(args.gold_human).read_text(encoding="utf-8"))
-        human_gold = human.get("relevant", {})
-        print(f"Using human gold for {len(human_gold)} queries "
-              f"(alpha={human.get('krippendorff_alpha_interval')}, "
-              f"{args.gold_human}); rule-based gold for the rest.")
-
-    # Full city pool — used to compute gold relevant sets once per query.
-    pool = fetch_city_hotels(city)
-    print(f"\nEvaluation: city={city}, k={k}, queries={len(queries)}, pool={len(pool)} hotels\n")
-
-    baselines = all_baselines()
+    out = run_evaluation(args.queryset, args.gold_human, args.no_human)
+    city, k = out["city"], out["k"]
+    system_order = out["system_order"]
     metric_keys = [f"P@{k}", f"R@{k}", f"nDCG@{k}", "MRR"]
 
-    # results[baseline_name] = list of per-query metric dicts
-    results: Dict[str, List[Dict[str, float]]] = defaultdict(list)
-    # per category aggregation
-    cat_results: Dict[str, Dict[str, List[Dict[str, float]]]] = defaultdict(lambda: defaultdict(list))
-    per_query_out: List[Dict[str, Any]] = []
+    meta = out["gold_meta"]
+    if meta["used_human"]:
+        print(f"Using human gold for {meta['human_queries']} queries "
+              f"(alpha={meta['alpha']}, {args.gold_human}); rule-based gold for the rest.")
 
-    for q in queries:
-        if q["id"] in human_gold:
-            gold_set = set(human_gold[q["id"]])
-            gold_source = "human"
-        else:
-            gold_set = relevant_set(pool, q["gold"])
-            gold_source = "rule"
-        row_out: Dict[str, Any] = {
-            "id": q["id"], "question": q["question"],
-            "category": q.get("category", "general"),
-            "gold": q["gold"], "gold_source": gold_source,
-            "n_relevant": len(gold_set), "scores": {},
-        }
-        for b in baselines:
-            ranked = b.retrieve(q["question"], city, k)
-            m = evaluate_ranking(ranked, gold_set, k)
-            results[b.name].append(m)
-            cat_results[q.get("category", "general")][b.name].append(m)
-            row_out["scores"][b.name] = {kk: round(v, 4) for kk, v in m.items()}
-        per_query_out.append(row_out)
+    print(f"\nEvaluation: city={city}, k={k}, queries={out['n_queries']}, "
+          f"pool={out['pool_size']} hotels\n")
 
     # ---- Overall table -----------------------------------------------------
     print("=" * 70)
     print("OVERALL (mean over all queries)")
     print("-" * 70)
     print(f"{'System':<20s} {' '.join(f'{key:>8s}' for key in metric_keys)}")
-    overall: Dict[str, Dict[str, float]] = {}
-    for b in baselines:
-        agg = mean_metrics(results[b.name])
-        overall[b.name] = agg
-        print(_fmt_row(b.name, agg, metric_keys))
+    for name in system_order:
+        print(_fmt_row(name, out["overall"][name], metric_keys))
 
     # ---- Per-category table ------------------------------------------------
     print("\n" + "=" * 70)
     print("BY CATEGORY (mean nDCG@%d)" % k)
     print("-" * 70)
-    cats = sorted(cat_results.keys())
+    cats = sorted(out["by_category"].keys())
     print(f"{'System':<20s} " + " ".join(f"{c[:10]:>12s}" for c in cats))
-    for b in baselines:
-        cells = []
-        for c in cats:
-            agg = mean_metrics(cat_results[c][b.name])
-            cells.append(f"{agg.get(f'nDCG@{k}', 0.0):>12.3f}")
-        print(f"{b.name:<20s} " + " ".join(cells))
+    for name in system_order:
+        cells = [f"{out['by_category'][c][name].get(f'nDCG@{k}', 0.0):>12.3f}" for c in cats]
+        print(f"{name:<20s} " + " ".join(cells))
 
     # ---- Winner summary ----------------------------------------------------
     print("\n" + "=" * 70)
-    best = max(overall.items(), key=lambda kv: kv[1].get(f"nDCG@{k}", 0.0))
-    print(f"Best overall nDCG@{k}: {best[0]} ({best[1].get(f'nDCG@{k}', 0.0):.3f})")
+    print(f"Best overall nDCG@{k}: {out['best_system']} ({out['best_ndcg']:.3f})")
     print("=" * 70)
 
-    out = {
-        "city": city, "k": k, "n_queries": len(queries),
-        "pool_size": len(pool),
-        "overall": {b: overall[b] for b in overall},
-        "by_category": {
-            c: {b.name: mean_metrics(cat_results[c][b.name]) for b in baselines}
-            for c in cats
-        },
-        "per_query": per_query_out,
-    }
     Path(args.out).write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(f"\nDetailed results written to {args.out}")
 
