@@ -901,6 +901,8 @@ async function fetchTrafficStatus() {
 function setupNav() {
   const links = Array.from(document.querySelectorAll(".nav-link"));
   for (const link of links) {
+    // Links without a data-target (e.g. the Evaluation page) navigate normally.
+    if (!link.dataset.target) continue;
     link.addEventListener("click", (evt) => {
       evt.preventDefault();
       const target = document.getElementById(link.dataset.target);
