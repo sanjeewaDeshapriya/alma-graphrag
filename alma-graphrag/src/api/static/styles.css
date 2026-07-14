@@ -192,6 +192,13 @@ textarea:focus {
   filter: brightness(1.08);
 }
 
+a.btn.btn-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .panel-head {
   display: flex;
   justify-content: space-between;
