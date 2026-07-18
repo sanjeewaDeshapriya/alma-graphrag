@@ -1,0 +1,4290 @@
+{
+  "description": "Synthetic training query pool (500 queries, seed=13). Templated category x slot x paraphrase; gold is graded by evaluation/gold.py. Training data for the learned weight policy \u2014 NOT the reported test set.",
+  "city": "Colombo",
+  "k": 10,
+  "queries": [
+    {
+      "id": "s0001",
+      "question": "hotels with quick easy access and low travel time",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0002",
+      "question": "air conditioning hotels under 50000",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 50000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0003",
+      "question": "hotels with a stable eta under traffic below 6 min",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0004",
+      "question": "value for money hotels under 18000 in colombo",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0005",
+      "question": "well rated air conditioned hotels above 4.4",
+      "gold": {
+        "min_rating": 4.4,
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0006",
+      "question": "well reviewed places rated over 4.0",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0007",
+      "question": "quick access hotels under 4 min commute in colombo",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0008",
+      "question": "front desk hotels under 50000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 50000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0009",
+      "question": "hotels that stay reachable in heavy traffic under 8 min",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0010",
+      "question": "affordable places under rs 50000 in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0011",
+      "question": "well rated hotels rated 4.3+ with fast 6 min access in colombo",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0012",
+      "question": "hotels rated at least 4.5 in colombo",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0013",
+      "question": "easily reachable hotels within 7 minutes",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0014",
+      "question": "front desk hotels under 30000",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 30000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0015",
+      "question": "avoid congestion, hotels easy to get to within 6 minutes in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0016",
+      "question": "mid-range hotels between 20000 and 40000 lkr in colombo",
+      "gold": {
+        "min_price": 20000,
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0017",
+      "question": "budget hotels below 45000 easy to reach within 6 minutes",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0018",
+      "question": "hotels rated at least 4.2",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0019",
+      "question": "hotels within 8 minutes drive from the city",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0020",
+      "question": "front desk hotels under 50000",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 50000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0021",
+      "question": "avoid congestion, hotels easy to get to within 7 minutes in colombo",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0022",
+      "question": "affordable places under rs 20000 in colombo",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0023",
+      "question": "cheap hotels under 45000 with quick 6 min access in colombo",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0024",
+      "question": "highly rated hotels over 4.0",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0025",
+      "question": "quick access hotels under 4 min commute",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0026",
+      "question": "front desk hotels under 40000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 40000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0027",
+      "question": "quiet hotels away from traffic jams in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0028",
+      "question": "hotels costing at most 35000 lkr",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0029",
+      "question": "good hotels below 45000 with rating 4.0 or higher in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0030",
+      "question": "highly rated hotels over 4.4 in colombo",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0031",
+      "question": "quick access hotels under 7 min commute in colombo",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0032",
+      "question": "hot water hotels in colombo",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0033",
+      "question": "hotels with a stable eta under traffic below 8 min in colombo",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0034",
+      "question": "wallet friendly hotels below 40000 in colombo",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0035",
+      "question": "affordable hotels under 60000 rated above 4.4",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0036",
+      "question": "hotels rated at least 4.0",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0037",
+      "question": "easily reachable hotels within 7 minutes in colombo",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0038",
+      "question": "air conditioning hotels",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0039",
+      "question": "hotels that stay reachable in heavy traffic under 7 min",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0040",
+      "question": "hotels priced from 30000 to 60000 rupees",
+      "gold": {
+        "min_price": 30000,
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0041",
+      "question": "affordable hotels under 40000 rated above 4.0 in colombo",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0042",
+      "question": "excellent hotels rated 4.0 or better in colombo",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0043",
+      "question": "places with the shortest drive from the centre",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0044",
+      "question": "air conditioning hotels under 50000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 50000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0045",
+      "question": "avoid congestion, hotels easy to get to within 8 minutes in colombo",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0046",
+      "question": "hotels costing at most 70000 lkr",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0047",
+      "question": "good hotels below 45000 with rating 4.3 or higher in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0048",
+      "question": "hotels rated at least 4.6 in colombo",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0049",
+      "question": "easily reachable hotels within 5 minutes",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0050",
+      "question": "places that have front desk",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0051",
+      "question": "avoid congestion, hotels easy to get to within 6 minutes",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0052",
+      "question": "cheap hotels under 50000 lkr in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0053",
+      "question": "budget hotels below 25000 easy to reach within 6 minutes",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0054",
+      "question": "well reviewed places rated over 4.5 in colombo",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0055",
+      "question": "hotels within 4 minutes drive from the city",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0056",
+      "question": "front desk hotels",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0057",
+      "question": "hotels with a stable eta under traffic below 6 min in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0058",
+      "question": "cheap hotels under 45000 lkr",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0059",
+      "question": "affordable hotels under 30000 rated above 4.0",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0060",
+      "question": "4 star hotels",
+      "gold": {
+        "min_star": 4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0061",
+      "question": "easily reachable hotels within 4 minutes",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0062",
+      "question": "air conditioning hotels under 30000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 30000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0063",
+      "question": "hotels not stuck in congestion",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0064",
+      "question": "somewhere cheap to stay, less than 25000 in colombo",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0065",
+      "question": "affordable hotels under 30000 rated above 4.4 in colombo",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0066",
+      "question": "highly rated hotels over 4.6",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0067",
+      "question": "easily reachable hotels within 8 minutes in colombo",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0068",
+      "question": "front desk hotels under 40000",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 40000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0069",
+      "question": "hotels that stay reachable in heavy traffic under 6 min",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0070",
+      "question": "hotels i can afford under 35000 lkr",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0071",
+      "question": "well rated hotels rated 4.5+ with fast 6 min access",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0072",
+      "question": "guest favourite hotels rated 4.4 or higher",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0073",
+      "question": "quick access hotels under 8 min commute in colombo",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0074",
+      "question": "hot water hotels under 30000",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ],
+        "max_price": 30000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0075",
+      "question": "hotels with a stable eta under traffic below 7 min in colombo",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0076",
+      "question": "hotels priced from 25000 to 50000 rupees",
+      "gold": {
+        "min_price": 25000,
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0077",
+      "question": "affordable hotels under 40000 rated above 4.0",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0078",
+      "question": "5-star or better hotels in colombo",
+      "gold": {
+        "min_star": 5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0079",
+      "question": "hotels with short 7 minute drive from the centre",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0080",
+      "question": "hotels with hot water",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0081",
+      "question": "avoid congestion, hotels easy to get to within 7 minutes",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0082",
+      "question": "hotels costing at most 40000 lkr",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0083",
+      "question": "top rated hotels above 4.5 within 5 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0084",
+      "question": "luxury 5 star properties",
+      "gold": {
+        "min_star": 5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0085",
+      "question": "hotels within 6 minutes drive from the city",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0086",
+      "question": "hot water hotels",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0087",
+      "question": "avoid congestion, hotels easy to get to within 8 minutes",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0088",
+      "question": "upscale hotels above 80000 a night",
+      "gold": {
+        "min_price": 80000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0089",
+      "question": "cheap hotels under 35000 with quick 6 min access in colombo",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0090",
+      "question": "top-rated hotels above 4.2",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0091",
+      "question": "hotels within 5 minutes drive from the city",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0092",
+      "question": "hotels with front desk in colombo",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0093",
+      "question": "hotels not stuck in congestion in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0094",
+      "question": "inexpensive rooms below 40000 a night",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0095",
+      "question": "good hotels below 60000 with rating 4.3 or higher",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0096",
+      "question": "excellent hotels rated 4.5 or better in colombo",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0097",
+      "question": "quick access hotels under 7 min commute",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0098",
+      "question": "places that have hot water",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0099",
+      "question": "hotels that stay reachable in heavy traffic under 8 min in colombo",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0100",
+      "question": "hotels costing at most 45000 lkr",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0101",
+      "question": "cheap hotels under 35000 with quick 6 min access",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0102",
+      "question": "top-rated hotels above 3.8 in colombo",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0103",
+      "question": "hotels with quick easy access and low travel time in colombo",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0104",
+      "question": "hotels with air conditioning in colombo",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0105",
+      "question": "hotels with a stable eta under traffic below 8 min",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0106",
+      "question": "hotels costing at most 25000 lkr",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0107",
+      "question": "budget hotels below 25000 easy to reach within 7 minutes",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0108",
+      "question": "well reviewed places rated over 4.6 in colombo",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0109",
+      "question": "hotels within 7 minutes drive from the city",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0110",
+      "question": "front desk hotels in colombo",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0111",
+      "question": "hotels that stay reachable in heavy traffic under 6 min in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0112",
+      "question": "somewhere cheap to stay, less than 15000",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0113",
+      "question": "affordable hotels under 40000 rated above 4.3",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0114",
+      "question": "excellent hotels rated 4.4 or better in colombo",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0115",
+      "question": "quick access hotels under 6 min commute in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0116",
+      "question": "air conditioning hotels under 40000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 40000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0117",
+      "question": "hotels that stay reachable in heavy traffic under 7 min in colombo",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0118",
+      "question": "wallet friendly hotels below 25000",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0119",
+      "question": "affordable hotels under 25000 rated above 4.3",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0120",
+      "question": "top-rated hotels above 4.0 in colombo",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0121",
+      "question": "easily reachable hotels within 4 minutes in colombo",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0122",
+      "question": "places that have air conditioning",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0123",
+      "question": "quiet hotels away from traffic jams",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0124",
+      "question": "budget stays below 18000 rupees",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0125",
+      "question": "cheap hotels under 35000 with quick 7 min access",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0126",
+      "question": "guest favourite hotels rated 3.8 or higher",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0127",
+      "question": "quick access hotels under 5 min commute in colombo",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0128",
+      "question": "hot water hotels under 40000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ],
+        "max_price": 40000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0129",
+      "question": "hotels with a stable eta under traffic below 7 min",
+      "gold": {
+        "max_travel_time": 7.0
+      },
+      "category": "disruption"
+    },
+    {
+      "id": "s0130",
+      "question": "value for money hotels under 40000 in colombo",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0131",
+      "question": "top rated hotels above 4.2 within 7 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0132",
+      "question": "hotels rated at least 3.8",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0133",
+      "question": "quick access hotels under 8 min commute",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0134",
+      "question": "hotels with front desk",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0135",
+      "question": "somewhere cheap to stay, less than 60000",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0136",
+      "question": "good hotels below 45000 with rating 4.3 or higher",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0137",
+      "question": "well reviewed places rated over 4.3 in colombo",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0138",
+      "question": "easily reachable hotels within 6 minutes",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0139",
+      "question": "places that have hot water in colombo",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0140",
+      "question": "hotels costing at most 45000 lkr in colombo",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0141",
+      "question": "budget hotels below 30000 easy to reach within 7 minutes in colombo",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0142",
+      "question": "guest favourite hotels rated 4.0 or higher",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0143",
+      "question": "hotels with short 4 minute drive from the centre",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0144",
+      "question": "hotels with air conditioning",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0145",
+      "question": "wallet friendly hotels below 20000",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0146",
+      "question": "well rated hotels rated 4.2+ with fast 5 min access",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0147",
+      "question": "hotels rated at least 4.4 in colombo",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0148",
+      "question": "quick access hotels under 6 min commute",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0149",
+      "question": "hotels with hot water in colombo",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0150",
+      "question": "hotels costing at most 18000 lkr",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0151",
+      "question": "cheap hotels under 30000 with quick 7 min access in colombo",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0152",
+      "question": "guest favourite hotels rated 4.5 or higher in colombo",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0153",
+      "question": "hotels with short 5 minute drive from the centre",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0154",
+      "question": "places that have front desk in colombo",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0155",
+      "question": "affordable places under rs 25000",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0156",
+      "question": "good hotels under 60000 rated at least 4.2 within 7 minutes",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0157",
+      "question": "well reviewed places rated over 4.2",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0158",
+      "question": "easily reachable hotels within 8 minutes",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0159",
+      "question": "hot water hotels under 40000",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ],
+        "max_price": 40000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0160",
+      "question": "affordable places under rs 35000",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0161",
+      "question": "well rated hotels rated 4.3+ with fast 5 min access",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0162",
+      "question": "highly rated hotels over 4.2",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0163",
+      "question": "hotels with short 8 minute drive from the centre",
+      "gold": {
+        "max_travel_time": 8.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0164",
+      "question": "hot water hotels under 50000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ],
+        "max_price": 50000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0165",
+      "question": "inexpensive rooms below 15000 a night",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0166",
+      "question": "affordable hotels under 60000 rated above 4.0",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0167",
+      "question": "luxury 4 star properties",
+      "gold": {
+        "min_star": 4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0168",
+      "question": "quick access hotels under 5 min commute",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0169",
+      "question": "hot water hotels under 50000",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ],
+        "max_price": 50000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0170",
+      "question": "wallet friendly hotels below 40000",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0171",
+      "question": "good hotels below 40000 with rating 4.3 or higher",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0172",
+      "question": "top-rated hotels above 4.6",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0173",
+      "question": "easily reachable hotels within 5 minutes in colombo",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0174",
+      "question": "air conditioning hotels under 30000",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 30000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0175",
+      "question": "cheap hotels under 15000 lkr in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0176",
+      "question": "good hotels under 60000 rated at least 4.2 within 7 minutes in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0177",
+      "question": "excellent hotels rated 4.2 or better in colombo",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0178",
+      "question": "hotels with short 6 minute drive from the centre",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0179",
+      "question": "air conditioning hotels in colombo",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0180",
+      "question": "mid-range hotels between 20000 and 40000 lkr",
+      "gold": {
+        "min_price": 20000,
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0181",
+      "question": "top rated hotels above 4.5 within 6 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0182",
+      "question": "4-star or better hotels",
+      "gold": {
+        "min_star": 4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0183",
+      "question": "easily reachable hotels within 6 minutes in colombo",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "category": "accessibility"
+    },
+    {
+      "id": "s0184",
+      "question": "front desk hotels under 30000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 30000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0185",
+      "question": "wallet friendly hotels below 30000",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0186",
+      "question": "cheap hotels under 25000 with quick 7 min access",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0187",
+      "question": "excellent hotels rated 4.6 or better",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0188",
+      "question": "places that have air conditioning in colombo",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0189",
+      "question": "cheap hotels under 25000 lkr in colombo",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0190",
+      "question": "top rated hotels above 4.5 within 7 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0191",
+      "question": "guest favourite hotels rated 4.6 or higher",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0192",
+      "question": "hot water hotels under 30000 in colombo",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ],
+        "max_price": 30000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0193",
+      "question": "inexpensive rooms below 70000 a night in colombo",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0194",
+      "question": "well rated hotels rated 4.3+ with fast 7 min access",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0195",
+      "question": "top-rated hotels above 4.6 in colombo",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0196",
+      "question": "air conditioning hotels under 40000",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 40000
+      },
+      "category": "amenity"
+    },
+    {
+      "id": "s0197",
+      "question": "hotels i can afford under 20000 lkr in colombo",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0198",
+      "question": "budget hotels below 35000 easy to reach within 6 minutes",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0199",
+      "question": "hotels rated at least 4.3",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0200",
+      "question": "cheap hotels under 30000 lkr in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0201",
+      "question": "top rated hotels above 4.5 within 5 minutes drive",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0202",
+      "question": "excellent hotels rated 4.3 or better",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0203",
+      "question": "affordable places under rs 18000",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0204",
+      "question": "luxury 5 star hotels with quick access under 6 minutes",
+      "gold": {
+        "min_star": 5,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0205",
+      "question": "well reviewed places rated over 4.5",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0206",
+      "question": "budget stays below 45000 rupees in colombo",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0207",
+      "question": "well rated hotels rated 4.5+ with fast 7 min access",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0208",
+      "question": "guest favourite hotels rated 4.5 or higher",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0209",
+      "question": "somewhere cheap to stay, less than 35000 in colombo",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0210",
+      "question": "cheap hotels under 25000 with quick 6 min access in colombo",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0211",
+      "question": "guest favourite hotels rated 4.6 or higher in colombo",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0212",
+      "question": "hotels costing at most 20000 lkr",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0213",
+      "question": "affordable hotels under 30000 rated above 4.0 in colombo",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0214",
+      "question": "guest favourite hotels rated 4.4 or higher in colombo",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0215",
+      "question": "inexpensive rooms below 20000 a night",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0216",
+      "question": "good hotels under 45000 rated at least 4.2 within 7 minutes",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0217",
+      "question": "guest favourite hotels rated 4.0 or higher in colombo",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0218",
+      "question": "wallet friendly hotels below 60000",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0219",
+      "question": "good hotels below 45000 with rating 4.4 or higher",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0220",
+      "question": "guest favourite hotels rated 4.2 or higher",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0221",
+      "question": "hotels costing at most 30000 lkr in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0222",
+      "question": "good hotels below 60000 with rating 4.4 or higher",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0223",
+      "question": "highly rated hotels over 3.8",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0224",
+      "question": "inexpensive rooms below 70000 a night",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0225",
+      "question": "good hotels below 40000 with rating 4.4 or higher in colombo",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0226",
+      "question": "5-star or better hotels",
+      "gold": {
+        "min_star": 5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0227",
+      "question": "inexpensive rooms below 50000 a night in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0228",
+      "question": "top rated hotels above 4.3 within 6 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0229",
+      "question": "well reviewed places rated over 3.8 in colombo",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0230",
+      "question": "inexpensive rooms below 30000 a night in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0231",
+      "question": "well rated hotels rated 4.2+ with fast 7 min access in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0232",
+      "question": "well reviewed places rated over 4.4",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0233",
+      "question": "value for money hotels under 15000",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0234",
+      "question": "budget hotels below 45000 easy to reach within 7 minutes",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0235",
+      "question": "guest favourite hotels rated 4.2 or higher in colombo",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0236",
+      "question": "inexpensive rooms below 35000 a night in colombo",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0237",
+      "question": "good hotels below 30000 with rating 4.0 or higher in colombo",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0238",
+      "question": "luxury 4 star properties in colombo",
+      "gold": {
+        "min_star": 4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0239",
+      "question": "mid-range hotels between 30000 and 60000 lkr",
+      "gold": {
+        "min_price": 30000,
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0240",
+      "question": "good hotels below 60000 with rating 4.0 or higher in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0241",
+      "question": "hotels rated at least 4.3 in colombo",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0242",
+      "question": "somewhere cheap to stay, less than 35000",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0243",
+      "question": "top rated hotels above 4.2 within 5 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0244",
+      "question": "top-rated hotels above 4.2 in colombo",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0245",
+      "question": "budget stays below 15000 rupees",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0246",
+      "question": "well rated hotels rated 4.2+ with fast 6 min access in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0247",
+      "question": "top-rated hotels above 4.3",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0248",
+      "question": "cheap hotels under 70000 lkr",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0249",
+      "question": "budget hotels below 45000 easy to reach within 7 minutes in colombo",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0250",
+      "question": "4-star or better hotels in colombo",
+      "gold": {
+        "min_star": 4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0251",
+      "question": "hotels i can afford under 45000 lkr",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0252",
+      "question": "good hotels below 60000 with rating 4.4 or higher in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0253",
+      "question": "excellent hotels rated 4.2 or better",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0254",
+      "question": "inexpensive rooms below 15000 a night in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0255",
+      "question": "good hotels under 60000 rated at least 4.4 within 7 minutes in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0256",
+      "question": "top-rated hotels above 4.4",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0257",
+      "question": "budget stays below 45000 rupees",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0258",
+      "question": "affordable hotels under 25000 rated above 4.3 in colombo",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0259",
+      "question": "hotels rated at least 4.4",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0260",
+      "question": "somewhere cheap to stay, less than 45000",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0261",
+      "question": "well rated hotels rated 4.3+ with fast 7 min access in colombo",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0262",
+      "question": "excellent hotels rated 4.5 or better",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0263",
+      "question": "value for money hotels under 60000",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0264",
+      "question": "good hotels below 45000 with rating 4.4 or higher in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0265",
+      "question": "top-rated hotels above 4.5",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0266",
+      "question": "inexpensive rooms below 35000 a night",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0267",
+      "question": "good hotels below 60000 with rating 4.0 or higher",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0268",
+      "question": "excellent hotels rated 4.4 or better",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0269",
+      "question": "hotels i can afford under 45000 lkr in colombo",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0270",
+      "question": "budget hotels below 45000 easy to reach within 6 minutes in colombo",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0271",
+      "question": "well reviewed places rated over 4.3",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0272",
+      "question": "value for money hotels under 35000",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0273",
+      "question": "budget hotels below 30000 easy to reach within 6 minutes in colombo",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0274",
+      "question": "hotels rated at least 4.0 in colombo",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0275",
+      "question": "value for money hotels under 70000 in colombo",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0276",
+      "question": "good hotels under 60000 rated at least 4.2 within 8 minutes",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.2,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0277",
+      "question": "highly rated hotels over 4.3 in colombo",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0278",
+      "question": "inexpensive rooms below 18000 a night in colombo",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0279",
+      "question": "affordable hotels under 40000 rated above 4.4 in colombo",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0280",
+      "question": "hotels rated at least 3.8 in colombo",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0281",
+      "question": "cheap hotels under 18000 lkr in colombo",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0282",
+      "question": "well rated hotels rated 4.2+ with fast 7 min access",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0283",
+      "question": "hotels rated at least 4.2 in colombo",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0284",
+      "question": "somewhere cheap to stay, less than 20000",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0285",
+      "question": "affordable hotels under 45000 rated above 4.4",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0286",
+      "question": "highly rated hotels over 4.2 in colombo",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0287",
+      "question": "affordable places under rs 45000",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0288",
+      "question": "budget hotels below 35000 easy to reach within 6 minutes in colombo",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0289",
+      "question": "highly rated hotels over 4.6 in colombo",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0290",
+      "question": "somewhere cheap to stay, less than 30000",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0291",
+      "question": "cheap hotels under 45000 with quick 7 min access",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0292",
+      "question": "highly rated hotels over 3.8 in colombo",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0293",
+      "question": "value for money hotels under 30000 in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0294",
+      "question": "good hotels below 30000 with rating 4.3 or higher in colombo",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0295",
+      "question": "guest favourite hotels rated 4.3 or higher in colombo",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0296",
+      "question": "value for money hotels under 20000",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0297",
+      "question": "well rated air conditioned hotels above 4.2",
+      "gold": {
+        "min_rating": 4.2,
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0298",
+      "question": "top-rated hotels above 4.5 in colombo",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0299",
+      "question": "inexpensive rooms below 40000 a night in colombo",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0300",
+      "question": "cheap hotels under 25000 with quick 6 min access",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0301",
+      "question": "guest favourite hotels rated 3.8 or higher in colombo",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0302",
+      "question": "budget stays below 50000 rupees",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0303",
+      "question": "well rated hotels rated 4.3+ with fast 5 min access in colombo",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0304",
+      "question": "well reviewed places rated over 4.0 in colombo",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0305",
+      "question": "hotels costing at most 15000 lkr in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0306",
+      "question": "top rated hotels above 4.3 within 7 minutes drive",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0307",
+      "question": "well reviewed places rated over 4.2 in colombo",
+      "gold": {
+        "min_rating": 4.2
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0308",
+      "question": "somewhere cheap to stay, less than 60000 in colombo",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0309",
+      "question": "good hotels below 30000 with rating 4.4 or higher",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0310",
+      "question": "top-rated hotels above 3.8",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0311",
+      "question": "budget stays below 20000 rupees",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0312",
+      "question": "well rated hotels rated 4.3+ with fast 6 min access",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0313",
+      "question": "well reviewed places rated over 4.6",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0314",
+      "question": "hotels i can afford under 20000 lkr",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0315",
+      "question": "good hotels under 45000 rated at least 4.2 within 8 minutes",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.2,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0316",
+      "question": "highly rated hotels over 4.5 in colombo",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0317",
+      "question": "wallet friendly hotels below 15000 in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0318",
+      "question": "affordable hotels under 40000 rated above 4.3 in colombo",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0319",
+      "question": "highly rated hotels over 4.0 in colombo",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0320",
+      "question": "budget stays below 20000 rupees in colombo",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0321",
+      "question": "top rated hotels above 4.3 within 6 minutes drive",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0322",
+      "question": "excellent hotels rated 4.3 or better in colombo",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0323",
+      "question": "hotels i can afford under 15000 lkr",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0324",
+      "question": "good hotels under 45000 rated at least 4.4 within 8 minutes in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0325",
+      "question": "well reviewed places rated over 3.8",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0326",
+      "question": "inexpensive rooms below 45000 a night",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0327",
+      "question": "well rated air conditioned hotels above 4.2 in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0328",
+      "question": "5 star hotels",
+      "gold": {
+        "min_star": 5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0329",
+      "question": "premium hotels over 70000 lkr",
+      "gold": {
+        "min_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0330",
+      "question": "budget hotels below 35000 easy to reach within 7 minutes in colombo",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0331",
+      "question": "luxury 5 star properties in colombo",
+      "gold": {
+        "min_star": 5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0332",
+      "question": "hotels priced from 40000 to 70000 rupees",
+      "gold": {
+        "min_price": 40000,
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0333",
+      "question": "good hotels below 25000 with rating 4.0 or higher",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0334",
+      "question": "highly rated hotels over 4.5",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0335",
+      "question": "inexpensive rooms below 45000 a night in colombo",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0336",
+      "question": "affordable hotels under 30000 rated above 4.4",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0337",
+      "question": "5 star hotels in colombo",
+      "gold": {
+        "min_star": 5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0338",
+      "question": "budget stays below 25000 rupees",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0339",
+      "question": "affordable hotels under 45000 rated above 4.3",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0340",
+      "question": "excellent hotels rated 3.8 or better in colombo",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0341",
+      "question": "wallet friendly hotels below 35000",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0342",
+      "question": "good hotels under 45000 rated at least 4.2 within 7 minutes in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0343",
+      "question": "well reviewed places rated over 4.4 in colombo",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0344",
+      "question": "wallet friendly hotels below 25000 in colombo",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0345",
+      "question": "top rated hotels above 4.2 within 5 minutes drive",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0346",
+      "question": "4 star hotels in colombo",
+      "gold": {
+        "min_star": 4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0347",
+      "question": "hotels costing at most 50000 lkr in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0348",
+      "question": "luxury 5 star hotels with quick access under 7 minutes in colombo",
+      "gold": {
+        "min_star": 5,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0349",
+      "question": "hotels rated at least 4.6",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0350",
+      "question": "affordable places under rs 30000",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0351",
+      "question": "cheap hotels under 30000 with quick 6 min access",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0352",
+      "question": "highly rated hotels over 4.4",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0353",
+      "question": "value for money hotels under 30000",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0354",
+      "question": "affordable hotels under 25000 rated above 4.4",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0355",
+      "question": "hotels rated at least 4.5",
+      "gold": {
+        "min_rating": 4.5
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0356",
+      "question": "mid-range hotels between 40000 and 70000 lkr in colombo",
+      "gold": {
+        "min_price": 40000,
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0357",
+      "question": "affordable hotels under 30000 rated above 4.3",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0358",
+      "question": "guest favourite hotels rated 4.3 or higher",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0359",
+      "question": "hotels costing at most 15000 lkr",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0360",
+      "question": "luxury 4 star hotels with quick access under 6 minutes",
+      "gold": {
+        "min_star": 4,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0361",
+      "question": "top-rated hotels above 4.0",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0362",
+      "question": "wallet friendly hotels below 50000",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0363",
+      "question": "good hotels under 60000 rated at least 4.2 within 8 minutes in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.2,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0364",
+      "question": "excellent hotels rated 4.0 or better",
+      "gold": {
+        "min_rating": 4.0
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0365",
+      "question": "value for money hotels under 18000",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0366",
+      "question": "good hotels below 25000 with rating 4.4 or higher in colombo",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0367",
+      "question": "highly rated hotels over 4.3",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0368",
+      "question": "wallet friendly hotels below 15000",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0369",
+      "question": "budget hotels below 35000 easy to reach within 7 minutes",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0370",
+      "question": "excellent hotels rated 3.8 or better",
+      "gold": {
+        "min_rating": 3.8
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0371",
+      "question": "value for money hotels under 50000",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0372",
+      "question": "top rated hotels above 4.5 within 7 minutes drive",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0373",
+      "question": "top-rated hotels above 4.3 in colombo",
+      "gold": {
+        "min_rating": 4.3
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0374",
+      "question": "wallet friendly hotels below 30000 in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0375",
+      "question": "affordable hotels under 25000 rated above 4.0 in colombo",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0376",
+      "question": "top-rated hotels above 4.4 in colombo",
+      "gold": {
+        "min_rating": 4.4
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0377",
+      "question": "hotels i can afford under 70000 lkr",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0378",
+      "question": "affordable hotels under 45000 rated above 4.0 in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0379",
+      "question": "excellent hotels rated 4.6 or better in colombo",
+      "gold": {
+        "min_rating": 4.6
+      },
+      "category": "quality"
+    },
+    {
+      "id": "s0380",
+      "question": "somewhere cheap to stay, less than 18000",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0381",
+      "question": "luxury 5 star hotels with quick access under 6 minutes in colombo",
+      "gold": {
+        "min_star": 5,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0382",
+      "question": "hotels i can afford under 70000 lkr in colombo",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0383",
+      "question": "good hotels below 60000 with rating 4.3 or higher in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0384",
+      "question": "affordable places under rs 18000 in colombo",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0385",
+      "question": "good hotels under 60000 rated at least 4.4 within 7 minutes",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0386",
+      "question": "somewhere cheap to stay, less than 20000 in colombo",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0387",
+      "question": "cheap hotels under 25000 with quick 7 min access in colombo",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0388",
+      "question": "cheap hotels under 30000 lkr",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0389",
+      "question": "top rated hotels above 4.5 within 6 minutes drive",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0390",
+      "question": "somewhere cheap to stay, less than 50000 in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0391",
+      "question": "affordable hotels under 45000 rated above 4.3 in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0392",
+      "question": "hotels i can afford under 35000 lkr in colombo",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0393",
+      "question": "budget hotels below 30000 easy to reach within 6 minutes",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0394",
+      "question": "inexpensive rooms below 60000 a night",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0395",
+      "question": "good hotels below 30000 with rating 4.3 or higher",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0396",
+      "question": "affordable places under rs 15000",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0397",
+      "question": "affordable hotels under 25000 rated above 4.0",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0398",
+      "question": "hotels priced from 25000 to 50000 rupees in colombo",
+      "gold": {
+        "min_price": 25000,
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0399",
+      "question": "good hotels below 40000 with rating 4.0 or higher in colombo",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0400",
+      "question": "hotels i can afford under 50000 lkr in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0401",
+      "question": "good hotels under 60000 rated at least 4.4 within 8 minutes",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0402",
+      "question": "premium hotels over 100000 lkr",
+      "gold": {
+        "min_price": 100000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0403",
+      "question": "good hotels below 25000 with rating 4.4 or higher",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0404",
+      "question": "affordable places under rs 15000 in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0405",
+      "question": "good hotels below 25000 with rating 4.3 or higher in colombo",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0406",
+      "question": "somewhere cheap to stay, less than 30000 in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0407",
+      "question": "well rated hotels rated 4.2+ with fast 5 min access in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0408",
+      "question": "budget stays below 70000 rupees in colombo",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0409",
+      "question": "well rated air conditioned hotels above 4.4 in colombo",
+      "gold": {
+        "min_rating": 4.4,
+        "required_amenities": [
+          "air conditioning"
+        ]
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0410",
+      "question": "hotels costing at most 18000 lkr in colombo",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0411",
+      "question": "well rated hotels rated 4.5+ with fast 6 min access in colombo",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0412",
+      "question": "hotels costing at most 25000 lkr in colombo",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0413",
+      "question": "luxury 4 star hotels with quick access under 6 minutes in colombo",
+      "gold": {
+        "min_star": 4,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0414",
+      "question": "budget stays below 35000 rupees",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0415",
+      "question": "affordable hotels under 60000 rated above 4.0 in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0416",
+      "question": "wallet friendly hotels below 60000 in colombo",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0417",
+      "question": "affordable hotels under 60000 rated above 4.4 in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0418",
+      "question": "affordable places under rs 30000 in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0419",
+      "question": "good hotels under 45000 rated at least 4.4 within 7 minutes in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0420",
+      "question": "somewhere cheap to stay, less than 50000",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0421",
+      "question": "good hotels below 25000 with rating 4.0 or higher in colombo",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0422",
+      "question": "wallet friendly hotels below 70000",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0423",
+      "question": "top rated hotels above 4.2 within 7 minutes drive",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0424",
+      "question": "hotels i can afford under 15000 lkr in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0425",
+      "question": "good hotels under 45000 rated at least 4.4 within 8 minutes",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0426",
+      "question": "inexpensive rooms below 30000 a night",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0427",
+      "question": "top rated hotels above 4.3 within 5 minutes drive",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0428",
+      "question": "hotels i can afford under 50000 lkr",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0429",
+      "question": "good hotels below 45000 with rating 4.0 or higher",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0430",
+      "question": "premium hotels over 100000 lkr in colombo",
+      "gold": {
+        "min_price": 100000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0431",
+      "question": "affordable hotels under 60000 rated above 4.3 in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0432",
+      "question": "mid-range hotels between 25000 and 50000 lkr in colombo",
+      "gold": {
+        "min_price": 25000,
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0433",
+      "question": "well rated hotels rated 4.5+ with fast 5 min access in colombo",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0434",
+      "question": "hotels i can afford under 60000 lkr in colombo",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0435",
+      "question": "budget hotels below 25000 easy to reach within 6 minutes in colombo",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0436",
+      "question": "affordable places under rs 70000",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0437",
+      "question": "well rated hotels rated 4.2+ with fast 6 min access",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0438",
+      "question": "cheap hotels under 35000 lkr",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0439",
+      "question": "affordable hotels under 25000 rated above 4.4 in colombo",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0440",
+      "question": "somewhere cheap to stay, less than 18000 in colombo",
+      "gold": {
+        "max_price": 18000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0441",
+      "question": "cheap hotels under 30000 with quick 7 min access",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0442",
+      "question": "hotels i can afford under 30000 lkr in colombo",
+      "gold": {
+        "max_price": 30000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0443",
+      "question": "top rated hotels above 4.2 within 6 minutes drive",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0444",
+      "question": "affordable places under rs 45000 in colombo",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0445",
+      "question": "cheap hotels under 35000 with quick 7 min access in colombo",
+      "gold": {
+        "max_price": 35000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0446",
+      "question": "wallet friendly hotels below 35000 in colombo",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0447",
+      "question": "affordable hotels under 60000 rated above 4.3",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0448",
+      "question": "affordable places under rs 20000",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0449",
+      "question": "good hotels below 40000 with rating 4.3 or higher in colombo",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0450",
+      "question": "wallet friendly hotels below 50000 in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0451",
+      "question": "good hotels under 45000 rated at least 4.4 within 7 minutes",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0452",
+      "question": "hotels i can afford under 60000 lkr",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0453",
+      "question": "cheap hotels under 45000 with quick 6 min access",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0454",
+      "question": "cheap hotels under 45000 lkr in colombo",
+      "gold": {
+        "max_price": 45000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0455",
+      "question": "cheap hotels under 30000 with quick 6 min access in colombo",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0456",
+      "question": "cheap hotels under 20000 lkr",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0457",
+      "question": "luxury 5 star hotels with quick access under 7 minutes",
+      "gold": {
+        "min_star": 5,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0458",
+      "question": "upscale hotels above 70000 a night",
+      "gold": {
+        "min_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0459",
+      "question": "top rated hotels above 4.3 within 7 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0460",
+      "question": "value for money hotels under 15000 in colombo",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0461",
+      "question": "affordable hotels under 30000 rated above 4.3 in colombo",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0462",
+      "question": "cheap hotels under 40000 lkr",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0463",
+      "question": "top rated hotels above 4.3 within 5 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.3,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0464",
+      "question": "cheap hotels under 15000 lkr",
+      "gold": {
+        "max_price": 15000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0465",
+      "question": "luxury 4 star hotels with quick access under 7 minutes in colombo",
+      "gold": {
+        "min_star": 4,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0466",
+      "question": "hotels costing at most 35000 lkr in colombo",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0467",
+      "question": "well rated hotels rated 4.5+ with fast 7 min access in colombo",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0468",
+      "question": "value for money hotels under 40000",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0469",
+      "question": "top rated hotels above 4.2 within 6 minutes drive in colombo",
+      "gold": {
+        "min_rating": 4.2,
+        "max_travel_time": 6.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0470",
+      "question": "cheap hotels under 70000 lkr in colombo",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0471",
+      "question": "cheap hotels under 45000 with quick 7 min access in colombo",
+      "gold": {
+        "max_price": 45000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0472",
+      "question": "hotels priced from 40000 to 70000 rupees in colombo",
+      "gold": {
+        "min_price": 40000,
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0473",
+      "question": "well rated hotels rated 4.5+ with fast 5 min access",
+      "gold": {
+        "min_rating": 4.5,
+        "max_travel_time": 5.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0474",
+      "question": "hotels priced from 20000 to 40000 rupees in colombo",
+      "gold": {
+        "min_price": 20000,
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0475",
+      "question": "good hotels below 25000 with rating 4.3 or higher",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0476",
+      "question": "budget stays below 70000 rupees",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0477",
+      "question": "luxury 4 star hotels with quick access under 7 minutes",
+      "gold": {
+        "min_star": 4,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0478",
+      "question": "inexpensive rooms below 20000 a night in colombo",
+      "gold": {
+        "max_price": 20000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0479",
+      "question": "affordable hotels under 45000 rated above 4.0",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0480",
+      "question": "affordable places under rs 50000",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0481",
+      "question": "good hotels under 45000 rated at least 4.2 within 8 minutes in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.2,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0482",
+      "question": "affordable places under rs 70000 in colombo",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0483",
+      "question": "good hotels below 30000 with rating 4.0 or higher",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0484",
+      "question": "somewhere cheap to stay, less than 25000",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0485",
+      "question": "good hotels below 40000 with rating 4.0 or higher",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0486",
+      "question": "somewhere cheap to stay, less than 70000",
+      "gold": {
+        "max_price": 70000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0487",
+      "question": "affordable hotels under 45000 rated above 4.4 in colombo",
+      "gold": {
+        "max_price": 45000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0488",
+      "question": "hotels i can afford under 40000 lkr in colombo",
+      "gold": {
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0489",
+      "question": "affordable hotels under 40000 rated above 4.4",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0490",
+      "question": "budget stays below 50000 rupees in colombo",
+      "gold": {
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0491",
+      "question": "good hotels below 40000 with rating 4.4 or higher",
+      "gold": {
+        "max_price": 40000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0492",
+      "question": "mid-range hotels between 25000 and 50000 lkr",
+      "gold": {
+        "min_price": 25000,
+        "max_price": 50000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0493",
+      "question": "budget hotels below 25000 easy to reach within 7 minutes in colombo",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0494",
+      "question": "value for money hotels under 35000 in colombo",
+      "gold": {
+        "max_price": 35000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0495",
+      "question": "good hotels below 30000 with rating 4.4 or higher in colombo",
+      "gold": {
+        "max_price": 30000,
+        "min_rating": 4.4
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0496",
+      "question": "hotels i can afford under 25000 lkr in colombo",
+      "gold": {
+        "max_price": 25000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0497",
+      "question": "good hotels under 60000 rated at least 4.4 within 8 minutes in colombo",
+      "gold": {
+        "max_price": 60000,
+        "min_rating": 4.4,
+        "max_travel_time": 8.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0498",
+      "question": "hotels priced from 20000 to 40000 rupees",
+      "gold": {
+        "min_price": 20000,
+        "max_price": 40000
+      },
+      "category": "economic"
+    },
+    {
+      "id": "s0499",
+      "question": "budget hotels below 30000 easy to reach within 7 minutes",
+      "gold": {
+        "max_price": 30000,
+        "max_travel_time": 7.0
+      },
+      "category": "multi_dimensional"
+    },
+    {
+      "id": "s0500",
+      "question": "value for money hotels under 60000 in colombo",
+      "gold": {
+        "max_price": 60000
+      },
+      "category": "economic"
+    }
+  ]
+}
