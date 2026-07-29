@@ -12,9 +12,14 @@ so the comparison becomes fair.
 
 Grade:
   2  fully relevant     — satisfies every main constraint within strict bounds
-  1  partially relevant — satisfies within a tolerance band, or (multi-constraint)
-                          fails exactly one main constraint while meeting the rest
-  0  not relevant       — fails beyond tolerance (single-constraint), or fails >= 2
+  1  partially relevant — satisfies every constraint at least within its
+                          tolerance band (one or more only band-satisfied)
+  0  not relevant       — fails any constraint beyond its tolerance band
+
+A hard fail on ANY constraint is disqualifying: a hotel twice over budget is not
+relevant to a budget query no matter how well rated it is. (An earlier rule let
+one hard fail through as "partial", which made multi-constraint gold sets cover
+80-95% of the pool and saturated every metric.)
 
 Tolerance bands (mirror the protocol's "partially relevant"):
   price       : within budget = pass; up to +15% over = partial
@@ -127,20 +132,9 @@ def grade(hotel: Dict[str, Any], gold: Dict[str, Any]) -> int:
     vs = _verdicts(hotel, gold)
     if not vs:
         return FAIL
-    fails = sum(1 for v in vs if v == FAIL)
-    partials = sum(1 for v in vs if v == PARTIAL)
-
-    # Single-constraint query: the verdict is the grade.
-    if len(vs) == 1:
-        return vs[0]
-
-    # Multi-constraint: two+ hard fails => not relevant; exactly one fail caps at
-    # partial; otherwise partial if any tolerance-band hit, else fully relevant.
-    if fails >= 2:
-        return FAIL
-    if fails == 1:
-        return PARTIAL
-    return PARTIAL if partials else PASS
+    # Any hard fail is disqualifying; otherwise the weakest verdict wins
+    # (all-pass => fully relevant, any band-hit => partially relevant).
+    return min(vs)
 
 
 def is_relevant(hotel: Dict[str, Any], gold: Dict[str, Any]) -> bool:
