@@ -1,30 +1,38 @@
 """
 Retrieval baselines for comparative evaluation (proposal Phase 5).
 
-All three implement ``retrieve(question, city, k) -> List[hotel_id]`` over the
-SAME city candidate pool, so differences reflect the retrieval method only:
+Each implements ``retrieve(question, city, k) -> List[hotel_id]`` over the SAME
+city candidate pool, so differences reflect the retrieval method only:
 
   1. FilterBaseline   — traditional filter-and-sort: apply structured filters
                         (price/rating/star) parsed from the query, rank by rating.
                         Sees no spatial/accessibility/graph structure.
-  2. VectorBaseline   — vector RAG: TF-IDF cosine similarity between the query
-                        and hotel text (name/description/amenities). Lexical-dense
-                        retrieval; cannot see numeric edge attributes like traffic
-                        travel time. (Swap in dense embeddings when populated.)
-  3. WeightedGraph    — the proposed system: feasibility-first weighted multi-hop
+  2. KeywordBaseline  — Postgres full-text keyword search (tsvector / ts_rank)
+                        over the hotel text. Lexical; exact-word matching.
+  3. SemanticBaseline — dense semantic search: sentence-transformers embeddings
+                        in pgvector, cosine nearest-neighbour. Captures meaning,
+                        not just keywords.
+  4. HybridBaseline   — Reciprocal Rank Fusion of keyword + semantic.
+  5. WeightedGraph    — the proposed system: feasibility-first weighted multi-hop
                         GraphRAG retriever (uses spatial + live-traffic
                         accessibility + facility + economic + disruption edges).
+
+The keyword/semantic/hybrid systems require the pgvector index (build it with
+scripts/build_vector_index.py); when it is absent they are skipped so the rest
+of the harness still runs.
 """
 from __future__ import annotations
 
+import logging
 from typing import Any, Dict, List
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 from src.crag.query_parser import parse_query
 from src.graph.query import _get_driver
 from src.graph.retriever import WeightedRetriever
+from src.search import vector_store as vs
+from src.search.embedder import embed_one
+
+logger = logging.getLogger("alma.eval.baselines")
 
 # Shared candidate fetch — full attribute set incl. description for the vector baseline.
 _FETCH_QUERY = """
@@ -78,34 +86,36 @@ class FilterBaseline:
 
 
 # ---------------------------------------------------------------------------
-# Baseline 2 — vector RAG (TF-IDF)
+# Baseline 2 — keyword search (Postgres full-text)
 # ---------------------------------------------------------------------------
 
-class VectorBaseline:
-    name = "VectorRAG"
-
-    def _doc(self, h: Dict[str, Any]) -> str:
-        parts = [
-            h.get("name") or "",
-            h.get("description") or "",
-            " ".join(h.get("amenities") or []),
-            " ".join(h.get("attractions") or []),
-        ]
-        return " ".join(parts)
+class KeywordBaseline:
+    name = "Keyword"
 
     def retrieve(self, question: str, city: str, k: int) -> List[str]:
-        hotels = fetch_city_hotels(city)
-        if not hotels:
-            return []
-        docs = [self._doc(h) for h in hotels]
-        vec = TfidfVectorizer(stop_words="english")
-        try:
-            matrix = vec.fit_transform(docs + [question])
-        except ValueError:
-            return [str(h["id"]) for h in hotels[:k]]
-        sims = cosine_similarity(matrix[-1], matrix[:-1]).ravel()
-        order = sims.argsort()[::-1]
-        return [str(hotels[i]["id"]) for i in order[:k]]
+        return vs.keyword_search(city, question, k)
+
+
+# ---------------------------------------------------------------------------
+# Baseline 3 — semantic search (dense embeddings in pgvector)
+# ---------------------------------------------------------------------------
+
+class SemanticBaseline:
+    name = "SemanticVec"
+
+    def retrieve(self, question: str, city: str, k: int) -> List[str]:
+        return vs.semantic_search(city, embed_one(question), k)
+
+
+# ---------------------------------------------------------------------------
+# Baseline 4 — hybrid (keyword + semantic via RRF)
+# ---------------------------------------------------------------------------
+
+class HybridBaseline:
+    name = "Hybrid"
+
+    def retrieve(self, question: str, city: str, k: int) -> List[str]:
+        return vs.hybrid_search(city, question, embed_one(question), k)
 
 
 # ---------------------------------------------------------------------------
@@ -127,4 +137,16 @@ class WeightedGraphBaseline:
 
 
 def all_baselines() -> List[Any]:
-    return [FilterBaseline(), VectorBaseline(), WeightedGraphBaseline()]
+    """Filter + GraphRAG are always available; the pgvector-backed keyword /
+    semantic / hybrid systems are included only when the index is populated."""
+    baselines: List[Any] = [FilterBaseline()]
+    if vs.is_available():
+        baselines += [KeywordBaseline(), SemanticBaseline(), HybridBaseline()]
+    else:
+        logger.warning(
+            "pgvector index unavailable — skipping Keyword/SemanticVec/Hybrid "
+            "baselines. Start the pgvector container and run "
+            "scripts/build_vector_index.py to enable them."
+        )
+    baselines.append(WeightedGraphBaseline())
+    return baselines
