@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 from openai import OpenAI
 
 from src.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL, LLM_PROVIDER
+from src.llm_utils import chat_completion_with_retry
 
 
 class LLMExtractor:
@@ -23,7 +24,8 @@ class LLMExtractor:
             f"Description: {hotel.get('description', '')}\n"
         )
 
-        response = self.client.chat.completions.create(
+        response = chat_completion_with_retry(
+            client=self.client,
             model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,

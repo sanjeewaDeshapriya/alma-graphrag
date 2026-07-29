@@ -175,11 +175,16 @@ class RetrievalResult:
 _CANDIDATE_QUERY = """
 MATCH (h:Hotel)-[loc:LOCATED_IN]->(c:City)
 WHERE toLower(c.name) = toLower($city)
-OPTIONAL MATCH (h)-[:HAS_AMENITY]->(a:Amenity)
-OPTIONAL MATCH (h)-[:NEAR_ATTRACTION]->(at:AttractionType)
-OPTIONAL MATCH (h)-[:NEAR]->(l:Location)
-OPTIONAL MATCH (h)-[:HAS_SIGNAL]->(ts:TrafficSignal)
-OPTIONAL MATCH (h)-[:AFFECTED_BY]->(e:Event)
+OPTIONAL MATCH (h)-[a_rel]->(a:Amenity)
+WHERE type(a_rel) = 'HAS_AMENITY'
+OPTIONAL MATCH (h)-[at_rel]->(at:AttractionType)
+WHERE type(at_rel) = 'NEAR_ATTRACTION'
+OPTIONAL MATCH (h)-[l_rel]->(l:Location)
+WHERE type(l_rel) = 'NEAR'
+OPTIONAL MATCH (h)-[ts_rel]->(ts:TrafficSignal)
+WHERE type(ts_rel) = 'HAS_SIGNAL'
+OPTIONAL MATCH (h)-[e_rel]->(e:Event)
+WHERE type(e_rel) = 'AFFECTED_BY'
 WITH h, loc,
      collect(DISTINCT toLower(a.name))  AS amenities,
      collect(DISTINCT toLower(at.name)) AS attractions,
@@ -287,22 +292,26 @@ class WeightedRetriever:
     # -- filtering ----------------------------------------------------------
 
     def _apply_filters(self, cands: List[Dict[str, Any]], intent: QueryIntent) -> List[Dict[str, Any]]:
+        """Feasibility-first pruning of hard constraints.
+
+        A hotel with an UNKNOWN value for a constrained attribute is excluded:
+        feasibility requires positive evidence (recommending a hotel with no
+        price for an "under 25,000" query is a guess, not a recommendation).
+        Hotels the constraints don't mention are untouched."""
         out = []
         for c in cands:
             rating = c.get("rating")
             star = c.get("star")
             price = c.get("price")
 
-            if intent.min_rating is not None and rating is not None and float(rating) < intent.min_rating:
+            if intent.min_rating is not None and (rating is None or float(rating) < intent.min_rating):
                 continue
-            if intent.min_star is not None and star is not None and float(star) < intent.min_star:
+            if intent.min_star is not None and (star is None or float(star) < intent.min_star):
                 continue
-            if intent.max_price_lkr is not None and price:
-                if float(price) > intent.max_price_lkr:
-                    continue
-            if intent.min_price_lkr is not None and price:
-                if float(price) < intent.min_price_lkr:
-                    continue
+            if intent.max_price_lkr is not None and (not price or float(price) > intent.max_price_lkr):
+                continue
+            if intent.min_price_lkr is not None and (not price or float(price) < intent.min_price_lkr):
+                continue
             out.append(c)
         return out
 

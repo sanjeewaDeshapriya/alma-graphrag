@@ -38,6 +38,11 @@ from src.config import (
     GNEWS_API_KEY,
     TRAFFIC_ENABLED,
     TRAFFIC_PROVIDER,
+    LLM_BASE_URL,
+    LLM_MODEL,
+    LLM_PROVIDER,
+    OPENAI_API_KEY,
+    GEMINI_API_KEY,
 )
 from src.api.eval_routes import router as eval_router
 from src.crag.graph import run_crag
@@ -54,6 +59,13 @@ from src.ingest.traffic_linker import link_traffic_to_hotels, cleanup_stale_sign
 
 logger = logging.getLogger("alma.api")
 logging.basicConfig(level=logging.INFO)
+logger.info(
+    "LLM startup config: provider=%s model=%s base_url=%s api_key_set=%s",
+    LLM_PROVIDER,
+    LLM_MODEL,
+    LLM_BASE_URL or "openai_default",
+    bool(OPENAI_API_KEY or GEMINI_API_KEY),
+)
 
 app = FastAPI(
     title="ALMA GraphRAG Phase 1",
@@ -304,8 +316,18 @@ def _run_ingest_job(job_id: str, city: str) -> None:
 
 @app.get("/health")
 def health_check() -> dict:
-    """Readiness probe — returns basic service status."""
-    return {"status": "ok", "service": "alma-graphrag", "version": "1.1.0"}
+    """Readiness probe — returns basic service status and LLM diagnostics."""
+    return {
+        "status": "ok",
+        "service": "alma-graphrag",
+        "version": "1.1.0",
+        "llm": {
+            "provider": LLM_PROVIDER,
+            "model": LLM_MODEL,
+            "base_url": LLM_BASE_URL or "openai_default",
+            "api_key_set": bool(OPENAI_API_KEY or GEMINI_API_KEY),
+        },
+    }
 
 
 @app.post("/query", response_model=QueryResponse)

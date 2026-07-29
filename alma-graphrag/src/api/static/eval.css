@@ -1,5 +1,11 @@
 /* Evaluation walkthrough — extends styles.css (shared design tokens) */
 
+/* The shared .content grid stretches auto rows to fill the viewport, which
+   inflates the header and stepper on short pages — pin rows to their content. */
+.content {
+  align-content: start;
+}
+
 .pill {
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -68,6 +74,14 @@
   filter: brightness(1.1);
 }
 
+.step-chip:focus-visible,
+.btn:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: var(--line-strong);
+  box-shadow: 0 0 0 3px rgba(185, 137, 87, 0.14);
+}
+
 /* --- Step panels ---------------------------------------------------------- */
 .step-panel {
   display: none;
@@ -85,6 +99,7 @@
 }
 
 .step-lead code,
+.sys-card code,
 .gold-cell code {
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.8em;
@@ -104,16 +119,40 @@
   max-height: 460px;
 }
 
+/* Sticky headers + subtle zebra rows on all eval tables */
+.table-wrap thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #14100c;
+  border-bottom: 1px solid var(--line-strong);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.table-wrap tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.015);
+}
+
 th.num,
 td.num {
   text-align: right;
   font-family: "IBM Plex Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-note {
+  margin-top: 8px;
+  font-size: 0.76rem;
+  color: var(--muted);
 }
 
 /* --- Step 2 system cards -------------------------------------------------- */
 .sys-cards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 12px;
 }
 
@@ -233,9 +272,27 @@ tr.row-best td:first-child::after {
   cursor: default;
 }
 
-.cat-best {
+.cat-best,
+.col-best {
   color: #e4b176;
   font-weight: 600;
+}
+
+/* Significance table */
+#sigBlock.hidden {
+  display: none;
+}
+
+.sig-win {
+  color: #bfe0b6;
+}
+
+.sig-loss {
+  color: #e6b3b3;
+}
+
+.sig-ns {
+  color: var(--muted);
 }
 
 /* --- Step 5 inspector ----------------------------------------------------- */
@@ -258,7 +315,7 @@ tr.row-best td:first-child::after {
 
 .inspect-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
 }
 

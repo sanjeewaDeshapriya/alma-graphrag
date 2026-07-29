@@ -18,4 +18,7 @@ langchain-neo4j==0.3.0
 sentence-transformers==3.1.0
 # Direct import in evaluation/baselines.py (was only a transitive dep before)
 scikit-learn>=1.4
+# pgvector-backed keyword + semantic search (evaluation/baselines.py, src/search/)
+psycopg2-binary>=2.9
+pgvector>=0.3.0
 

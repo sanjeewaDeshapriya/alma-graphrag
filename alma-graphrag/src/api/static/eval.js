@@ -9,7 +9,9 @@ const state = {
 const METRIC_KEYS = ["P@10", "R@10", "nDCG@10", "MRR"];
 const SYSTEM_LABEL = {
   Filter: "Filter",
-  VectorRAG: "VectorRAG",
+  Keyword: "Keyword",
+  SemanticVec: "Semantic",
+  Hybrid: "Hybrid",
   WeightedGraphRAG: "GraphRAG",
 };
 const COMPONENT_ORDER = ["spatial", "accessibility", "facility", "economic", "disruption", "event"];
@@ -79,7 +81,15 @@ function showStep(step) {
   document.querySelectorAll(".step-nav").forEach((n) => {
     n.classList.toggle("active", n.dataset.step === String(step));
   });
+  if (window.location.hash !== `#step-${step}`) {
+    history.replaceState(null, "", `#step-${step}`);
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function stepFromHash() {
+  const m = /^#step-([1-5])$/.exec(window.location.hash);
+  return m ? m[1] : null;
 }
 
 function setupStepper() {
@@ -90,6 +100,12 @@ function setupStepper() {
       showStep(node.dataset.step);
     });
   });
+  window.addEventListener("hashchange", () => {
+    const step = stepFromHash();
+    if (step) showStep(step);
+  });
+  const initial = stepFromHash();
+  if (initial) showStep(initial);
 }
 
 // --- step 1: query set -----------------------------------------------------
@@ -159,6 +175,35 @@ function applyResults(data) {
   renderQuerysetTable(); // now that per-query n_relevant/source is known
   renderOverall(data);
   renderCategory(data);
+  renderSignificance(data);
+}
+
+function renderSignificance(data) {
+  const block = document.getElementById("sigBlock");
+  const sig = data.significance;
+  if (!sig || !sig.vs || !Object.keys(sig.vs).length) {
+    block.classList.add("hidden");
+    return;
+  }
+  block.classList.remove("hidden");
+  const order = (data.system_order || Object.keys(sig.vs)).filter((n) => n in sig.vs);
+  const body = document.querySelector("#sigTable tbody");
+  body.innerHTML = "";
+  for (const name of order) {
+    const s = sig.vs[name];
+    const verdict = s.significant
+      ? (s.mean_diff > 0 ? `<span class="sig-win">GraphRAG better</span>` : `<span class="sig-loss">GraphRAG worse</span>`)
+      : `<span class="sig-ns">not significant</span>`;
+    const tr = el("tr");
+    tr.innerHTML =
+      `<td>${SYSTEM_LABEL[name] || name}</td>` +
+      `<td class="num">${fmt(s.mean_diff)}</td>` +
+      `<td class="num">[${fmt(s.ci_low)}, ${fmt(s.ci_high)}]</td>` +
+      `<td class="num">${fmt(s.p, 4)}</td>` +
+      `<td class="num">${fmt(s.p_holm, 4)}</td>` +
+      `<td>${verdict}</td>`;
+    body.appendChild(tr);
+  }
 }
 
 function renderOverall(data) {
@@ -173,6 +218,12 @@ function renderOverall(data) {
     .map((s) => `<div class="stat"><p>${s.key}</p><strong>${s.val}</strong></div>`)
     .join("");
 
+  // best value per metric column (bolded so each column's winner is scannable)
+  const colBest = {};
+  for (const k of METRIC_KEYS) {
+    colBest[k] = Math.max(...order.map((n) => (data.overall[n] || {})[k] || 0));
+  }
+
   const body = document.querySelector("#overallTable tbody");
   body.innerHTML = "";
   for (const name of order) {
@@ -180,7 +231,10 @@ function renderOverall(data) {
     const tr = el("tr", name === data.best_system ? "row-best" : "");
     tr.innerHTML =
       `<td>${SYSTEM_LABEL[name] || name}</td>` +
-      METRIC_KEYS.map((k) => `<td class="num">${fmt(m[k])}</td>`).join("");
+      METRIC_KEYS.map((k) => {
+        const cls = m[k] === colBest[k] ? "num col-best" : "num";
+        return `<td class="${cls}">${fmt(m[k])}</td>`;
+      }).join("");
     body.appendChild(tr);
   }
 }
@@ -223,7 +277,7 @@ async function loadResults(live = false) {
   const btns = [document.getElementById("loadResultsBtn"), document.getElementById("runLiveBtn")];
   btns.forEach((b) => (b.disabled = true));
   status.textContent = live
-    ? "Running the harness against Neo4j — this replays 50 queries × 3 systems…"
+    ? "Running the harness against Neo4j + pgvector — this replays 50 queries × 5 systems…"
     : "Loading last saved results…";
   try {
     const data = live ? await request("/eval/run", { method: "POST" }) : await request("/eval/results");

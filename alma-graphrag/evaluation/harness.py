@@ -17,11 +17,16 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+import logging
+
 from evaluation.baselines import all_baselines, fetch_city_hotels
-from evaluation.gold import relevant_set
+from evaluation.gold import graded_gold, relevant_set
 from evaluation.metrics import evaluate_ranking, mean_metrics
+from evaluation.stats import compare_systems
 from src.crag.query_parser import parse_query
 from src.graph.retriever import WeightedRetriever
+
+logger = logging.getLogger("alma.eval.harness")
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_QUERYSET = PROJECT_ROOT / "evaluation" / "queryset.json"
@@ -58,12 +63,35 @@ def gold_for_query(
     pool: List[Dict[str, Any]],
     query: Dict[str, Any],
     human_relevant: Dict[str, List[str]],
-) -> Tuple[Set[str], str]:
-    """Human gold supersedes the rule-based bootstrap per query, matching
-    run_eval.py's behaviour exactly."""
+) -> Tuple[Set[str], Dict[str, int], str]:
+    """Human gold supersedes the rule-based bootstrap per query.
+
+    Returns (binary relevant set, graded {id: 1|2} gains for nDCG, source).
+    Human annotations are binary lists, so human-relevant hotels all carry
+    grade 2 (fully relevant).
+    """
     if query["id"] in human_relevant:
-        return set(human_relevant[query["id"]]), "human"
-    return relevant_set(pool, query["gold"]), "rule"
+        ids = set(human_relevant[query["id"]])
+        return ids, {hid: 2 for hid in ids}, "human"
+    return relevant_set(pool, query["gold"]), graded_gold(pool, query["gold"]), "rule"
+
+
+def _vector_index_meta(city: str, pool_size: int) -> Dict[str, Any]:
+    """Freshness check: the pgvector snapshot must match the live Neo4j pool,
+    otherwise the text baselines search a different candidate universe."""
+    from src.search import vector_store as vs
+    try:
+        indexed = vs.count(city)
+    except Exception:
+        return {"available": False, "indexed": 0, "stale": False}
+    stale = indexed != pool_size
+    if stale:
+        logger.warning(
+            "pgvector index for %s has %d rows but the Neo4j pool has %d — "
+            "re-run scripts/build_vector_index.py before trusting the "
+            "Keyword/SemanticVec/Hybrid numbers.", city, indexed, pool_size,
+        )
+    return {"available": indexed > 0, "indexed": indexed, "stale": stale}
 
 
 def _travel_time(hotel: Dict[str, Any]) -> Optional[float]:
@@ -101,7 +129,7 @@ def run_evaluation(
     per_query: List[Dict[str, Any]] = []
 
     for q in queries:
-        gold_set, gold_source = gold_for_query(pool, q, human_relevant)
+        gold_set, gains, gold_source = gold_for_query(pool, q, human_relevant)
         category = q.get("category", "general")
         row: Dict[str, Any] = {
             "id": q["id"], "question": q["question"], "category": category,
@@ -110,7 +138,7 @@ def run_evaluation(
         }
         for b in baselines:
             ranked = b.retrieve(q["question"], city, k)
-            m = evaluate_ranking(ranked, gold_set, k)
+            m = evaluate_ranking(ranked, gold_set, k, gains=gains)
             results[b.name].append(m)
             cat_results[category][b.name].append(m)
             row["scores"][b.name] = {kk: round(v, 4) for kk, v in m.items()}
@@ -124,6 +152,21 @@ def run_evaluation(
     }
     best = max(overall.items(), key=lambda kv: kv[1].get(f"nDCG@{k}", 0.0))
 
+    # Paired significance vs the proposed system on the headline metric.
+    significance: Dict[str, Any] = {}
+    if GRAPH_SYSTEM in results and len(queries) >= 2:
+        ndcg_key = f"nDCG@{k}"
+        per_system = {name: [m[ndcg_key] for m in results[name]] for name in system_order}
+        significance = {
+            "reference": GRAPH_SYSTEM,
+            "metric": ndcg_key,
+            "tests": "paired bootstrap 95% CI + Wilcoxon signed-rank, Holm-corrected",
+            "vs": {
+                name: {kk: (round(v, 4) if isinstance(v, float) else v) for kk, v in block.items()}
+                for name, block in compare_systems(per_system, GRAPH_SYSTEM).items()
+            },
+        }
+
     return {
         "city": city,
         "k": k,
@@ -134,11 +177,14 @@ def run_evaluation(
             "used_human": bool(human_relevant),
             "human_queries": len(human_relevant),
             "alpha": human.get("krippendorff_alpha_interval"),
+            "ndcg_gains": "graded (2 full / 1 partial)",
         },
+        "vector_index": _vector_index_meta(city, len(pool)),
         "overall": overall,
         "by_category": by_category,
         "best_system": best[0],
         "best_ndcg": round(best[1].get(f"nDCG@{k}", 0.0), 4),
+        "significance": significance,
         "per_query": per_query,
     }
 
@@ -163,14 +209,16 @@ def inspect_query(
     pool = fetch_city_hotels(city)
     by_id = {str(h["id"]): h for h in pool}
     human = load_human_gold(gold_human_path, no_human)
-    gold_set, gold_source = gold_for_query(pool, query, human.get("relevant", {}))
+    gold_set, gains, gold_source = gold_for_query(pool, query, human.get("relevant", {}))
 
     # Retrieve once with the weighted retriever to expose composite-score
-    # components for the GraphRAG column (same ranking the baseline produces).
+    # components for the GraphRAG column; the GraphRAG baseline reuses this
+    # ranking below instead of retrieving a second time.
     intent = parse_query(query["question"], default_city=city)
     if not intent.city:
         intent.city = city
     graph_result = WeightedRetriever().retrieve(intent, limit=k)
+    graph_ranked = [h.id for h in graph_result.hotels[:k]]
     comp_by_id = {
         h.id: {
             "score": h.score,
@@ -183,8 +231,8 @@ def inspect_query(
 
     systems: List[Dict[str, Any]] = []
     for b in all_baselines():
-        ranked = b.retrieve(query["question"], city, k)
-        metrics = evaluate_ranking(ranked, gold_set, k)
+        ranked = graph_ranked if b.name == GRAPH_SYSTEM else b.retrieve(query["question"], city, k)
+        metrics = evaluate_ranking(ranked, gold_set, k, gains=gains)
         rows: List[Dict[str, Any]] = []
         for rank, hid in enumerate(ranked, start=1):
             h = by_id.get(hid, {})

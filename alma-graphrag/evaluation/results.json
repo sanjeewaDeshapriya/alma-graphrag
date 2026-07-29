@@ -1,1129 +1,879 @@
 {
   "city": "Colombo",
   "k": 10,
-  "n_queries": 50,
-  "pool_size": 57,
+  "n_queries": 60,
+  "pool_size": 58,
   "system_order": [
     "Filter",
-    "VectorRAG",
+    "Keyword",
+    "SemanticVec",
+    "Hybrid",
     "WeightedGraphRAG"
   ],
   "gold_meta": {
     "used_human": false,
     "human_queries": 0,
-    "alpha": null
+    "alpha": null,
+    "ndcg_gains": "graded (2 full / 1 partial)"
+  },
+  "vector_index": {
+    "available": true,
+    "indexed": 57,
+    "stale": true
   },
   "overall": {
     "Filter": {
-      "P@10": 0.7559999999999999,
-      "R@10": 0.449216625484758,
-      "nDCG@10": 0.7448700866305542,
-      "MRR": 0.775079365079365
+      "P@10": 0.7799999999999999,
+      "R@10": 0.28678847399072005,
+      "nDCG@10": 0.5706388284651698,
+      "MRR": 0.8285714285714286
     },
-    "VectorRAG": {
-      "P@10": 0.45,
-      "R@10": 0.22349598369541898,
-      "nDCG@10": 0.4638843700783139,
-      "MRR": 0.5740238095238095
+    "Keyword": {
+      "P@10": 0.5316666666666666,
+      "R@10": 0.36183068859452716,
+      "nDCG@10": 0.5330517634192807,
+      "MRR": 0.7216666666666668
+    },
+    "SemanticVec": {
+      "P@10": 0.3233333333333334,
+      "R@10": 0.2253071341972204,
+      "nDCG@10": 0.3170560358023703,
+      "MRR": 0.5269642857142857
+    },
+    "Hybrid": {
+      "P@10": 0.4700000000000001,
+      "R@10": 0.3175294832083625,
+      "nDCG@10": 0.48094657845957867,
+      "MRR": 0.7512962962962962
     },
     "WeightedGraphRAG": {
-      "P@10": 0.66,
-      "R@10": 0.342416365095237,
-      "nDCG@10": 0.6788674772637219,
-      "MRR": 0.7735555555555556
+      "P@10": 0.9399999999999998,
+      "R@10": 0.3463852069739094,
+      "nDCG@10": 0.7957288228501223,
+      "MRR": 0.9583333333333334
     }
   },
   "by_category": {
     "accessibility": {
       "Filter": {
-        "P@10": 0.5777777777777777,
-        "R@10": 0.180236369910283,
-        "nDCG@10": 0.5044209663328737,
-        "MRR": 0.5
+        "P@10": 0.43999999999999995,
+        "R@10": 0.1636559561128527,
+        "nDCG@10": 0.24235956039590784,
+        "MRR": 0.4
       },
-      "VectorRAG": {
-        "P@10": 0.5222222222222221,
-        "R@10": 0.15907522429261559,
-        "nDCG@10": 0.534907351432279,
-        "MRR": 0.7222222222222222
+      "Keyword": {
+        "P@10": 0.67,
+        "R@10": 0.26794670846394986,
+        "nDCG@10": 0.4567957547450838,
+        "MRR": 0.8699999999999999
+      },
+      "SemanticVec": {
+        "P@10": 0.31999999999999995,
+        "R@10": 0.12234521943573669,
+        "nDCG@10": 0.22058449363416424,
+        "MRR": 0.4333333333333333
+      },
+      "Hybrid": {
+        "P@10": 0.5199999999999999,
+        "R@10": 0.2066712382445141,
+        "nDCG@10": 0.3633357744549043,
+        "MRR": 0.725
       },
       "WeightedGraphRAG": {
         "P@10": 1.0,
-        "R@10": 0.33070220841959974,
-        "nDCG@10": 1.0,
+        "R@10": 0.3932210031347963,
+        "nDCG@10": 0.9905692433809336,
         "MRR": 1.0
       }
     },
     "amenity": {
       "Filter": {
-        "P@10": 0.8,
-        "R@10": 0.21815408085430968,
-        "nDCG@10": 0.7856987860090343,
-        "MRR": 0.7857142857142857
+        "P@10": 0.6000000000000001,
+        "R@10": 0.3048245614035088,
+        "nDCG@10": 0.5713975720180686,
+        "MRR": 0.5714285714285714
       },
-      "VectorRAG": {
-        "P@10": 0.9,
-        "R@10": 0.2616323417238749,
-        "nDCG@10": 0.9115298567078709,
-        "MRR": 1.0
+      "Keyword": {
+        "P@10": 0.6300000000000001,
+        "R@10": 0.2767543859649123,
+        "nDCG@10": 0.5997289588597181,
+        "MRR": 0.5983333333333334
+      },
+      "SemanticVec": {
+        "P@10": 0.5599999999999999,
+        "R@10": 0.24210526315789474,
+        "nDCG@10": 0.5799956969675175,
+        "MRR": 0.775
+      },
+      "Hybrid": {
+        "P@10": 0.6599999999999999,
+        "R@10": 0.29254385964912283,
+        "nDCG@10": 0.663452673496775,
+        "MRR": 0.8583333333333332
       },
       "WeightedGraphRAG": {
         "P@10": 0.7,
-        "R@10": 0.17467581998474446,
-        "nDCG@10": 0.7065093199483159,
-        "MRR": 0.775
+        "R@10": 0.3464912280701754,
+        "nDCG@10": 0.6784394292029895,
+        "MRR": 0.75
+      }
+    },
+    "disruption": {
+      "Filter": {
+        "P@10": 0.7000000000000001,
+        "R@10": 0.20148026315789475,
+        "nDCG@10": 0.5200712357925075,
+        "MRR": 1.0
+      },
+      "Keyword": {
+        "P@10": 0.66,
+        "R@10": 0.19046052631578947,
+        "nDCG@10": 0.5486608026485829,
+        "MRR": 0.8033333333333333
+      },
+      "SemanticVec": {
+        "P@10": 0.41999999999999993,
+        "R@10": 0.12039473684210526,
+        "nDCG@10": 0.3415702688684509,
+        "MRR": 0.495
+      },
+      "Hybrid": {
+        "P@10": 0.5499999999999999,
+        "R@10": 0.15953947368421054,
+        "nDCG@10": 0.46416055492945213,
+        "MRR": 0.7133333333333333
+      },
+      "WeightedGraphRAG": {
+        "P@10": 1.0,
+        "R@10": 0.287828947368421,
+        "nDCG@10": 1.0,
+        "MRR": 1.0
       }
     },
     "economic": {
       "Filter": {
-        "P@10": 0.73,
-        "R@10": 0.6379227053140096,
-        "nDCG@10": 0.7268737455526895,
-        "MRR": 0.75
+        "P@10": 1.0,
+        "R@10": 0.3666666666666667,
+        "nDCG@10": 0.6509042065780877,
+        "MRR": 1.0
       },
-      "VectorRAG": {
-        "P@10": 0.33999999999999997,
-        "R@10": 0.31681964573268917,
-        "nDCG@10": 0.360098619011905,
-        "MRR": 0.42666666666666675
+      "Keyword": {
+        "P@10": 0.2,
+        "R@10": 0.6666666666666666,
+        "nDCG@10": 0.41054317126601586,
+        "MRR": 0.36500000000000005
+      },
+      "SemanticVec": {
+        "P@10": 0.17000000000000004,
+        "R@10": 0.5666666666666667,
+        "nDCG@10": 0.3469207254433706,
+        "MRR": 0.5017857142857143
+      },
+      "Hybrid": {
+        "P@10": 0.18,
+        "R@10": 0.6,
+        "nDCG@10": 0.45970444825911605,
+        "MRR": 0.65
       },
       "WeightedGraphRAG": {
-        "P@10": 0.32,
-        "R@10": 0.3046940418679549,
-        "nDCG@10": 0.35483133437527214,
-        "MRR": 0.4344444444444444
+        "P@10": 1.0,
+        "R@10": 0.3666666666666667,
+        "nDCG@10": 0.6509042065780877,
+        "MRR": 1.0
       }
     },
     "multi_dimensional": {
       "Filter": {
-        "P@10": 0.73125,
-        "R@10": 0.5328799489983699,
-        "nDCG@10": 0.7343837955926212,
-        "MRR": 0.7881944444444444
+        "P@10": 0.9400000000000001,
+        "R@10": 0.44852647352647346,
+        "nDCG@10": 0.6837614713750153,
+        "MRR": 1.0
       },
-      "VectorRAG": {
-        "P@10": 0.33125,
-        "R@10": 0.217526333315807,
-        "nDCG@10": 0.3272954083188764,
-        "MRR": 0.38132440476190477
+      "Keyword": {
+        "P@10": 0.38999999999999996,
+        "R@10": 0.4605019980019979,
+        "nDCG@10": 0.5312813624841852,
+        "MRR": 0.7933333333333332
+      },
+      "SemanticVec": {
+        "P@10": 0.10999999999999999,
+        "R@10": 0.121003996003996,
+        "nDCG@10": 0.13539118143064838,
+        "MRR": 0.2566666666666667
+      },
+      "Hybrid": {
+        "P@10": 0.3,
+        "R@10": 0.34690309690309684,
+        "nDCG@10": 0.41435456070908055,
+        "MRR": 0.8
       },
       "WeightedGraphRAG": {
-        "P@10": 0.63125,
-        "R@10": 0.4303907715091926,
-        "nDCG@10": 0.6678371116364026,
-        "MRR": 0.84375
+        "P@10": 0.9400000000000001,
+        "R@10": 0.44852647352647346,
+        "nDCG@10": 0.6991211333072913,
+        "MRR": 1.0
       }
     },
     "quality": {
       "Filter": {
-        "P@10": 0.9454545454545454,
-        "R@10": 0.46007103495582763,
-        "nDCG@10": 0.958367482316989,
+        "P@10": 1.0,
+        "R@10": 0.23557692307692307,
+        "nDCG@10": 0.7553389246314324,
         "MRR": 1.0
       },
-      "VectorRAG": {
-        "P@10": 0.5000000000000001,
-        "R@10": 0.18617954626019143,
-        "nDCG@10": 0.5360200173611486,
-        "MRR": 0.712121212121212
+      "Keyword": {
+        "P@10": 0.64,
+        "R@10": 0.30865384615384617,
+        "nDCG@10": 0.651300530512098,
+        "MRR": 0.9
+      },
+      "SemanticVec": {
+        "P@10": 0.36,
+        "R@10": 0.17932692307692308,
+        "nDCG@10": 0.27787384847007013,
+        "MRR": 0.7
+      },
+      "Hybrid": {
+        "P@10": 0.61,
+        "R@10": 0.29951923076923076,
+        "nDCG@10": 0.5206714589081445,
+        "MRR": 0.7611111111111111
       },
       "WeightedGraphRAG": {
-        "P@10": 0.7181818181818181,
-        "R@10": 0.31932748511089526,
-        "nDCG@10": 0.7166935866779698,
-        "MRR": 0.7939393939393941
+        "P@10": 1.0,
+        "R@10": 0.23557692307692307,
+        "nDCG@10": 0.7553389246314324,
+        "MRR": 1.0
       }
     }
   },
-  "best_system": "Filter",
-  "best_ndcg": 0.7449,
+  "best_system": "WeightedGraphRAG",
+  "best_ndcg": 0.7957,
+  "significance": {
+    "reference": "WeightedGraphRAG",
+    "metric": "nDCG@10",
+    "tests": "paired bootstrap 95% CI + Wilcoxon signed-rank, Holm-corrected",
+    "vs": {
+      "Filter": {
+        "mean_diff": 0.2251,
+        "ci_low": 0.1517,
+        "ci_high": 0.2996,
+        "p": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "Keyword": {
+        "mean_diff": 0.2627,
+        "ci_low": 0.1569,
+        "ci_high": 0.3645,
+        "p": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "SemanticVec": {
+        "mean_diff": 0.4787,
+        "ci_low": 0.3729,
+        "ci_high": 0.5737,
+        "p": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "Hybrid": {
+        "mean_diff": 0.3148,
+        "ci_low": 0.2101,
+        "ci_high": 0.4137,
+        "p": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      }
+    }
+  },
   "per_query": [
     {
-      "id": "q01",
-      "question": "cheap budget hotels in Colombo under 25000 LKR a night",
-      "category": "economic",
-      "gold": {
-        "max_price": 25000
-      },
-      "gold_source": "rule",
-      "n_relevant": 10,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.2,
-          "R@10": 0.2,
-          "nDCG@10": 0.2025,
-          "MRR": 0.5
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.5,
-          "R@10": 0.5,
-          "nDCG@10": 0.4035,
-          "MRR": 0.3333
-        }
-      }
-    },
-    {
-      "id": "q02",
-      "question": "very affordable hotels under 18000 rupees",
-      "category": "economic",
-      "gold": {
-        "max_price": 18000
-      },
-      "gold_source": "rule",
-      "n_relevant": 4,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.4,
-          "R@10": 1.0,
-          "nDCG@10": 0.7439,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.2,
-          "R@10": 0.5,
-          "nDCG@10": 0.2742,
-          "MRR": 0.2
-        }
-      }
-    },
-    {
-      "id": "q03",
-      "question": "top-rated hotels in Colombo with a rating above 4.5",
-      "category": "quality",
-      "gold": {
-        "min_rating": 4.5
-      },
-      "gold_source": "rule",
-      "n_relevant": 26,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.3846,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.1923,
-          "nDCG@10": 0.3949,
-          "MRR": 0.3333
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.3846,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q04",
-      "question": "luxury 5 star hotels in Colombo",
-      "category": "quality",
-      "gold": {
-        "min_star": 5
-      },
-      "gold_source": "rule",
-      "n_relevant": 15,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.6667,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.3333,
-          "nDCG@10": 0.5965,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.9,
-          "R@10": 0.6,
-          "nDCG@10": 0.9149,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q05",
-      "question": "hotels with quick easy access and low travel time from the city",
-      "category": "accessibility",
-      "gold": {
-        "max_travel_time": 5.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 28,
-      "scores": {
-        "Filter": {
-          "P@10": 0.5,
-          "R@10": 0.1786,
-          "nDCG@10": 0.3792,
-          "MRR": 0.25
-        },
-        "VectorRAG": {
-          "P@10": 0.6,
-          "R@10": 0.2143,
-          "nDCG@10": 0.6582,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.3571,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q06",
-      "question": "well rated hotels with good road access and stable ETA",
-      "category": "multi_dimensional",
-      "gold": {
-        "min_rating": 4.3,
-        "max_travel_time": 6.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 26,
-      "scores": {
-        "Filter": {
-          "P@10": 0.6,
-          "R@10": 0.2308,
-          "nDCG@10": 0.5181,
-          "MRR": 0.5
-        },
-        "VectorRAG": {
-          "P@10": 0.4,
-          "R@10": 0.1538,
-          "nDCG@10": 0.3156,
-          "MRR": 0.25
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.9,
-          "R@10": 0.3462,
-          "nDCG@10": 0.9149,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q07",
-      "question": "budget friendly hotels that are also easy to reach quickly",
+      "id": "q0001",
+      "question": "affordable hotels under 30000 rated above 4.3",
       "category": "multi_dimensional",
       "gold": {
         "max_price": 30000,
-        "max_travel_time": 6.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 9,
-      "scores": {
-        "Filter": {
-          "P@10": 0.1,
-          "R@10": 0.1111,
-          "nDCG@10": 0.0708,
-          "MRR": 0.1111
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.6,
-          "R@10": 0.6667,
-          "nDCG@10": 0.6105,
-          "MRR": 0.5
-        }
-      }
-    },
-    {
-      "id": "q08",
-      "question": "highly rated mid-range hotels under 45000 LKR",
-      "category": "multi_dimensional",
-      "gold": {
-        "min_rating": 4.4,
-        "max_price": 45000
-      },
-      "gold_source": "rule",
-      "n_relevant": 11,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.9091,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.5,
-          "R@10": 0.4545,
-          "nDCG@10": 0.5771,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q09",
-      "question": "premium high quality hotels rated 4.6 or higher",
-      "category": "quality",
-      "gold": {
-        "min_rating": 4.6
-      },
-      "gold_source": "rule",
-      "n_relevant": 16,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.625,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.3,
-          "R@10": 0.1875,
-          "nDCG@10": 0.2618,
-          "MRR": 0.3333
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.3,
-          "R@10": 0.1875,
-          "nDCG@10": 0.2298,
-          "MRR": 0.2
-        }
-      }
-    },
-    {
-      "id": "q10",
-      "question": "affordable well located hotels with fast access under 35000",
-      "category": "multi_dimensional",
-      "gold": {
-        "max_price": 35000,
-        "max_travel_time": 7.0
+        "min_rating": 4.3
       },
       "gold_source": "rule",
       "n_relevant": 13,
       "scores": {
         "Filter": {
-          "P@10": 0.8,
-          "R@10": 0.6154,
-          "nDCG@10": 0.858,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.3846,
-          "nDCG@10": 0.3796,
-          "MRR": 0.25
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.6,
-          "R@10": 0.4615,
-          "nDCG@10": 0.6547,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q11",
-      "question": "hotels below 20000 LKR per night",
-      "category": "economic",
-      "gold": {
-        "max_price": 20000
-      },
-      "gold_source": "rule",
-      "n_relevant": 5,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.1,
-          "R@10": 0.2,
-          "nDCG@10": 0.1208,
-          "MRR": 0.1667
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.1,
-          "R@10": 0.2,
-          "nDCG@10": 0.1021,
-          "MRR": 0.1111
-        }
-      }
-    },
-    {
-      "id": "q12",
-      "question": "somewhere cheap to stay, less than Rs 15000",
-      "category": "economic",
-      "gold": {
-        "max_price": 15000
-      },
-      "gold_source": "rule",
-      "n_relevant": 2,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.1,
-          "R@10": 0.5,
-          "nDCG@10": 0.2372,
-          "MRR": 0.2
-        }
-      }
-    },
-    {
-      "id": "q13",
-      "question": "stays that won't break the bank",
-      "category": "economic",
-      "gold": {
-        "max_price": 25000
-      },
-      "gold_source": "rule",
-      "n_relevant": 10,
-      "scores": {
-        "Filter": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "VectorRAG": {
-          "P@10": 0.8,
-          "R@10": 0.8,
-          "nDCG@10": 0.7511,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.2,
-          "R@10": 0.2,
-          "nDCG@10": 0.2337,
-          "MRR": 0.5
-        }
-      }
-    },
-    {
-      "id": "q14",
-      "question": "mid-range hotels between 30000 and 60000 LKR",
-      "category": "economic",
-      "gold": {
-        "min_price": 30000,
-        "max_price": 60000
-      },
-      "gold_source": "rule",
-      "n_relevant": 12,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.8333,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.7,
-          "R@10": 0.5833,
-          "nDCG@10": 0.7503,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q15",
-      "question": "upscale hotels above 80000 rupees a night",
-      "category": "economic",
-      "gold": {
-        "min_price": 80000
-      },
-      "gold_source": "rule",
-      "n_relevant": 2,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        }
-      }
-    },
-    {
-      "id": "q16",
-      "question": "value for money hotels under 40000",
-      "category": "economic",
-      "gold": {
-        "max_price": 40000
-      },
-      "gold_source": "rule",
-      "n_relevant": 23,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.4348,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.8,
-          "R@10": 0.3478,
-          "nDCG@10": 0.6699,
-          "MRR": 0.5
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.7,
-          "R@10": 0.3043,
-          "nDCG@10": 0.7624,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q17",
-      "question": "cheapest possible accommodation in the city",
-      "category": "economic",
-      "gold": {
-        "max_price": 18000
-      },
-      "gold_source": "rule",
-      "n_relevant": 4,
-      "scores": {
-        "Filter": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "VectorRAG": {
-          "P@10": 0.1,
-          "R@10": 0.25,
-          "nDCG@10": 0.1128,
-          "MRR": 0.1
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        }
-      }
-    },
-    {
-      "id": "q18",
-      "question": "hotels costing at most 50000 LKR",
-      "category": "economic",
-      "gold": {
-        "max_price": 50000
-      },
-      "gold_source": "rule",
-      "n_relevant": 27,
-      "scores": {
-        "Filter": {
-          "P@10": 0.3,
-          "R@10": 0.1111,
-          "nDCG@10": 0.2687,
-          "MRR": 0.5
-        },
-        "VectorRAG": {
-          "P@10": 1.0,
-          "R@10": 0.3704,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.7,
-          "R@10": 0.2593,
-          "nDCG@10": 0.785,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q19",
-      "question": "hotels rated at least 4.0",
-      "category": "quality",
-      "gold": {
-        "min_rating": 4.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 49,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.2041,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.7,
-          "R@10": 0.1429,
-          "nDCG@10": 0.791,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.9,
-          "R@10": 0.1837,
-          "nDCG@10": 0.9052,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q20",
-      "question": "excellent hotels with rating 4.4 or better",
-      "category": "quality",
-      "gold": {
-        "min_rating": 4.4
-      },
-      "gold_source": "rule",
-      "n_relevant": 31,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.3226,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.9,
-          "R@10": 0.2903,
-          "nDCG@10": 0.9149,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.3226,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q21",
-      "question": "4 star or better hotels",
-      "category": "quality",
-      "gold": {
-        "min_star": 4
-      },
-      "gold_source": "rule",
-      "n_relevant": 31,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.3226,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.8,
-          "R@10": 0.2581,
-          "nDCG@10": 0.8669,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.9,
-          "R@10": 0.2903,
-          "nDCG@10": 0.9364,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q22",
-      "question": "really well reviewed places to stay",
-      "category": "quality",
-      "gold": {
-        "min_rating": 4.5
-      },
-      "gold_source": "rule",
-      "n_relevant": 26,
-      "scores": {
-        "Filter": {
           "P@10": 1.0,
           "R@10": 0.3846,
-          "nDCG@10": 1.0,
+          "nDCG@10": 0.7871,
           "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.4,
-          "R@10": 0.1538,
-          "nDCG@10": 0.5474,
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.5385,
+          "nDCG@10": 0.8718,
           "MRR": 1.0
         },
-        "WeightedGraphRAG": {
-          "P@10": 0.6,
-          "R@10": 0.2308,
-          "nDCG@10": 0.6621,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q23",
-      "question": "high end five star properties",
-      "category": "quality",
-      "gold": {
-        "min_star": 5
-      },
-      "gold_source": "rule",
-      "n_relevant": 15,
-      "scores": {
-        "Filter": {
-          "P@10": 0.5,
-          "R@10": 0.3333,
-          "nDCG@10": 0.542,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
+        "SemanticVec": {
           "P@10": 0.1,
-          "R@10": 0.0667,
-          "nDCG@10": 0.0784,
-          "MRR": 0.1667
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.4,
-          "R@10": 0.2667,
-          "nDCG@10": 0.3312,
+          "R@10": 0.0769,
+          "nDCG@10": 0.1335,
           "MRR": 0.3333
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.3846,
+          "nDCG@10": 0.5844,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3846,
+          "nDCG@10": 0.7871,
+          "MRR": 1.0
         }
       }
     },
     {
-      "id": "q24",
-      "question": "hotels that guests love",
+      "id": "q0002",
+      "question": "top-rated hotels above 4.8 in colombo",
       "category": "quality",
       "gold": {
-        "min_rating": 4.6
+        "min_rating": 4.8
       },
       "gold_source": "rule",
       "n_relevant": 16,
       "scores": {
         "Filter": {
           "P@10": 1.0,
-          "R@10": 0.625,
-          "nDCG@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
           "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.4,
-          "R@10": 0.25,
-          "nDCG@10": 0.5107,
+        "Keyword": {
+          "P@10": 0.6,
+          "R@10": 0.375,
+          "nDCG@10": 0.6906,
           "MRR": 1.0
         },
-        "WeightedGraphRAG": {
+        "SemanticVec": {
           "P@10": 0.3,
           "R@10": 0.1875,
-          "nDCG@10": 0.2298,
+          "nDCG@10": 0.3065,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.6245,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0003",
+      "question": "front desk hotels under 30000",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 30000
+      },
+      "gold_source": "rule",
+      "n_relevant": 19,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.1053,
+          "nDCG@10": 0.1635,
           "MRR": 0.2
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.0526,
+          "nDCG@10": 0.0784,
+          "MRR": 0.1667
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.1579,
+          "nDCG@10": 0.2079,
+          "MRR": 0.25
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
         }
       }
     },
     {
-      "id": "q25",
-      "question": "decent hotels rated above 3.8",
-      "category": "quality",
+      "id": "q0004",
+      "question": "affordable hotels under 25000 rated above 4.4 in colombo",
+      "category": "multi_dimensional",
       "gold": {
-        "min_rating": 3.8
+        "max_price": 25000,
+        "min_rating": 4.4
       },
       "gold_source": "rule",
-      "n_relevant": 52,
+      "n_relevant": 7,
       "scores": {
         "Filter": {
           "P@10": 1.0,
-          "R@10": 0.1923,
-          "nDCG@10": 1.0,
+          "R@10": 0.1429,
+          "nDCG@10": 0.4312,
           "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.9,
-          "R@10": 0.1731,
-          "nDCG@10": 0.9337,
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.2857,
+          "nDCG@10": 0.2935,
+          "MRR": 0.3333
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.1429,
+          "nDCG@10": 0.1668,
+          "MRR": 0.2
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.4286,
+          "nDCG@10": 0.5703,
           "MRR": 1.0
         },
         "WeightedGraphRAG": {
           "P@10": 1.0,
-          "R@10": 0.1923,
-          "nDCG@10": 1.0,
+          "R@10": 0.1429,
+          "nDCG@10": 0.4312,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q26",
-      "question": "premium 5 star hotels rated over 4.5",
-      "category": "quality",
+      "id": "q0005",
+      "question": "budget hotels below 25000 easy to reach within 6 minutes",
+      "category": "multi_dimensional",
       "gold": {
-        "min_star": 5,
-        "min_rating": 4.5
-      },
-      "gold_source": "rule",
-      "n_relevant": 9,
-      "scores": {
-        "Filter": {
-          "P@10": 0.9,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.6,
-          "R@10": 0.6667,
-          "nDCG@10": 0.6742,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q27",
-      "question": "hotels I can reach quickly even in traffic",
-      "category": "accessibility",
-      "gold": {
+        "max_price": 25000,
         "max_travel_time": 6.0
       },
       "gold_source": "rule",
-      "n_relevant": 32,
+      "n_relevant": 8,
       "scores": {
         "Filter": {
           "P@10": 0.6,
-          "R@10": 0.1875,
-          "nDCG@10": 0.5181,
-          "MRR": 0.5
+          "R@10": 0.75,
+          "nDCG@10": 0.7697,
+          "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.6,
-          "R@10": 0.1875,
-          "nDCG@10": 0.6835,
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.625,
+          "nDCG@10": 0.606,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.25,
+          "nDCG@10": 0.1556,
+          "MRR": 0.1667
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.5,
+          "nDCG@10": 0.5102,
           "MRR": 1.0
         },
         "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.3125,
-          "nDCG@10": 1.0,
+          "P@10": 0.6,
+          "R@10": 0.75,
+          "nDCG@10": 0.8284,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q28",
-      "question": "places with the shortest drive from the center",
+      "id": "q0006",
+      "question": "budget hotels below 25000 easy to reach within 7 minutes",
+      "category": "multi_dimensional",
+      "gold": {
+        "max_price": 25000,
+        "max_travel_time": 7.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 11,
+      "scores": {
+        "Filter": {
+          "P@10": 0.9,
+          "R@10": 0.8182,
+          "nDCG@10": 0.8854,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.4,
+          "R@10": 0.3636,
+          "nDCG@10": 0.4566,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.2727,
+          "nDCG@10": 0.292,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.3636,
+          "nDCG@10": 0.4229,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.9,
+          "R@10": 0.8182,
+          "nDCG@10": 0.9329,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0007",
+      "question": "hotels rated at least 4.7",
+      "category": "quality",
+      "gold": {
+        "min_rating": 4.7
+      },
+      "gold_source": "rule",
+      "n_relevant": 26,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.9,
+          "R@10": 0.3462,
+          "nDCG@10": 0.7943,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.4,
+          "R@10": 0.1538,
+          "nDCG@10": 0.3352,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.6,
+          "R@10": 0.2308,
+          "nDCG@10": 0.522,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0008",
+      "question": "affordable places under rs 15000",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.2973,
+          "MRR": 0.3333
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.1008,
+          "MRR": 0.125
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.3153,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0009",
+      "question": "hotels close to the centre, at most 4 minutes away",
       "category": "accessibility",
       "gold": {
         "max_travel_time": 4.0
       },
       "gold_source": "rule",
-      "n_relevant": 20,
-      "scores": {
-        "Filter": {
-          "P@10": 0.3,
-          "R@10": 0.15,
-          "nDCG@10": 0.2247,
-          "MRR": 0.25
-        },
-        "VectorRAG": {
-          "P@10": 0.2,
-          "R@10": 0.1,
-          "nDCG@10": 0.1952,
-          "MRR": 0.3333
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.5,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q29",
-      "question": "hotels with reliable fast road access",
-      "category": "accessibility",
-      "gold": {
-        "max_travel_time": 5.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 28,
+      "n_relevant": 29,
       "scores": {
         "Filter": {
           "P@10": 0.5,
-          "R@10": 0.1786,
-          "nDCG@10": 0.3792,
+          "R@10": 0.1724,
+          "nDCG@10": 0.2701,
           "MRR": 0.25
         },
-        "VectorRAG": {
+        "Keyword": {
+          "P@10": 0.6,
+          "R@10": 0.2069,
+          "nDCG@10": 0.458,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1034,
+          "nDCG@10": 0.1829,
+          "MRR": 0.3333
+        },
+        "Hybrid": {
           "P@10": 0.4,
-          "R@10": 0.1429,
-          "nDCG@10": 0.3312,
-          "MRR": 0.3333
+          "R@10": 0.1379,
+          "nDCG@10": 0.3135,
+          "MRR": 1.0
         },
         "WeightedGraphRAG": {
           "P@10": 1.0,
-          "R@10": 0.3571,
-          "nDCG@10": 1.0,
+          "R@10": 0.3448,
+          "nDCG@10": 0.9682,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q30",
-      "question": "avoid traffic - hotels that are easy to get to",
+      "id": "q0010",
+      "question": "minimal commute hotels under 4 minutes in colombo",
       "category": "accessibility",
       "gold": {
-        "max_travel_time": 6.0
+        "max_travel_time": 4.0
       },
       "gold_source": "rule",
-      "n_relevant": 32,
+      "n_relevant": 29,
       "scores": {
         "Filter": {
-          "P@10": 0.6,
-          "R@10": 0.1875,
-          "nDCG@10": 0.5181,
+          "P@10": 0.5,
+          "R@10": 0.1724,
+          "nDCG@10": 0.2701,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.2414,
+          "nDCG@10": 0.4885,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1724,
+          "nDCG@10": 0.4084,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.2414,
+          "nDCG@10": 0.4417,
           "MRR": 0.5
         },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.1562,
-          "nDCG@10": 0.4106,
-          "MRR": 0.3333
-        },
         "WeightedGraphRAG": {
           "P@10": 1.0,
-          "R@10": 0.3125,
+          "R@10": 0.3448,
           "nDCG@10": 1.0,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q31",
-      "question": "hotels with a stable ETA under heavy traffic",
-      "category": "accessibility",
+      "id": "q0011",
+      "question": "well reviewed places rated over 4.8",
+      "category": "quality",
       "gold": {
-        "max_travel_time": 7.0
+        "min_rating": 4.8
       },
       "gold_source": "rule",
-      "n_relevant": 40,
+      "n_relevant": 16,
       "scores": {
         "Filter": {
-          "P@10": 0.8,
-          "R@10": 0.2,
-          "nDCG@10": 0.8116,
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
           "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.6,
-          "R@10": 0.15,
-          "nDCG@10": 0.6529,
-          "MRR": 1.0
+        "Keyword": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.125,
+          "nDCG@10": 0.1694,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.125,
+          "nDCG@10": 0.0884,
+          "MRR": 0.1111
         },
         "WeightedGraphRAG": {
           "P@10": 1.0,
-          "R@10": 0.25,
-          "nDCG@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q32",
-      "question": "quick access hotels with low commute time",
+      "id": "q0012",
+      "question": "top-rated hotels above 4.8",
+      "category": "quality",
+      "gold": {
+        "min_rating": 4.8
+      },
+      "gold_source": "rule",
+      "n_relevant": 16,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.6372,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1875,
+          "nDCG@10": 0.2059,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.3957,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0013",
+      "question": "easily reachable hotels within 3 minutes in colombo",
       "category": "accessibility",
+      "gold": {
+        "max_travel_time": 3.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 22,
+      "scores": {
+        "Filter": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.1301,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 0.4,
+          "R@10": 0.1818,
+          "nDCG@10": 0.174,
+          "MRR": 0.2
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.0909,
+          "nDCG@10": 0.0917,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.0909,
+          "nDCG@10": 0.0932,
+          "MRR": 0.25
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4545,
+          "nDCG@10": 0.9914,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0014",
+      "question": "avoid congestion, hotels easy to get to within 5 minutes in colombo",
+      "category": "disruption",
       "gold": {
         "max_travel_time": 5.0
       },
       "gold_source": "rule",
-      "n_relevant": 28,
-      "scores": {
-        "Filter": {
-          "P@10": 0.5,
-          "R@10": 0.1786,
-          "nDCG@10": 0.3792,
-          "MRR": 0.25
-        },
-        "VectorRAG": {
-          "P@10": 0.3,
-          "R@10": 0.1071,
-          "nDCG@10": 0.3031,
-          "MRR": 0.5
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.3571,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q33",
-      "question": "hotels that are not stuck in congestion",
-      "category": "accessibility",
-      "gold": {
-        "max_travel_time": 6.0
-      },
-      "gold_source": "rule",
       "n_relevant": 32,
       "scores": {
         "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 0.8349,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
           "P@10": 0.6,
           "R@10": 0.1875,
-          "nDCG@10": 0.5181,
+          "nDCG@10": 0.4513,
           "MRR": 0.5
         },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.1562,
-          "nDCG@10": 0.5795,
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 0.7957,
           "MRR": 1.0
         },
         "WeightedGraphRAG": {
@@ -1135,103 +885,8 @@
       }
     },
     {
-      "id": "q34",
-      "question": "easily reachable hotels within 8 minutes drive",
-      "category": "accessibility",
-      "gold": {
-        "max_travel_time": 8.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 46,
-      "scores": {
-        "Filter": {
-          "P@10": 0.8,
-          "R@10": 0.1739,
-          "nDCG@10": 0.8116,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 1.0,
-          "R@10": 0.2174,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.2174,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q35",
-      "question": "hotels with air conditioning",
-      "category": "amenity",
-      "gold": {
-        "required_amenities": [
-          "air conditioning"
-        ]
-      },
-      "gold_source": "rule",
-      "n_relevant": 57,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.1754,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 1.0,
-          "R@10": 0.1754,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.1754,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q36",
-      "question": "air conditioned hotels under 40000",
-      "category": "amenity",
-      "gold": {
-        "required_amenities": [
-          "air conditioning"
-        ],
-        "max_price": 40000
-      },
-      "gold_source": "rule",
-      "n_relevant": 23,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.4348,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.6,
-          "R@10": 0.2609,
-          "nDCG@10": 0.6461,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.7,
-          "R@10": 0.3043,
-          "nDCG@10": 0.7624,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q37",
-      "question": "hotels with hot water",
+      "id": "q0015",
+      "question": "stays where hot water is included",
       "category": "amenity",
       "gold": {
         "required_amenities": [
@@ -1239,433 +894,1952 @@
         ]
       },
       "gold_source": "rule",
-      "n_relevant": 23,
+      "n_relevant": 24,
       "scores": {
         "Filter": {
           "P@10": 0.2,
-          "R@10": 0.087,
+          "R@10": 0.0833,
           "nDCG@10": 0.1428,
           "MRR": 0.1429
         },
-        "VectorRAG": {
+        "Keyword": {
           "P@10": 1.0,
-          "R@10": 0.4348,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
           "nDCG@10": 1.0,
           "MRR": 1.0
         },
         "WeightedGraphRAG": {
-          "P@10": 0.1,
-          "R@10": 0.0435,
-          "nDCG@10": 0.0636,
-          "MRR": 0.1
+          "P@10": 0.4,
+          "R@10": 0.1667,
+          "nDCG@10": 0.3569,
+          "MRR": 0.5
         }
       }
     },
     {
-      "id": "q38",
-      "question": "hotels with a 24 hour front desk",
-      "category": "amenity",
+      "id": "q0016",
+      "question": "highly rated hotels over 4.8",
+      "category": "quality",
       "gold": {
-        "required_amenities": [
-          "front desk"
-        ]
+        "min_rating": 4.8
       },
       "gold_source": "rule",
-      "n_relevant": 57,
+      "n_relevant": 16,
       "scores": {
         "Filter": {
           "P@10": 1.0,
-          "R@10": 0.1754,
-          "nDCG@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
           "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 1.0,
-          "R@10": 0.1754,
-          "nDCG@10": 1.0,
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.6344,
           "MRR": 1.0
         },
-        "WeightedGraphRAG": {
-          "P@10": 1.0,
-          "R@10": 0.1754,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q39",
-      "question": "affordable hotels under 30000 rated above 4",
-      "category": "multi_dimensional",
-      "gold": {
-        "max_price": 30000,
-        "min_rating": 4.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 11,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.9091,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.7,
-          "R@10": 0.6364,
-          "nDCG@10": 0.791,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
+        "SemanticVec": {
           "P@10": 0.3,
-          "R@10": 0.2727,
-          "nDCG@10": 0.3621,
+          "R@10": 0.1875,
+          "nDCG@10": 0.1998,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.3906,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q40",
-      "question": "top rated hotels with fast access, rating 4.3 or higher within 6 minutes",
-      "category": "multi_dimensional",
+      "id": "q0017",
+      "question": "premium hotels over 80000 lkr",
+      "category": "economic",
       "gold": {
-        "min_rating": 4.3,
-        "max_travel_time": 6.0
+        "min_price": 80000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.6667,
+          "nDCG@10": 0.8671,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.6973,
+          "MRR": 0.5
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.1677,
+          "MRR": 0.125
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.5032,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.6667,
+          "nDCG@10": 0.8671,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0018",
+      "question": "top-rated hotels above 4.7",
+      "category": "quality",
+      "gold": {
+        "min_rating": 4.7
       },
       "gold_source": "rule",
       "n_relevant": 26,
       "scores": {
         "Filter": {
-          "P@10": 0.6,
-          "R@10": 0.2308,
-          "nDCG@10": 0.5181,
-          "MRR": 0.5
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.4,
-          "R@10": 0.1538,
-          "nDCG@10": 0.4007,
-          "MRR": 0.5
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.3846,
+          "nDCG@10": 0.8362,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1923,
+          "nDCG@10": 0.3802,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.3846,
+          "nDCG@10": 0.6597,
+          "MRR": 1.0
         },
         "WeightedGraphRAG": {
           "P@10": 1.0,
-          "R@10": 0.3846,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0019",
+      "question": "hot water hotels in colombo",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "gold_source": "rule",
+      "n_relevant": 24,
+      "scores": {
+        "Filter": {
+          "P@10": 0.2,
+          "R@10": 0.0833,
+          "nDCG@10": 0.1428,
+          "MRR": 0.1429
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.8,
+          "R@10": 0.3333,
+          "nDCG@10": 0.8701,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.4,
+          "R@10": 0.1667,
+          "nDCG@10": 0.3569,
+          "MRR": 0.5
+        }
+      }
+    },
+    {
+      "id": "q0020",
+      "question": "quick access hotels under 3 min commute",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 3.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 22,
+      "scores": {
+        "Filter": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.1301,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 0.9,
+          "R@10": 0.4091,
+          "nDCG@10": 0.6087,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.0909,
+          "nDCG@10": 0.1258,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.3182,
+          "nDCG@10": 0.5143,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4545,
           "nDCG@10": 1.0,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q41",
-      "question": "budget hotels below 25000 that are easy to reach",
+      "id": "q0021",
+      "question": "stays unaffected by road closures and jams",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 38,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.1842,
+          "nDCG@10": 0.5587,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.6,
+          "R@10": 0.1579,
+          "nDCG@10": 0.4456,
+          "MRR": 0.5
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.0789,
+          "nDCG@10": 0.2141,
+          "MRR": 0.1667
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.1053,
+          "nDCG@10": 0.2619,
+          "MRR": 0.2
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2632,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0022",
+      "question": "hotels with front desk below 30000 lkr",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 30000
+      },
+      "gold_source": "rule",
+      "n_relevant": 19,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.1053,
+          "nDCG@10": 0.1635,
+          "MRR": 0.2
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.1053,
+          "nDCG@10": 0.1795,
+          "MRR": 0.3333
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.1579,
+          "nDCG@10": 0.3384,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0023",
+      "question": "quick access hotels under 3 min commute in colombo",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 3.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 22,
+      "scores": {
+        "Filter": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.1301,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 0.9,
+          "R@10": 0.4091,
+          "nDCG@10": 0.5992,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.242,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.3636,
+          "nDCG@10": 0.5154,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4545,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0024",
+      "question": "value for money hotels under 15000",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.522,
+          "MRR": 0.3333
+        },
+        "Hybrid": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0025",
+      "question": "hotels rated at least 4.8 in colombo",
+      "category": "quality",
+      "gold": {
+        "min_rating": 4.8
+      },
+      "gold_source": "rule",
+      "n_relevant": 16,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.6371,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1875,
+          "nDCG@10": 0.2485,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.6364,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0026",
+      "question": "good hotels below 25000 with rating 4.3 or higher",
+      "category": "multi_dimensional",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "gold_source": "rule",
+      "n_relevant": 7,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.4286,
+          "nDCG@10": 0.7388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 0.4286,
+          "nDCG@10": 0.5414,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "Hybrid": {
+          "P@10": 0.1,
+          "R@10": 0.1429,
+          "nDCG@10": 0.0867,
+          "MRR": 0.3333
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4286,
+          "nDCG@10": 0.7388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0027",
+      "question": "hot water hotels",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "gold_source": "rule",
+      "n_relevant": 24,
+      "scores": {
+        "Filter": {
+          "P@10": 0.2,
+          "R@10": 0.0833,
+          "nDCG@10": 0.1428,
+          "MRR": 0.1429
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.4,
+          "R@10": 0.1667,
+          "nDCG@10": 0.3569,
+          "MRR": 0.5
+        }
+      }
+    },
+    {
+      "id": "q0028",
+      "question": "budget stays below 15000 rupees",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.8821,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.5209,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.8403,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0029",
+      "question": "hotels reachable despite rush hour in 5 minutes or less in colombo",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 32,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.0625,
+          "nDCG@10": 0.1199,
+          "MRR": 0.2
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1562,
+          "nDCG@10": 0.4022,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.1,
+          "R@10": 0.0312,
+          "nDCG@10": 0.0636,
+          "MRR": 0.1
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0030",
+      "question": "hotels with air conditioning below 30000 lkr",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 30000
+      },
+      "gold_source": "rule",
+      "n_relevant": 19,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.1053,
+          "nDCG@10": 0.1518,
+          "MRR": 0.1667
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1579,
+          "nDCG@10": 0.3571,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.1579,
+          "nDCG@10": 0.4035,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0031",
+      "question": "need a room with hot water",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "gold_source": "rule",
+      "n_relevant": 24,
+      "scores": {
+        "Filter": {
+          "P@10": 0.2,
+          "R@10": 0.0833,
+          "nDCG@10": 0.1428,
+          "MRR": 0.1429
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.4,
+          "R@10": 0.1667,
+          "nDCG@10": 0.3569,
+          "MRR": 0.5
+        }
+      }
+    },
+    {
+      "id": "q0032",
+      "question": "affordable hotels under 25000 rated above 4.4",
+      "category": "multi_dimensional",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.4
+      },
+      "gold_source": "rule",
+      "n_relevant": 7,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.1429,
+          "nDCG@10": 0.4312,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 0.4286,
+          "nDCG@10": 0.4422,
+          "MRR": 0.5
+        },
+        "SemanticVec": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.4286,
+          "nDCG@10": 0.5864,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1429,
+          "nDCG@10": 0.4312,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0033",
+      "question": "hotels i can afford under 15000 lkr",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.2145,
+          "MRR": 0.1667
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.6347,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.7763,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0034",
+      "question": "avoid congestion, hotels easy to get to within 5 minutes",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 32,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 0.8205,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.4,
+          "R@10": 0.125,
+          "nDCG@10": 0.3132,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.25,
+          "nDCG@10": 0.7591,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0035",
+      "question": "easily reachable hotels within 5 minutes",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 32,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.1,
+          "R@10": 0.0312,
+          "nDCG@10": 0.0694,
+          "MRR": 0.5
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.0938,
+          "nDCG@10": 0.2539,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.1,
+          "R@10": 0.0312,
+          "nDCG@10": 0.0694,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0036",
+      "question": "hotels with reliable travel time under 6 min even with roadworks",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 38,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.1842,
+          "nDCG@10": 0.5587,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.9,
+          "R@10": 0.2368,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.0789,
+          "nDCG@10": 0.348,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.2105,
+          "nDCG@10": 0.7811,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2632,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0037",
+      "question": "inexpensive rooms below 15000 a night in colombo",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.4363,
+          "MRR": 0.25
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.1065,
+          "MRR": 0.1429
+        },
+        "Hybrid": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.3194,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0038",
+      "question": "highly rated hotels over 4.7 in colombo",
+      "category": "quality",
+      "gold": {
+        "min_rating": 4.7
+      },
+      "gold_source": "rule",
+      "n_relevant": 26,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.3846,
+          "nDCG@10": 0.8362,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1923,
+          "nDCG@10": 0.3856,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.3846,
+          "nDCG@10": 0.7532,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0039",
+      "question": "hotels reachable despite rush hour in 5 minutes or less",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 32,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.2,
+          "R@10": 0.0625,
+          "nDCG@10": 0.1402,
+          "MRR": 0.3333
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.0625,
+          "nDCG@10": 0.1884,
+          "MRR": 0.3333
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.0625,
+          "nDCG@10": 0.2675,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0040",
+      "question": "stays unaffected by road closures and jams in colombo",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 38,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.1842,
+          "nDCG@10": 0.5587,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.1316,
+          "nDCG@10": 0.5349,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1316,
+          "nDCG@10": 0.3054,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.1053,
+          "nDCG@10": 0.2966,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2632,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0041",
+      "question": "premium hotels over 80000 lkr in colombo",
+      "category": "economic",
+      "gold": {
+        "min_price": 80000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.5317,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.5317,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.6853,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.5317,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0042",
+      "question": "hotels that stay reachable in heavy traffic under 6 min in colombo",
+      "category": "disruption",
+      "gold": {
+        "max_travel_time": 6.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 38,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.1842,
+          "nDCG@10": 0.5587,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.1316,
+          "nDCG@10": 0.2791,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1316,
+          "nDCG@10": 0.4241,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.0789,
+          "nDCG@10": 0.1638,
+          "MRR": 0.3333
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2632,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0043",
+      "question": "minimal commute hotels under 3 minutes",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 3.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 22,
+      "scores": {
+        "Filter": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.1301,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.3182,
+          "nDCG@10": 0.4474,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.141,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.2273,
+          "nDCG@10": 0.3364,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4545,
+          "nDCG@10": 0.9914,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0044",
+      "question": "value for money hotels under 15000 in colombo",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.1138,
+          "MRR": 0.1667
+        },
+        "Hybrid": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0045",
+      "question": "hotels within 3 minutes drive from the city",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 3.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 22,
+      "scores": {
+        "Filter": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.1301,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.3182,
+          "nDCG@10": 0.4291,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1364,
+          "nDCG@10": 0.2327,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.2273,
+          "nDCG@10": 0.3996,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4545,
+          "nDCG@10": 0.9546,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0046",
+      "question": "inexpensive rooms below 15000 a night",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.4543,
+          "MRR": 0.2
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.1008,
+          "MRR": 0.125
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.6363,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0047",
+      "question": "affordable hotels under 25000 rated above 4.3",
+      "category": "multi_dimensional",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "gold_source": "rule",
+      "n_relevant": 7,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.4286,
+          "nDCG@10": 0.7388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.7143,
+          "nDCG@10": 0.7742,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.4286,
+          "nDCG@10": 0.3453,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4286,
+          "nDCG@10": 0.7388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0048",
+      "question": "hotels with front desk below 30000 lkr in colombo",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "front desk"
+        ],
+        "max_price": 30000
+      },
+      "gold_source": "rule",
+      "n_relevant": 19,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.4,
+          "R@10": 0.2105,
+          "nDCG@10": 0.3031,
+          "MRR": 0.25
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.0526,
+          "nDCG@10": 0.0948,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.3,
+          "R@10": 0.1579,
+          "nDCG@10": 0.2521,
+          "MRR": 0.3333
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0049",
+      "question": "excellent hotels rated 4.8 or better",
+      "category": "quality",
+      "gold": {
+        "min_rating": 4.8
+      },
+      "gold_source": "rule",
+      "n_relevant": 16,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.65,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.1875,
+          "nDCG@10": 0.1952,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.3125,
+          "nDCG@10": 0.4042,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1875,
+          "nDCG@10": 0.6385,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0050",
+      "question": "quick access hotels under 4 min commute",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 4.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 29,
+      "scores": {
+        "Filter": {
+          "P@10": 0.5,
+          "R@10": 0.1724,
+          "nDCG@10": 0.2701,
+          "MRR": 0.25
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.3448,
+          "nDCG@10": 0.7209,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.4,
+          "R@10": 0.1379,
+          "nDCG@10": 0.2446,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.2414,
+          "nDCG@10": 0.5323,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3448,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0051",
+      "question": "air conditioning hotels under 30000 in colombo",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "air conditioning"
+        ],
+        "max_price": 30000
+      },
+      "gold_source": "rule",
+      "n_relevant": 19,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 0.1579,
+          "nDCG@10": 0.2154,
+          "MRR": 0.1667
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.0526,
+          "nDCG@10": 0.2201,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.2105,
+          "nDCG@10": 0.4327,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.5263,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0052",
+      "question": "good hotels below 25000 with rating 4.4 or higher in colombo",
+      "category": "multi_dimensional",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.4
+      },
+      "gold_source": "rule",
+      "n_relevant": 7,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.1429,
+          "nDCG@10": 0.4312,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.1,
+          "R@10": 0.1429,
+          "nDCG@10": 0.0623,
+          "MRR": 0.1
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.1429,
+          "nDCG@10": 0.1536,
+          "MRR": 0.1667
+        },
+        "Hybrid": {
+          "P@10": 0.1,
+          "R@10": 0.1429,
+          "nDCG@10": 0.0768,
+          "MRR": 0.1667
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.1429,
+          "nDCG@10": 0.4312,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0053",
+      "question": "affordable hotels under 25000 rated above 4.3 in colombo",
+      "category": "multi_dimensional",
+      "gold": {
+        "max_price": 25000,
+        "min_rating": 4.3
+      },
+      "gold_source": "rule",
+      "n_relevant": 7,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.4286,
+          "nDCG@10": 0.7388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.5,
+          "R@10": 0.7143,
+          "nDCG@10": 0.7818,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.1,
+          "R@10": 0.1429,
+          "nDCG@10": 0.1341,
+          "MRR": 0.2
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.2857,
+          "nDCG@10": 0.4137,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.4286,
+          "nDCG@10": 0.7388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0054",
+      "question": "hotels costing at most 15000 lkr",
+      "category": "economic",
+      "gold": {
+        "max_price": 15000
+      },
+      "gold_source": "rule",
+      "n_relevant": 3,
+      "scores": {
+        "Filter": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.1,
+          "R@10": 0.3333,
+          "nDCG@10": 0.1236,
+          "MRR": 0.2
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 1.0,
+          "nDCG@10": 0.6705,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.2,
+          "R@10": 0.6667,
+          "nDCG@10": 0.5209,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3333,
+          "nDCG@10": 0.6388,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0055",
+      "question": "hotels within 5 minutes drive from the city",
+      "category": "accessibility",
+      "gold": {
+        "max_travel_time": 5.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 32,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.5727,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.4,
+          "R@10": 0.125,
+          "nDCG@10": 0.2828,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.6,
+          "R@10": 0.1875,
+          "nDCG@10": 0.4174,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0056",
+      "question": "places that have hot water in colombo",
+      "category": "amenity",
+      "gold": {
+        "required_amenities": [
+          "hot water"
+        ]
+      },
+      "gold_source": "rule",
+      "n_relevant": 24,
+      "scores": {
+        "Filter": {
+          "P@10": 0.2,
+          "R@10": 0.0833,
+          "nDCG@10": 0.1428,
+          "MRR": 0.1429
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 1.0,
+          "R@10": 0.4167,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.4,
+          "R@10": 0.1667,
+          "nDCG@10": 0.3569,
+          "MRR": 0.5
+        }
+      }
+    },
+    {
+      "id": "q0057",
+      "question": "cheap hotels under 25000 with quick 7 min access in colombo",
       "category": "multi_dimensional",
       "gold": {
         "max_price": 25000,
         "max_travel_time": 7.0
       },
       "gold_source": "rule",
-      "n_relevant": 6,
-      "scores": {
-        "Filter": {
-          "P@10": 0.6,
-          "R@10": 1.0,
-          "nDCG@10": 0.8716,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.8333,
-          "nDCG@10": 0.5175,
-          "MRR": 0.25
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.3,
-          "R@10": 0.5,
-          "nDCG@10": 0.3862,
-          "MRR": 0.5
-        }
-      }
-    },
-    {
-      "id": "q42",
-      "question": "luxury 5 star hotels with quick city access",
-      "category": "multi_dimensional",
-      "gold": {
-        "min_star": 5,
-        "max_travel_time": 7.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 14,
-      "scores": {
-        "Filter": {
-          "P@10": 0.9,
-          "R@10": 0.6429,
-          "nDCG@10": 0.9052,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.1,
-          "R@10": 0.0714,
-          "nDCG@10": 0.0948,
-          "MRR": 0.25
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.9,
-          "R@10": 0.6429,
-          "nDCG@10": 0.9149,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q43",
-      "question": "well rated air conditioned hotels",
-      "category": "multi_dimensional",
-      "gold": {
-        "min_rating": 4.2,
-        "required_amenities": [
-          "air conditioning"
-        ]
-      },
-      "gold_source": "rule",
-      "n_relevant": 45,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.2222,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.9,
-          "R@10": 0.2,
-          "nDCG@10": 0.9052,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.9,
-          "R@10": 0.2,
-          "nDCG@10": 0.9052,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q44",
-      "question": "cheap quiet hotels away from traffic under 35000",
-      "category": "multi_dimensional",
-      "gold": {
-        "max_price": 35000,
-        "max_travel_time": 6.0
-      },
-      "gold_source": "rule",
       "n_relevant": 11,
       "scores": {
         "Filter": {
-          "P@10": 0.8,
-          "R@10": 0.7273,
-          "nDCG@10": 0.858,
+          "P@10": 0.9,
+          "R@10": 0.8182,
+          "nDCG@10": 0.8854,
           "MRR": 1.0
         },
-        "VectorRAG": {
-          "P@10": 0.5,
-          "R@10": 0.4545,
-          "nDCG@10": 0.5795,
+        "Keyword": {
+          "P@10": 0.4,
+          "R@10": 0.3636,
+          "nDCG@10": 0.4831,
           "MRR": 1.0
         },
-        "WeightedGraphRAG": {
-          "P@10": 0.5,
-          "R@10": 0.4545,
-          "nDCG@10": 0.4229,
-          "MRR": 0.3333
-        }
-      }
-    },
-    {
-      "id": "q45",
-      "question": "good hotels under 60000 rated at least 4.4 with low travel time",
-      "category": "multi_dimensional",
-      "gold": {
-        "max_price": 60000,
-        "min_rating": 4.4,
-        "max_travel_time": 7.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 12,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.8333,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.1818,
+          "nDCG@10": 0.3183,
+          "MRR": 0.5
         },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.5,
-          "R@10": 0.4167,
-          "nDCG@10": 0.5704,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q46",
-      "question": "highly rated budget stays below 20000",
-      "category": "multi_dimensional",
-      "gold": {
-        "max_price": 20000,
-        "min_rating": 4.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 2,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 1.0,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.0,
-          "R@10": 0.0,
-          "nDCG@10": 0.0,
-          "MRR": 0.0
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.1,
-          "R@10": 0.5,
-          "nDCG@10": 0.2184,
-          "MRR": 0.1667
-        }
-      }
-    },
-    {
-      "id": "q47",
-      "question": "4 star hotels under 70000 LKR",
-      "category": "multi_dimensional",
-      "gold": {
-        "min_star": 4,
-        "max_price": 70000
-      },
-      "gold_source": "rule",
-      "n_relevant": 28,
-      "scores": {
-        "Filter": {
-          "P@10": 1.0,
-          "R@10": 0.3571,
-          "nDCG@10": 1.0,
-          "MRR": 1.0
-        },
-        "VectorRAG": {
-          "P@10": 0.8,
-          "R@10": 0.2857,
-          "nDCG@10": 0.8669,
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.3636,
+          "nDCG@10": 0.5467,
           "MRR": 1.0
         },
         "WeightedGraphRAG": {
           "P@10": 0.9,
-          "R@10": 0.3214,
-          "nDCG@10": 0.9216,
+          "R@10": 0.8182,
+          "nDCG@10": 0.9329,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q48",
-      "question": "hotels above 4.5 rating with easy access",
-      "category": "multi_dimensional",
+      "id": "q0058",
+      "question": "hotels with reliable travel time under 5 min even with roadworks in colombo",
+      "category": "disruption",
       "gold": {
-        "min_rating": 4.5,
+        "max_travel_time": 5.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 32,
+      "scores": {
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.2188,
+          "nDCG@10": 0.4814,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 0.9207,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.3,
+          "R@10": 0.0938,
+          "nDCG@10": 0.1906,
+          "MRR": 0.2
+        },
+        "Hybrid": {
+          "P@10": 0.9,
+          "R@10": 0.2812,
+          "nDCG@10": 0.7511,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.3125,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "q0059",
+      "question": "hotels not slowed by traffic, within 6 minutes in colombo",
+      "category": "disruption",
+      "gold": {
         "max_travel_time": 6.0
       },
       "gold_source": "rule",
-      "n_relevant": 19,
+      "n_relevant": 38,
       "scores": {
         "Filter": {
-          "P@10": 0.6,
-          "R@10": 0.3158,
-          "nDCG@10": 0.5181,
-          "MRR": 0.5
-        },
-        "VectorRAG": {
-          "P@10": 0.2,
-          "R@10": 0.1053,
-          "nDCG@10": 0.1795,
-          "MRR": 0.3333
-        },
-        "WeightedGraphRAG": {
-          "P@10": 0.6,
-          "R@10": 0.3158,
-          "nDCG@10": 0.653,
-          "MRR": 1.0
-        }
-      }
-    },
-    {
-      "id": "q49",
-      "question": "comfortable mid range hotel with good reviews, not too far out",
-      "category": "multi_dimensional",
-      "gold": {
-        "max_price": 60000,
-        "min_rating": 4.2,
-        "max_travel_time": 8.0
-      },
-      "gold_source": "rule",
-      "n_relevant": 21,
-      "scores": {
-        "Filter": {
-          "P@10": 0.4,
-          "R@10": 0.1905,
-          "nDCG@10": 0.3635,
-          "MRR": 0.5
-        },
-        "VectorRAG": {
-          "P@10": 0.1,
-          "R@10": 0.0476,
-          "nDCG@10": 0.0694,
-          "MRR": 0.125
-        },
-        "WeightedGraphRAG": {
           "P@10": 0.7,
-          "R@10": 0.3333,
-          "nDCG@10": 0.7417,
+          "R@10": 0.1842,
+          "nDCG@10": 0.5587,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.1842,
+          "nDCG@10": 0.4602,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.6,
+          "R@10": 0.1579,
+          "nDCG@10": 0.5785,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.6,
+          "R@10": 0.1579,
+          "nDCG@10": 0.5011,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2632,
+          "nDCG@10": 1.0,
           "MRR": 1.0
         }
       }
     },
     {
-      "id": "q50",
-      "question": "best overall hotel: affordable, well rated and quick to reach",
-      "category": "multi_dimensional",
+      "id": "q0060",
+      "question": "hotels rated at least 4.7 in colombo",
+      "category": "quality",
       "gold": {
-        "max_price": 45000,
-        "min_rating": 4.3,
-        "max_travel_time": 7.0
+        "min_rating": 4.7
       },
       "gold_source": "rule",
-      "n_relevant": 13,
+      "n_relevant": 26,
       "scores": {
         "Filter": {
-          "P@10": 0.3,
-          "R@10": 0.2308,
-          "nDCG@10": 0.2687,
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.9,
+          "R@10": 0.3462,
+          "nDCG@10": 0.797,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1923,
+          "nDCG@10": 0.3525,
           "MRR": 0.5
         },
-        "VectorRAG": {
-          "P@10": 0.2,
-          "R@10": 0.1538,
-          "nDCG@10": 0.137,
-          "MRR": 0.1429
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.3077,
+          "nDCG@10": 0.7321,
+          "MRR": 1.0
         },
         "WeightedGraphRAG": {
-          "P@10": 0.8,
-          "R@10": 0.6154,
-          "nDCG@10": 0.8318,
+          "P@10": 1.0,
+          "R@10": 0.3077,
+          "nDCG@10": 0.9306,
           "MRR": 1.0
         }
       }
