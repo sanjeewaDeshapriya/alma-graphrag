@@ -31,7 +31,7 @@
         <div>
           <p class="kicker">Studio · RQ3 · Phase 5</p>
           <h1>Evaluation Walkthrough</h1>
-          <p class="muted">How ALMA-GraphRAG is measured against a filter baseline and a vector-RAG baseline — step by step, on live data.</p>
+          <p class="muted">How ALMA-GraphRAG is measured against filter, keyword, semantic and hybrid retrieval baselines — step by step, on live data.</p>
         </div>
         <div class="toolbar">
           <span class="pill" id="pillCity">city · —</span>
@@ -57,10 +57,11 @@
             Evaluation replays a fixed set of natural-language traveller questions against the
             same city hotel pool for every system, so any difference in scores reflects the
             <b>retrieval method only</b>. Each query ships with a <b>gold standard</b>: the set of
-            hotels that <i>should</i> be returned. Gold is currently <b>rule-based</b> — a hotel is
-            relevant iff it satisfies every objective constraint of the query (price / rating /
-            star / travel-time / amenity). Human relevance labels supersede it per-query when
-            <code>gold_human.json</code> is present.
+            hotels that <i>should</i> be returned. Gold is <b>rule-based and graded</b> (0 / 1 / 2):
+            a hotel is <i>fully relevant</i> (2) when it satisfies every constraint strictly,
+            <i>partially relevant</i> (1) inside a tolerance band (price +15%, rating −0.2,
+            star −1, travel +2 min) — so no baseline's hard cut-offs act as a perfect oracle.
+            Human relevance labels supersede it per-query when <code>gold_human.json</code> is present.
           </p>
           <div id="qsStats" class="stats-grid"></div>
           <h3 class="block-title">Query categories</h3>
@@ -80,9 +81,9 @@
       <!-- STEP 2 — SYSTEMS -->
       <section class="step-panel" data-step="2">
         <div class="panel">
-          <div class="panel-head"><h2>Step 2 — The three systems being compared</h2></div>
+          <div class="panel-head"><h2>Step 2 — The five systems being compared</h2></div>
           <p class="muted step-lead">
-            All three retrieve from the identical candidate pool and return a ranked top-K list of
+            All five retrieve from the identical candidate pool and return a ranked top-K list of
             hotel ids. They differ only in <b>what evidence they can see</b>.
           </p>
           <div class="sys-cards">
@@ -97,13 +98,33 @@
               </div>
             </div>
             <div class="sys-card">
-              <h3>VectorRAG <span class="sys-tag">baseline</span></h3>
-              <p class="muted">Vector retrieval — TF-IDF cosine similarity between the query and each hotel's text (name, description, amenities, attractions). Lexical-dense; swappable for dense embeddings.</p>
+              <h3>Keyword <span class="sys-tag">baseline</span></h3>
+              <p class="muted">Lexical retrieval — Postgres full-text search (<code>tsvector</code> / <code>ts_rank</code>) over hotel name, description and amenity text. Matches exact word forms only: “quiet” does not match “peaceful”.</p>
               <div class="sys-see">
-                <span class="chip good">text</span><span class="chip good">amenities</span><span class="chip good">attractions</span>
+                <span class="chip good">keywords</span><span class="chip good">amenities</span>
               </div>
               <div class="sys-see">
-                <span class="chip blind">numeric price</span><span class="chip blind">travel time</span><span class="chip blind">disruption</span>
+                <span class="chip blind">meaning</span><span class="chip blind">numeric price</span><span class="chip blind">travel time</span>
+              </div>
+            </div>
+            <div class="sys-card">
+              <h3>Semantic <span class="sys-tag">baseline</span></h3>
+              <p class="muted">Dense-vector retrieval — sentence-transformers embeddings (all-MiniLM-L6-v2, 384-d) indexed in pgvector, ranked by cosine similarity. Generalises over wording, capturing meaning rather than exact terms.</p>
+              <div class="sys-see">
+                <span class="chip good">meaning</span><span class="chip good">text</span><span class="chip good">attractions</span>
+              </div>
+              <div class="sys-see">
+                <span class="chip blind">numeric price</span><span class="chip blind">travel time</span>
+              </div>
+            </div>
+            <div class="sys-card">
+              <h3>Hybrid <span class="sys-tag">baseline</span></h3>
+              <p class="muted">Reciprocal Rank Fusion of the keyword and semantic rankings — the standard strong lexical + dense retrieval baseline in modern RAG systems.</p>
+              <div class="sys-see">
+                <span class="chip good">keywords</span><span class="chip good">meaning</span>
+              </div>
+              <div class="sys-see">
+                <span class="chip blind">numeric price</span><span class="chip blind">travel time</span>
               </div>
             </div>
             <div class="sys-card highlight">
@@ -125,8 +146,10 @@
         <div class="panel">
           <div class="panel-head"><h2>Step 3 — How each ranked list is scored</h2></div>
           <p class="muted step-lead">
-            Binary relevance (a hotel is either in the gold set or not), evaluated at
-            <b>K = 10</b>. Every metric is computed per query, then averaged across all queries.
+            Evaluated at <b>K = 10</b>, per query, then averaged. Precision / Recall / MRR use
+            binary relevance (grade ≥ 1); <b>nDCG uses the graded gains</b> (2 = fully, 1 =
+            partially relevant), so ranking a fully-relevant hotel above a borderline one scores
+            higher. Differences vs GraphRAG are significance-tested (paired bootstrap + Wilcoxon).
           </p>
           <div class="metric-cards">
             <div class="metric-card">
@@ -140,9 +163,9 @@
               <p class="muted">Of everything relevant, how much we surfaced. Rewards coverage.</p>
             </div>
             <div class="metric-card">
-              <h3>nDCG@10</h3>
-              <div class="formula">DCG = Σ  rel<sub>i</sub> / log<sub>2</sub>(i + 1)  ·  nDCG = DCG / ideal-DCG</div>
-              <p class="muted">Rank-sensitive: a relevant hotel at rank 1 is worth more than at rank 10. The headline metric.</p>
+              <h3>nDCG@10 <span class="sys-tag">graded</span></h3>
+              <div class="formula">DCG = Σ  gain<sub>i</sub> / log<sub>2</sub>(i + 1)  ·  nDCG = DCG / ideal-DCG  ·  gain ∈ {0, 1, 2}</div>
+              <p class="muted">Rank-sensitive with graded gains: a fully-relevant hotel at rank 1 is worth more than a borderline one. The headline metric.</p>
             </div>
             <div class="metric-card">
               <h3>MRR</h3>
@@ -171,6 +194,17 @@
               <thead><tr><th>System</th><th class="num">P@10</th><th class="num">R@10</th><th class="num">nDCG@10</th><th class="num">MRR</th></tr></thead>
               <tbody></tbody>
             </table>
+          </div>
+          <p class="table-note">★ marks the best system by nDCG@10 (headline metric, graded gains); bold values mark the best system per metric.</p>
+          <div id="sigBlock" class="hidden">
+            <h3 class="block-title">Statistical significance — paired vs GraphRAG</h3>
+            <div class="table-wrap">
+              <table id="sigTable">
+                <thead><tr><th>System</th><th class="num">Δ nDCG@10</th><th class="num">95% CI</th><th class="num">p (Wilcoxon)</th><th class="num">p (Holm)</th><th>Verdict</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="table-note">Δ = GraphRAG − system on per-query nDCG@10 (positive = GraphRAG better). Paired bootstrap CI (10k resamples) and Wilcoxon signed-rank, Holm-corrected across comparisons; significant at α = 0.05.</p>
           </div>
           <h3 class="block-title">By category — mean nDCG@10</h3>
           <div class="table-wrap">
