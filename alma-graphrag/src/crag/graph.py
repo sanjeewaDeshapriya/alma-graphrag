@@ -14,6 +14,7 @@ import hashlib
 import json
 import logging
 import os
+import re
 from typing import Dict, TypedDict
 
 from openai import OpenAI
@@ -29,6 +30,7 @@ from src.crag.cache import Cache
 from src.crag.query_parser import parse_query
 from src.graph.query import build_graph_context
 from src.graph.retriever import WeightedRetriever, format_retrieval_context
+from src.llm_utils import chat_completion_with_retry
 
 logger = logging.getLogger("alma.crag")
 
@@ -126,7 +128,8 @@ def _grade(state: GraphState) -> GraphState:
         f"Context:\n{state.get('context', '')[:2000]}\n"
     )
     try:
-        response = _client.chat.completions.create(
+        response = chat_completion_with_retry(
+            client=_client,
             model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
@@ -153,7 +156,8 @@ def _transform_query(state: GraphState) -> GraphState:
         f"Question: {state['question']}\n"
     )
     try:
-        response = _client.chat.completions.create(
+        response = chat_completion_with_retry(
+            client=_client,
             model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
@@ -167,6 +171,32 @@ def _transform_query(state: GraphState) -> GraphState:
         "question": rewritten,
         "retries": state.get("retries", 0) + 1,
     }
+
+
+def _fallback_answer(state: GraphState) -> str:
+    """Provide a safe fallback answer when the LLM generation step fails."""
+    context = state.get("context", "")
+    if not context:
+        return "I couldn't generate an answer because the graph retrieval produced no context."
+
+    lines = [line.strip() for line in context.splitlines() if line.strip()]
+    top_candidates = [line for line in lines if line.startswith("#")][:3]
+    if top_candidates:
+        formatted_candidates = []
+        for line in top_candidates:
+            match = re.match(r"#\d+\s+(.+?)\s+\[score=(\d\.\d+)\]", line)
+            if match:
+                name, score = match.groups()
+                formatted_candidates.append(f"- {name} (score={score})")
+            else:
+                formatted_candidates.append(f"- {line}")
+        return (
+            "I couldn't generate a polished LLM answer because the LLM service was unavailable, "
+            "but here are the top hotel candidates from the graph retrieval:\n\n"
+            + "\n".join(formatted_candidates)
+            + "\n\nPlease verify your OpenAI/Gemini connection or API key to enable full answer generation."
+        )
+    return "I couldn't generate an answer because the LLM service failed, but graph retrieval succeeded."
 
 
 def _generate(state: GraphState) -> GraphState:
@@ -191,7 +221,8 @@ def _generate(state: GraphState) -> GraphState:
         f"Graph context:\n{state.get('context', '')}\n"
     )
     try:
-        response = _client.chat.completions.create(
+        response = chat_completion_with_retry(
+            client=_client,
             model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
@@ -199,7 +230,7 @@ def _generate(state: GraphState) -> GraphState:
         answer = response.choices[0].message.content.strip()
     except Exception as exc:
         logger.error("Generation failed: %s", exc)
-        answer = f"Sorry, I couldn't generate an answer: {exc}"
+        answer = _fallback_answer(state)
     return {**state, "answer": answer}
 
 
