@@ -19,7 +19,7 @@ import json
 import logging
 import statistics as st
 
-from evaluation.baselines import FilterBaseline, VectorBaseline, WeightedGraphBaseline, fetch_city_hotels
+from evaluation.baselines import FilterBaseline, SemanticBaseline, WeightedGraphBaseline, fetch_city_hotels
 from evaluation.gold import relevant_set
 from evaluation.metrics import ndcg_at_k, precision_at_k, recall_at_k, reciprocal_rank
 from src.crag.query_parser import parse_query
@@ -53,8 +53,8 @@ def main():
     city, k, queries = spec["city"], spec["k"], spec["queries"]
     pool = fetch_city_hotels(city)
 
-    F, V, G = FilterBaseline(), VectorBaseline(), WeightedGraphBaseline()
-    systems = ["Filter", "VectorRAG", "Graph", "Hybrid(G+V)", "Hybrid(G+F)", "Hybrid-Adaptive"]
+    F, V, G = FilterBaseline(), SemanticBaseline(), WeightedGraphBaseline()
+    systems = ["Filter", "SemanticVec", "Graph", "Hybrid(G+V)", "Hybrid(G+F)", "Hybrid-Adaptive"]
     ndcg = {s: [] for s in systems}
     prec = {s: [] for s in systems}
     mrr = {s: [] for s in systems}
@@ -68,7 +68,7 @@ def main():
         adaptive = rrf(f, f, g) if is_single_attribute(q["question"], city) else rrf(g, g, f)
 
         ranked = {
-            "Filter": f, "VectorRAG": v, "Graph": g,
+            "Filter": f, "SemanticVec": v, "Graph": g,
             "Hybrid(G+V)": rrf(g, v), "Hybrid(G+F)": rrf(g, f),
             "Hybrid-Adaptive": adaptive,
         }
