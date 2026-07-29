@@ -5,6 +5,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Clean up empty string env vars from os.environ so libraries (like openai)
+# don't interpret them as active blank values (e.g. empty OPENAI_BASE_URL).
+for k, v in list(os.environ.items()):
+    if v == "":
+        os.environ.pop(k, None)
+
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "alma_password123")
@@ -85,6 +91,18 @@ TRAFFIC_MAX_HOTELS_PER_BATCH = int(os.getenv("TRAFFIC_MAX_HOTELS_PER_BATCH", "25
 # Embeddings
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-ada-002")
 HOTEL_VECTOR_INDEX = os.getenv("HOTEL_VECTOR_INDEX", "hotel_embeddings")
+
+# --- pgvector keyword + semantic search -------------------------------------
+# Local sentence-transformers model used for dense semantic search (offline,
+# reproducible). all-MiniLM-L6-v2 emits 384-dim vectors.
+ST_EMBEDDING_MODEL = os.getenv("ST_EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+ST_EMBEDDING_DIM = int(os.getenv("ST_EMBEDDING_DIM", "384"))
+
+PG_HOST = os.getenv("PG_HOST", "localhost")
+PG_PORT = int(os.getenv("PG_PORT", "5433"))
+PG_DB = os.getenv("PG_DB", "alma_vectors")
+PG_USER = os.getenv("PG_USER", "alma")
+PG_PASSWORD = os.getenv("PG_PASSWORD", "alma_password123")
 
 # --- Resolved active LLM settings -------------------------------------------
 # All agents (CRAG, LLM extractor) and embedding pipelines read these instead
