@@ -38,9 +38,17 @@ def test_travel_time_tolerance():
     assert grade(h(travel_time_traffic_min=9), {"max_travel_time": 5.0}) == FAIL
 
 
-def test_multi_constraint_one_fail_caps_at_partial():
-    # under budget (pass) but rating well below (fail) -> exactly one fail -> partial
+def test_multi_constraint_any_hard_fail_disqualifies():
+    # Under budget (pass) but rating well below tolerance (fail): a hard fail
+    # on any constraint means not relevant — otherwise multi-constraint gold
+    # sets cover most of the pool and saturate the metrics.
     hotel = h(price=20000, rating=3.5)
+    assert grade(hotel, {"max_price": 25000, "min_rating": 4.5}) == FAIL
+
+
+def test_multi_constraint_band_hit_is_partial():
+    # Both constraints at least band-satisfied, one only in the band -> partial.
+    hotel = h(price=27000, rating=4.6)
     assert grade(hotel, {"max_price": 25000, "min_rating": 4.5}) == PARTIAL
 
 

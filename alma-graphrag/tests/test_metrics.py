@@ -1,8 +1,11 @@
+import math
+
 from evaluation.metrics import (
     dcg_at_k,
     evaluate_ranking,
     mean_metrics,
     ndcg_at_k,
+    ndcg_at_k_graded,
     precision_at_k,
     recall_at_k,
     reciprocal_rank,
@@ -64,3 +67,39 @@ def test_mean_metrics():
     rows = [{"m": 1.0}, {"m": 0.0}]
     assert mean_metrics(rows) == {"m": 0.5}
     assert mean_metrics([]) == {}
+
+
+# --- graded nDCG -----------------------------------------------------------
+
+def test_graded_ndcg_perfect_order_is_one():
+    gains = {"a": 2, "b": 1}
+    assert ndcg_at_k_graded(["a", "b", "x"], gains, 3) == 1.0
+
+
+def test_graded_ndcg_prefers_full_over_partial_first():
+    gains = {"full": 2, "part": 1}
+    good = ndcg_at_k_graded(["full", "part"], gains, 2)
+    swapped = ndcg_at_k_graded(["part", "full"], gains, 2)
+    assert good == 1.0
+    assert swapped < good
+    # binary nDCG cannot see the difference — that's the point of grading
+    assert ndcg_at_k(["part", "full"], {"full", "part"}, 2) == 1.0
+
+
+def test_graded_ndcg_empty_gains_is_zero():
+    assert ndcg_at_k_graded(["a"], {}, 3) == 0.0
+
+
+def test_graded_ndcg_hand_computed():
+    # ranked: [a(2), x(0), b(1)]; dcg = 2/log2(2) + 1/log2(4) = 2 + 0.5
+    # ideal: [2, 1] -> idcg = 2/log2(2) + 1/log2(3)
+    gains = {"a": 2, "b": 1}
+    expected = (2.0 + 1.0 / math.log2(4)) / (2.0 + 1.0 / math.log2(3))
+    assert abs(ndcg_at_k_graded(["a", "x", "b"], gains, 3) - expected) < 1e-12
+
+
+def test_evaluate_ranking_uses_gains_for_ndcg_only():
+    gains = {"a": 2, "b": 1}
+    row = evaluate_ranking(["b", "a"], {"a", "b"}, 2, gains=gains)
+    assert row["P@2"] == 1.0          # binary: both relevant
+    assert row["nDCG@2"] < 1.0        # graded: wrong order penalised
