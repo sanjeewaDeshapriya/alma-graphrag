@@ -243,3 +243,13 @@ curl -X POST http://127.0.0.1:8000/ingest/news
 - Set `LLM_EXTRACT_ENABLED=true` to enrich amenities/locations from hotel text.
 - News ingestion tries NewsAPI → GNews → RSS in order; set API keys in `.env`.
 - Set `GOOGLE_MAPS_API_KEY` in `.env` to enable hotel map with zoom/pan (Google Maps + Places library).
+
+## Vector search index (keyword / semantic / hybrid baselines)
+
+The evaluation's text baselines search a pgvector index built from the hotel graph.
+Rebuild it whenever hotel data changes (the harness warns when it is stale):
+
+```bash
+docker compose up -d          # Neo4j + pgvector
+python scripts/build_vector_index.py --cities Colombo
+```
