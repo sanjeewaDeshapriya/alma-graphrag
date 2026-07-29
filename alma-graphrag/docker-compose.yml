@@ -22,3 +22,18 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: alma_pgvector
+    ports:
+      # Host 5433 avoids clashing with a native Postgres already bound to 5432.
+      - "5433:5432"
+    environment:
+      # Override via .env in production; defaults keep local dev zero-config.
+      - POSTGRES_USER=${PG_USER:-alma}
+      - POSTGRES_PASSWORD=${PG_PASSWORD:-alma_password123}
+      - POSTGRES_DB=${PG_DB:-alma_vectors}
+    volumes:
+      - ./pgvector_data:/var/lib/postgresql/data
+    restart: unless-stopped
