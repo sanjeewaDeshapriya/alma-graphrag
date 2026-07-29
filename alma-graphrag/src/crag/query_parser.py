@@ -26,6 +26,7 @@ from typing import Dict, List, Optional
 from openai import OpenAI
 
 from src.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
+from src.llm_utils import chat_completion_with_retry
 
 logger = logging.getLogger("alma.crag.query_parser")
 
@@ -234,7 +235,8 @@ def _llm_intent(question: str) -> Optional[Dict]:
     if _client is None:
         return None
     try:
-        resp = _client.chat.completions.create(
+        resp = chat_completion_with_retry(
+            client=_client,
             model=LLM_MODEL,
             messages=[{"role": "user", "content": _LLM_SLOT_PROMPT.format(question=question)}],
             temperature=0.0,
