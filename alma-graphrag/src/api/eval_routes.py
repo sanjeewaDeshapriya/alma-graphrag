@@ -54,7 +54,7 @@ def get_results() -> dict:
 
 @router.get("/inspect/{query_id}")
 def get_inspection(query_id: str) -> dict:
-    """Live per-query trace across all three systems."""
+    """Live per-query trace across all systems."""
     try:
         return inspect_query(query_id, DEFAULT_QUERYSET, DEFAULT_GOLD_HUMAN)
     except KeyError as exc:
