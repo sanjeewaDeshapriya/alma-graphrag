@@ -1,4 +1,4 @@
-alma-graphrag/scripts/generate_interim_report_2.py
+alma-graphrag/scripts/
 alma-graphrag/scripts/generate_interim_report.py
 alma-graphrag/ALMA-GraphRAG_Interim_Report_Ch1-3.docx
 
@@ -7,3 +7,10 @@ alma-graphrag/scripts/generate_interim_report.py
 alma-graphrag/scripts/generate_interim_report_2.py
 alma-graphrag/pgvector_data/
 
+alma-graphrag/studies/
+alma-graphrag/docs/
+alma-graphrag/docs/figures/fig1_1_rich_picture.png
+alma-graphrag/docs/Interim_Submission_01_28381_DMDS_Deshapriya.md
+alma-graphrag/docs
+alma-graphrag/Interim_Submission_02_28381_DMDS_Deshapriya.docx
+alma-graphrag/Interim_Submission_01_28381_DMDS_Deshapriya_submitter_one.docx
