@@ -3,16 +3,9 @@
   "configurations": [
     {
       "name": "alma-api",
-      "runtimeExecutable": ".venv/Scripts/python.exe",
+      "runtimeExecutable": "E:/Research/Project/alma-graphrag/.venv/Scripts/python.exe",
       "runtimeArgs": ["-m", "uvicorn", "src.api.main:app", "--host", "127.0.0.1", "--port", "8000"],
       "port": 8000
-    },
-    {
-      "name": "weight-study",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "studies/weight-elicitation", "run", "dev"],
-      "port": 3000,
-      "url": "http://localhost:3000"
     }
   ]
 }

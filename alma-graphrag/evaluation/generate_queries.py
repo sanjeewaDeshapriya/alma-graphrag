@@ -222,6 +222,51 @@ def _gold_sizes(pool: List[Query], city: str) -> Dict[str, int]:
     return {q[0]: len(relevant_set(hotels, q[1])) for q in pool}
 
 
+def _weight_sensitive(pool: List[Query], city: str, k: int,
+                      profiles: List[str]) -> Dict[str, bool]:
+    """Does each query's top-k change when the composite weights change?
+
+    This is the filter that makes a query set capable of measuring a
+    *re-weighting* method. Measured on the live pool: run the retriever under
+    each named weight profile and check whether the top-k SET differs.
+
+    Why it is needed. The published 60-query set is only 50% weight-sensitive,
+    and three of its six categories (economic, quality, multi_dimensional) are
+    0% sensitive — for those 30 queries no weight vector can change the answer,
+    so every weight configuration scores identically and the benchmark is
+    measuring the hard filters, not the ranking.
+
+    The mechanism is straightforward: a query whose hard constraints leave k or
+    fewer survivors has a top-k that IS the filtered set, in whatever order.
+    Ranking cannot matter when there is nothing to rank. Keeping only sensitive
+    queries removes that degenerate case.
+
+    Requires Neo4j. Costs one retrieval per query per profile, so run it with
+    `--per-cat` on an already gold-filtered pool rather than on all 569
+    templates.
+    """
+    import copy
+
+    from src.crag.query_parser import parse_query
+    from src.graph.retriever import WeightedRetriever
+
+    retrievers = {
+        p: WeightedRetriever(weight_profile=p, cache_candidates=True)
+        for p in profiles
+    }
+    out: Dict[str, bool] = {}
+    for question, _gold, _cat in pool:
+        intent = parse_query(question, default_city=city)
+        if not intent.city:
+            intent.city = city
+        tops = set()
+        for r in retrievers.values():
+            ranked = r.retrieve(copy.deepcopy(intent), limit=k).hotels
+            tops.add(frozenset(h.id for h in ranked))
+        out[question] = len(tops) > 1
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Generate a synthetic query pool")
     ap.add_argument("--n", type=int, default=500, help="number of queries to sample")
@@ -230,6 +275,13 @@ def main() -> None:
     ap.add_argument("--filter-gold", default=None, metavar="LO,HI",
                     help="keep only queries with LO..HI relevant hotels against the "
                          "live Neo4j pool (harder, discriminative queries)")
+    ap.add_argument("--min-weight-sensitivity", action="store_true",
+                    help="keep only queries whose top-k CHANGES when the "
+                         "composite weight vector changes. Without this, half "
+                         "the query set is blind to the ranking method being "
+                         "evaluated (see _weight_sensitive).")
+    ap.add_argument("--sensitivity-profiles", default="handset,elicited,blended",
+                    help="weight profiles compared by --min-weight-sensitivity")
     ap.add_argument("--seed", type=int, default=13)
     ap.add_argument("--city", default="Colombo")
     ap.add_argument("--k", type=int, default=10)
@@ -249,6 +301,28 @@ def main() -> None:
         pool = [q for q in pool if sizes[q[0]] >= lo]  # drop degenerate golds
         print(f"Gold-size floor >= {lo}: {n0} -> {len(pool)} candidates "
               f"(target band [{lo},{hi}])")
+
+    if args.min_weight_sensitivity:
+        profiles = [p.strip() for p in args.sensitivity_profiles.split(",") if p.strip()]
+        n0 = len(pool)
+        sens = _weight_sensitive(pool, args.city, args.k, profiles)
+        kept = [q for q in pool if sens.get(q[0])]
+        dropped_by_cat = Counter(q[2] for q in pool if not sens.get(q[0]))
+        print(f"Weight sensitivity ({'/'.join(profiles)}): "
+              f"{n0} -> {len(kept)} candidates "
+              f"({len(kept) / n0:.0%} can distinguish weight vectors)")
+        if dropped_by_cat:
+            print("  dropped as weight-blind:")
+            for c, n in sorted(dropped_by_cat.items()):
+                print(f"    {c:<18s} {n}")
+        if not kept:
+            raise SystemExit(
+                "No query in the pool is weight-sensitive. Every query's hard "
+                "filters leave <= k survivors, so ranking cannot matter. Loosen "
+                "--filter-gold (a larger gold set means more survivors to rank) "
+                "or add templates with weaker constraints."
+            )
+        pool = kept
 
     by_cat: Dict[str, List[Query]] = defaultdict(list)
     for q in pool:

@@ -70,6 +70,16 @@ HOTELS_CITIES = [
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 
+# Composite-score weight profile for the weighted retriever:
+#   handset  — the original hand-tuned prior (default; preserves published results)
+#   elicited — conditional-logit estimate from the discrete-choice study
+#              (studies/weight-elicitation); facility/economic clip to zero
+#   blended  — elicited proportions for spatial/accessibility/disruption, hand-set
+#              prior retained for facility/economic
+# See src/graph/retriever.py WEIGHT_PROFILES and
+# studies/weight-elicitation/analysis/DATA_AUDIT.md
+SCORING_WEIGHTS_PROFILE = os.getenv("SCORING_WEIGHTS_PROFILE", "handset").lower()
+
 CRAG_MIN_SCORE = float(os.getenv("CRAG_MIN_SCORE", "0.6"))
 CRAG_MAX_RETRIES = int(os.getenv("CRAG_MAX_RETRIES", "1"))
 

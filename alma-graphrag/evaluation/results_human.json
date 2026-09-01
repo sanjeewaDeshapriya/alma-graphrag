@@ -1,0 +1,379 @@
+{
+  "available": true,
+  "evaluation": "choice-based (human ground truth)",
+  "material_version": "v4-rooms-20260818-minmax",
+  "normalisation": "minmax",
+  "anchor_fair": true,
+  "k": 10,
+  "cohort": "clean",
+  "cohort_stats": {
+    "participants_total": 247,
+    "dropped_attention": 145,
+    "dropped_speeder": 7,
+    "participants_kept": 95
+  },
+  "min_votes": 2,
+  "candidate_set_size": 32,
+  "restricted_to_indexed": false,
+  "n_observations": 949,
+  "n_train_participants": 67,
+  "n_test_participants": 28,
+  "n_train_choices": 669,
+  "n_test_choices": 280,
+  "skipped": {
+    "cohort": 1409,
+    "chosen_outside_candidate_set": 1,
+    "attention_task": 95
+  },
+  "system_order": [
+    "Filter",
+    "Keyword",
+    "SemanticVec",
+    "Hybrid",
+    "WeightedGraphRAG[handset]",
+    "WeightedGraphRAG[elicited]",
+    "WeightedGraphRAG[blended]",
+    "WeightedGraphRAG[fitted-on-train]"
+  ],
+  "weights": {
+    "WeightedGraphRAG[handset]": {
+      "spatial": 0.25,
+      "accessibility": 0.2,
+      "facility": 0.25,
+      "economic": 0.15,
+      "disruption": 0.15
+    },
+    "WeightedGraphRAG[elicited]": {
+      "spatial": 0.563,
+      "accessibility": 0.401,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.036
+    },
+    "WeightedGraphRAG[blended]": {
+      "spatial": 0.338,
+      "accessibility": 0.24,
+      "facility": 0.25,
+      "economic": 0.15,
+      "disruption": 0.022
+    },
+    "WeightedGraphRAG[fitted-on-train]": {
+      "spatial": 0.5118,
+      "accessibility": 0.4514,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.0368
+    }
+  },
+  "per_choice": {
+    "Filter": {
+      "P@10": 0.0354,
+      "R@10": 0.3536,
+      "nDCG@10": 0.1952,
+      "MRR": 0.176,
+      "mean_rank": 17.1821
+    },
+    "Keyword": {
+      "P@10": 0.0396,
+      "R@10": 0.3964,
+      "nDCG@10": 0.1706,
+      "MRR": 0.1314,
+      "mean_rank": 16.0679
+    },
+    "SemanticVec": {
+      "P@10": 0.0246,
+      "R@10": 0.2464,
+      "nDCG@10": 0.0972,
+      "MRR": 0.0939,
+      "mean_rank": 16.5393
+    },
+    "Hybrid": {
+      "P@10": 0.0321,
+      "R@10": 0.3214,
+      "nDCG@10": 0.1744,
+      "MRR": 0.1631,
+      "mean_rank": 16.5786
+    },
+    "WeightedGraphRAG[handset]": {
+      "P@10": 0.0861,
+      "R@10": 0.8607,
+      "nDCG@10": 0.5715,
+      "MRR": 0.4896,
+      "mean_rank": 5.7107
+    },
+    "WeightedGraphRAG[elicited]": {
+      "P@10": 0.09,
+      "R@10": 0.9,
+      "nDCG@10": 0.6555,
+      "MRR": 0.581,
+      "mean_rank": 3.8964
+    },
+    "WeightedGraphRAG[blended]": {
+      "P@10": 0.0864,
+      "R@10": 0.8643,
+      "nDCG@10": 0.5848,
+      "MRR": 0.5029,
+      "mean_rank": 5.2214
+    },
+    "WeightedGraphRAG[fitted-on-train]": {
+      "P@10": 0.09,
+      "R@10": 0.9,
+      "nDCG@10": 0.6529,
+      "MRR": 0.5781,
+      "mean_rank": 3.9607
+    }
+  },
+  "per_task": {
+    "Filter": {
+      "P@10": 0.15,
+      "R@10": 0.3283,
+      "nDCG@10": 0.3644,
+      "gradedNDCG@10": 0.239,
+      "MRR": 0.7444
+    },
+    "Keyword": {
+      "P@10": 0.19,
+      "R@10": 0.405,
+      "nDCG@10": 0.2658,
+      "gradedNDCG@10": 0.2433,
+      "MRR": 0.2917
+    },
+    "SemanticVec": {
+      "P@10": 0.11,
+      "R@10": 0.21,
+      "nDCG@10": 0.1507,
+      "gradedNDCG@10": 0.1404,
+      "MRR": 0.2218
+    },
+    "Hybrid": {
+      "P@10": 0.15,
+      "R@10": 0.3133,
+      "nDCG@10": 0.2695,
+      "gradedNDCG@10": 0.2484,
+      "MRR": 0.4491
+    },
+    "WeightedGraphRAG[handset]": {
+      "P@10": 0.35,
+      "R@10": 0.7783,
+      "nDCG@10": 0.7535,
+      "gradedNDCG@10": 0.8075,
+      "MRR": 0.95
+    },
+    "WeightedGraphRAG[elicited]": {
+      "P@10": 0.38,
+      "R@10": 0.865,
+      "nDCG@10": 0.8874,
+      "gradedNDCG@10": 0.926,
+      "MRR": 1.0
+    },
+    "WeightedGraphRAG[blended]": {
+      "P@10": 0.35,
+      "R@10": 0.7783,
+      "nDCG@10": 0.7715,
+      "gradedNDCG@10": 0.8281,
+      "MRR": 0.95
+    },
+    "WeightedGraphRAG[fitted-on-train]": {
+      "P@10": 0.38,
+      "R@10": 0.865,
+      "nDCG@10": 0.8844,
+      "gradedNDCG@10": 0.9224,
+      "MRR": 1.0
+    }
+  },
+  "random_baseline": {
+    "P@10": 0.0312,
+    "R@10": 0.3125,
+    "mean_rank": 16.5
+  },
+  "significance": {
+    "reference": "WeightedGraphRAG[fitted-on-train]",
+    "metric": "nDCG@10",
+    "tests": "paired bootstrap over held-out choices, 5000 resamples",
+    "vs": {
+      "Filter": {
+        "mean_diff": 0.4578,
+        "ci_low": 0.3994,
+        "ci_high": 0.5132,
+        "p": 0.0,
+        "significant": true
+      },
+      "Keyword": {
+        "mean_diff": 0.4824,
+        "ci_low": 0.4326,
+        "ci_high": 0.5321,
+        "p": 0.0,
+        "significant": true
+      },
+      "SemanticVec": {
+        "mean_diff": 0.5557,
+        "ci_low": 0.5103,
+        "ci_high": 0.6013,
+        "p": 0.0,
+        "significant": true
+      },
+      "Hybrid": {
+        "mean_diff": 0.4786,
+        "ci_low": 0.4267,
+        "ci_high": 0.5318,
+        "p": 0.0,
+        "significant": true
+      },
+      "WeightedGraphRAG[handset]": {
+        "mean_diff": 0.0814,
+        "ci_low": 0.0562,
+        "ci_high": 0.1062,
+        "p": 0.0,
+        "significant": true
+      },
+      "WeightedGraphRAG[elicited]": {
+        "mean_diff": -0.0026,
+        "ci_low": -0.0039,
+        "ci_high": -0.0013,
+        "p": 0.0,
+        "significant": true
+      },
+      "WeightedGraphRAG[blended]": {
+        "mean_diff": 0.0681,
+        "ci_low": 0.0458,
+        "ci_high": 0.0919,
+        "p": 0.0,
+        "significant": true
+      }
+    }
+  },
+  "tasks": [
+    {
+      "id": "t1",
+      "persona": "Evening walker",
+      "anchor": "galle_face",
+      "context": "You are visiting Colombo and want to walk to Galle Face Green every evening. Being close enough to reach it on foot matters most, but you are also paying for the room yourself and cannot overspend. Which hotel would you book?",
+      "primary_dimension": "spatial",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Shangri-La Colombo",
+        "votes": 11
+      }
+    },
+    {
+      "id": "t10",
+      "persona": "Business traveller",
+      "anchor": "battaramulla",
+      "context": "You are again booking for two days of meetings in Battaramulla, with short and predictable travel as your priority and a comfortable room to return to. Which hotel would you book?",
+      "primary_dimension": "accessibility",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Best Western Elyon Colombo",
+        "votes": 9
+      }
+    },
+    {
+      "id": "t2",
+      "persona": "Business traveller",
+      "anchor": "battaramulla",
+      "context": "You have two days of back-to-back meetings at government offices in Battaramulla. Reaching them quickly and predictably each morning decides your booking, though you would still like somewhere comfortable to work in the evening. Which hotel would you book?",
+      "primary_dimension": "accessibility",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Zylan Colombo",
+        "votes": 15
+      }
+    },
+    {
+      "id": "t3",
+      "persona": "Self-funded worker",
+      "anchor": "fort",
+      "context": "You are working in Colombo Fort for a week and paying for the room yourself, so cost comes first - but a long daily commute would eat into your working day. Which hotel would you book?",
+      "primary_dimension": "economic",
+      "n_test_choices": 28,
+      "gold_size": 6,
+      "top_pick": {
+        "hotel": "CityRest Fort",
+        "votes": 8
+      }
+    },
+    {
+      "id": "t4",
+      "persona": "Family on holiday",
+      "anchor": "bambalapitiya",
+      "context": "You are travelling with your family and two young children and visiting relatives in Bambalapitiya. A pool, space and good on-site facilities matter most, and being near the family helps. Which hotel would you book?",
+      "primary_dimension": "facility",
+      "n_test_choices": 28,
+      "gold_size": 3,
+      "top_pick": {
+        "hotel": "Radisson Hotel Colombo",
+        "votes": 14
+      }
+    },
+    {
+      "id": "t5",
+      "persona": "Light sleeper",
+      "anchor": "nugegoda",
+      "context": "You are attending an event in Nugegoda but you are a light sleeper who cannot rest with traffic noise and crowds. A calm area matters most, though you do not want to pay a premium for it. Which hotel would you book?",
+      "primary_dimension": "disruption",
+      "n_test_choices": 28,
+      "gold_size": 3,
+      "top_pick": {
+        "hotel": "Best Western Elyon Colombo",
+        "votes": 16
+      }
+    },
+    {
+      "id": "t6",
+      "persona": "Beach weekender",
+      "anchor": "mount_lavinia",
+      "context": "You want a weekend by the sea at Mount Lavinia. Being close to the beach is the point of the trip, but you also want somewhere peaceful rather than a busy strip. Which hotel would you book?",
+      "primary_dimension": "spatial",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Global Towers Hotel & Apartments",
+        "votes": 10
+      }
+    },
+    {
+      "id": "t7",
+      "persona": "Long-stay consultant",
+      "anchor": "rajagiriya",
+      "context": "You are on a three-week assignment with an office in Rajagiriya and a fixed daily allowance, so the nightly rate matters a great deal - but a slow commute every day would wear you down. Which hotel would you book?",
+      "primary_dimension": "economic",
+      "n_test_choices": 28,
+      "gold_size": 3,
+      "top_pick": {
+        "hotel": "Zylan Colombo",
+        "votes": 13
+      }
+    },
+    {
+      "id": "t8",
+      "persona": "Value-seeking couple",
+      "anchor": "kollupitiya",
+      "context": "You and your partner are staying near Kollupitiya for a few nights and want a genuinely nice hotel - good rooms and facilities - at a price that still feels like value rather than a splurge. Which hotel would you book?",
+      "primary_dimension": "facility",
+      "n_test_choices": 28,
+      "gold_size": 6,
+      "top_pick": {
+        "hotel": "Sheraton Colombo Hotel",
+        "votes": 9
+      }
+    },
+    {
+      "id": "t9",
+      "persona": "Remote worker",
+      "anchor": "dehiwala",
+      "context": "You are working remotely for two weeks near Dehiwala. You need somewhere quiet enough to take calls all day, but you also do not want to be cut off from shops and transport. Which hotel would you book?",
+      "primary_dimension": "disruption",
+      "n_test_choices": 28,
+      "gold_size": 4,
+      "top_pick": {
+        "hotel": "Mirage Colombo",
+        "votes": 10
+      }
+    }
+  ],
+  "best_system": "WeightedGraphRAG[elicited]",
+  "best_ndcg": 0.6555
+}

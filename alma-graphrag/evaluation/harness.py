@@ -2,29 +2,50 @@
 Shared evaluation core — used by both the CLI (`run_eval.py`) and the API
 (`src/api/eval_routes.py`) so they compute identical numbers.
 
-Two entry points:
-    run_evaluation(...)  -> aggregate metrics over the whole query set
-                            (the structure written to evaluation/results.json).
-    inspect_query(...)   -> a full per-query trace: every system's ranked list
-                            with per-hotel relevance flags + metric breakdown,
-                            plus the GraphRAG composite-score components. Powers
-                            the step-by-step evaluation walkthrough in the UI.
+Entry points:
+    run_evaluation(...)    -> aggregate metrics over the whole query set
+                              (the structure written to evaluation/results.json).
+    inspect_query(...)     -> a full per-query trace: every system's ranked list
+                              with per-hotel relevance flags + metric breakdown,
+                              plus the GraphRAG composite-score components.
+                              Powers the walkthrough in the UI.
+    weight_sensitivity(...) -> how many queries can tell weight vectors apart.
+
+Two properties this module is responsible for:
+
+1. **One parse per query, shared by every system.** `parse_query` has a
+   non-deterministic LLM slot-fill stage, so letting each baseline parse
+   independently means systems can be answering different readings of the same
+   question — and any measured gap then confounds retrieval quality with parser
+   luck. The intent is resolved once here and threaded through.
+
+2. **Reporting whether the benchmark can see the contribution.**
+   `weight_sensitivity` measures the fraction of queries whose top-k actually
+   changes when the weight vector changes. A benchmark where that fraction is
+   low cannot measure a re-weighting method, no matter what its headline nDCG
+   says, and the number belongs in the results file next to the metrics rather
+   than in a footnote.
 """
 from __future__ import annotations
 
+import copy
 import json
+import logging
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
-
-import logging
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from evaluation.baselines import all_baselines, fetch_city_hotels
-from evaluation.gold import graded_gold, relevant_set
+from evaluation.gold import DEFAULT_BANDS, ToleranceBands, graded_gold, relevant_set
 from evaluation.metrics import evaluate_ranking, mean_metrics
 from evaluation.stats import compare_systems
+from src.config import SCORING_WEIGHTS_PROFILE
 from src.crag.query_parser import parse_query
-from src.graph.retriever import WeightedRetriever
+from src.graph.retriever import (
+    DEFAULT_PRICE_POLICY,
+    WEIGHT_PROFILES,
+    WeightedRetriever,
+)
 
 logger = logging.getLogger("alma.eval.harness")
 
@@ -63,6 +84,7 @@ def gold_for_query(
     pool: List[Dict[str, Any]],
     query: Dict[str, Any],
     human_relevant: Dict[str, List[str]],
+    bands: ToleranceBands = DEFAULT_BANDS,
 ) -> Tuple[Set[str], Dict[str, int], str]:
     """Human gold supersedes the rule-based bootstrap per query.
 
@@ -73,7 +95,32 @@ def gold_for_query(
     if query["id"] in human_relevant:
         ids = set(human_relevant[query["id"]])
         return ids, {hid: 2 for hid in ids}, "human"
-    return relevant_set(pool, query["gold"]), graded_gold(pool, query["gold"]), "rule"
+    return (relevant_set(pool, query["gold"], bands),
+            graded_gold(pool, query["gold"], bands), "rule")
+
+
+def resolve_intents(queries: List[Dict[str, Any]], city: str) -> Dict[str, Any]:
+    """Parse every query ONCE. Returns {query_id: QueryIntent}.
+
+    See the module docstring: sharing one parse across systems is what makes the
+    comparison a comparison of retrieval rather than of parser draws.
+    """
+    intents: Dict[str, Any] = {}
+    for q in queries:
+        intent = parse_query(q["question"], default_city=city)
+        if not intent.city:
+            intent.city = city
+        intents[q["id"]] = intent
+    return intents
+
+
+def _retrieve(baseline: Any, query: Dict[str, Any], city: str, k: int,
+              intent: Any) -> List[str]:
+    """Call a baseline with the shared intent, and the query id if it wants one."""
+    if getattr(baseline, "wants_query_id", False):
+        return baseline.retrieve(query["question"], city, k, intent=intent,
+                                 query_id=query["id"])
+    return baseline.retrieve(query["question"], city, k, intent=intent)
 
 
 def _vector_index_meta(city: str, pool_size: int) -> Dict[str, Any]:
@@ -102,6 +149,97 @@ def _travel_time(hotel: Dict[str, Any]) -> Optional[float]:
 
 
 # ---------------------------------------------------------------------------
+# Benchmark diagnostic — can this query set see a weight change at all?
+# ---------------------------------------------------------------------------
+
+def weight_sensitivity(
+    queryset_path: Path | str = DEFAULT_QUERYSET,
+    profiles: Sequence[str] = ("handset", "elicited", "blended"),
+    k: Optional[int] = None,
+    intents: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Fraction of queries whose top-k changes across weight vectors.
+
+    Motivation: the proposed contribution is a *weighting*. If swapping the
+    weight vector leaves the top-k identical for most queries, the benchmark is
+    structurally incapable of measuring the contribution — every system will
+    score the same and the differences that do appear are noise.
+
+    Reports three things per query:
+      changed        — did the top-k set change at all?
+      order_changed  — did the ORDER change (a weaker but real sensitivity)?
+      max_jaccard_gap— 1 - min pairwise Jaccard of the top-k sets
+
+    A query set with a low `sensitive_fraction` should be regenerated with
+    `evaluation/generate_queries.py --min-weight-sensitivity` rather than
+    reported as-is.
+    """
+    spec = load_spec(queryset_path)
+    city = spec["city"]
+    kk = int(k or spec.get("k", 10))
+    queries = spec["queries"]
+    # Reuse the caller's parse when there is one: re-parsing would spend another
+    # LLM call per query AND risk measuring sensitivity against a different
+    # reading of the query than the metrics were computed on.
+    intents = intents or resolve_intents(queries, city)
+
+    retrievers = {
+        p: WeightedRetriever(weight_profile=p, cache_candidates=True)
+        for p in profiles
+    }
+
+    rows: List[Dict[str, Any]] = []
+    for q in queries:
+        intent = intents[q["id"]]
+        tops: Dict[str, List[str]] = {}
+        for p, r in retrievers.items():
+            # A fresh copy per profile: retrieve() may mutate the intent
+            # (proximity_preference), and a shared object would leak that
+            # mutation into the next profile's run.
+            tops[p] = [h.id for h in r.retrieve(copy.deepcopy(intent), limit=kk).hotels]
+
+        sets = {p: set(v) for p, v in tops.items()}
+        names = list(profiles)
+        jaccards = []
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                inter = len(sets[a] & sets[b])
+                union = len(sets[a] | sets[b]) or 1
+                jaccards.append(inter / union)
+        changed = len({frozenset(s) for s in sets.values()}) > 1
+        order_changed = len({tuple(v) for v in tops.values()}) > 1
+        rows.append({
+            "id": q["id"],
+            "category": q.get("category", "general"),
+            "changed": changed,
+            "order_changed": order_changed,
+            "max_jaccard_gap": round(1.0 - min(jaccards), 4) if jaccards else 0.0,
+        })
+
+    n = len(rows) or 1
+    by_cat: Dict[str, Dict[str, Any]] = defaultdict(lambda: {"n": 0, "changed": 0})
+    for r in rows:
+        c = by_cat[r["category"]]
+        c["n"] += 1
+        c["changed"] += 1 if r["changed"] else 0
+    for c in by_cat.values():
+        c["fraction"] = round(c["changed"] / c["n"], 4) if c["n"] else 0.0
+
+    return {
+        "profiles": list(profiles),
+        "k": kk,
+        "n_queries": len(rows),
+        "sensitive": sum(1 for r in rows if r["changed"]),
+        "sensitive_fraction": round(sum(1 for r in rows if r["changed"]) / n, 4),
+        "order_sensitive": sum(1 for r in rows if r["order_changed"]),
+        "order_sensitive_fraction": round(
+            sum(1 for r in rows if r["order_changed"]) / n, 4),
+        "by_category": dict(by_cat),
+        "per_query": rows,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Aggregate evaluation (the results.json producer)
 # ---------------------------------------------------------------------------
 
@@ -109,6 +247,12 @@ def run_evaluation(
     queryset_path: Path | str = DEFAULT_QUERYSET,
     gold_human_path: Path | str = DEFAULT_GOLD_HUMAN,
     no_human: bool = False,
+    weight_profiles: Optional[List[str]] = None,
+    price_policies: Optional[List[str]] = None,
+    weight_policies: Optional[List[str]] = None,
+    bands: ToleranceBands = DEFAULT_BANDS,
+    include_sensitivity: bool = True,
+    **baseline_opts: Any,
 ) -> Dict[str, Any]:
     spec = load_spec(queryset_path)
     city = spec["city"]
@@ -119,8 +263,21 @@ def run_evaluation(
     human_relevant: Dict[str, List[str]] = human.get("relevant", {})
 
     pool = fetch_city_hotels(city)
-    baselines = all_baselines()
+    intents = resolve_intents(queries, city)
+    baselines = all_baselines(weight_profiles, price_policies, weight_policies,
+                              **baseline_opts)
     system_order = [b.name for b in baselines]
+
+    # Gold is needed up front by any baseline that trains on it (LTR), so
+    # compute it once and reuse for both training and scoring.
+    gold_cache: Dict[str, Tuple[Set[str], Dict[str, int], str]] = {
+        q["id"]: gold_for_query(pool, q, human_relevant, bands) for q in queries
+    }
+    for b in baselines:
+        if hasattr(b, "fit"):
+            # Shared intents go to the trainable baseline too, so it conditions
+            # on exactly the query reading every other system received.
+            b.fit(pool, queries, lambda q: gold_cache[q["id"]][1], intents=intents)
 
     results: Dict[str, List[Dict[str, float]]] = defaultdict(list)
     cat_results: Dict[str, Dict[str, List[Dict[str, float]]]] = defaultdict(
@@ -129,15 +286,16 @@ def run_evaluation(
     per_query: List[Dict[str, Any]] = []
 
     for q in queries:
-        gold_set, gains, gold_source = gold_for_query(pool, q, human_relevant)
+        gold_set, gains, gold_source = gold_cache[q["id"]]
         category = q.get("category", "general")
+        intent = intents[q["id"]]
         row: Dict[str, Any] = {
             "id": q["id"], "question": q["question"], "category": category,
             "gold": q["gold"], "gold_source": gold_source,
             "n_relevant": len(gold_set), "scores": {},
         }
         for b in baselines:
-            ranked = b.retrieve(q["question"], city, k)
+            ranked = _retrieve(b, q, city, k, intent)
             m = evaluate_ranking(ranked, gold_set, k, gains=gains)
             results[b.name].append(m)
             cat_results[category][b.name].append(m)
@@ -167,7 +325,7 @@ def run_evaluation(
             },
         }
 
-    return {
+    out: Dict[str, Any] = {
         "city": city,
         "k": k,
         "n_queries": len(queries),
@@ -178,8 +336,29 @@ def run_evaluation(
             "human_queries": len(human_relevant),
             "alpha": human.get("krippendorff_alpha_interval"),
             "ndcg_gains": "graded (2 full / 1 partial)",
+            # Recorded so a results file always states the band widths that
+            # produced it; see evaluation/sensitivity.py for the sweep.
+            "tolerance_bands": bands.to_dict(),
         },
         "vector_index": _vector_index_meta(city, len(pool)),
+        "price_policy": {
+            "default": DEFAULT_PRICE_POLICY,
+            "compared": list(price_policies or []),
+            "pool_missing_price": sum(1 for h in pool if not h.get("price")),
+            "pool_missing_rate": round(
+                sum(1 for h in pool if not h.get("price")) / len(pool), 4
+            ) if pool else 0.0,
+        },
+        "weight_profiles": {
+            "default": SCORING_WEIGHTS_PROFILE,
+            "compared": list(weight_profiles or []),
+            "policies": list(weight_policies or []),
+            "vectors": {
+                name: WEIGHT_PROFILES[name].to_dict()
+                for name in ([SCORING_WEIGHTS_PROFILE] + list(weight_profiles or []))
+                if name in WEIGHT_PROFILES
+            },
+        },
         "overall": overall,
         "by_category": by_category,
         "best_system": best[0],
@@ -187,6 +366,22 @@ def run_evaluation(
         "significance": significance,
         "per_query": per_query,
     }
+
+    if include_sensitivity:
+        sens = weight_sensitivity(queryset_path, k=k, intents=intents)
+        out["weight_sensitivity"] = {
+            kk: v for kk, v in sens.items() if kk != "per_query"
+        }
+        if sens["sensitive_fraction"] < 0.5:
+            logger.warning(
+                "Only %.0f%% of queries change their top-%d when the weight "
+                "vector changes. This query set cannot measure a re-weighting "
+                "method; regenerate with generate_queries.py "
+                "--min-weight-sensitivity.",
+                100 * sens["sensitive_fraction"], k,
+            )
+
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -198,6 +393,7 @@ def inspect_query(
     queryset_path: Path | str = DEFAULT_QUERYSET,
     gold_human_path: Path | str = DEFAULT_GOLD_HUMAN,
     no_human: bool = False,
+    bands: ToleranceBands = DEFAULT_BANDS,
 ) -> Dict[str, Any]:
     spec = load_spec(queryset_path)
     city = spec["city"]
@@ -209,15 +405,18 @@ def inspect_query(
     pool = fetch_city_hotels(city)
     by_id = {str(h["id"]): h for h in pool}
     human = load_human_gold(gold_human_path, no_human)
-    gold_set, gains, gold_source = gold_for_query(pool, query, human.get("relevant", {}))
+    gold_set, gains, gold_source = gold_for_query(
+        pool, query, human.get("relevant", {}), bands
+    )
+
+    # One shared parse, same as the aggregate path.
+    intent = resolve_intents([query], city)[query_id]
 
     # Retrieve once with the weighted retriever to expose composite-score
     # components for the GraphRAG column; the GraphRAG baseline reuses this
     # ranking below instead of retrieving a second time.
-    intent = parse_query(query["question"], default_city=city)
-    if not intent.city:
-        intent.city = city
-    graph_result = WeightedRetriever().retrieve(intent, limit=k)
+    import copy
+    graph_result = WeightedRetriever().retrieve(copy.deepcopy(intent), limit=k)
     graph_ranked = [h.id for h in graph_result.hotels[:k]]
     comp_by_id = {
         h.id: {
@@ -225,13 +424,17 @@ def inspect_query(
             "components": h.components,
             "weighted_components": h.weighted_components,
             "reasons": h.reasons,
+            # Surfaces the multi-hop contribution per hotel so the walkthrough
+            # can show what the neighbourhood traversal actually changed.
+            "diffusion": h.raw.get("diffusion"),
         }
         for h in graph_result.hotels
     }
 
     systems: List[Dict[str, Any]] = []
-    for b in all_baselines():
-        ranked = graph_ranked if b.name == GRAPH_SYSTEM else b.retrieve(query["question"], city, k)
+    for b in all_baselines(include_ltr=False):
+        ranked = (graph_ranked if b.name == GRAPH_SYSTEM
+                  else _retrieve(b, query, city, k, intent))
         metrics = evaluate_ranking(ranked, gold_set, k, gains=gains)
         rows: List[Dict[str, Any]] = []
         for rank, hid in enumerate(ranked, start=1):
@@ -268,5 +471,6 @@ def inspect_query(
         "pool_size": len(pool),
         "intent": intent.to_dict(),
         "weights": graph_result.weights.to_dict(),
+        "tolerance_bands": bands.to_dict(),
         "systems": systems,
     }

@@ -19,7 +19,17 @@ _driver = None
 def _get_driver():
     global _driver
     if _driver is None:
-        _driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+        # UNRECOGNIZED notifications are suppressed: the retriever intentionally
+        # OPTIONAL MATCHes relationship types that may legitimately be absent in
+        # a given snapshot, and the driver logs a multi-kilobyte warning with the
+        # full query text for each one, which buries real output during an
+        # evaluation run. Use scripts/check_graph_integrity.py to find empty
+        # types deliberately rather than reading them out of driver noise.
+        _driver = GraphDatabase.driver(
+            NEO4J_URI,
+            auth=(NEO4J_USER, NEO4J_PASSWORD),
+            notifications_disabled_categories=["UNRECOGNIZED"],
+        )
     return _driver
 
 

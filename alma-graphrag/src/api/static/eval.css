@@ -486,3 +486,50 @@ tr.row-best td:first-child::after {
     grid-template-columns: 1fr;
   }
 }
+
+/* --- Step 6 choice-based evaluation --------------------------------------- */
+/* A framed aside for the "why both evaluations" caveat — the point of this
+   step is the contrast with the rule-based gold, so it needs to read before
+   the tables do. */
+.callout {
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 10px;
+  background: var(--panel-soft);
+  padding: 12px 14px;
+  margin: 12px 0 16px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.callout b {
+  color: var(--text, #e8e4de);
+}
+
+.callout-warn {
+  border-left-color: #e4b176;
+}
+
+.muted.small {
+  font-size: 0.78rem;
+  margin: -4px 0 8px;
+}
+
+/* The proposed system's rows, so they are scannable against the baselines. */
+#humanChoiceTable tbody tr.row-graph .sys-name,
+#humanTaskTable tbody tr.row-graph .sys-name {
+  color: #e5c19c;
+  font-weight: 600;
+}
+
+/* Random is a reference line, not a competitor — de-emphasise and separate it. */
+#humanChoiceTable tbody tr.row-random {
+  color: var(--muted);
+  font-style: italic;
+  border-top: 1px solid var(--line);
+}
+
+#humanTaskList tbody tr {
+  cursor: help; /* the full scenario text is the row's title attribute */
+}
