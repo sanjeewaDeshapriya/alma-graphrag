@@ -1,0 +1,733 @@
+{
+  "source_dump": "study_data_v4-rooms-20260818.json",
+  "material_version": "v4-rooms-20260818",
+  "estimator": "grouped (aggregate) conditional logit on per-question selection shares, mean log-rank nuisance, non-negative, macro-averaged over questions; grain=display",
+  "grain": "display",
+  "seed": 20260907,
+  "l2": 0.0,
+  "l2_selection": [
+    {
+      "l2": 0.0,
+      "held_out_macro_ndcg10": 0.38730220183492575,
+      "weights": {
+        "spatial": 0.2679,
+        "accessibility": 0.3658,
+        "facility": 0.0908,
+        "economic": 0.1086,
+        "disruption": 0.167
+      }
+    },
+    {
+      "l2": 0.25,
+      "held_out_macro_ndcg10": 0.3857506764035788,
+      "weights": {
+        "spatial": 0.279,
+        "accessibility": 0.3693,
+        "facility": 0.1003,
+        "economic": 0.1115,
+        "disruption": 0.1398
+      }
+    },
+    {
+      "l2": 0.5,
+      "held_out_macro_ndcg10": 0.3857506764035788,
+      "weights": {
+        "spatial": 0.2888,
+        "accessibility": 0.3726,
+        "facility": 0.1019,
+        "economic": 0.1062,
+        "disruption": 0.1304
+      }
+    },
+    {
+      "l2": 1.0,
+      "held_out_macro_ndcg10": 0.3846363932666147,
+      "weights": {
+        "spatial": 0.279,
+        "accessibility": 0.4008,
+        "facility": 0.1026,
+        "economic": 0.1,
+        "disruption": 0.1175
+      }
+    },
+    {
+      "l2": 2.0,
+      "held_out_macro_ndcg10": 0.3845928835599016,
+      "weights": {
+        "spatial": 0.2767,
+        "accessibility": 0.4171,
+        "facility": 0.1028,
+        "economic": 0.1003,
+        "disruption": 0.103
+      }
+    },
+    {
+      "l2": 4.0,
+      "held_out_macro_ndcg10": 0.3838193012303873,
+      "weights": {
+        "spatial": 0.284,
+        "accessibility": 0.4188,
+        "facility": 0.1027,
+        "economic": 0.1012,
+        "disruption": 0.0933
+      }
+    },
+    {
+      "l2": 8.0,
+      "held_out_macro_ndcg10": 0.38440163049969056,
+      "weights": {
+        "spatial": 0.2809,
+        "accessibility": 0.4231,
+        "facility": 0.1015,
+        "economic": 0.1025,
+        "disruption": 0.092
+      }
+    },
+    {
+      "l2": 16.0,
+      "held_out_macro_ndcg10": 0.3862143401934795,
+      "weights": {
+        "spatial": 0.2859,
+        "accessibility": 0.4196,
+        "facility": 0.0992,
+        "economic": 0.1036,
+        "disruption": 0.0916
+      }
+    }
+  ],
+  "questions_dropped_degenerate": [],
+  "facility_definition": "all_ranks",
+  "cohort": {
+    "responses": 2232,
+    "participants": 241,
+    "groups": 50,
+    "hotels": 32,
+    "share_rows": 1600
+  },
+  "shipped_estimator": "per_question",
+  "weights": {
+    "spatial": 0.2601,
+    "accessibility": 0.3909,
+    "facility": 0.063,
+    "economic": 0.1382,
+    "disruption": 0.1478
+  },
+  "weights_per_question": {
+    "t1": {
+      "spatial": 0.0,
+      "accessibility": 0.3144,
+      "facility": 0.0252,
+      "economic": 0.0061,
+      "disruption": 0.6543
+    },
+    "t2": {
+      "spatial": 0.0,
+      "accessibility": 1.0,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.0
+    },
+    "t3": {
+      "spatial": 0.0,
+      "accessibility": 0.4545,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.5455
+    },
+    "t4": {
+      "spatial": 1.0,
+      "accessibility": 0.0,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.0
+    },
+    "t5": {
+      "spatial": 0.7545,
+      "accessibility": 0.0,
+      "facility": 0.0,
+      "economic": 0.2455,
+      "disruption": 0.0
+    },
+    "t6": {
+      "spatial": 0.6475,
+      "accessibility": 0.0,
+      "facility": 0.0733,
+      "economic": 0.2792,
+      "disruption": 0.0
+    },
+    "t7": {
+      "spatial": 0.0,
+      "accessibility": 0.7217,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.2783
+    },
+    "t8": {
+      "spatial": 0.1992,
+      "accessibility": 0.216,
+      "facility": 0.5316,
+      "economic": 0.0532,
+      "disruption": 0.0
+    },
+    "t9": {
+      "spatial": 0.0,
+      "accessibility": 0.2021,
+      "facility": 0.0,
+      "economic": 0.7979,
+      "disruption": 0.0
+    },
+    "t10": {
+      "spatial": 0.0,
+      "accessibility": 1.0,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.0
+    }
+  },
+  "weights_macro_over_questions": {
+    "spatial": 0.2601,
+    "accessibility": 0.3909,
+    "facility": 0.063,
+    "economic": 0.1382,
+    "disruption": 0.1478
+  },
+  "weights_pooled": {
+    "spatial": 0.0,
+    "accessibility": 1.0,
+    "facility": 0.0,
+    "economic": 0.0,
+    "disruption": 0.0
+  },
+  "weights_pooled_no_position": {
+    "spatial": 0.4945,
+    "accessibility": 0.2965,
+    "facility": 0.0,
+    "economic": 0.0,
+    "disruption": 0.2089
+  },
+  "weights_from_correlation": {
+    "spatial": 0.4074,
+    "accessibility": 0.3936,
+    "facility": 0.0,
+    "economic": 0.0563,
+    "disruption": 0.1427
+  },
+  "position_coefficient": 1.9575012137517942,
+  "correlations_per_question": {
+    "t1": {
+      "spatial": {
+        "pearson_r": 0.4338205280860632,
+        "pearson_p": 0.013115313787094714,
+        "spearman_rho": 0.31672515279718055,
+        "spearman_p": 0.07736673412262965,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.44492453486882266,
+        "pearson_p": 0.01072402486739004,
+        "spearman_rho": 0.35090723895971776,
+        "spearman_p": 0.04893239061398602,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": 0.07494519698520018,
+        "pearson_p": 0.6835227053449102,
+        "spearman_rho": -0.019907142212759923,
+        "spearman_p": 0.9138830812571289,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": -0.1517226337155726,
+        "pearson_p": 0.4071381031713006,
+        "spearman_rho": -0.09302719651829756,
+        "spearman_p": 0.6125725318101604,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": -0.11991076308057502,
+        "pearson_p": 0.5133081422538438,
+        "spearman_rho": -0.02430171037426871,
+        "spearman_p": 0.8949676055154802,
+        "n_hotels": 32
+      }
+    },
+    "t2": {
+      "spatial": {
+        "pearson_r": 0.5281939179909125,
+        "pearson_p": 0.0018880577665340026,
+        "spearman_rho": 0.5492532289541007,
+        "spearman_p": 0.0011310974507903622,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.5056276692619303,
+        "pearson_p": 0.003156124577852361,
+        "spearman_rho": 0.46094275200407453,
+        "spearman_p": 0.00792871175860109,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.2204101358397998,
+        "pearson_p": 0.22543659617923242,
+        "spearman_rho": -0.2664556265315887,
+        "spearman_p": 0.14044595965381454,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": 0.12225110179185981,
+        "pearson_p": 0.5050599047062801,
+        "spearman_rho": 0.08683512291983478,
+        "spearman_p": 0.6365238435680535,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.415371968827808,
+        "pearson_p": 0.018071400065469943,
+        "spearman_rho": 0.429218607822655,
+        "spearman_p": 0.014229777437131849,
+        "n_hotels": 32
+      }
+    },
+    "t3": {
+      "spatial": {
+        "pearson_r": 0.5758703451624081,
+        "pearson_p": 0.0005630752896532882,
+        "spearman_rho": 0.4586457130669555,
+        "spearman_p": 0.008286794075515871,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.581038406180358,
+        "pearson_p": 0.0004883395973029519,
+        "spearman_rho": 0.49369316849943035,
+        "spearman_p": 0.004085157008466368,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.29035187002363305,
+        "pearson_p": 0.10694516193836771,
+        "spearman_rho": -0.2819457206872411,
+        "spearman_p": 0.11796348561291822,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": 0.17340381712129577,
+        "pearson_p": 0.34256469043607507,
+        "spearman_rho": 0.07139296476985627,
+        "spearman_p": 0.6978030723797248,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": -0.1513870275686415,
+        "pearson_p": 0.40818868470072506,
+        "spearman_rho": -0.03298089265079326,
+        "spearman_p": 0.8577855027827807,
+        "n_hotels": 32
+      }
+    },
+    "t4": {
+      "spatial": {
+        "pearson_r": 0.5043221763700618,
+        "pearson_p": 0.0032479274766717236,
+        "spearman_rho": 0.5179120304012425,
+        "spearman_p": 0.002396445615469498,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.4861756409160578,
+        "pearson_p": 0.004783925707994065,
+        "spearman_rho": 0.48165608036908386,
+        "spearman_p": 0.0052515417607475355,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.2716587472155627,
+        "pearson_p": 0.13257068590982124,
+        "spearman_rho": -0.19933886903858483,
+        "spearman_p": 0.27404697458983707,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": -0.04835316176061852,
+        "pearson_p": 0.7927063653261393,
+        "spearman_rho": -0.06660976866373325,
+        "spearman_p": 0.7171928344493166,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.23098540674955476,
+        "pearson_p": 0.20339149857732441,
+        "spearman_rho": 0.2257872613086662,
+        "spearman_p": 0.21403354879891495,
+        "n_hotels": 32
+      }
+    },
+    "t5": {
+      "spatial": {
+        "pearson_r": 0.4888387511167644,
+        "pearson_p": 0.00452548511546627,
+        "spearman_rho": 0.3617220755548764,
+        "spearman_p": 0.04192481227954866,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.4709238322736821,
+        "pearson_p": 0.006521381711788926,
+        "spearman_rho": 0.30340312666461655,
+        "spearman_p": 0.09139635624526897,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.23329788494810508,
+        "pearson_p": 0.19877677418858686,
+        "spearman_rho": -0.3369621397515293,
+        "spearman_p": 0.0593109029506164,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": 0.31838783965681206,
+        "pearson_p": 0.0757396912522601,
+        "spearman_rho": 0.24845800126387582,
+        "spearman_p": 0.17031719070706852,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.3747066670271672,
+        "pearson_p": 0.034600800532423114,
+        "spearman_rho": 0.20556348897914398,
+        "spearman_p": 0.2590313441525714,
+        "n_hotels": 32
+      }
+    },
+    "t6": {
+      "spatial": {
+        "pearson_r": 0.5445326840026926,
+        "pearson_p": 0.0012724462149220485,
+        "spearman_rho": 0.54907680177544,
+        "spearman_p": 0.0011361215941790262,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.5501454016069771,
+        "pearson_p": 0.0011059879688750463,
+        "spearman_rho": 0.5456153246956895,
+        "spearman_p": 0.0012387302507761244,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.08717062944671229,
+        "pearson_p": 0.6352165154524978,
+        "spearman_rho": -0.29925627913311925,
+        "spearman_p": 0.0961371419679816,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": 0.28053519282895567,
+        "pearson_p": 0.11989218704109543,
+        "spearman_rho": 0.23105359507335305,
+        "spearman_p": 0.2032543738165979,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.31793127793000575,
+        "pearson_p": 0.0761838030632729,
+        "spearman_rho": 0.3378371701137177,
+        "spearman_p": 0.0586125314826557,
+        "n_hotels": 32
+      }
+    },
+    "t7": {
+      "spatial": {
+        "pearson_r": 0.4789958093293155,
+        "pearson_p": 0.005544683196657952,
+        "spearman_rho": 0.4304288592703339,
+        "spearman_p": 0.013929276918192048,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.47634208891279023,
+        "pearson_p": 0.005850943135264198,
+        "spearman_rho": 0.42775261765829037,
+        "spearman_p": 0.014601023876531363,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.1426158650595296,
+        "pearson_p": 0.43618456171576464,
+        "spearman_rho": -0.22473397936543058,
+        "spearman_p": 0.21623548436785317,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": -0.037538965749846914,
+        "pearson_p": 0.8383726468096702,
+        "spearman_rho": -0.015834429537924202,
+        "spearman_p": 0.9314548542549712,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.322521731267436,
+        "pearson_p": 0.07180919948300123,
+        "spearman_rho": 0.19605292851546371,
+        "spearman_p": 0.2821966499352473,
+        "n_hotels": 32
+      }
+    },
+    "t8": {
+      "spatial": {
+        "pearson_r": 0.5220507448968545,
+        "pearson_p": 0.002179075783784657,
+        "spearman_rho": 0.4433420186284077,
+        "spearman_p": 0.011040493193774894,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.43376504465100135,
+        "pearson_p": 0.01312830084079265,
+        "spearman_rho": 0.4213108958113216,
+        "spearman_p": 0.016329701901493587,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": 0.16096277107976917,
+        "pearson_p": 0.37881883357831647,
+        "spearman_rho": 0.03981936893922751,
+        "spearman_p": 0.8286945894393121,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": -0.331051363877028,
+        "pearson_p": 0.06420149916176131,
+        "spearman_rho": -0.16855218765814037,
+        "spearman_p": 0.3564442048082373,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": -0.31530572034348625,
+        "pearson_p": 0.07877700026675116,
+        "spearman_rho": -0.2021422687016495,
+        "spearman_p": 0.2672159635451532,
+        "n_hotels": 32
+      }
+    },
+    "t9": {
+      "spatial": {
+        "pearson_r": 0.5442399499854323,
+        "pearson_p": 0.0012816994563545235,
+        "spearman_rho": 0.4153772495700729,
+        "spearman_p": 0.018069785468102617,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.5493709195001764,
+        "pearson_p": 0.0011277567966167658,
+        "spearman_rho": 0.4352807427786389,
+        "spearman_p": 0.012777373385192494,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.07629870350851131,
+        "pearson_p": 0.6781092853388458,
+        "spearman_rho": -0.15904075572150592,
+        "spearman_p": 0.38461254440863657,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": 0.2690470983004352,
+        "pearson_p": 0.1364819963123376,
+        "spearman_rho": 0.10557505093239351,
+        "spearman_p": 0.5652421396443738,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.308973713470335,
+        "pearson_p": 0.0853111441041147,
+        "spearman_rho": 0.27035652791373943,
+        "spearman_p": 0.13451051420283414,
+        "n_hotels": 32
+      }
+    },
+    "t10": {
+      "spatial": {
+        "pearson_r": 0.535683310691374,
+        "pearson_p": 0.0015795158160633045,
+        "spearman_rho": 0.4443671201129841,
+        "spearman_p": 0.010834611270853107,
+        "n_hotels": 32
+      },
+      "accessibility": {
+        "pearson_r": 0.4839253151246693,
+        "pearson_p": 0.005012082483972337,
+        "spearman_rho": 0.37210878607319026,
+        "spearman_p": 0.035976417586560776,
+        "n_hotels": 32
+      },
+      "facility": {
+        "pearson_r": -0.17448426430724392,
+        "pearson_p": 0.33951902802472467,
+        "spearman_rho": -0.19517654647727664,
+        "spearman_p": 0.28439628596977384,
+        "n_hotels": 32
+      },
+      "economic": {
+        "pearson_r": 0.11728669755125457,
+        "pearson_p": 0.5226348120518629,
+        "spearman_rho": 0.022499601018378942,
+        "spearman_p": 0.902718135939975,
+        "n_hotels": 32
+      },
+      "disruption": {
+        "pearson_r": 0.42296027126971925,
+        "pearson_p": 0.015871616003243518,
+        "spearman_rho": 0.3617049213741602,
+        "spearman_p": 0.04193525159103558,
+        "n_hotels": 32
+      }
+    }
+  },
+  "correlations_pooled": {
+    "spatial": {
+      "pearson_r": 0.5112473995522298,
+      "pearson_p": 1.0411619914089959e-22,
+      "spearman_rho": 0.3757794340614176,
+      "spearman_p": 3.5939373476159197e-12,
+      "n_rows": 320
+    },
+    "accessibility": {
+      "pearson_r": 0.49385926146480397,
+      "pearson_p": 4.4365640218115745e-21,
+      "spearman_rho": 0.3705273011533435,
+      "spearman_p": 7.514273009816323e-12,
+      "n_rows": 320
+    },
+    "facility": {
+      "pearson_r": -0.12757365068353096,
+      "pearson_p": 0.02245923627301679,
+      "spearman_rho": -0.14361736046129275,
+      "spearman_p": 0.010099597429119023,
+      "n_rows": 320
+    },
+    "economic": {
+      "pearson_r": 0.07298280197135552,
+      "pearson_p": 0.19285342353732776,
+      "spearman_rho": 0.016245922227491515,
+      "spearman_p": 0.7722005128160893,
+      "n_rows": 320
+    },
+    "disruption": {
+      "pearson_r": 0.19563986872370712,
+      "pearson_p": 0.0004313960379171348,
+      "spearman_rho": 0.13612309758391503,
+      "spearman_p": 0.0148150846330407,
+      "n_rows": 320
+    },
+    "_component_correlation_matrix": {
+      "spatial": {
+        "spatial": 1.0,
+        "accessibility": 0.8974791927749818,
+        "facility": -0.07160647436355165,
+        "economic": -0.022342597451868673,
+        "disruption": 0.03349088688118753
+      },
+      "accessibility": {
+        "spatial": 0.8974791927749817,
+        "accessibility": 0.9999999999999998,
+        "facility": -0.04475020196069608,
+        "economic": -0.057044100640027864,
+        "disruption": -0.07059694274806867
+      },
+      "facility": {
+        "spatial": -0.07160647436355164,
+        "accessibility": -0.04475020196069608,
+        "facility": 1.0,
+        "economic": -0.7453040264046612,
+        "disruption": -0.2671819327045485
+      },
+      "economic": {
+        "spatial": -0.022342597451868673,
+        "accessibility": -0.05704410064002786,
+        "facility": -0.7453040264046613,
+        "economic": 1.0,
+        "disruption": 0.32700918601863455
+      },
+      "disruption": {
+        "spatial": 0.03349088688118753,
+        "accessibility": -0.07059694274806867,
+        "facility": -0.2671819327045485,
+        "economic": 0.32700918601863455,
+        "disruption": 1.0
+      }
+    }
+  },
+  "bootstrap_ci_95": {
+    "spatial": [
+      0.10086943232843493,
+      0.3249827434949254
+    ],
+    "accessibility": [
+      0.2924309701904603,
+      0.47221187167973705
+    ],
+    "facility": [
+      0.04767228734395874,
+      0.17300115121630022
+    ],
+    "economic": [
+      0.06402517782383361,
+      0.2509072560212348
+    ],
+    "disruption": [
+      0.10121074553880992,
+      0.21454159834194492
+    ],
+    "spatial_plus_accessibility": [
+      0.4823761985458404,
+      0.7114771961215979
+    ]
+  },
+  "fit_quality": {
+    "per_question macro": {
+      "share_pearson_r": 0.5470678162112971,
+      "share_spearman_rho": 0.4144859936066093,
+      "macro_ndcg10": 0.37575968954420086,
+      "macro_top1": 0.160393379655604
+    },
+    "pooled": {
+      "share_pearson_r": 0.4982238853296465,
+      "share_spearman_rho": 0.42926707335140535,
+      "macro_ndcg10": 0.39363105224142075,
+      "macro_top1": 0.20376863598487843
+    },
+    "correlation": {
+      "share_pearson_r": 0.5460828961545119,
+      "share_spearman_rho": 0.4578877721480426,
+      "macro_ndcg10": 0.4014535371860638,
+      "macro_top1": 0.20376863598487843
+    },
+    "handset prior": {
+      "share_pearson_r": 0.5134322022333936,
+      "share_spearman_rho": 0.3421692465355418,
+      "macro_ndcg10": 0.3290975024387851,
+      "macro_top1": 0.11896335937162832
+    }
+  },
+  "equivalence_check": {
+    "individual_level": {
+      "spatial": 0.0,
+      "accessibility": 1.0,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.0
+    },
+    "aggregated_shares": {
+      "spatial": 0.0,
+      "accessibility": 1.0,
+      "facility": 0.0,
+      "economic": 0.0,
+      "disruption": 0.0
+    },
+    "max_abs_difference": 0.0
+  },
+  "shares_csv": "weight_elicitation\\out\\choice_shares.csv",
+  "shares_by_display_csv": "weight_elicitation\\out\\choice_shares_by_display.csv"
+}

@@ -1,0 +1,145 @@
+{
+  "seed": 20260902,
+  "folds": 5,
+  "samples": 3000,
+  "queries": 74,
+  "querysets": [
+    "queryset.json",
+    "queryset_price.json"
+  ],
+  "objective": "mean nDCG@10 over the simplex, derivative-free",
+  "protocol": "nested k-fold; inner 25% split picks lambda; each outer fold scored exactly once by a vector refit on the remainder",
+  "prior": "0.5*elicited + 0.5*literature (trio renormalised, disruption reserved 0.15)",
+  "reserved": {
+    "disruption": 0.15
+  },
+  "identifiability": {
+    "spatial": {
+      "profile": [
+        0.798,
+        0.7886,
+        0.7741,
+        0.7659,
+        0.761,
+        0.7588
+      ],
+      "range": 0.03915008886556093,
+      "argmax": 0.0,
+      "monotone_down": true
+    },
+    "accessibility": {
+      "profile": [
+        0.7917,
+        0.7871,
+        0.782,
+        0.77,
+        0.7599,
+        0.755
+      ],
+      "range": 0.03665162751343953,
+      "argmax": 0.0,
+      "monotone_down": true
+    },
+    "facility": {
+      "profile": [
+        0.7564,
+        0.7579,
+        0.77,
+        0.7814,
+        0.7825,
+        0.8005
+      ],
+      "range": 0.04405611303614643,
+      "argmax": 0.5,
+      "monotone_down": false
+    },
+    "economic": {
+      "profile": [
+        0.7527,
+        0.7606,
+        0.7842,
+        0.7868,
+        0.7942,
+        0.7989
+      ],
+      "range": 0.046173880304501425,
+      "argmax": 0.5,
+      "monotone_down": false
+    },
+    "disruption": {
+      "profile": [
+        0.7697,
+        0.77,
+        0.7686,
+        0.7701,
+        0.7762,
+        0.7752
+      ],
+      "range": 0.007554094124106903,
+      "argmax": 0.4,
+      "monotone_down": false
+    }
+  },
+  "lambda_grid": [
+    0.0,
+    0.15,
+    0.3,
+    0.45,
+    0.6,
+    0.75,
+    1.0
+  ],
+  "lambda_per_fold": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "lambda_modal": 0.0,
+  "cv_ndcg_mean": 0.8401545600192719,
+  "cv_ndcg_sd": 0.02923987967351021,
+  "cv_per_fold": [
+    0.8671846531500744,
+    0.8159056945708371,
+    0.8783110150158344,
+    0.8014874025908725,
+    0.8378840347687412
+  ],
+  "weights_prior": {
+    "spatial": 0.2509,
+    "accessibility": 0.3107,
+    "facility": 0.1926,
+    "economic": 0.1457,
+    "disruption": 0.1
+  },
+  "weights_raw_fit": {
+    "spatial": 0.0762,
+    "accessibility": 0.0977,
+    "facility": 0.3646,
+    "economic": 0.3114,
+    "disruption": 0.15
+  },
+  "weights_blended": {
+    "spatial": 0.0762,
+    "accessibility": 0.0977,
+    "facility": 0.3646,
+    "economic": 0.3114,
+    "disruption": 0.15
+  },
+  "weights_final": {
+    "spatial": 0.0777,
+    "accessibility": 0.0962,
+    "facility": 0.3646,
+    "economic": 0.3114,
+    "disruption": 0.15
+  },
+  "location_split_delta_ndcg": 7.340133703137575e-05,
+  "location_split_from_prior": true,
+  "in_sample_reference_ndcg": {
+    "handset": 0.7853436152267264,
+    "elicited": 0.7504070971285158,
+    "blended": 0.7538496487342713,
+    "balanced": 0.8349993605877614
+  }
+}

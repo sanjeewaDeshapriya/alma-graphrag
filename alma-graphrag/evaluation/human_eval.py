@@ -68,9 +68,23 @@ from src.graph.retriever import WEIGHT_PROFILES
 logger = logging.getLogger("alma.eval.human")
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-STUDY = PROJECT_ROOT / "studies" / "weight-elicitation"
-DEFAULT_RESPONSES = STUDY / "data" / "responses_v4-rooms-20260818.csv"
-DEFAULT_MATERIAL = STUDY / "material" / "study_material_v1_minmax.json"
+
+# Study material lives in the Next.js sub-project because it is bundled into that
+# app at build time; everything derived from the study lives in weight_elicitation/.
+STUDY_APP = PROJECT_ROOT / "studies" / "weight-elicitation"
+DEFAULT_RESPONSES = PROJECT_ROOT / "weight_elicitation" / "data" / "responses_v4-rooms-20260818.csv"
+
+# RESOLVED 2026-09-02. This default used to point at a min-max recode of the
+# material that no longer exists, because the retriever scored min-max while the
+# study encoded percentile ranks, and running the two together would have
+# compared components on different scales.
+#
+# The mismatch was fixed from the other side: `src/graph/retriever.py` now scores
+# PERCENTILE throughout (see `_pct_lower_better` and NFR-05). The shipped,
+# percentile-encoded material is therefore the correct input, and the recode is
+# not merely unavailable but unwanted — regenerating it would reintroduce exactly
+# the scale mismatch this note was written to prevent.
+DEFAULT_MATERIAL = STUDY_APP / "material" / "study_material_v1.json"
 DEFAULT_HUMAN_RESULTS = PROJECT_ROOT / "evaluation" / "results_human.json"
 
 DIMS = ["spatial", "accessibility", "facility", "economic", "disruption"]
@@ -89,11 +103,16 @@ csv.field_size_limit(min(sys.maxsize, 2 ** 31 - 1))
 
 def load_material(path: Path | str = DEFAULT_MATERIAL) -> Dict[str, Any]:
     m = json.loads(Path(path).read_text(encoding="utf-8"))
-    if m.get("normalisation") != "minmax":
+    # The guard runs the other way round now: the retriever scores percentile, so
+    # percentile material is what makes a fitted weight mean the same thing here
+    # as it does at serving time. A min-max recode is the thing to reject.
+    norm = m.get("normalisation") or "pct_rank"
+    if norm != "pct_rank":
         logger.warning(
-            "Material %s is percentile-rank encoded; components will not match the "
-            "retriever's min-max scale. Run studies/weight-elicitation/analysis/"
-            "recode_components.py.", m.get("version"))
+            "Material %s is %s-encoded, but the retriever scores percentile "
+            "ranks (NFR-05). A weight fitted on one scale does not deliver its "
+            "nominal influence on the other; this comparison is not meaningful. "
+            "See docs/Weight_Elicitation_Data_Audit.md.", m.get("version"), norm)
     return m
 
 

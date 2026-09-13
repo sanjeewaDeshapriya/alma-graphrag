@@ -45,6 +45,14 @@ remain reproducible):
   travel time : <= target = pass; up to +2 min over = partial
   disruption  : <= target delay = pass; up to +3 min over = partial
   amenities   : all present = pass; some present = partial; none = fail
+
+--------------------------------------------------------------------------
+Preference ladders (`prefer_cheaper` / `prefer_premium`)
+--------------------------------------------------------------------------
+Threshold constraints answer "is this hotel acceptable?". Preference ladders
+answer "is this hotel BETTER?" — needed because a threshold grades everything
+inside the budget as equally relevant, which makes the composite score's
+`economic` weight unobservable. See `_v_ladder_lower`.
 """
 from __future__ import annotations
 
@@ -152,6 +160,54 @@ def _v_ceiling_abs(value: Any, limit: float, tol_abs: float) -> int:
     return FAIL
 
 
+def _v_ladder_lower(value: Any, spec: Dict[str, float],
+                    bands: ToleranceBands = DEFAULT_BANDS) -> int:
+    """Graded PREFERENCE ladder for "cheaper is better" queries.
+
+    Threshold gold (`max_price`) grades every hotel inside the budget as a 2, so
+    they all tie and nDCG cannot see the order they were returned in. That is
+    why the economic weight was invisible to the benchmark: on the 60-query set
+    a profile with economic = 0.000 and one with 0.200 scored identically
+    (0.6844, exactly the Filter baseline) on all ten economic queries.
+
+    A ladder splits the pool into three bands instead of two, so a system that
+    puts the cheapest hotels ABOVE the merely-affordable ones scores higher:
+
+        price <= full     -> 2   fully relevant
+        price <= partial  -> 1   partially relevant
+        otherwise         -> 0
+
+    The cut points are absolute LKR values FROZEN IN THE QUERY FILE, deliberately
+    not percentiles of the live candidate pool. Pool percentiles are exactly what
+    the retriever's own `economic` component computes, so grading against them
+    would rebuild the circularity this module was written to remove — the gold
+    would be scoring the system against its own scoring rule.
+
+    Only the partial tier responds to the tolerance sweep, and it is expressed
+    relative to the default band so that a sweep factor of 1.0 reproduces the
+    stated cut point exactly.
+    """
+    if value is None:
+        return FAIL
+    v = float(value)
+    if v <= float(spec["full"]):
+        return PASS
+    widened = float(spec["partial"]) * (1.0 + bands.price) / (1.0 + DEFAULT_BANDS.price)
+    return PARTIAL if v <= widened else FAIL
+
+
+def _v_ladder_higher(value: Any, spec: Dict[str, float],
+                     bands: ToleranceBands = DEFAULT_BANDS) -> int:
+    """Graded preference ladder for "more expensive is better" (premium) queries."""
+    if value is None:
+        return FAIL
+    v = float(value)
+    if v >= float(spec["full"]):
+        return PASS
+    narrowed = float(spec["partial"]) * (1.0 + DEFAULT_BANDS.price) / (1.0 + bands.price)
+    return PARTIAL if v >= narrowed else FAIL
+
+
 def _v_amenities(hotel: Dict[str, Any], needles: List[str]) -> int:
     have = [a.lower() for a in (hotel.get("amenities") or [])]
     hits = sum(1 for n in needles if any(n.lower() in a for a in have))
@@ -194,6 +250,10 @@ def _verdicts(hotel: Dict[str, Any], gold: Dict[str, Any],
         vs.append(_v_ceiling_frac(price, gold["max_price"], bands.price))
     if "min_price" in gold:
         vs.append(_v_floor_frac(price, gold["min_price"], bands.price))
+    if "prefer_cheaper" in gold:
+        vs.append(_v_ladder_lower(price, gold["prefer_cheaper"], bands))
+    if "prefer_premium" in gold:
+        vs.append(_v_ladder_higher(price, gold["prefer_premium"], bands))
     if "min_rating" in gold:
         vs.append(_v_floor_abs(rating, gold["min_rating"], bands.rating))
     if "min_star" in gold:

@@ -78,40 +78,295 @@ class ScoringWeights:
 # Named weight profiles
 # ---------------------------------------------------------------------------
 #
-# `handset` is the original hand-tuned prior. `elicited` and `blended` come from
-# the discrete-choice experiment in studies/weight-elicitation (material
-# v4-rooms-20260818-minmax): 95 clean-cohort participants, 949 choices over a
-# 32-hotel pool, conditional logit, weights bootstrapped by participant.
-# Full provenance: studies/weight-elicitation/analysis/DATA_AUDIT.md
+# `handset` is the original hand-tuned prior. `elicited` and `blended` are fitted
+# from the discrete-choice experiment in studies/weight-elicitation (material
+# v4-rooms-20260818) by `weight_elicitation/fit_weights.py`, which reads the hosted
+# study's raw JSON dump directly. Primary specification: all 2,232 choice sets
+# from 241 participants (32-hotel pool), conditional logit, bootstrapped by
+# participant. The attention check fails for 43.7% of participants, so excluding
+# them is a judgement call made after seeing the data — the all-cohort fit is
+# therefore primary and the clean cohort is a sensitivity analysis
+# (`--drop-failed-attention`), not the reverse.
+# Full provenance: docs/Weight_Elicitation_Data_Audit.md
 #
-# Held-out validation (73 participants never seen during fitting) put elicited
-# ahead of handset on every metric — nDCG@10 0.708 vs 0.596, p < 0.001.
+# Two corrections separate these numbers from the earlier published ones
+# (0.563 / 0.401 / 0 / 0 / 0.036):
 #
-# The catch: `facility` and `economic` fitted NEGATIVE and clip to zero on the
-# simplex. That is a real, sign-stable effect in the booking task, but it is not
-# transferable to constraint-satisfaction queries — a retriever with
-# economic = 0 cannot answer "cheapest hotel", and facility = 0 ignores
-# requested amenities. `blended` therefore keeps the hand-set prior mass for
-# those two (0.25 + 0.15 = 0.40) and distributes the remaining 0.60 in the
-# elicited proportions. Which profile to run is an empirical question — set
-# SCORING_WEIGHTS_PROFILE and compare in evaluation/run_eval.py.
+#   1. A log-rank term is fitted alongside the components and then discarded.
+#      46% of participants picked the hotel at rank 1 on a list sorted by one of
+#      the components being estimated; rank correlates +0.686 with `spatial` and
+#      +0.670 with `accessibility`. Without that term the logit books position
+#      bias as a preference for proximity. Adding it improves the training
+#      log-likelihood by 1,702 on 1 df — position explains more than all five
+#      components together.
+#   2. `facility` is recomputed without the `min(n_facilities / 40, 1)` ceiling
+#      that had saturated 30 of the 32 hotels. (Component vectors were never
+#      shown to participants, so rebuilding the feature matrix invalidates no
+#      choice — only our description of the alternatives changes.)
+#
+# Held-out (72 participants never seen in fitting), macro-averaged over sort
+# mode so the 75% proximity-sorted majority cannot win on position bias alone:
+#
+#     handset   nDCG@10 0.325      elicited  0.394      blended  0.380
+#
+# Bootstrap 95% CIs on `elicited` (400 replicates, resampled by participant):
+#
+#     spatial       0.381  [0.293, 0.433]
+#     accessibility 0.472  [0.293, 0.614]
+#     facility      0.097  [0.000, 0.238]   NOT distinguishable from zero
+#     economic      0.000  [0.000, 0.107]   NOT distinguishable from zero
+#     disruption    0.050  [0.000, 0.136]   NOT distinguishable from zero
+#
+#     spatial + accessibility  0.816  [0.582, 1.000]  <- the identified estimand
+#     spatial share of that    0.447  [0.379, 0.504]
+#
+# The TOTAL location weight is what this design identifies. Because spatial and
+# accessibility correlate 0.907 in Colombo, how that mass divides between them is
+# far weaker evidence than the two separate numbers suggest — do not report
+# "travel time beats proximity" off this fit.
+#
+# ADDENDUM 2026-09-02 — the split is a PRIOR DIAL, not an estimate.
+#
+# The bracket above is a bootstrap of the SHRUNKEN (MAP) estimator, so it
+# inherits the hand-set prior's shape (which sits at spatial share 0.556). The
+# unregularised profile likelihood — fix the split, re-optimise location mass,
+# facility, economic, disruption and the rank term at each point — says
+# something different and much sharper:
+#
+#     spatial share s   0.000  0.100  0.200  0.447  0.500  1.000
+#     -logL            3105.8 3106.5 3107.4 3110.0 3110.7 3117.7
+#     vs best             .00    .72   1.58   4.25   4.91  11.89
+#
+# A likelihood-ratio test rejects a split costing more than 1.92. Only
+# s in [0.000, 0.200] survives: the data wants travel time and essentially
+# nothing else, and it rejects BOTH the shipped 0.447 and an even 0.500.
+#
+# So lambda is what picks the split, not the choice data: lambda = 0 gives
+# 0.00 / 0.45, lambda -> infinity gives the hand-set 0.25 / 0.20, and the
+# lambda = 250 chosen on validation gives 0.201 / 0.249. The direction is
+# robust (every estimator puts accessibility >= spatial); the magnitude is not.
+#
+# Variance inflation on the study's feature matrix, for the record:
+#
+#     spatial 5.43   accessibility 5.46   facility 2.30   economic 2.38
+#     disruption 1.18
+#
+# None of this reaches the served ranking. Swapping the two weights
+# (0.249/0.201) or setting them equal (0.225/0.225) changes the top-10 on
+# 0 of 60 benchmark queries and reorders none of them, because at serving time
+# the two components correlate +0.966 — distance and travel time come out of
+# the same Google Distance Matrix element, and the current traffic snapshot was
+# taken near midnight (mean delay -1.58 min, 54 of 58 hotels FASTER "in
+# traffic"), so accessibility is road distance divided by a near-constant
+# 24.5 km/h. Moving the location SUM does matter: 0.45 -> 0.30 changes 13 of 60.
+#
+# Write-up guidance: report ONE location weight and declare the split as an
+# assumption. A claim about spatial versus accessibility is not supportable from
+# this design in either direction. Facility, economic and disruption
+# all have CIs including zero, and that holds under all four candidate `facility`
+# definitions tested.
+#
+# Read `elicited` as "this booking task, on a sorted list, measured location and
+# little else" — not as evidence that price and disruption do not matter.
+# Participants opened a median of 1 hotel out of 32, so no comparison ever
+# happened for a trade-off model to read.
+#
+# `blended` is therefore the deployable profile and a stated product decision,
+# not a statistical one: an equal mixture of the elicited posterior and the
+# hand-set prior. A retriever with economic = 0 cannot answer "cheapest hotel
+# near Galle Face" and one with disruption = 0 discards the thesis's whole
+# contribution. The study measured booking behaviour on a sorted list; it never
+# tested constraint satisfaction, so it does not get to zero out a capability it
+# did not measure.
+#
+# Which profile to run is an empirical question — set SCORING_WEIGHTS_PROFILE
+# and compare in evaluation/run_eval.py.
 
 HANDSET_WEIGHTS = ScoringWeights(
     spatial=0.25, accessibility=0.20, facility=0.25, economic=0.15, disruption=0.15,
 )
 
 ELICITED_WEIGHTS = ScoringWeights(
-    spatial=0.563, accessibility=0.401, facility=0.000, economic=0.000, disruption=0.036,
+    spatial=0.381, accessibility=0.472, facility=0.097, economic=0.000, disruption=0.050,
 )
 
 BLENDED_WEIGHTS = ScoringWeights(
-    spatial=0.338, accessibility=0.240, facility=0.250, economic=0.150, disruption=0.022,
+    spatial=0.316, accessibility=0.336, facility=0.173, economic=0.075, disruption=0.100,
+)
+
+# `balanced` — the profile for real-world use, and the answer to "why is
+# economic only 0.075?".
+#
+# The study cannot price. Four reasons, each measured on the collected data
+# (weight_elicitation diagnostics, 2026-09-02), none of them "travellers do not
+# care what a room costs":
+#
+#   1. COLLINEARITY. facility and economic correlate -0.745, so only their
+#      DIFFERENCE is identified. Unconstrained that difference is
+#      beta_fac - beta_econ = -1.120 - (-1.015) = -0.105, i.e. ~0. Which of the
+#      two got 0.097 and which got 0.000 is where the non-negativity bound
+#      happened to land — it is not evidence about price.
+#
+#   2. THE NUISANCE TERM EATS THE SIGNAL. -log(rank) exists to absorb position,
+#      but on a price-sorted list position IS price: corr(economic, -log rank)
+#      = +0.919 on price_asc sets, against +0.094 on distance-sorted ones. Fit
+#      those 188 sets on their own and economic comes back POSITIVE (+0.580)
+#      with rank still controlled.
+#
+#   3. THE POOLED FIT IS THE WRONG AVERAGE. 75% of sets were proximity-sorted,
+#      where price is simply not what the participant is doing. Those sets
+#      decide the pooled coefficient.
+#
+#   4. A COMPENSATORY MODEL ON NONCOMPENSATORY BEHAVIOUR. Conditional logit
+#      assumes trade-offs, but 99.9% of participants opened <= 1 hotel out of
+#      32 — no trade-off ever occurred. The literature on hotel search
+#      ("Determinants of consumers' choices in hotel online searches: a
+#      comparison of consideration and booking stages", Int. J. Hospitality
+#      Management, 2019) finds shoppers screen noncompensatorily while building
+#      a consideration set and only trade attributes off at the booking stage.
+#      Here price was expressed by CHOOSING TO SORT BY IT — 38.6% of
+#      participants did so at least once — and the fit treats sort mode as a
+#      stratification variable, not as a preference.
+#
+# `economic ~ 0` is therefore a fact about the instrument, not about travellers.
+#
+# Booking-stage conjoint studies, which show attributes side by side and so do
+# elicit real trade-offs, put price at 16.5% relative importance, hotel rating
+# at 16.3% and location at 15.3% — within two points of each other (Assaker &
+# O'Connor, "The Importance of Green Certification Labels/Badges in Online Hotel
+# Booking Choice", J. Hospitality & Tourism Research, 2023). Hotel conjoints
+# elsewhere put price as high as 26%.
+#
+# `balanced` is FITTED, not chosen, and fitted against the RANKING THE
+# RETRIEVER ACTUALLY PRODUCES. `scripts/fit_weight_profile.py` learns it:
+#
+#     w* = argmax_{w in simplex}  mean_q nDCG@10( rank(C_q . f(w, intent_q)), gold_q )
+#
+# where f is `apply_intent_adjustments` — the same intent ladder `retrieve()`
+# applies. That detail is the difference between a fitted number and a fiction:
+# an earlier version optimised the raw composite score instead, and its
+# objective disagreed with the evaluation harness by up to 0.118 nDCG. Ranking
+# through the serving path, the fitting environment now reproduces
+# evaluation/run_eval.py exactly (+0.0000 on all three profiles on the main set,
+# within 0.003 on the price slice).
+#
+# Search: seeded Dirichlet sampling over the simplex plus deterministic
+# coordinate refinement — nDCG is piecewise constant in w, so derivative-free is
+# a necessity. Nested 5-fold CV, inner split for the prior-mixing coefficient,
+# every seed fixed and the parser's intents frozen to disk:
+#
+#     nested CV nDCG@10 = 0.8402 +/- 0.0292     (the honest performance claim)
+#     lambda (prior mixing) = 0.00 in all 5 folds
+#
+# Rerun and it returns this vector bit for bit:
+#
+#     python scripts/fit_weight_profile.py --check-reproducible --emit-profile
+#
+# Two dimensions are not left to the fit, and the script prints the measurement
+# behind each rather than asserting it:
+#
+#   disruption 0.150 is RESERVED at the hand-set value. Its evaluation category
+#     is saturated at nDCG 1.000 for every weight vector tested, so the query set
+#     prices the dimension's COST and never its BENEFIT; freed, the fit drove it
+#     to 0.052. That is the instrument reporting its blind spot, not a finding
+#     about congestion. Re-fit it once there are queries where disruption
+#     avoidance actually discriminates.
+#
+#   spatial / accessibility: the fit divides the location mass almost arbitrarily
+#     because the two components correlate +0.966 at serving time (distance and
+#     travel time come from the same Distance Matrix element, and the traffic
+#     snapshot is a near-constant 24.5 km/h). Across folds the split wandered
+#     from 0.000 to 0.108 accessibility while the TOTAL stayed near 0.17. So the
+#     total is taken from the data and the split from the study's 0.447/0.553
+#     ratio — the script verifies that substitution is free before applying it
+#     (measured delta +0.0001 here) and keeps the fitted split when it is not.
+#
+# What the fit landed on:
+#
+#   location total  0.174   spatial 0.078 + accessibility 0.096
+#   facility        0.365   above the literature's 0.288. The weakest number
+#                           here: most of its support is the amenity category,
+#                           whose vocabulary is four values, two of them present
+#                           on all 58 hotels.
+#   economic        0.311   close to the literature's renormalised 0.291, and the
+#                           dimension the price slice exists to make visible
+#   disruption      0.150   reserved, see above
+#
+# SCALE — fixed 2026-09-02. Every profile here was fitted on PERCENTILE
+# features, and until that date the retriever scored MIN-MAX ones, so no weight
+# in this module delivered its nominal share at serving time (`economic` worst:
+# sd 0.289 -> 0.206, mean 0.484 -> 0.744 on the study pool). Scoring is now
+# percentile throughout — see _pct_lower_better. Retrieval numbers published
+# before that date were produced on the old scale and are not comparable.
+
+BALANCED_WEIGHTS = ScoringWeights(
+    spatial=0.078, accessibility=0.096, facility=0.365, economic=0.311, disruption=0.150,
+)
+
+# `human` — fitted from the discrete-choice study and NOTHING ELSE. No retrieval
+# benchmark, no conjoint literature, no hand-set prior.
+#
+#     python -m weight_elicitation.fit_human_weights --emit-profile
+#
+# The estimator is a non-negative conditional logit with a log-rank nuisance
+# term, fitted SEPARATELY PER DISPLAY CONDITION and then macro-averaged, so no
+# sort mode can win by being popular. That is the whole difference from
+# `elicited`, which pools every set into one fit and is therefore decided by the
+# 75% of sets left sorted by distance or travel time — the lists ordered by the
+# very components being estimated. Per stratum:
+#
+#     distance n=986   spa .531  acc .462  fac .000  eco .007  dis .000
+#     travel   n=696   spa .260  acc .527  fac .000  eco .011  dis .201
+#     rating   n=278   spa .000  acc .000  fac 1.000 eco .000  dis .000
+#     price    n=272   spa .401  acc .137  fac .000  eco .462  dis .000
+#
+# Sort mode is a participant variable, not a design variable: the frozen
+# material assigns no sort, `final_sort` varies inside every task, and it tracks
+# the scenario framing (the economic-framed tasks draw 64 and 50 price-sorts
+# against 11 for a proximity-framed one).
+#
+# The result that matters: `economic` = 0.120 with a clustered bootstrap CI of
+# [0.049, 0.256] — it EXCLUDES ZERO. The pooled fit reported 0.000 with a CI
+# spanning zero, and that was an artefact of averaging over lists where price
+# was not what the participant was doing. Every dimension's CI now excludes
+# zero, and held-out macro nDCG@10 is 0.4001 against 0.394 for `elicited`,
+# 0.380 for `blended` and 0.325 for `handset` on the study's own metric.
+#
+# Two honest caveats:
+#   * `facility` = 0.250 is mechanical, not graded: the rating-sorted stratum
+#     returns a degenerate 1.000 and the other three return 0.000, so the value
+#     is exactly one quarter of one vote. Its bootstrap CI [0.250, 0.253] is
+#     tight for that reason and should not be read as precision.
+#   * Participants opened a median of ONE hotel of 32, so every number here is a
+#     consideration-stage quantity. `spatial` and `accessibility` correlate
+#     +0.898 in the material; their TOTAL (0.580) is the estimand, not the split.
+
+# ECONOMIC IS PINNED AT 0.200 AND WAS NOT ESTIMATED.
+#
+#   python -m weight_elicitation.fit_human_weights --reserve economic=0.20 #          --emit-profile
+#
+# The study's own point estimate is 0.120. 0.200 is a declared constraint. It is
+# defensible — it sits inside the clustered bootstrap CI [0.049, 0.256], so the
+# data does not reject it, and it matches booking-stage conjoint work once the
+# attributes this retriever does not model are removed — but it is not something
+# this study found, and it costs 0.019 on the study's own held-out metric
+# (macro nDCG@10 0.4001 unconstrained -> 0.3810 constrained). The remaining four
+# dimensions are rescaled by a single factor, so every ratio the data DID
+# establish among them is preserved exactly.
+#
+# Unconstrained macro-average, for the record:
+#     spatial .298  accessibility .282  facility .250  economic .120  disruption .050
+
+HUMAN_WEIGHTS = ScoringWeights(
+    spatial=0.271, accessibility=0.256, facility=0.227, economic=0.200, disruption=0.046,
 )
 
 WEIGHT_PROFILES: Dict[str, ScoringWeights] = {
     "handset": HANDSET_WEIGHTS,
     "elicited": ELICITED_WEIGHTS,
     "blended": BLENDED_WEIGHTS,
+    "balanced": BALANCED_WEIGHTS,
+    "human": HUMAN_WEIGHTS,
 }
 
 
@@ -134,9 +389,24 @@ def base_weights(profile: Optional[str] = None) -> ScoringWeights:
     )
 
 
-def weights_for_intent(intent: QueryIntent, profile: Optional[str] = None) -> ScoringWeights:
-    """Derive dynamic scoring weights from query intent (P3 personalisation hook)."""
-    w = base_weights(profile)
+def apply_intent_adjustments(base: ScoringWeights, intent: QueryIntent) -> ScoringWeights:
+    """Apply the intent ladder to an ALREADY-CHOSEN base vector.
+
+    Split out of `weights_for_intent` so that the weight fitter
+    (scripts/fit_weight_profile.py) can rank exactly the way serving does. The
+    fitter used to optimise the base vector against the raw composite score,
+    which is not the function the retriever actually applies — the ladder below
+    is worth roughly 0.03 nDCG on the benchmark, and a base vector tuned without
+    it is tuned for a scorer that never runs.
+
+    This is deliberately the ONLY place these constants live. Training and
+    serving must not be able to drift apart.
+    """
+    w = ScoringWeights(
+        spatial=base.spatial, accessibility=base.accessibility,
+        facility=base.facility, economic=base.economic,
+        disruption=base.disruption, event=base.event,
+    )
 
     if intent.sort_intent == "cheapest":
         w.economic += 0.20
@@ -170,6 +440,11 @@ def weights_for_intent(intent: QueryIntent, profile: Optional[str] = None) -> Sc
     w.economic = max(0.0, w.economic)
     w.disruption = max(0.0, w.disruption)
     return w.normalised()
+
+
+def weights_for_intent(intent: QueryIntent, profile: Optional[str] = None) -> ScoringWeights:
+    """Derive dynamic scoring weights from query intent (P3 personalisation hook)."""
+    return apply_intent_adjustments(base_weights(profile), intent)
 
 
 def weights_for_profile(profile: Any, intent: QueryIntent, event_active: bool,
@@ -387,8 +662,63 @@ def _minmax(values: List[Optional[float]]) -> Tuple[float, float]:
     return min(nums), max(nums)
 
 
+def _pct_rank(v: float, pool: List[float]) -> float:
+    """Midrank percentile of `v` within `pool`, in [0, 1].
+
+    This is the scale the discrete-choice study used for every component it
+    could rank (`1 - pct_rank(price)`, `1 - pct_rank(distance)`, ...), so
+    scoring the same way here is what lets a fitted weight mean at serving time
+    what it meant in the fit.
+
+    The study's own helper counted `v_i <= x`; this uses the midrank
+    `(#below + 0.5 * #equal) / n`. The two differ by a constant 0.5/n when all
+    values are distinct, and an additive constant applied to every candidate
+    cannot reorder them — so this reproduces the study's ranking while
+    degrading sanely on ties. An all-equal pool returns 0.5 for everyone
+    (nothing to separate) instead of collapsing to 0.0.
+    """
+    n = len(pool)
+    if n == 0:
+        return 0.5
+    below = sum(1 for x in pool if x < v)
+    equal = sum(1 for x in pool if x == v)
+    return (below + 0.5 * equal) / n
+
+
+def _pct_lower_better(v: Optional[float], pool: List[float],
+                      default: float = 0.5) -> float:
+    """Lower raw value -> higher score, on the percentile scale.
+
+    Percentile replaces the min-max normalisation this retriever used until
+    2026-09-02. Min-max was measurably the wrong scale: on the study's own
+    32-hotel pool it compressed `economic`'s spread from sd 0.289 to 0.206 and
+    pushed its mean from 0.484 to 0.744, so 47% of hotels scored above 0.8
+    against 19% in the study. A couple of luxury properties stretch `hi` and
+    everything below the median piles up near 1.0, where it can no longer
+    separate the hotels users are actually choosing between. Price is the most
+    skewed input in the pool and took the worst of it, which is most of why
+    `economic` looked inert at serving time whatever weight it was given.
+    """
+    if v is None:
+        return default
+    return 1.0 - _pct_rank(float(v), pool)
+
+
+def _pct_higher_better(v: Optional[float], pool: List[float],
+                       default: float = 0.5) -> float:
+    """Higher raw value -> higher score, on the percentile scale."""
+    if v is None:
+        return default
+    return _pct_rank(float(v), pool)
+
+
 def _norm_lower_better(v: Optional[float], lo: float, hi: float, default: float = 0.5) -> float:
-    """Lower raw value -> higher score (e.g. distance, travel time, price)."""
+    """Lower raw value -> higher score, min-max scaled.
+
+    RETAINED for the `event` proximity term and for callers that genuinely want
+    an absolute 0-1 range. The five composite-score components no longer use it
+    — see `_pct_lower_better` for why they moved to percentiles.
+    """
     if v is None:
         return default
     if hi <= lo:
@@ -598,13 +928,22 @@ class WeightedRetriever:
         profile: Any = None,
         event: Any = None,
     ) -> List[ScoredHotel]:
-        # Precompute min/max for normalisation across the candidate set.
-        dist_lo, dist_hi = _minmax([c.get("distance_km") for c in cands])
-        tt_lo, tt_hi = _minmax([
-            c.get("travel_time_traffic_min") or c.get("travel_time_min") for c in cands
-        ])
-        price_lo, price_hi = _minmax([c.get("price") for c in cands])
+        # Percentile pools for normalisation across the candidate set.
+        #
+        # These are the empirical distributions each component is ranked
+        # against, and they are the serving-time counterpart of the study's
+        # 32-hotel pool. Nulls are excluded rather than imputed into the pool:
+        # a hotel with no price should not shift where the priced ones rank.
+        dist_pool = [float(c["distance_km"]) for c in cands
+                     if c.get("distance_km") is not None]
+        tt_pool = [float(c.get("travel_time_traffic_min") or c.get("travel_time_min"))
+                   for c in cands
+                   if (c.get("travel_time_traffic_min") or c.get("travel_time_min")) is not None]
+        price_pool = [float(c["price"]) for c in cands if c.get("price")]
+        star_pool = [float(c["star"]) for c in cands if c.get("star")]
+        rating_pool = [float(c["rating"]) for c in cands if c.get("rating")]
         amen_counts = [len(c.get("amenities") or []) for c in cands]
+        amen_pool = [float(n) for n in amen_counts]
         max_amen = max(amen_counts) if amen_counts else 0
 
         # Missing-price handling — see PRICE_POLICIES.
@@ -635,7 +974,7 @@ class WeightedRetriever:
             reasons: List[str] = []
 
             # --- spatial ---------------------------------------------------
-            spatial = _norm_lower_better(c.get("distance_km"), dist_lo, dist_hi)
+            spatial = _pct_lower_better(c.get("distance_km"), dist_pool)
             if intent.proximity_preference == "far":
                 spatial = 1.0 - spatial  # quiet seeker wants distance from centre
             elif intent.proximity_preference == "close" and c.get("distance_km") is not None:
@@ -644,7 +983,7 @@ class WeightedRetriever:
 
             # --- accessibility (uses live traffic travel time) -------------
             tt = c.get("travel_time_traffic_min") or c.get("travel_time_min")
-            accessibility = _norm_lower_better(tt, tt_lo, tt_hi)
+            accessibility = _pct_lower_better(tt, tt_pool)
             if c.get("travel_time_traffic_min") and accessibility > 0.7:
                 reasons.append(f"fast access (~{float(c['travel_time_traffic_min']):.0f} min in traffic)")
 
@@ -657,15 +996,24 @@ class WeightedRetriever:
                 if matched:
                     reasons.append(f"matches {matched}/{len(req_amen)} requested amenities")
             else:
-                amen_match = (len(amenities) / max_amen) if max_amen else 0.5
+                # No requested amenities: fall back to "how well equipped is
+                # this hotel relative to the pool". The study ranked its
+                # facility count the same way (pct_rank(n_facilities)); the old
+                # count/max_count divided by a single best-equipped outlier.
+                amen_match = _pct_higher_better(float(len(amenities)), amen_pool)
             attr_match = 0.0
             if req_attr:
                 am = sum(1 for a in req_attr if any(a in x for x in attractions | set(c.get("locations") or [])))
                 attr_match = am / len(req_attr)
                 if am:
                     reasons.append(f"near {am}/{len(req_attr)} requested attractions")
-            star_score = (float(c["star"]) / 5.0) if c.get("star") else 0.0
-            rating_score = (float(c["rating"]) / 5.0) if c.get("rating") else 0.0
+            # Percentile, not value/5 — matching the study's
+            # 0.45*pct_rank(star) + 0.35*pct_rank(n_facilities) + 0.20*pct_rank(rating).
+            # Colombo hotels cluster at 3-4 stars and 4.0-4.5 rating, so /5
+            # squeezed both into a narrow band and left `facility` unable to
+            # separate anything.
+            star_score = _pct_higher_better(c.get("star"), star_pool, default=0.0)
+            rating_score = _pct_higher_better(c.get("rating"), rating_pool, default=0.0)
             facility = (
                 0.40 * amen_match
                 + 0.20 * attr_match
@@ -676,7 +1024,7 @@ class WeightedRetriever:
             # --- economic --------------------------------------------------
             price_imputed = False
             if c.get("price"):
-                economic = _norm_lower_better(c.get("price"), price_lo, price_hi)
+                economic = _pct_lower_better(c.get("price"), price_pool)
                 if intent.max_price_lkr and float(c["price"]) <= intent.max_price_lkr:
                     reasons.append("within budget")
             else:
@@ -684,10 +1032,21 @@ class WeightedRetriever:
                 if self.price_policy == "worst":
                     economic = 0.0
                 elif self.price_policy == "median" and price_median is not None:
-                    economic = _norm_lower_better(price_median, price_lo, price_hi)
+                    economic = _pct_lower_better(price_median, price_pool)
                 else:  # "neutral", or "median" with an all-null pool
                     economic = 0.5
                 reasons.append(f"price unknown (imputed: {self.price_policy})")
+
+            # `economic` is defined cheaper-is-better, so a premium query would
+            # otherwise be served its cheapest hotels first — and the larger the
+            # economic weight, the harder it pulls the wrong way. Flip the
+            # component rather than zero the weight, exactly as
+            # proximity_preference="far" flips `spatial` above: the dimension
+            # still carries its share of the score, it just points the other way.
+            if intent.price_preference == "high":
+                economic = 1.0 - economic
+                if economic > 0.7:
+                    reasons.append("upmarket property")
 
             # --- disruption (own signals + diffused neighbourhood exposure) ---
             #

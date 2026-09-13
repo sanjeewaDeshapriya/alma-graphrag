@@ -55,6 +55,12 @@ class QueryIntent:
     accessibility_priority: str = "normal"  # high | normal
     avoid_traffic: bool = False
     sort_intent: str = "best_overall"       # best_overall | cheapest | highest_rated | most_accessible
+    # Which DIRECTION the `economic` component should point. The component is
+    # defined "cheaper scores higher", which silently makes every premium query
+    # ("upmarket hotels in colombo") rank the cheapest hotels first — and the
+    # bigger the economic weight, the worse that gets. `high` flips it, the same
+    # way proximity_preference="far" flips `spatial`.
+    price_preference: str = "any"           # low | high | any
 
     raw_keywords: List[str] = field(default_factory=list)
 
@@ -65,6 +71,13 @@ class QueryIntent:
 # ---------------------------------------------------------------------------
 # Deterministic regex extraction
 # ---------------------------------------------------------------------------
+
+_BUDGET_TERMS = ["cheap", "budget", "affordable", "lowest price", "least expensive",
+                 "value for money", "good value", "economical", "inexpensive", "low cost",
+                 "save money", "wallet friendly"]
+
+_PREMIUM_TERMS = ["upmarket", "high end", "high-end", "premium", "luxury", "luxurious",
+                  "splurge", "splurging", "upscale", "five star", "5 star", "top end"]
 
 # Canonical amenity → mention synonyms (lowercase). Matching is substring-based.
 _AMENITY_SYNONYMS: Dict[str, List[str]] = {
@@ -180,8 +193,17 @@ def _regex_intent(question: str, default_city: Optional[str]) -> QueryIntent:
     if any(p in t for p in _ACCESS_TERMS):
         intent.accessibility_priority = "high"
 
+    # Price direction. Checked before sort intent because "luxury" belongs to
+    # both: it asks for quality AND signals that dearer is better, whereas
+    # "upmarket"/"high end"/"premium" carry no rating claim at all and used to
+    # fall through to best_overall with `economic` still pointing at cheap.
+    if any(p in t for p in _PREMIUM_TERMS):
+        intent.price_preference = "high"
+    elif any(p in t for p in _BUDGET_TERMS):
+        intent.price_preference = "low"
+
     # Sort intent
-    if any(p in t for p in ["cheap", "budget", "affordable", "lowest price", "least expensive"]):
+    if any(p in t for p in _BUDGET_TERMS):
         intent.sort_intent = "cheapest"
     elif any(p in t for p in ["top-rated", "highest rated", "best rated", "luxury", "5 star", "five star"]):
         intent.sort_intent = "highest_rated"
@@ -211,6 +233,7 @@ Extract the user's intent into STRICT JSON (no markdown, no prose). Schema:
   "min_rating": number or null,
   "min_star": integer or null,
   "proximity_preference": "close" | "far" | "any",
+  "price_preference": "low" | "high" | "any",
   "accessibility_priority": "high" | "normal",
   "avoid_traffic": boolean,
   "sort_intent": "best_overall" | "cheapest" | "highest_rated" | "most_accessible"
@@ -282,6 +305,8 @@ def parse_query(question: str, default_city: Optional[str] = None) -> QueryInten
 
         if llm.get("proximity_preference") in ("close", "far", "any"):
             intent.proximity_preference = llm["proximity_preference"]
+        if llm.get("price_preference") in ("low", "high", "any"):
+            intent.price_preference = llm["price_preference"]
         if llm.get("accessibility_priority") in ("high", "normal"):
             intent.accessibility_priority = llm["accessibility_priority"]
         if isinstance(llm.get("avoid_traffic"), bool):

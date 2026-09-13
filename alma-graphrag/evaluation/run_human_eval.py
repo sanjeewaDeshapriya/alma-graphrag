@@ -69,7 +69,11 @@ def main() -> None:
     print(f"A. PER-CHOICE — ground truth = the hotel that participant booked "
           f"({out['n_test_choices']} choices)")
     print("-" * 96)
-    print(f"  one relevant item per query, so P@{k} is capped at {1/out['candidate_set_size']:.3f} "
+    # The cap is 1/K, not 1/pool: with exactly one relevant item, a perfect
+    # ranking puts it at position 1 and P@K is 1/K. Dividing by the candidate
+    # set size printed 0.031 while the systems were scoring 0.089, which reads
+    # as an impossible result rather than a mislabelled ceiling.
+    print(f"  one relevant item per query, so P@{k} is capped at {1/k:.3f} "
           f"and R@{k} equals the hit rate")
     keys = [f"P@{k}", f"R@{k}", f"nDCG@{k}", "MRR", "mean_rank"]
     print(f"\n{'System':<36}" + "".join(f"{key:>11}" for key in keys))

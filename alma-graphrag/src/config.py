@@ -72,12 +72,31 @@ REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 
 # Composite-score weight profile for the weighted retriever:
 #   handset  — the original hand-tuned prior (default; preserves published results)
-#   elicited — conditional-logit estimate from the discrete-choice study
-#              (studies/weight-elicitation); facility/economic clip to zero
-#   blended  — elicited proportions for spatial/accessibility/disruption, hand-set
-#              prior retained for facility/economic
+#   elicited — position-controlled conditional-logit estimate from the
+#              discrete-choice study (studies/weight-elicitation). Only spatial
+#              and accessibility are identified; facility/economic/disruption
+#              have bootstrap CIs that include zero
+#   blended  — equal mixture of `elicited` and `handset`; still study-anchored,
+#              since a retriever with economic = 0 cannot answer "cheapest hotel"
+#   balanced — RECOMMENDED for real-world use. `elicited` and `blended` both
+#              under-price because the study measured consideration-stage
+#              behaviour (99.9% of participants opened <= 1 hotel of 32), where
+#              shoppers screen rather than trade off, and because facility and
+#              economic correlate -0.745 so only their difference is identified.
+#              `balanced` restores price and quality to booking-stage conjoint
+#              values (0.300 each, renormalised over the attributes this
+#              retriever actually models) and sets the location mass by
+#              evaluation rather than by either source: swept over both query
+#              sets, 0.20-0.35 are statistically tied and all beat the old 0.45,
+#              so 0.25 is taken just under the literature's 0.270.
+#              spatial 0.112 / accessibility 0.138 / facility 0.300 /
+#              economic 0.300 / disruption 0.150.
+#              See src/graph/retriever.py BALANCED_WEIGHTS for the derivation.
+#
+# Regenerate with:
+#   python -m weight_elicitation.fit_weights --emit-profile
 # See src/graph/retriever.py WEIGHT_PROFILES and
-# studies/weight-elicitation/analysis/DATA_AUDIT.md
+# docs/Weight_Elicitation_Data_Audit.md
 SCORING_WEIGHTS_PROFILE = os.getenv("SCORING_WEIGHTS_PROFILE", "handset").lower()
 
 CRAG_MIN_SCORE = float(os.getenv("CRAG_MIN_SCORE", "0.6"))

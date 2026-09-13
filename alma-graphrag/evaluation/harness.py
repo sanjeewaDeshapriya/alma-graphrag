@@ -154,7 +154,7 @@ def _travel_time(hotel: Dict[str, Any]) -> Optional[float]:
 
 def weight_sensitivity(
     queryset_path: Path | str = DEFAULT_QUERYSET,
-    profiles: Sequence[str] = ("handset", "elicited", "blended"),
+    profiles: Sequence[str] = ("handset", "elicited", "blended", "balanced"),
     k: Optional[int] = None,
     intents: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
