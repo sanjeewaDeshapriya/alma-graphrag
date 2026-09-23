@@ -31,6 +31,7 @@ from evaluation.human_eval import (
     DEFAULT_RESPONSES,
     run_human_evaluation,
 )
+from evaluation.comparative import DEFAULT_COMPARATIVE_RESULTS
 
 logger = logging.getLogger("alma.eval")
 
@@ -108,6 +109,16 @@ def get_human_results() -> dict:
     if not DEFAULT_HUMAN_RESULTS.exists():
         return {"available": False}
     return json.loads(DEFAULT_HUMAN_RESULTS.read_text(encoding="utf-8"))
+
+
+@router.get("/comparative/results")
+def get_comparative_results() -> dict:
+    """Rule-based and held-out human-choice metrics in separate columns."""
+    if not DEFAULT_COMPARATIVE_RESULTS.exists():
+        return {"available": False}
+    data = json.loads(DEFAULT_COMPARATIVE_RESULTS.read_text(encoding="utf-8"))
+    data["available"] = True
+    return data
 
 
 @router.post("/human/run")

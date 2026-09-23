@@ -44,6 +44,7 @@ from src.crag.query_parser import parse_query
 from src.graph.retriever import (
     DEFAULT_PRICE_POLICY,
     HISTORICAL_WEIGHT_PROFILES,
+    RESEARCH_WEIGHT_PROFILES,
     WEIGHT_PROFILES,
     ScoringWeights,
     WeightedRetriever,
@@ -88,16 +89,22 @@ def gold_for_query(
     query: Dict[str, Any],
     human_relevant: Dict[str, List[str]],
     bands: ToleranceBands = DEFAULT_BANDS,
+    human_graded: Optional[Dict[str, Dict[str, int]]] = None,
 ) -> Tuple[Set[str], Dict[str, int], str]:
     """Human gold supersedes the rule-based bootstrap per query.
 
     Returns (binary relevant set, graded {id: 1|2} gains for nDCG, source).
-    Human annotations are binary lists, so human-relevant hotels all carry
-    grade 2 (fully relevant).
+    When the annotation artifact carries consensus grades they become the nDCG
+    gains, so a hotel annotators called partially relevant is worth less than a
+    fully relevant one — the distinction the protocol asks them to make. Older
+    artifacts have only the binary lists; those fall back to grade 2, which is
+    what this function did for every human query before grades were kept.
     """
     if query["id"] in human_relevant:
         ids = set(human_relevant[query["id"]])
-        return ids, {hid: 2 for hid in ids}, "human"
+        grades = (human_graded or {}).get(query["id"]) or {}
+        gains = {hid: int(grades.get(hid, 2)) for hid in ids}
+        return ids, gains, "human"
     return (relevant_set(pool, query["gold"], bands),
             graded_gold(pool, query["gold"], bands), "rule")
 
@@ -223,7 +230,7 @@ def weight_sensitivity(
     # reading of the query than the metrics were computed on.
     intents = intents or resolve_intents(queries, city)
 
-    vectors = {**HISTORICAL_WEIGHT_PROFILES, **WEIGHT_PROFILES}
+    vectors = {**HISTORICAL_WEIGHT_PROFILES, **RESEARCH_WEIGHT_PROFILES, **WEIGHT_PROFILES}
     missing = [profile for profile in profiles if profile not in vectors]
     if missing:
         raise ValueError(f"unknown sensitivity profile(s): {', '.join(missing)}")
@@ -344,10 +351,13 @@ def run_evaluation(
 
     human = load_human_gold(gold_human_path, no_human)
     human_relevant: Dict[str, List[str]] = human.get("relevant", {})
+    human_graded: Dict[str, Dict[str, int]] = human.get("graded", {})
 
     pool = fetch_city_hotels(city)
     intents = resolve_intents(queries, city, intent_cache)
-    available_profiles = [name for name in (weight_profiles or []) if name in WEIGHT_PROFILES]
+    all_profiles = {**RESEARCH_WEIGHT_PROFILES, **WEIGHT_PROFILES}
+    available_profiles = [name for name in (weight_profiles or []) if name in all_profiles]
+    research_only = [name for name in available_profiles if name not in WEIGHT_PROFILES]
     default_profile = (SCORING_WEIGHTS_PROFILE
                        if SCORING_WEIGHTS_PROFILE in WEIGHT_PROFILES else "handset")
     baselines = all_baselines(available_profiles, price_policies, weight_policies,
@@ -357,7 +367,8 @@ def run_evaluation(
     # Gold is needed up front by any baseline that trains on it (LTR), so
     # compute it once and reuse for both training and scoring.
     gold_cache: Dict[str, Tuple[Set[str], Dict[str, int], str]] = {
-        q["id"]: gold_for_query(pool, q, human_relevant, bands) for q in queries
+        q["id"]: gold_for_query(pool, q, human_relevant, bands, human_graded)
+        for q in queries
     }
     for b in baselines:
         if hasattr(b, "fit"):
@@ -441,11 +452,14 @@ def run_evaluation(
         "weight_profiles": {
             "default": default_profile,
             "compared": available_profiles,
+            # Compared but refused by serving: the vector failed its acceptance
+            # gates, so its rows are research evidence, not a deployable result.
+            "research_only": research_only,
             "policies": list(weight_policies or []),
             "vectors": {
-                name: WEIGHT_PROFILES[name].to_dict()
+                name: {**RESEARCH_WEIGHT_PROFILES, **WEIGHT_PROFILES}[name].to_dict()
                 for name in ([default_profile] + available_profiles)
-                if name in WEIGHT_PROFILES
+                if name in {**RESEARCH_WEIGHT_PROFILES, **WEIGHT_PROFILES}
             },
         },
         "overall": overall,

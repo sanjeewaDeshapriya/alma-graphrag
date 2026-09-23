@@ -21,7 +21,8 @@ import json
 from collections import defaultdict
 from datetime import date
 
-from evaluation.annotation.agreement import aggregate_gold, krippendorff_alpha
+from evaluation.annotation.agreement import (aggregate_gold, aggregate_graded,
+                                             krippendorff_alpha)
 
 SHEETS_DIR = Path(__file__).resolve().parent / "sheets"
 GOLD_OUT = Path(__file__).resolve().parents[1] / "gold_human.json"
@@ -102,23 +103,30 @@ def main() -> None:
         raise SystemExit(f"REFUSING human gold: {exc}") from exc
 
     gold = aggregate_gold(labels)
+    graded = aggregate_graded(labels)
     out = {
-        "method": "majority vote over graded 0/1/2 judgments, binarized at >=1; "
-                  "ties resolved as non-relevant",
+        "method": "majority vote over graded 0/1/2 judgments at >=1 decides "
+                  "relevance (ties non-relevant); the lower median judgment is "
+                  "kept as the nDCG gain",
         "annotators": sheet_names,
         "date": date.today().isoformat(),
         "krippendorff_alpha_interval": round(alpha, 4),
         "n_items": status["items"],
         "n_judgments": status["judgments"],
         "relevant": {qid: sorted(ids) for qid, ids in sorted(gold.items())},
+        "graded": {qid: dict(sorted(per_hotel.items()))
+                   for qid, per_hotel in sorted(graded.items())},
     }
     Path(args.out).write_text(json.dumps(out, indent=2), encoding="utf-8")
 
     print(f"Annotators: {len(sheet_names)}  items: {status['items']}  "
           f"judgments: {status['judgments']}")
     print(f"Krippendorff's alpha (interval): {alpha:.3f}")
+    fully = sum(1 for per in graded.values() for g in per.values() if g == 2)
+    partly = sum(1 for per in graded.values() for g in per.values() if g == 1)
     print(f"Human gold written to {args.out} "
-          f"({sum(len(v) for v in gold.values())} relevant pairs across {len(gold)} queries)")
+          f"({sum(len(v) for v in gold.values())} relevant pairs across {len(gold)} "
+          f"queries; {fully} graded 2, {partly} graded 1)")
 
 
 if __name__ == "__main__":

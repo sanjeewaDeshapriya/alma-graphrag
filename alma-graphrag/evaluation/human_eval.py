@@ -10,10 +10,18 @@ same predicates the gold grades on, so 45 of 60 queries score identically across
 every composite-weight configuration, and the profile spread (0.004 nDCG) sits
 below the harness's own noise floor.
 
-This module grades against what 247 participants in the discrete-choice study
-(studies/weight-elicitation) actually booked. It answers a different question —
-"does the ranking predict human choice?" — and, unlike the rule gold, it
-separates the weight profiles clearly (+0.111 nDCG, p < 0.001).
+This module grades against what participants in the discrete-choice study
+(studies/weight-elicitation) actually booked — 247 took part, and the default
+"clean" cohort keeps the 95 who passed the attention check and did not speed. It
+answers a different question — "does the ranking predict human choice?" — and,
+unlike the rule gold, it separates weight vectors: see results_human.json for
+the reported split and results_human_seeds.json (evaluation/human_eval_seeds.py)
+for how that difference holds across 50 participant splits.
+
+The weighted rankers here are the linear scoring model over the frozen study
+components, with no feasibility filter or intent ladder, and `fit_weights` has
+no position term. The fitted vector therefore predicts choices in this
+instrument; it is not a preference estimate (weight_elicitation/gates.py).
 
 Neither evaluation supersedes the other. Report both, and state each one's blind
 spot: the rule gold cannot see ranking quality; the choice data cannot see price
@@ -63,7 +71,7 @@ import numpy as np
 from evaluation.metrics import (ndcg_at_k, ndcg_at_k_graded, precision_at_k,
                                 recall_at_k, reciprocal_rank)
 from src.crag.query_parser import parse_query
-from src.graph.retriever import WEIGHT_PROFILES
+from src.graph.retriever import RESEARCH_WEIGHT_PROFILES, WEIGHT_PROFILES
 
 logger = logging.getLogger("alma.eval.human")
 
@@ -461,6 +469,30 @@ def _per_task(rank_lists: Dict[str, List[str]],
     return {key: val / n for key, val in acc.items()} if n else {}
 
 
+def selection_share_gold(
+    votes: Dict[str, collections.Counter],
+    choices_per_task: Dict[str, int],
+    min_votes: int,
+) -> Dict[str, Dict[str, Any]]:
+    """Expose held-out selected-hotel shares used by the per-task human gold."""
+    out: Dict[str, Dict[str, Any]] = {}
+    for task, counter in sorted(votes.items()):
+        n_choices = choices_per_task.get(task, 0)
+        out[task] = {
+            "n_choices": n_choices,
+            "hotels": [
+                {
+                    "hotel_id": hotel_id,
+                    "votes": count,
+                    "selection_share": round(count / n_choices, 4) if n_choices else 0.0,
+                    "relevant": count >= min_votes,
+                }
+                for hotel_id, count in sorted(counter.items(), key=lambda item: (-item[1], item[0]))
+            ],
+        }
+    return out
+
+
 def _bootstrap_vs(per_query: Dict[str, np.ndarray], reference: str,
                   participants: Sequence[str], reps: int = 5000,
                   seed: int = 7) -> Dict[str, Any]:
@@ -536,9 +568,13 @@ def run_human_evaluation(
     test_obs = [o for o in study.observations if o[0] in test_p]
 
     fitted = fit_weights(study, train_obs)
+    # Served profiles plus the research-only vectors (the human fit that failed
+    # its acceptance gates). Ranking with one here cannot deploy it; it is how
+    # the human-weighted configuration gets measured at all.
+    profiles: Dict[str, Any] = {**RESEARCH_WEIGHT_PROFILES, **WEIGHT_PROFILES}
     weight_vectors: Dict[str, np.ndarray] = {
         f"WeightedGraphRAG[{name}]": np.array([getattr(w, d) for d in DIMS])
-        for name, w in WEIGHT_PROFILES.items()
+        for name, w in profiles.items()
     }
     weight_vectors["WeightedGraphRAG[fitted-on-train]"] = fitted
 
@@ -554,6 +590,8 @@ def run_human_evaluation(
     votes: Dict[str, collections.Counter] = collections.defaultdict(collections.Counter)
     for _p, task, hid in test_obs:
         votes[task][hid] += 1
+    choices_per_task = collections.Counter(task for _p, task, _hid in test_obs)
+    selected_hotel_gold = selection_share_gold(votes, choices_per_task, min_votes)
 
     per_choice = {n: _per_choice(rank_lists[n], test_obs, k) for n in system_order}
     per_task = {n: _per_task(rank_lists[n], votes, k, min_votes) for n in system_order}
@@ -589,6 +627,10 @@ def run_human_evaluation(
                     for n, vec in weight_vectors.items()},
         "per_choice": {n: {kk: round(v, 4) for kk, v in m.items()} for n, m in per_choice.items()},
         "per_task": {n: {kk: round(v, 4) for kk, v in m.items()} for n, m in per_task.items()},
+        "selection_share_gold": {
+            "definition": "held-out selections per task; relevant when votes >= min_votes",
+            "tasks": selected_hotel_gold,
+        },
         "random_baseline": {
             f"P@{k}": round(1.0 / max(pool_sizes.values(), default=k), 4),
             f"R@{k}": round(k / max(pool_sizes.values(), default=k), 4),

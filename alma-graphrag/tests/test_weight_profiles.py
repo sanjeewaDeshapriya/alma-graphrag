@@ -338,9 +338,25 @@ def test_all_baselines_names_are_unique(monkeypatch):
     assert len(names) == len(set(names))
 
 
-def test_all_baselines_skips_unavailable_profiles(monkeypatch):
+def test_all_baselines_skips_profiles_that_do_not_exist(monkeypatch):
     import evaluation.baselines as bl
     monkeypatch.setattr(bl.vs, "is_available", lambda *a, **k: False)
-    names = [b.name for b in all_baselines(["elicited", "human"])]
-    assert "WeightedGraphRAG[elicited]" not in names
-    assert "WeightedGraphRAG[human]" not in names
+    names = [b.name for b in all_baselines(["no-such-profile"])]
+    assert "WeightedGraphRAG[no-such-profile]" not in names
+
+
+def test_research_profiles_are_evaluated_but_marked_research(monkeypatch):
+    """Gated-out vectors are rankable here and nowhere else.
+
+    `human` fails its acceptance gates, so serving refuses it (NFR-09) while the
+    harness still needs a row for it — that row is the only way to find out what
+    human-fitted weights do to ranking quality.
+    """
+    import evaluation.baselines as bl
+    monkeypatch.setattr(bl.vs, "is_available", lambda *a, **k: False)
+    built = {b.name: b for b in all_baselines(["elicited", "human"])
+             if isinstance(b, bl.WeightedGraphBaseline)}
+    for name in ("WeightedGraphRAG[elicited]", "WeightedGraphRAG[human]"):
+        assert name in built
+        assert built[name].research_profile is (
+            built[name].weight_profile not in WEIGHT_PROFILES)

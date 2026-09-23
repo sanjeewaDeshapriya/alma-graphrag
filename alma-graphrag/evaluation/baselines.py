@@ -72,7 +72,8 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from src.crag.query_parser import QueryIntent, parse_query
 from src.graph.query import _get_driver
-from src.graph.retriever import WEIGHT_PROFILES, WeightedRetriever
+from src.graph.retriever import (RESEARCH_WEIGHT_PROFILES, WEIGHT_PROFILES,
+                                 WeightedRetriever)
 from src.search import vector_store as vs
 from src.search.embedder import embed_one
 
@@ -617,8 +618,10 @@ class WeightedGraphBaseline:
                  price_policy: str = "neutral",
                  weight_policy: Optional[str] = None,
                  self_weight: float = 0.7,
-                 label: Optional[str] = None) -> None:
+                 label: Optional[str] = None,
+                 research_profile: bool = False) -> None:
         self.weight_profile = weight_profile
+        self.research_profile = bool(research_profile)
         tags = []
         if weight_policy:
             tags.append(weight_policy)
@@ -640,6 +643,7 @@ class WeightedGraphBaseline:
         self._retriever = WeightedRetriever(
             weight_profile=weight_profile, price_policy=price_policy,
             self_weight=self_weight, weight_model=model,
+            research_profile=research_profile,
             # Safe here and only here: the graph is static for the duration of
             # an evaluation run, and without it a ten-system table issues the
             # expensive multi-hop query several hundred times identically.
@@ -745,10 +749,15 @@ def all_baselines(weight_profiles: Optional[List[str]] = None,
     baselines.append(WeightedGraphBaseline())
 
     for name in (weight_profiles or []):
-        if name not in WEIGHT_PROFILES:
+        if name in WEIGHT_PROFILES:
+            baselines.append(WeightedGraphBaseline(weight_profile=name))
+        elif name in RESEARCH_WEIGHT_PROFILES:
+            # Evaluated, never served: the vector failed its acceptance gates or
+            # predates them, and the point of the row is to measure that.
+            baselines.append(WeightedGraphBaseline(weight_profile=name,
+                                                   research_profile=True))
+        else:
             logger.warning("weight profile %r is unavailable and will be skipped", name)
-            continue
-        baselines.append(WeightedGraphBaseline(weight_profile=name))
     for policy in (weight_policies or []):
         try:
             baselines.append(WeightedGraphBaseline(weight_policy=policy))

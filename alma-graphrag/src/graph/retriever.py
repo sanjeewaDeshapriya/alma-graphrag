@@ -305,6 +305,29 @@ BALANCED_WEIGHTS = ScoringWeights(
     spatial=0.078, accessibility=0.096, facility=0.365, economic=0.311, disruption=0.150,
 )
 
+# `human_informed` — the hand-set prior with ONE number replaced by the study.
+#
+# The wave-1 fit fails its acceptance gates as a whole (see the `human` notes
+# below), but the failure is not uniform. Price was the one attribute a
+# participant could isolate, because the instrument offered a price sort: the
+# price-sorted stratum returns a large economic coefficient, and sort choice is
+# itself strongly tied to the scenario (chi-square 320.5, within-participant
+# permutation p = 0.0005; 14x lift to cheapest-first on the budget task).
+# Accessibility, by contrast, had no sort mode of its own and comes back at
+# 0.026 — an artifact of what the design could not separate, and serving it
+# costs 0.588 -> 0.372 on accessibility queries.
+#
+# So this vector takes the economic weight the study identified (0.253) and
+# leaves the other four at their hand-set ratios, rescaled to fill the rest.
+# It is a DECLARED CONSTRUCTION, not a fit: no estimator produced these five
+# numbers together, and the gates therefore do not apply to it. What it claims
+# is only what wave 1 can support — that travellers weigh price more heavily
+# than the developer assumed.
+HUMAN_INFORMED_WEIGHTS = ScoringWeights(
+    spatial=0.2197, accessibility=0.1758, facility=0.2197,
+    economic=0.2530, disruption=0.1318,
+)
+
 # `human` — fitted from the discrete-choice study and NOTHING ELSE. No retrieval
 # benchmark, no conjoint literature, no hand-set prior.
 #
@@ -366,15 +389,21 @@ HUMAN_WEIGHTS_PATH = Path(__file__).resolve().parents[2] / "weight_elicitation" 
 HUMAN_WEIGHT_DIMENSIONS = ("spatial", "accessibility", "facility", "economic", "disruption")
 
 
-def load_human_weights(path: Path = HUMAN_WEIGHTS_PATH) -> Optional[ScoringWeights]:
-    """Load a shippable human-choice fit, rejecting incomplete or failed artifacts."""
+def _read_weight_artifact(path: Path, *, require_shippable: bool) -> Optional[ScoringWeights]:
+    """Parse a fitted-weight artifact, validating it as a non-negative simplex.
+
+    `require_shippable` is what separates the two callers. Serving demands a
+    passing acceptance verdict (NFR-09); evaluation may read the same vector
+    without one, because measuring how a candidate vector ranks is exactly how
+    one finds out whether it is worth shipping.
+    """
     try:
         artifact = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         logger.warning("Human weight artifact is unavailable: %s", exc)
         return None
 
-    if artifact.get("shippable") is not True:
+    if require_shippable and artifact.get("shippable") is not True:
         logger.warning("Human weight artifact did not pass acceptance gates: %s", path)
         return None
 
@@ -393,7 +422,18 @@ def load_human_weights(path: Path = HUMAN_WEIGHTS_PATH) -> Optional[ScoringWeigh
     return ScoringWeights(**weights)
 
 
+def load_human_weights(path: Path = HUMAN_WEIGHTS_PATH) -> Optional[ScoringWeights]:
+    """Load a shippable human-choice fit, rejecting incomplete or failed artifacts."""
+    return _read_weight_artifact(path, require_shippable=True)
+
+
+def load_research_human_weights(path: Path = HUMAN_WEIGHTS_PATH) -> Optional[ScoringWeights]:
+    """Load the human-choice fit for EVALUATION ONLY, gates passed or not."""
+    return _read_weight_artifact(path, require_shippable=False)
+
+
 HUMAN_WEIGHTS = load_human_weights()
+RESEARCH_HUMAN_WEIGHTS = load_research_human_weights()
 
 # Wave-1-derived and evaluation-tuned vectors remain available as reproducible
 # research artifacts, but not as serving profiles: their source study did not
@@ -411,15 +451,28 @@ WEIGHT_PROFILES: Dict[str, ScoringWeights] = {
 if HUMAN_WEIGHTS is not None:
     WEIGHT_PROFILES["human"] = HUMAN_WEIGHTS
 
+# Vectors the evaluation may rank with and serving may not. `human` appears here
+# whenever the fit exists but has not passed its gates, which is how the
+# human-weighted configuration can be measured head-to-head against the hand-set
+# one without the runtime ever being able to select it.
+RESEARCH_WEIGHT_PROFILES: Dict[str, ScoringWeights] = dict(HISTORICAL_WEIGHT_PROFILES)
+RESEARCH_WEIGHT_PROFILES["human_informed"] = HUMAN_INFORMED_WEIGHTS
+if RESEARCH_HUMAN_WEIGHTS is not None and "human" not in WEIGHT_PROFILES:
+    RESEARCH_WEIGHT_PROFILES["human"] = RESEARCH_HUMAN_WEIGHTS
 
-def base_weights(profile: Optional[str] = None) -> ScoringWeights:
+
+def base_weights(profile: Optional[str] = None, research: bool = False) -> ScoringWeights:
     """Starting weights before intent/profile adjustment.
 
     Falls back to the hand-set prior for an unknown name rather than raising —
-    a typo in an env var should not take the retriever down.
+    a typo in an env var should not take the retriever down. `research=True` also
+    admits RESEARCH_WEIGHT_PROFILES and is set only by the evaluation harness;
+    the serving path leaves it False, so NFR-09 still holds there.
     """
     name = (profile or SCORING_WEIGHTS_PROFILE or "handset").lower()
     base = WEIGHT_PROFILES.get(name)
+    if base is None and research:
+        base = RESEARCH_WEIGHT_PROFILES.get(name)
     if base is None:
         logger.warning("Unknown SCORING_WEIGHTS_PROFILE %r; using 'handset'", name)
         base = HANDSET_WEIGHTS
@@ -484,13 +537,15 @@ def apply_intent_adjustments(base: ScoringWeights, intent: QueryIntent) -> Scori
     return w.normalised()
 
 
-def weights_for_intent(intent: QueryIntent, profile: Optional[str] = None) -> ScoringWeights:
+def weights_for_intent(intent: QueryIntent, profile: Optional[str] = None,
+                       research: bool = False) -> ScoringWeights:
     """Derive dynamic scoring weights from query intent (P3 personalisation hook)."""
-    return apply_intent_adjustments(base_weights(profile), intent)
+    return apply_intent_adjustments(base_weights(profile, research=research), intent)
 
 
 def weights_for_profile(profile: Any, intent: QueryIntent, event_active: bool,
-                        weight_profile: Optional[str] = None) -> ScoringWeights:
+                        weight_profile: Optional[str] = None,
+                        research: bool = False) -> ScoringWeights:
     """Resolve scoring weights for a personalised request.
 
     A UserProfile (duck-typed: .weights, .event_preference) overrides the
@@ -506,7 +561,7 @@ def weights_for_profile(profile: Any, intent: QueryIntent, event_active: bool,
             disruption=base.disruption, event=base.event,
         )
     else:
-        w = weights_for_intent(intent, weight_profile)
+        w = weights_for_intent(intent, weight_profile, research=research)
 
     if event_active and profile is not None and getattr(profile, "event_preference", "neutral") in ("seek", "avoid"):
         w.event = 0.30  # strong event influence on a personalised ranking
@@ -816,7 +871,9 @@ class WeightedRetriever:
     """Multi-hop weighted GraphRAG retriever (proposal Algorithm 1).
 
     `weight_profile` selects the starting weight vector — one of
-    WEIGHT_PROFILES. None follows SCORING_WEIGHTS_PROFILE from config. The
+    WEIGHT_PROFILES, or of RESEARCH_WEIGHT_PROFILES when `research_profile` is
+    set, which only the evaluation harness does. None follows
+    SCORING_WEIGHTS_PROFILE from config. The
     evaluation harness instantiates one retriever per profile so the profiles
     can be compared head-to-head on the same query set.
     """
@@ -830,8 +887,11 @@ class WeightedRetriever:
         self_weight: float = DEFAULT_SELF_WEIGHT,
         weight_model: Any = None,
         cache_candidates: bool = False,
+        research_profile: bool = False,
     ) -> None:
         self.weight_profile = weight_profile
+        # Evaluation-only: allows RESEARCH_WEIGHT_PROFILES to be ranked with.
+        self.research_profile = bool(research_profile)
         if price_policy not in PRICE_POLICIES:
             raise ValueError(
                 f"price_policy must be one of {PRICE_POLICIES}, got {price_policy!r}"
@@ -873,7 +933,8 @@ class WeightedRetriever:
         #   3. the hand-written intent rules over the configured profile
         if profile is not None:
             weights = weights_for_profile(profile, intent, event_active=event is not None,
-                                          weight_profile=self.weight_profile)
+                                          weight_profile=self.weight_profile,
+                                          research=self.research_profile)
         elif self.weight_model is not None:
             # Imported lazily: src.graph.weight_policy imports this module, so a
             # module-level import here would be circular.
@@ -882,7 +943,8 @@ class WeightedRetriever:
                 intent, PoolConditions.from_candidates(candidates)
             ).normalised()
         else:
-            weights = weights_for_intent(intent, self.weight_profile)
+            weights = weights_for_intent(intent, self.weight_profile,
+                                         research=self.research_profile)
 
         result = RetrievalResult(
             city=city, intent=intent, weights=weights, hotels=[],

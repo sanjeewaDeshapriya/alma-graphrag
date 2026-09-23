@@ -56,6 +56,10 @@ def main() -> None:
     parser.add_argument("--extras", type=int, default=2,
                         help="random non-retrieved hotels added per query")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--pool-floors", action="store_true",
+                        help="also pool from the random and popularity floors")
+    parser.add_argument("--pool-circular", action="store_true",
+                        help="also pool from the rule-aligned LTR diagnostic")
     args = parser.parse_args()
 
     spec = json.loads(Path(args.queryset).read_text(encoding="utf-8"))
@@ -63,14 +67,33 @@ def main() -> None:
 
     hotels = fetch_city_hotels(city)
     hotels_by_id = {str(h["id"]): h for h in hotels}
-    baselines = all_baselines()
+    # Deterministic systems only. The pool a judgement is made against is part
+    # of the gold standard's provenance, so it has to be reproducible: the LLM
+    # re-ranker returns a different ranking on consecutive calls at the same
+    # temperature, which would mean two runs of this script produce different
+    # sheets from identical inputs. It also costs one model call per query for
+    # a set the other systems already cover.
+    #
+    # The floors are excluded from POOLING (they still run in the evaluation).
+    # Pooling covers the hotels a credible system would show a traveller; a
+    # random ranker contributes arbitrary ones, which inflates every annotator's
+    # workload without making the gold more complete. The rule-aligned LTR is
+    # excluded for the same reason in reverse: it reconstructs the rule gold, so
+    # pooling from it would seed the human labels with the labels they replace.
+    baselines = all_baselines(include_llm=False, include_floors=args.pool_floors)
+    pool_systems = [b for b in baselines
+                    if args.pool_circular or b.name != "LTR"]
     rng = random.Random(args.seed)
 
     rows = []
-    meta = {"city": city, "k": k, "seed": args.seed, "queries": {}}
+    meta = {"city": city, "k": k, "seed": args.seed,
+            "pooled_from": [b.name for b in pool_systems],
+            "excluded_from_pooling": sorted(
+                {b.name for b in baselines} - {b.name for b in pool_systems}),
+            "queries": {}}
     for q in queries:
         pool_ids, provenance = build_pool(
-            q["question"], city, k, baselines, hotels_by_id, rng, args.extras
+            q["question"], city, k, pool_systems, hotels_by_id, rng, args.extras
         )
         meta["queries"][q["id"]] = {"pool_size": len(pool_ids), "provenance": provenance}
         for hid in pool_ids:

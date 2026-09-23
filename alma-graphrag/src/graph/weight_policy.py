@@ -88,8 +88,10 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from src.crag.query_parser import QueryIntent
 from src.graph.retriever import (
+    HANDSET_WEIGHTS,
     ScoringWeights,
     WEIGHT_PROFILES,
+    apply_intent_adjustments,
     base_weights,
     weights_for_intent,
 )
@@ -273,6 +275,47 @@ class StaticProfilePolicy(WeightPolicy):
                 "weights": base_weights(self.profile).normalised().to_dict()}
 
 
+class PriceAwareHumanPolicy(WeightPolicy):
+    """Hand-set weights, except on the queries the choice study could speak to.
+
+    Wave 1 identified exactly one thing: price matters more than the developer
+    assumed. It could not identify accessibility, because no sort mode isolated
+    it, and applying its whole vector everywhere costs 0.588 -> 0.369 on
+    travel-time queries. So this policy applies the study-derived economic
+    weight ONLY where the parsed intent is about price, and leaves every other
+    query on the hand-set prior.
+
+    The intent ladder then runs on top exactly as it does for any other profile,
+    so the two configurations differ by their base vector and nothing else.
+    """
+
+    name = "human-price-aware"
+
+    def __init__(self) -> None:
+        from src.graph.retriever import RESEARCH_WEIGHT_PROFILES
+        self._informed = RESEARCH_WEIGHT_PROFILES["human_informed"]
+
+    @staticmethod
+    def _price_led(intent: QueryIntent) -> bool:
+        return bool(
+            getattr(intent, "price_preference", "any") in ("low", "high")
+            or getattr(intent, "sort_intent", None) == "cheapest"
+            or getattr(intent, "max_price_lkr", None) is not None
+            or getattr(intent, "min_price_lkr", None) is not None
+        )
+
+    def predict(self, intent: QueryIntent,
+                conditions: Optional[PoolConditions] = None) -> ScoringWeights:
+        base = self._informed if self._price_led(intent) else HANDSET_WEIGHTS
+        return apply_intent_adjustments(base, intent)
+
+    def describe(self) -> Dict[str, Any]:
+        return {"policy": self.name, "learned": False,
+                "rule": "study-derived economic weight on price-led intents only",
+                "price_led_weights": self._informed.to_dict(),
+                "otherwise": HANDSET_WEIGHTS.to_dict()}
+
+
 # ---------------------------------------------------------------------------
 # Dirichlet policy network
 # ---------------------------------------------------------------------------
@@ -400,6 +443,8 @@ def get_policy(name: str, checkpoint: Path | str = DEFAULT_CHECKPOINT) -> Weight
     key = (name or "handtuned").lower()
     if key == "handtuned":
         return HandTunedPolicy()
+    if key in ("human-price-aware", "human_price_aware"):
+        return PriceAwareHumanPolicy()
     if key == "learned":
         return LearnedPolicy(checkpoint)
     if key in WEIGHT_PROFILES:

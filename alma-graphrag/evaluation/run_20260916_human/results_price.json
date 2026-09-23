@@ -15,8 +15,6 @@
     "LTR[doc-only]",
     "WeightedGraphRAG",
     "WeightedGraphRAG[human]",
-    "WeightedGraphRAG[human_informed]",
-    "WeightedGraphRAG[human-price-aware]",
     "WeightedGraphRAG[no-diffusion]"
   ],
   "gold_meta": {
@@ -47,16 +45,12 @@
   "weight_profiles": {
     "default": "handset",
     "compared": [
-      "human",
-      "human_informed"
+      "human"
     ],
     "research_only": [
-      "human",
-      "human_informed"
+      "human"
     ],
-    "policies": [
-      "human-price-aware"
-    ],
+    "policies": [],
     "vectors": {
       "handset": {
         "spatial": 0.25,
@@ -71,13 +65,6 @@
         "facility": 0.111,
         "economic": 0.253,
         "disruption": 0.137
-      },
-      "human_informed": {
-        "spatial": 0.22,
-        "accessibility": 0.176,
-        "facility": 0.22,
-        "economic": 0.253,
-        "disruption": 0.132
       }
     }
   },
@@ -146,18 +133,6 @@
       "P@10": 0.8400000000000002,
       "R@10": 0.26856815837873216,
       "nDCG@10": 0.8394908099554195,
-      "MRR": 1.0
-    },
-    "WeightedGraphRAG[human_informed]": {
-      "P@10": 0.8699999999999999,
-      "R@10": 0.2790235160703981,
-      "nDCG@10": 0.8630095449796146,
-      "MRR": 1.0
-    },
-    "WeightedGraphRAG[human-price-aware]": {
-      "P@10": 0.8699999999999999,
-      "R@10": 0.2790235160703981,
-      "nDCG@10": 0.8630095449796146,
       "MRR": 1.0
     },
     "WeightedGraphRAG[no-diffusion]": {
@@ -235,18 +210,6 @@
         "nDCG@10": 0.8394908099554195,
         "MRR": 1.0
       },
-      "WeightedGraphRAG[human_informed]": {
-        "P@10": 0.8699999999999999,
-        "R@10": 0.2790235160703981,
-        "nDCG@10": 0.8630095449796146,
-        "MRR": 1.0
-      },
-      "WeightedGraphRAG[human-price-aware]": {
-        "P@10": 0.8699999999999999,
-        "R@10": 0.2790235160703981,
-        "nDCG@10": 0.8630095449796146,
-        "MRR": 1.0
-      },
       "WeightedGraphRAG[no-diffusion]": {
         "P@10": 0.7750000000000001,
         "R@10": 0.24840512248988983,
@@ -275,7 +238,7 @@
         "ci_low": 0.5087,
         "ci_high": 0.6729,
         "p": 0.0001,
-        "p_holm": 0.0006,
+        "p_holm": 0.0005,
         "significant": true
       },
       "Filter": {
@@ -283,7 +246,7 @@
         "ci_low": 0.4152,
         "ci_high": 0.6375,
         "p": 0.0001,
-        "p_holm": 0.0006,
+        "p_holm": 0.0005,
         "significant": true
       },
       "Keyword": {
@@ -307,7 +270,7 @@
         "ci_low": 0.3052,
         "ci_high": 0.4751,
         "p": 0.0,
-        "p_holm": 0.0001,
+        "p_holm": 0.0,
         "significant": true
       },
       "CrossEncoder": {
@@ -339,23 +302,7 @@
         "ci_low": -0.1014,
         "ci_high": -0.0555,
         "p": 0.0001,
-        "p_holm": 0.0006,
-        "significant": true
-      },
-      "WeightedGraphRAG[human_informed]": {
-        "mean_diff": -0.1003,
-        "ci_low": -0.1241,
-        "ci_high": -0.0793,
-        "p": 0.0001,
-        "p_holm": 0.0006,
-        "significant": true
-      },
-      "WeightedGraphRAG[human-price-aware]": {
-        "mean_diff": -0.1003,
-        "ci_low": -0.1241,
-        "ci_high": -0.0793,
-        "p": 0.0001,
-        "p_holm": 0.0006,
+        "p_holm": 0.0005,
         "significant": true
       },
       "WeightedGraphRAG[no-diffusion]": {
@@ -448,18 +395,6 @@
           "nDCG@10": 0.8971,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -545,18 +480,6 @@
           "P@10": 0.9,
           "R@10": 0.2727,
           "nDCG@10": 0.8971,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -646,18 +569,6 @@
           "nDCG@10": 0.8971,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -745,18 +656,6 @@
           "nDCG@10": 0.8971,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -842,18 +741,6 @@
           "P@10": 0.9,
           "R@10": 0.2727,
           "nDCG@10": 0.8971,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -944,18 +831,6 @@
           "nDCG@10": 0.6449,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.6,
-          "R@10": 0.2069,
-          "nDCG@10": 0.6537,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.6,
-          "R@10": 0.2069,
-          "nDCG@10": 0.6537,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.5,
           "R@10": 0.1724,
@@ -1042,18 +917,6 @@
           "P@10": 0.5,
           "R@10": 0.2941,
           "nDCG@10": 0.6906,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.6,
-          "R@10": 0.3529,
-          "nDCG@10": 0.7224,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.6,
-          "R@10": 0.3529,
-          "nDCG@10": 0.7224,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -1143,18 +1006,6 @@
           "nDCG@10": 0.8971,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -1240,18 +1091,6 @@
           "P@10": 0.8,
           "R@10": 0.2424,
           "nDCG@10": 0.8212,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.8,
-          "R@10": 0.2424,
-          "nDCG@10": 0.8276,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.8,
-          "R@10": 0.2424,
-          "nDCG@10": 0.8276,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -1341,18 +1180,6 @@
           "nDCG@10": 0.8971,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.899,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -1440,18 +1267,6 @@
           "nDCG@10": 0.7817,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -1537,18 +1352,6 @@
           "P@10": 0.8,
           "R@10": 0.2424,
           "nDCG@10": 0.8097,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.825,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.825,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -1639,18 +1442,6 @@
           "nDCG@10": 0.79,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.8,
-          "R@10": 0.2857,
-          "nDCG@10": 0.8069,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.8,
-          "R@10": 0.2857,
-          "nDCG@10": 0.8069,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.9,
           "R@10": 0.3214,
@@ -1736,18 +1527,6 @@
           "P@10": 0.9,
           "R@10": 0.2727,
           "nDCG@10": 0.8598,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 1.0,
-          "R@10": 0.303,
-          "nDCG@10": 0.9277,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 1.0,
-          "R@10": 0.303,
-          "nDCG@10": 0.9277,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -1837,18 +1616,6 @@
           "nDCG@10": 0.7817,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -1934,18 +1701,6 @@
           "P@10": 0.8,
           "R@10": 0.2424,
           "nDCG@10": 0.7817,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -2035,18 +1790,6 @@
           "nDCG@10": 0.7817,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8531,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2424,
@@ -2132,18 +1875,6 @@
           "P@10": 1.0,
           "R@10": 0.303,
           "nDCG@10": 0.9335,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8974,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.2727,
-          "nDCG@10": 0.8974,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {
@@ -2234,18 +1965,6 @@
           "nDCG@10": 0.9322,
           "MRR": 1.0
         },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 1.0,
-          "R@10": 0.3226,
-          "nDCG@10": 0.9633,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 1.0,
-          "R@10": 0.3226,
-          "nDCG@10": 0.9633,
-          "MRR": 1.0
-        },
         "WeightedGraphRAG[no-diffusion]": {
           "P@10": 0.8,
           "R@10": 0.2581,
@@ -2332,18 +2051,6 @@
           "P@10": 0.9,
           "R@10": 0.3214,
           "nDCG@10": 0.9017,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human_informed]": {
-          "P@10": 0.9,
-          "R@10": 0.3214,
-          "nDCG@10": 0.9306,
-          "MRR": 1.0
-        },
-        "WeightedGraphRAG[human-price-aware]": {
-          "P@10": 0.9,
-          "R@10": 0.3214,
-          "nDCG@10": 0.9306,
           "MRR": 1.0
         },
         "WeightedGraphRAG[no-diffusion]": {

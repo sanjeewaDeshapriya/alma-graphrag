@@ -93,3 +93,41 @@ def aggregate_gold(
             if majority_relevant(judgments, threshold)
         }
     return out
+
+
+def consensus_grade(judgments: Sequence[Optional[float]]) -> Optional[int]:
+    """One 0/1/2 grade for an item: the lower median of its judgments.
+
+    The protocol asks annotators to separate "fully relevant" (2) from
+    "reasonable but flawed" (1), and nDCG is built to use that difference. An
+    earlier version threw it away — it binarised here and the harness then gave
+    every relevant hotel a gain of 2, so a hotel most annotators called partial
+    counted the same as a perfect answer. The lower median keeps the
+    distinction and stays conservative when an even number of annotators splits.
+    """
+    scored = sorted(v for v in judgments if v is not None)
+    if not scored:
+        return None
+    return int(scored[(len(scored) - 1) // 2])
+
+
+def aggregate_graded(
+    labels: Dict[str, Dict[str, List[Optional[float]]]], threshold: float = 1.0
+) -> Dict[str, Dict[str, int]]:
+    """-> {query_id: {hotel_id: consensus grade}} for hotels judged relevant.
+
+    Relevance is still the majority vote (a hotel two of three annotators call
+    irrelevant does not enter the gold on the strength of one high grade); the
+    grade that survives is the consensus one, and it becomes the nDCG gain.
+    """
+    out: Dict[str, Dict[str, int]] = {}
+    for qid, per_hotel in labels.items():
+        graded: Dict[str, int] = {}
+        for hid, judgments in per_hotel.items():
+            if not majority_relevant(judgments, threshold):
+                continue
+            grade = consensus_grade(judgments)
+            if grade is not None and grade > 0:
+                graded[hid] = grade
+        out[qid] = graded
+    return out

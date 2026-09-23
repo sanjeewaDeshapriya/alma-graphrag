@@ -1,0 +1,1523 @@
+{
+  "seeds": 50,
+  "holdout": 0.3,
+  "k": 10,
+  "min_votes": 2,
+  "cohort_stats": {
+    "participants_total": 247,
+    "dropped_attention": 145,
+    "dropped_speeder": 7,
+    "participants_kept": 95
+  },
+  "participants": 95,
+  "systems": [
+    "handset",
+    "human",
+    "fitted-on-train"
+  ],
+  "choice_ndcg": {
+    "handset": {
+      "mean": 0.5471,
+      "sd": 0.0243,
+      "p2_5": 0.5031,
+      "p97_5": 0.585,
+      "min": 0.4729,
+      "max": 0.5917
+    },
+    "human": {
+      "mean": 0.5176,
+      "sd": 0.0242,
+      "p2_5": 0.4736,
+      "p97_5": 0.5539,
+      "min": 0.4557,
+      "max": 0.5557
+    },
+    "fitted-on-train": {
+      "mean": 0.6133,
+      "sd": 0.0282,
+      "p2_5": 0.5551,
+      "p97_5": 0.6545,
+      "min": 0.5487,
+      "max": 0.6864
+    }
+  },
+  "task_graded_ndcg": {
+    "handset": {
+      "mean": 0.7996,
+      "sd": 0.027,
+      "p2_5": 0.7428,
+      "p97_5": 0.8416,
+      "min": 0.7146,
+      "max": 0.8487
+    },
+    "human": {
+      "mean": 0.757,
+      "sd": 0.0274,
+      "p2_5": 0.6973,
+      "p97_5": 0.8019,
+      "min": 0.6902,
+      "max": 0.8071
+    },
+    "fitted-on-train": {
+      "mean": 0.8949,
+      "sd": 0.0301,
+      "p2_5": 0.8361,
+      "p97_5": 0.9457,
+      "min": 0.8234,
+      "max": 0.9598
+    }
+  },
+  "mean_rank": {
+    "handset": {
+      "mean": 5.5486,
+      "sd": 0.5438,
+      "p2_5": 4.7406,
+      "p97_5": 6.711,
+      "min": 4.5179,
+      "max": 6.8036
+    },
+    "human": {
+      "mean": 6.2608,
+      "sd": 0.5979,
+      "p2_5": 5.2859,
+      "p97_5": 7.4547,
+      "min": 5.2115,
+      "max": 7.5536
+    },
+    "fitted-on-train": {
+      "mean": 4.6031,
+      "sd": 0.469,
+      "p2_5": 3.8884,
+      "p97_5": 5.5511,
+      "min": 3.6143,
+      "max": 5.675
+    }
+  },
+  "fitted_minus_handset_choice_ndcg": {
+    "mean": 0.0662,
+    "sd": 0.0123,
+    "p2_5": 0.0413,
+    "p97_5": 0.0926,
+    "min": 0.0392,
+    "max": 0.0947
+  },
+  "fitted_beats_handset_share": 1.0,
+  "fitted_minus_handset_task_graded_ndcg": {
+    "mean": 0.0953,
+    "sd": 0.0187,
+    "p2_5": 0.0554,
+    "p97_5": 0.1348,
+    "min": 0.0475,
+    "max": 0.1369
+  },
+  "human_minus_handset_choice_ndcg": {
+    "mean": -0.0294,
+    "sd": 0.0114,
+    "p2_5": -0.0516,
+    "p97_5": -0.0099,
+    "min": -0.0534,
+    "max": -0.0083
+  },
+  "human_beats_handset_share": 0.0,
+  "fitted_weights": {
+    "spatial": {
+      "mean": 0.5088,
+      "sd": 0.0328,
+      "p2_5": 0.4462,
+      "p97_5": 0.5611,
+      "min": 0.4182,
+      "max": 0.5875
+    },
+    "accessibility": {
+      "mean": 0.3201,
+      "sd": 0.0244,
+      "p2_5": 0.2873,
+      "p97_5": 0.3728,
+      "min": 0.2753,
+      "max": 0.4055
+    },
+    "facility": {
+      "mean": 0.0,
+      "sd": 0.0,
+      "p2_5": 0.0,
+      "p97_5": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "economic": {
+      "mean": 0.0,
+      "sd": 0.0,
+      "p2_5": 0.0,
+      "p97_5": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "disruption": {
+      "mean": 0.1712,
+      "sd": 0.0186,
+      "p2_5": 0.1343,
+      "p97_5": 0.2004,
+      "min": 0.1327,
+      "max": 0.2108
+    }
+  },
+  "fitted_weight_exactly_zero_share": {
+    "spatial": 0.0,
+    "accessibility": 0.0,
+    "facility": 1.0,
+    "economic": 1.0,
+    "disruption": 0.0
+  },
+  "runs": [
+    {
+      "handset": {
+        "choice_ndcg": 0.5630764395937178,
+        "mrr": 0.4658184665959969,
+        "mean_rank": 5.128571428571429,
+        "task_graded_ndcg": 0.8236890070823479
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.634754496338463,
+        "mrr": 0.5596263778551185,
+        "mean_rank": 4.253571428571429,
+        "task_graded_ndcg": 0.9302116299931568
+      },
+      "human": {
+        "choice_ndcg": 0.5368575303581272,
+        "mrr": 0.43662257787856057,
+        "mean_rank": 5.735714285714286,
+        "task_graded_ndcg": 0.787295034644626
+      },
+      "fitted_weights": {
+        "spatial": 0.5158,
+        "accessibility": 0.3376,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1466
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5177068120303856,
+        "mrr": 0.4271437524993338,
+        "mean_rank": 6.075268817204301,
+        "task_graded_ndcg": 0.7853321315612112
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.587355417697484,
+        "mrr": 0.5187366569937225,
+        "mean_rank": 5.136200716845878,
+        "task_graded_ndcg": 0.8904337639032823
+      },
+      "human": {
+        "choice_ndcg": 0.4999415435541131,
+        "mrr": 0.40667630211465605,
+        "mean_rank": 6.756272401433692,
+        "task_graded_ndcg": 0.7606644641329445
+      },
+      "fitted_weights": {
+        "spatial": 0.5572,
+        "accessibility": 0.2889,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1539
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5694293711888432,
+        "mrr": 0.47114523745516834,
+        "mean_rank": 5.05,
+        "task_graded_ndcg": 0.8280784551497311
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6325105602611528,
+        "mrr": 0.5531513950222166,
+        "mean_rank": 4.225,
+        "task_graded_ndcg": 0.9146022668205701
+      },
+      "human": {
+        "choice_ndcg": 0.539377592690842,
+        "mrr": 0.4341348890425089,
+        "mean_rank": 5.417857142857143,
+        "task_graded_ndcg": 0.7854728085664044
+      },
+      "fitted_weights": {
+        "spatial": 0.5463,
+        "accessibility": 0.321,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1327
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5347585478451686,
+        "mrr": 0.44649648820228954,
+        "mean_rank": 5.896057347670251,
+        "task_graded_ndcg": 0.7921582150597823
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6063087035149449,
+        "mrr": 0.541499558926958,
+        "mean_rank": 4.870967741935484,
+        "task_graded_ndcg": 0.904161432524092
+      },
+      "human": {
+        "choice_ndcg": 0.5141838333757457,
+        "mrr": 0.42157972856013337,
+        "mean_rank": 6.598566308243727,
+        "task_graded_ndcg": 0.7607476977461676
+      },
+      "fitted_weights": {
+        "spatial": 0.5058,
+        "accessibility": 0.3065,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1878
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5453552810374594,
+        "mrr": 0.4618275269870406,
+        "mean_rank": 5.742857142857143,
+        "task_graded_ndcg": 0.7939305647363092
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6088986645602462,
+        "mrr": 0.5461753483875563,
+        "mean_rank": 4.764285714285714,
+        "task_graded_ndcg": 0.8830813598917281
+      },
+      "human": {
+        "choice_ndcg": 0.5213933849982102,
+        "mrr": 0.43296174767057544,
+        "mean_rank": 6.435714285714286,
+        "task_graded_ndcg": 0.7601011593953853
+      },
+      "fitted_weights": {
+        "spatial": 0.5134,
+        "accessibility": 0.2987,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1878
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5467880210615678,
+        "mrr": 0.4481404116152539,
+        "mean_rank": 5.204301075268817,
+        "task_graded_ndcg": 0.799200898804649
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6107682394588907,
+        "mrr": 0.5318083112979711,
+        "mean_rank": 4.379928315412187,
+        "task_graded_ndcg": 0.8953236145345018
+      },
+      "human": {
+        "choice_ndcg": 0.5355940579637213,
+        "mrr": 0.4404436902916201,
+        "mean_rank": 5.799283154121864,
+        "task_graded_ndcg": 0.7849915420035747
+      },
+      "fitted_weights": {
+        "spatial": 0.4988,
+        "accessibility": 0.3336,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1676
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5336031179211908,
+        "mrr": 0.44452901059476363,
+        "mean_rank": 5.921428571428572,
+        "task_graded_ndcg": 0.8030119885945698
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5984174052352857,
+        "mrr": 0.5295667700046816,
+        "mean_rank": 4.889285714285714,
+        "task_graded_ndcg": 0.8942197762937039
+      },
+      "human": {
+        "choice_ndcg": 0.504474574309081,
+        "mrr": 0.4100383020889124,
+        "mean_rank": 6.482142857142857,
+        "task_graded_ndcg": 0.7589680326121858
+      },
+      "fitted_weights": {
+        "spatial": 0.5466,
+        "accessibility": 0.3199,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1335
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5849487040055822,
+        "mrr": 0.4984704864220723,
+        "mean_rank": 4.942857142857143,
+        "task_graded_ndcg": 0.8396845478077386
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6350546149954089,
+        "mrr": 0.5637906318045611,
+        "mean_rank": 4.103571428571429,
+        "task_graded_ndcg": 0.9082600989087265
+      },
+      "human": {
+        "choice_ndcg": 0.5424702817040075,
+        "mrr": 0.44522513491577825,
+        "mean_rank": 5.7,
+        "task_graded_ndcg": 0.777652644470661
+      },
+      "fitted_weights": {
+        "spatial": 0.4765,
+        "accessibility": 0.3426,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.181
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5035876682598276,
+        "mrr": 0.42057138935701516,
+        "mean_rank": 6.678571428571429,
+        "task_graded_ndcg": 0.7678510134672513
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5594768915847346,
+        "mrr": 0.49467190846052306,
+        "mean_rank": 5.557142857142857,
+        "task_graded_ndcg": 0.8488127269379543
+      },
+      "human": {
+        "choice_ndcg": 0.4798627204414847,
+        "mrr": 0.3917641412211347,
+        "mean_rank": 7.485714285714286,
+        "task_graded_ndcg": 0.7308817861557244
+      },
+      "fitted_weights": {
+        "spatial": 0.5051,
+        "accessibility": 0.3313,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1636
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5577764140982088,
+        "mrr": 0.47527078447127236,
+        "mean_rank": 5.571428571428571,
+        "task_graded_ndcg": 0.8050901032766955
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6243025406919309,
+        "mrr": 0.5651121857757999,
+        "mean_rank": 4.6535714285714285,
+        "task_graded_ndcg": 0.9031899858859024
+      },
+      "human": {
+        "choice_ndcg": 0.5271367504340533,
+        "mrr": 0.4364980173740446,
+        "mean_rank": 6.3464285714285715,
+        "task_graded_ndcg": 0.7599944279718021
+      },
+      "fitted_weights": {
+        "spatial": 0.5461,
+        "accessibility": 0.2966,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1574
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5536453034149654,
+        "mrr": 0.46255720305277037,
+        "mean_rank": 5.4,
+        "task_graded_ndcg": 0.7962584949846259
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6280980829379241,
+        "mrr": 0.5598547691280158,
+        "mean_rank": 4.410714285714286,
+        "task_graded_ndcg": 0.903513344804509
+      },
+      "human": {
+        "choice_ndcg": 0.5140770420224303,
+        "mrr": 0.4156335519579755,
+        "mean_rank": 6.160714285714286,
+        "task_graded_ndcg": 0.7372903554385073
+      },
+      "fitted_weights": {
+        "spatial": 0.5063,
+        "accessibility": 0.334,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1597
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5673364192910033,
+        "mrr": 0.4769716703294954,
+        "mean_rank": 5.110714285714286,
+        "task_graded_ndcg": 0.8031069705291236
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6524283732900081,
+        "mrr": 0.590940991948619,
+        "mean_rank": 4.178571428571429,
+        "task_graded_ndcg": 0.9186128996851659
+      },
+      "human": {
+        "choice_ndcg": 0.5299234615341488,
+        "mrr": 0.4304544352025774,
+        "mean_rank": 5.896428571428571,
+        "task_graded_ndcg": 0.7503622231735965
+      },
+      "fitted_weights": {
+        "spatial": 0.5057,
+        "accessibility": 0.314,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1803
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.568746154100991,
+        "mrr": 0.4734251270434953,
+        "mean_rank": 4.989285714285714,
+        "task_graded_ndcg": 0.8034678791717352
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6521135082864746,
+        "mrr": 0.5841734968699486,
+        "mean_rank": 4.1,
+        "task_graded_ndcg": 0.9218236166382775
+      },
+      "human": {
+        "choice_ndcg": 0.5412142147580379,
+        "mrr": 0.4407280863234456,
+        "mean_rank": 5.575,
+        "task_graded_ndcg": 0.7642672908542423
+      },
+      "fitted_weights": {
+        "spatial": 0.5275,
+        "accessibility": 0.3223,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1502
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5693767297164262,
+        "mrr": 0.4727026705451184,
+        "mean_rank": 4.806451612903226,
+        "task_graded_ndcg": 0.8421518973075081
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6259248545481462,
+        "mrr": 0.5461975904073644,
+        "mean_rank": 4.046594982078853,
+        "task_graded_ndcg": 0.9253670138855206
+      },
+      "human": {
+        "choice_ndcg": 0.5347177539481555,
+        "mrr": 0.42890046938669657,
+        "mean_rank": 5.412186379928316,
+        "task_graded_ndcg": 0.7905207463513046
+      },
+      "fitted_weights": {
+        "spatial": 0.5142,
+        "accessibility": 0.3083,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1775
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5685455357165237,
+        "mrr": 0.4739126564711098,
+        "mean_rank": 5.0964285714285715,
+        "task_graded_ndcg": 0.8067744781186204
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6511489432330126,
+        "mrr": 0.5846603469983311,
+        "mean_rank": 4.121428571428571,
+        "task_graded_ndcg": 0.9193469408342475
+      },
+      "human": {
+        "choice_ndcg": 0.5319425249084018,
+        "mrr": 0.43021205813478336,
+        "mean_rank": 5.885714285714286,
+        "task_graded_ndcg": 0.7569563789832285
+      },
+      "fitted_weights": {
+        "spatial": 0.4845,
+        "accessibility": 0.331,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1845
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5357082680965692,
+        "mrr": 0.4544272665432602,
+        "mean_rank": 5.953571428571428,
+        "task_graded_ndcg": 0.7848860249838213
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5962227094609188,
+        "mrr": 0.5365138844835593,
+        "mean_rank": 4.975,
+        "task_graded_ndcg": 0.8722917607316777
+      },
+      "human": {
+        "choice_ndcg": 0.5057696367900899,
+        "mrr": 0.41473792216057903,
+        "mean_rank": 6.821428571428571,
+        "task_graded_ndcg": 0.7433616865910231
+      },
+      "fitted_weights": {
+        "spatial": 0.4728,
+        "accessibility": 0.336,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1912
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5032607381095463,
+        "mrr": 0.4200967375797424,
+        "mean_rank": 6.803571428571429,
+        "task_graded_ndcg": 0.7564290040117441
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5537699310312726,
+        "mrr": 0.48767400160547336,
+        "mean_rank": 5.675,
+        "task_graded_ndcg": 0.8339862233547445
+      },
+      "human": {
+        "choice_ndcg": 0.4898386539842847,
+        "mrr": 0.402653218182786,
+        "mean_rank": 7.553571428571429,
+        "task_graded_ndcg": 0.7348656389165616
+      },
+      "fitted_weights": {
+        "spatial": 0.5498,
+        "accessibility": 0.2993,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.151
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.567450574596682,
+        "mrr": 0.47989365213909374,
+        "mean_rank": 5.367857142857143,
+        "task_graded_ndcg": 0.8291309467717601
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.608496405655054,
+        "mrr": 0.5342138330062611,
+        "mean_rank": 4.589285714285714,
+        "task_graded_ndcg": 0.8839499564033965
+      },
+      "human": {
+        "choice_ndcg": 0.548903805814688,
+        "mrr": 0.4601900107656938,
+        "mean_rank": 5.9714285714285715,
+        "task_graded_ndcg": 0.8026927680071685
+      },
+      "fitted_weights": {
+        "spatial": 0.5055,
+        "accessibility": 0.3379,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1565
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5459079261581627,
+        "mrr": 0.4491602510256194,
+        "mean_rank": 5.325,
+        "task_graded_ndcg": 0.803851920312692
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6145427477927534,
+        "mrr": 0.5390709152660422,
+        "mean_rank": 4.3428571428571425,
+        "task_graded_ndcg": 0.9044662864714075
+      },
+      "human": {
+        "choice_ndcg": 0.5295126644773726,
+        "mrr": 0.4300142616248752,
+        "mean_rank": 5.95,
+        "task_graded_ndcg": 0.7806670407043936
+      },
+      "fitted_weights": {
+        "spatial": 0.51,
+        "accessibility": 0.3094,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1805
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5271608873186506,
+        "mrr": 0.4452129655724758,
+        "mean_rank": 5.914285714285715,
+        "task_graded_ndcg": 0.7857507292715009
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.569202400295736,
+        "mrr": 0.5009094637855146,
+        "mean_rank": 4.9071428571428575,
+        "task_graded_ndcg": 0.8432937139723847
+      },
+      "human": {
+        "choice_ndcg": 0.4858944333734114,
+        "mrr": 0.3942731382537052,
+        "mean_rank": 6.817857142857143,
+        "task_graded_ndcg": 0.7239916457625142
+      },
+      "fitted_weights": {
+        "spatial": 0.4857,
+        "accessibility": 0.3411,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1732
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5285773699579066,
+        "mrr": 0.4417588615425065,
+        "mean_rank": 5.910714285714286,
+        "task_graded_ndcg": 0.7648857552135779
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6056384690209426,
+        "mrr": 0.5440137366135264,
+        "mean_rank": 4.817857142857143,
+        "task_graded_ndcg": 0.8766003139085612
+      },
+      "human": {
+        "choice_ndcg": 0.5044458105014709,
+        "mrr": 0.41709815880126994,
+        "mean_rank": 6.878571428571429,
+        "task_graded_ndcg": 0.7298472174894558
+      },
+      "fitted_weights": {
+        "spatial": 0.491,
+        "accessibility": 0.2982,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.2108
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.563519913714846,
+        "mrr": 0.47851320922835117,
+        "mean_rank": 5.321428571428571,
+        "task_graded_ndcg": 0.8045034499427146
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6027024349768207,
+        "mrr": 0.5317305512784823,
+        "mean_rank": 4.6571428571428575,
+        "task_graded_ndcg": 0.8520523896911364
+      },
+      "human": {
+        "choice_ndcg": 0.5453708722740214,
+        "mrr": 0.4568578198815112,
+        "mean_rank": 5.964285714285714,
+        "task_graded_ndcg": 0.7823957116480257
+      },
+      "fitted_weights": {
+        "spatial": 0.4182,
+        "accessibility": 0.4055,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1763
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5363294317975056,
+        "mrr": 0.4487766839051371,
+        "mean_rank": 5.982142857142857,
+        "task_graded_ndcg": 0.780593686393203
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6021975974106244,
+        "mrr": 0.535528441541983,
+        "mean_rank": 4.964285714285714,
+        "task_graded_ndcg": 0.8774278530652051
+      },
+      "human": {
+        "choice_ndcg": 0.5141787450438591,
+        "mrr": 0.42154772771517,
+        "mean_rank": 6.607142857142857,
+        "task_graded_ndcg": 0.7473171913572505
+      },
+      "fitted_weights": {
+        "spatial": 0.5206,
+        "accessibility": 0.3264,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.153
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5625230950336579,
+        "mrr": 0.47429628014591296,
+        "mean_rank": 5.132142857142857,
+        "task_graded_ndcg": 0.7975278615219963
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6240097454360859,
+        "mrr": 0.5562353588406749,
+        "mean_rank": 4.289285714285715,
+        "task_graded_ndcg": 0.8789752933372338
+      },
+      "human": {
+        "choice_ndcg": 0.5427771160396286,
+        "mrr": 0.4507700359776271,
+        "mean_rank": 5.7785714285714285,
+        "task_graded_ndcg": 0.7721945009125344
+      },
+      "fitted_weights": {
+        "spatial": 0.4773,
+        "accessibility": 0.3617,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.161
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5589558702457195,
+        "mrr": 0.46245738805078046,
+        "mean_rank": 5.03584229390681,
+        "task_graded_ndcg": 0.8103002427240547
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6524627341887841,
+        "mrr": 0.5854108992109845,
+        "mean_rank": 4.028673835125448,
+        "task_graded_ndcg": 0.9471706938303383
+      },
+      "human": {
+        "choice_ndcg": 0.511458342562244,
+        "mrr": 0.4064333838818623,
+        "mean_rank": 5.917562724014337,
+        "task_graded_ndcg": 0.7400623271276727
+      },
+      "fitted_weights": {
+        "spatial": 0.5084,
+        "accessibility": 0.2996,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.192
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5549801028478274,
+        "mrr": 0.45843196763904764,
+        "mean_rank": 5.425,
+        "task_graded_ndcg": 0.8090780530489907
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.611602115025078,
+        "mrr": 0.533392160273623,
+        "mean_rank": 4.482142857142857,
+        "task_graded_ndcg": 0.8916971913552818
+      },
+      "human": {
+        "choice_ndcg": 0.5299957382494186,
+        "mrr": 0.43019017192084213,
+        "mean_rank": 5.946428571428571,
+        "task_graded_ndcg": 0.7745185888017183
+      },
+      "fitted_weights": {
+        "spatial": 0.5364,
+        "accessibility": 0.3026,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.161
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5206584597729308,
+        "mrr": 0.4368901887711638,
+        "mean_rank": 6.03584229390681,
+        "task_graded_ndcg": 0.7697950404539394
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5921590209344156,
+        "mrr": 0.5332223594336185,
+        "mean_rank": 5.100358422939068,
+        "task_graded_ndcg": 0.8762438480632563
+      },
+      "human": {
+        "choice_ndcg": 0.49761103485319574,
+        "mrr": 0.4055119463352261,
+        "mean_rank": 6.835125448028674,
+        "task_graded_ndcg": 0.7398432284406439
+      },
+      "fitted_weights": {
+        "spatial": 0.5377,
+        "accessibility": 0.307,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1553
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5219682515907055,
+        "mrr": 0.43146542793352116,
+        "mean_rank": 5.996415770609319,
+        "task_graded_ndcg": 0.7917214733382357
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5902026530007121,
+        "mrr": 0.5226708684409507,
+        "mean_rank": 4.992831541218638,
+        "task_graded_ndcg": 0.8956041065410218
+      },
+      "human": {
+        "choice_ndcg": 0.4769462680403726,
+        "mrr": 0.3784924928342841,
+        "mean_rank": 6.953405017921147,
+        "task_graded_ndcg": 0.7219596698020214
+      },
+      "fitted_weights": {
+        "spatial": 0.5104,
+        "accessibility": 0.2954,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1943
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5096143500339099,
+        "mrr": 0.4280877572616335,
+        "mean_rank": 6.553571428571429,
+        "task_graded_ndcg": 0.7529574235993215
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.574683833855752,
+        "mrr": 0.5156011650580982,
+        "mean_rank": 5.410714285714286,
+        "task_graded_ndcg": 0.8503203322954921
+      },
+      "human": {
+        "choice_ndcg": 0.4732894411943498,
+        "mrr": 0.3789542732014377,
+        "mean_rank": 7.3,
+        "task_graded_ndcg": 0.699290899169984
+      },
+      "fitted_weights": {
+        "spatial": 0.5504,
+        "accessibility": 0.2869,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1627
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5394460526092509,
+        "mrr": 0.44590167772839345,
+        "mean_rank": 5.360714285714286,
+        "task_graded_ndcg": 0.7744071046866443
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6040925370562794,
+        "mrr": 0.5317106452644905,
+        "mean_rank": 4.417857142857143,
+        "task_graded_ndcg": 0.8622075052162852
+      },
+      "human": {
+        "choice_ndcg": 0.5311655397540563,
+        "mrr": 0.4384892002458984,
+        "mean_rank": 6.017857142857143,
+        "task_graded_ndcg": 0.7666101635203793
+      },
+      "fitted_weights": {
+        "spatial": 0.481,
+        "accessibility": 0.3274,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1916
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5916896028996772,
+        "mrr": 0.49396150380866855,
+        "mean_rank": 4.517857142857143,
+        "task_graded_ndcg": 0.82980208985235
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6863882311713349,
+        "mrr": 0.6186953254495271,
+        "mean_rank": 3.6142857142857143,
+        "task_graded_ndcg": 0.9597901344799438
+      },
+      "human": {
+        "choice_ndcg": 0.548253237390688,
+        "mrr": 0.4431107340384605,
+        "mean_rank": 5.271428571428571,
+        "task_graded_ndcg": 0.7664670774998111
+      },
+      "fitted_weights": {
+        "spatial": 0.529,
+        "accessibility": 0.2928,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1782
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5350627726679144,
+        "mrr": 0.4506552511988171,
+        "mean_rank": 5.992831541218638,
+        "task_graded_ndcg": 0.8244170611582484
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5875625589375993,
+        "mrr": 0.5190789682438018,
+        "mean_rank": 5.046594982078853,
+        "task_graded_ndcg": 0.9061087566423032
+      },
+      "human": {
+        "choice_ndcg": 0.481707069267276,
+        "mrr": 0.3857945477085008,
+        "mean_rank": 6.817204301075269,
+        "task_graded_ndcg": 0.7427215996718165
+      },
+      "fitted_weights": {
+        "spatial": 0.5445,
+        "accessibility": 0.3012,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1543
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.4729259336513799,
+        "mrr": 0.38192179903103074,
+        "mean_rank": 6.720430107526882,
+        "task_graded_ndcg": 0.7145791360065826
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5487347323215727,
+        "mrr": 0.48195814654795455,
+        "mean_rank": 5.530465949820789,
+        "task_graded_ndcg": 0.8233620228086881
+      },
+      "human": {
+        "choice_ndcg": 0.4556739498905444,
+        "mrr": 0.36228179548992484,
+        "mean_rank": 7.347670250896058,
+        "task_graded_ndcg": 0.6901693361584411
+      },
+      "fitted_weights": {
+        "spatial": 0.4901,
+        "accessibility": 0.3148,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1951
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5724992906966356,
+        "mrr": 0.47602523445902545,
+        "mean_rank": 4.889285714285714,
+        "task_graded_ndcg": 0.8398236027819251
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6421249691456946,
+        "mrr": 0.5668052226760439,
+        "mean_rank": 3.9714285714285715,
+        "task_graded_ndcg": 0.9400879539546902
+      },
+      "human": {
+        "choice_ndcg": 0.5332202055845794,
+        "mrr": 0.4294456873391534,
+        "mean_rank": 5.5321428571428575,
+        "task_graded_ndcg": 0.7815851073103706
+      },
+      "fitted_weights": {
+        "spatial": 0.5015,
+        "accessibility": 0.3078,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1907
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5403973833526083,
+        "mrr": 0.4578513011674631,
+        "mean_rank": 5.878136200716846,
+        "task_graded_ndcg": 0.7913977264228418
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6078180554093573,
+        "mrr": 0.547852118506905,
+        "mean_rank": 4.874551971326165,
+        "task_graded_ndcg": 0.8943654261526854
+      },
+      "human": {
+        "choice_ndcg": 0.4946830067984232,
+        "mrr": 0.4032696880295362,
+        "mean_rank": 6.903225806451613,
+        "task_graded_ndcg": 0.7203339979668254
+      },
+      "fitted_weights": {
+        "spatial": 0.5323,
+        "accessibility": 0.3025,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1652
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5597514735084766,
+        "mrr": 0.4730152276569935,
+        "mean_rank": 5.621428571428571,
+        "task_graded_ndcg": 0.8364930208863651
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6186127219826344,
+        "mrr": 0.5507160896781608,
+        "mean_rank": 4.5964285714285715,
+        "task_graded_ndcg": 0.9248590758444273
+      },
+      "human": {
+        "choice_ndcg": 0.5080358266498501,
+        "mrr": 0.41172023857318335,
+        "mean_rank": 6.325,
+        "task_graded_ndcg": 0.7568481385680641
+      },
+      "fitted_weights": {
+        "spatial": 0.515,
+        "accessibility": 0.3134,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1716
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.564814638596032,
+        "mrr": 0.4641574779741303,
+        "mean_rank": 4.903225806451613,
+        "task_graded_ndcg": 0.8107510863204193
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6392899641781603,
+        "mrr": 0.5618187376030745,
+        "mean_rank": 4.121863799283154,
+        "task_graded_ndcg": 0.9243217202151129
+      },
+      "human": {
+        "choice_ndcg": 0.555348855571035,
+        "mrr": 0.4547001546366969,
+        "mean_rank": 5.211469534050179,
+        "task_graded_ndcg": 0.7991604818485798
+      },
+      "fitted_weights": {
+        "spatial": 0.5301,
+        "accessibility": 0.307,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.163
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.513256662934364,
+        "mrr": 0.4251221751947859,
+        "mean_rank": 6.225,
+        "task_graded_ndcg": 0.7800433342155235
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5692211077937004,
+        "mrr": 0.49848573231782506,
+        "mean_rank": 5.25,
+        "task_graded_ndcg": 0.858958912609166
+      },
+      "human": {
+        "choice_ndcg": 0.4902013452751776,
+        "mrr": 0.3958503862061928,
+        "mean_rank": 6.817857142857143,
+        "task_graded_ndcg": 0.7465430213626257
+      },
+      "fitted_weights": {
+        "spatial": 0.5492,
+        "accessibility": 0.3043,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1465
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5743916677890922,
+        "mrr": 0.4805553116402064,
+        "mean_rank": 4.881720430107527,
+        "task_graded_ndcg": 0.8486531126025938
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6388221963478692,
+        "mrr": 0.564812570816957,
+        "mean_rank": 4.078853046594982,
+        "task_graded_ndcg": 0.9405117226100334
+      },
+      "human": {
+        "choice_ndcg": 0.5456512530329363,
+        "mrr": 0.44549066975505464,
+        "mean_rank": 5.594982078853047,
+        "task_graded_ndcg": 0.807113980275709
+      },
+      "fitted_weights": {
+        "spatial": 0.4901,
+        "accessibility": 0.3255,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1843
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5484054110024577,
+        "mrr": 0.4613955419416629,
+        "mean_rank": 5.621428571428571,
+        "task_graded_ndcg": 0.792384904198627
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6169324144819139,
+        "mrr": 0.5531362228652146,
+        "mean_rank": 4.628571428571429,
+        "task_graded_ndcg": 0.8890142714839138
+      },
+      "human": {
+        "choice_ndcg": 0.5101016057214609,
+        "mrr": 0.4109242206974206,
+        "mean_rank": 6.4071428571428575,
+        "task_graded_ndcg": 0.7385749974939506
+      },
+      "fitted_weights": {
+        "spatial": 0.4453,
+        "accessibility": 0.3642,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1905
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5506866036050904,
+        "mrr": 0.46915445997319966,
+        "mean_rank": 5.5285714285714285,
+        "task_graded_ndcg": 0.7957339839486536
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6075986651335985,
+        "mrr": 0.5469190939449664,
+        "mean_rank": 4.625,
+        "task_graded_ndcg": 0.875207651838614
+      },
+      "human": {
+        "choice_ndcg": 0.5214846465380549,
+        "mrr": 0.434276959494461,
+        "mean_rank": 6.3464285714285715,
+        "task_graded_ndcg": 0.7538008698276031
+      },
+      "fitted_weights": {
+        "spatial": 0.4727,
+        "accessibility": 0.3419,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1853
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5588773493106093,
+        "mrr": 0.47410736220134514,
+        "mean_rank": 5.482142857142857,
+        "task_graded_ndcg": 0.8129208934484554
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6079984173223534,
+        "mrr": 0.5409358985883468,
+        "mean_rank": 4.610714285714286,
+        "task_graded_ndcg": 0.878665929056974
+      },
+      "human": {
+        "choice_ndcg": 0.5294789153470008,
+        "mrr": 0.43988836198965886,
+        "mean_rank": 6.3428571428571425,
+        "task_graded_ndcg": 0.7737826605981164
+      },
+      "fitted_weights": {
+        "spatial": 0.4678,
+        "accessibility": 0.3302,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.2019
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5850287145181045,
+        "mrr": 0.4905482773792053,
+        "mean_rank": 4.7214285714285715,
+        "task_graded_ndcg": 0.8305644538210514
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6550855550772976,
+        "mrr": 0.5827541017243014,
+        "mean_rank": 3.8642857142857143,
+        "task_graded_ndcg": 0.9261180772143718
+      },
+      "human": {
+        "choice_ndcg": 0.5557261507359159,
+        "mrr": 0.4552888506271426,
+        "mean_rank": 5.335714285714285,
+        "task_graded_ndcg": 0.7907570437504648
+      },
+      "fitted_weights": {
+        "spatial": 0.4917,
+        "accessibility": 0.3387,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1696
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5446134010165182,
+        "mrr": 0.4557050146104103,
+        "mean_rank": 5.6,
+        "task_graded_ndcg": 0.7897541646664175
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6024830630227527,
+        "mrr": 0.5335482694750141,
+        "mean_rank": 4.696428571428571,
+        "task_graded_ndcg": 0.8707014810216446
+      },
+      "human": {
+        "choice_ndcg": 0.5295031164766394,
+        "mrr": 0.43875144767467517,
+        "mean_rank": 6.2178571428571425,
+        "task_graded_ndcg": 0.7701263770143434
+      },
+      "fitted_weights": {
+        "spatial": 0.4494,
+        "accessibility": 0.3753,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1754
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5497863446605036,
+        "mrr": 0.45171641897336823,
+        "mean_rank": 5.310714285714286,
+        "task_graded_ndcg": 0.798382730758868
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6242363015463896,
+        "mrr": 0.5506953204282625,
+        "mean_rank": 4.292857142857143,
+        "task_graded_ndcg": 0.9056560319113727
+      },
+      "human": {
+        "choice_ndcg": 0.5325163571495499,
+        "mrr": 0.43317595323583463,
+        "mean_rank": 5.9714285714285715,
+        "task_graded_ndcg": 0.7736497709823913
+      },
+      "fitted_weights": {
+        "spatial": 0.5126,
+        "accessibility": 0.2999,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1875
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5701032835898053,
+        "mrr": 0.4807623546653851,
+        "mean_rank": 5.139285714285714,
+        "task_graded_ndcg": 0.8055924767701587
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.651639589327166,
+        "mrr": 0.5887154074840637,
+        "mean_rank": 4.107142857142857,
+        "task_graded_ndcg": 0.9152157638268518
+      },
+      "human": {
+        "choice_ndcg": 0.5324794393951924,
+        "mrr": 0.4354338872572948,
+        "mean_rank": 6.085714285714285,
+        "task_graded_ndcg": 0.7509115441705393
+      },
+      "fitted_weights": {
+        "spatial": 0.4781,
+        "accessibility": 0.332,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1899
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5030834967548158,
+        "mrr": 0.41166927723082175,
+        "mean_rank": 6.375,
+        "task_graded_ndcg": 0.7397995536148032
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.5927152956351093,
+        "mrr": 0.5294268965922239,
+        "mean_rank": 5.1571428571428575,
+        "task_graded_ndcg": 0.875964160045321
+      },
+      "human": {
+        "choice_ndcg": 0.47447246942888077,
+        "mrr": 0.37751970563637066,
+        "mean_rank": 7.107142857142857,
+        "task_graded_ndcg": 0.696685380403246
+      },
+      "fitted_weights": {
+        "spatial": 0.5622,
+        "accessibility": 0.2944,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1434
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5487829230341786,
+        "mrr": 0.46298636563542905,
+        "mean_rank": 5.505376344086022,
+        "task_graded_ndcg": 0.7998443681234223
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6160534970925535,
+        "mrr": 0.5515590737479749,
+        "mean_rank": 4.591397849462366,
+        "task_graded_ndcg": 0.8970660223026199
+      },
+      "human": {
+        "choice_ndcg": 0.5123152171950651,
+        "mrr": 0.41398252824054926,
+        "mean_rank": 6.21505376344086,
+        "task_graded_ndcg": 0.7479367646638423
+      },
+      "fitted_weights": {
+        "spatial": 0.4844,
+        "accessibility": 0.337,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1786
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5605204995498406,
+        "mrr": 0.46525363119222063,
+        "mean_rank": 5.272401433691757,
+        "task_graded_ndcg": 0.8335810264969122
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6248873199573088,
+        "mrr": 0.5493807363486477,
+        "mean_rank": 4.451612903225806,
+        "task_graded_ndcg": 0.9344306894213077
+      },
+      "human": {
+        "choice_ndcg": 0.5330913447091865,
+        "mrr": 0.43358076828783454,
+        "mean_rank": 5.917562724014337,
+        "task_graded_ndcg": 0.7941799620299571
+      },
+      "fitted_weights": {
+        "spatial": 0.4994,
+        "accessibility": 0.3237,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1769
+      }
+    },
+    {
+      "handset": {
+        "choice_ndcg": 0.5487726487147229,
+        "mrr": 0.46177462620977994,
+        "mean_rank": 5.512544802867383,
+        "task_graded_ndcg": 0.8010561013518327
+      },
+      "fitted-on-train": {
+        "choice_ndcg": 0.6149614295980331,
+        "mrr": 0.5488981212094222,
+        "mean_rank": 4.702508960573477,
+        "task_graded_ndcg": 0.8992151085943607
+      },
+      "human": {
+        "choice_ndcg": 0.4976223292560563,
+        "mrr": 0.3989513507844217,
+        "mean_rank": 6.272401433691757,
+        "task_graded_ndcg": 0.7209576982528882
+      },
+      "fitted_weights": {
+        "spatial": 0.5875,
+        "accessibility": 0.2753,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.1372
+      }
+    }
+  ]
+}
