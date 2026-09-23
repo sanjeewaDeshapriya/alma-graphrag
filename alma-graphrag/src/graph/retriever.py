@@ -21,8 +21,10 @@ extension point for P3 personalisation — a UserProfile simply supplies weights
 """
 from __future__ import annotations
 
+import json
 import logging
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from src.config import SCORING_WEIGHTS_PROFILE
@@ -356,18 +358,58 @@ BALANCED_WEIGHTS = ScoringWeights(
 #
 # Unconstrained macro-average, for the record:
 #     spatial .298  accessibility .282  facility .250  economic .120  disruption .050
+#
+# A human-derived profile is available only when the captured-choice fit passes
+# its position-bias acceptance gates. The current wave-1 artifact fails them,
+# so the legacy `neglog` vector must not reach serving.
+HUMAN_WEIGHTS_PATH = Path(__file__).resolve().parents[2] / "weight_elicitation" / "out" / "human_weights.json"
+HUMAN_WEIGHT_DIMENSIONS = ("spatial", "accessibility", "facility", "economic", "disruption")
 
-HUMAN_WEIGHTS = ScoringWeights(
-    spatial=0.271, accessibility=0.256, facility=0.227, economic=0.200, disruption=0.046,
-)
 
-WEIGHT_PROFILES: Dict[str, ScoringWeights] = {
-    "handset": HANDSET_WEIGHTS,
+def load_human_weights(path: Path = HUMAN_WEIGHTS_PATH) -> Optional[ScoringWeights]:
+    """Load a shippable human-choice fit, rejecting incomplete or failed artifacts."""
+    try:
+        artifact = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        logger.warning("Human weight artifact is unavailable: %s", exc)
+        return None
+
+    if artifact.get("shippable") is not True:
+        logger.warning("Human weight artifact did not pass acceptance gates: %s", path)
+        return None
+
+    values = artifact.get("weights")
+    if not isinstance(values, dict) or set(values) != set(HUMAN_WEIGHT_DIMENSIONS):
+        logger.warning("Human weight artifact has an invalid dimension set: %s", path)
+        return None
+    try:
+        weights = {name: float(values[name]) for name in HUMAN_WEIGHT_DIMENSIONS}
+    except (TypeError, ValueError):
+        logger.warning("Human weight artifact contains non-numeric weights: %s", path)
+        return None
+    if any(value < 0.0 for value in weights.values()) or abs(sum(weights.values()) - 1.0) > 1e-3:
+        logger.warning("Human weight artifact is not a non-negative simplex: %s", path)
+        return None
+    return ScoringWeights(**weights)
+
+
+HUMAN_WEIGHTS = load_human_weights()
+
+# Wave-1-derived and evaluation-tuned vectors remain available as reproducible
+# research artifacts, but not as serving profiles: their source study did not
+# identify preference weights. A future human fit enters WEIGHT_PROFILES only
+# after its captured-data artifact passes every acceptance gate.
+HISTORICAL_WEIGHT_PROFILES: Dict[str, ScoringWeights] = {
     "elicited": ELICITED_WEIGHTS,
     "blended": BLENDED_WEIGHTS,
     "balanced": BALANCED_WEIGHTS,
-    "human": HUMAN_WEIGHTS,
 }
+
+WEIGHT_PROFILES: Dict[str, ScoringWeights] = {
+    "handset": HANDSET_WEIGHTS,
+}
+if HUMAN_WEIGHTS is not None:
+    WEIGHT_PROFILES["human"] = HUMAN_WEIGHTS
 
 
 def base_weights(profile: Optional[str] = None) -> ScoringWeights:
@@ -962,6 +1004,7 @@ class WeightedRetriever:
         # --- Event impact zone: distance from each hotel to the event ----------
         event_pref = getattr(profile, "event_preference", "neutral") if profile else "neutral"
         ev_dist: Dict[str, float] = {}
+        ed_lo, ed_hi = 0.0, 0.0
         if event is not None:
             for c in cands:
                 lat, lng = c.get("lat"), c.get("lng")
@@ -1087,9 +1130,10 @@ class WeightedRetriever:
                 + 0.30 * min(nbr_event, 1.0)
             )
 
-            # No neighbours (isolated node) -> fall back to own exposure rather
-            # than crediting the hotel with a spuriously calm neighbourhood.
-            sw = self.self_weight if nbr_count else 1.0
+            # Neighbourhood evidence fills a measurement gap; it must never
+            # dilute an observed route signal or event impact for this hotel.
+            has_own_evidence = bool(sev) or bool(etas) or events > 0
+            sw = self.self_weight if nbr_count and not has_own_evidence else 1.0
             exposure = sw * own_exposure + (1.0 - sw) * nbr_exposure
             disruption = max(0.0, min(1.0, 1.0 - exposure))
 

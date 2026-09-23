@@ -8,9 +8,26 @@ dataset, and fitting the retriever's composite-score weights.
     build_material.py         builds the frozen material from live LiteAPI data
     check_identifiability.py  can this design recover the weights? (run BEFORE fielding)
     export_dataset.py         responses -> learning-to-rank dataset
-    fit_weights.py            responses -> ScoringWeights for src/graph/retriever.py
-    fit_human_weights.py      the same, per display condition, study data only
-    fit_share_weights.py      per-question choice SHARES -> weights + correlations
+
+  shared inference core (2026-09-13, docs/Weight_Elicitation_Share_Audit.md)
+    choice_model.py           conditional logit, position specifications, SEs,
+                              clustered bootstrap, LR test, participant CV
+    estimators.py             every weight estimator as data -> weights
+    placebo.py                does an estimator find weights in position-only data?
+    gates.py                  the five acceptance gates a shipped weight must pass
+
+  wave 1 (browse list) — analysis and reporting
+    fit_weights.py            pooled fit -> ELICITED / BLENDED (now gated)
+    fit_human_weights.py      per display condition -> HUMAN (now gated)
+    fit_share_weights.py      per-question choice SHARES, intervals, position baseline
+    audit_profiles.py         every estimator and shipped profile through the gates
+    sort_choice.py            sort switches: the preference signal wave 1 does carry
+    wave1_report.py           thesis tables generated from the dump
+
+  wave 2 (discrete choice experiment)
+    design_choice_sets.py     D-efficient choice sets from the frozen pool (gated)
+    power_analysis.py         simulated power for a design, before recruiting
+    fit_dce.py                pre-registered wave-2 fit, gates, deployable profile
 
 The seam
 --------

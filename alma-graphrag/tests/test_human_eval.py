@@ -9,8 +9,8 @@ import collections
 import numpy as np
 import pytest
 
-from evaluation.human_eval import (STALE_PERSONAS, _bm25, _complete, _per_choice,
-                                   _per_task, _rrf, select_cohort)
+from evaluation.human_eval import (STALE_PERSONAS, _bm25, _bootstrap_vs, _complete,
+                                   _per_choice, _per_task, _rrf, select_cohort)
 
 
 # ---------------------------------------------------------------------------
@@ -165,6 +165,22 @@ def test_per_choice_averages_over_observations():
     m = _per_choice(RANKED, obs, k=5)
     assert m["mean_rank"] == pytest.approx(2.0)   # (1 + 3) / 2
     assert m["MRR"] == pytest.approx((1.0 + 1 / 3) / 2)
+
+
+def test_bootstrap_resamples_participant_choice_clusters():
+    scores = {
+        "reference": np.array([1.0, 1.0, 0.0, 0.0]),
+        "other": np.array([0.0, 0.0, 1.0, 1.0]),
+    }
+    result = _bootstrap_vs(scores, "reference", ["p1", "p1", "p2", "p2"], reps=100, seed=7)
+    assert result["other"]["mean_diff"] == pytest.approx(0.0)
+    assert result["other"]["ci_low"] < 0 < result["other"]["ci_high"]
+
+
+def test_bootstrap_requires_participant_ids_for_every_choice():
+    with pytest.raises(ValueError, match="align"):
+        _bootstrap_vs({"reference": np.array([1.0]), "other": np.array([0.0])},
+                      "reference", [])
 
 
 def test_per_task_uses_the_vote_threshold():

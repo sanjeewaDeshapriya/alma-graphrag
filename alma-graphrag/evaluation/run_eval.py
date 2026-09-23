@@ -63,6 +63,10 @@ def main() -> None:
                         help="uniformly scale the gold tolerance bands; 1.0 is "
                              "the published default. Use evaluation/sensitivity.py "
                              "for a full sweep.")
+    parser.add_argument("--intent-cache", default=None,
+                        help="JSON file of frozen parsed intents. Read when present, "
+                             "written for any query it lacks. The LLM slot-filler is "
+                             "not deterministic, so pass this for reproducible runs.")
     args = parser.parse_args()
 
     profiles = [p.strip() for p in args.weight_profiles.split(",") if p.strip()]
@@ -80,6 +84,7 @@ def main() -> None:
         include_llm=not args.no_llm,
         include_floors=not args.no_floors,
         include_ablations=not args.no_ablations,
+        intent_cache=args.intent_cache,
     )
     city, k = out["city"], out["k"]
     system_order = out["system_order"]

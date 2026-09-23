@@ -1,0 +1,43 @@
+{
+  "description": "SYNTHETIC disruption scenarios for a controlled before/after test. These are not observed events: locations are real Colombo areas, but radii and delays are stated assumptions. True added delay decays linearly from peak_delay_min at the centre to 0 at radius_km. Only observed_fraction of affected hotels receive a route signal (partial sensor coverage); gold is graded on the TRUE delay of every hotel. Travel times are left unchanged so the test isolates the disruption channel.",
+  "city": "Colombo",
+  "scenarios": [
+    {
+      "id": "galle_face_event",
+      "name": "Galle Face Green event with road closures",
+      "lat": 6.9244,
+      "lng": 79.8487,
+      "radius_km": 1.2,
+      "peak_delay_min": 20,
+      "observed_fraction": 0.5,
+      "event": {
+        "linked": true,
+        "severity": "high",
+        "title": "Scenario: large public event at Galle Face Green, approach roads closed"
+      },
+      "rationale": "An announced event: news coverage links an Event to every hotel in the zone (graded by distance) in addition to partial route signals. Tests the event channel."
+    },
+    {
+      "id": "fort_closure",
+      "name": "Unannounced road closure in Fort",
+      "lat": 6.9344,
+      "lng": 79.8428,
+      "radius_km": 1.5,
+      "peak_delay_min": 15,
+      "observed_fraction": 0.5,
+      "event": {"linked": false},
+      "rationale": "No news event, so only route sensors see it. Hotels without a sensor can only be down-ranked through NEAR_HOTEL diffusion."
+    },
+    {
+      "id": "bambalapitiya_roadworks",
+      "name": "Galle Road lane closures, Bambalapitiya",
+      "lat": 6.8900,
+      "lng": 79.8560,
+      "radius_km": 2.0,
+      "peak_delay_min": 12,
+      "observed_fraction": 0.5,
+      "event": {"linked": false},
+      "rationale": "Milder, wider congestion south of the centre with no event. A second sensor-only case in a different part of the pool."
+    }
+  ]
+}

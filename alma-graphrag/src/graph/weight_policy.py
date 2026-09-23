@@ -394,8 +394,8 @@ class LearnedPolicy(WeightPolicy):
 def get_policy(name: str, checkpoint: Path | str = DEFAULT_CHECKPOINT) -> WeightPolicy:
     """Resolve a policy by name.
 
-    Names: "handtuned", "learned", or any key in WEIGHT_PROFILES
-    ("handset" / "elicited" / "blended") for the fixed-vector policies.
+    Names: "handtuned", "learned", or a currently deployable key in
+    WEIGHT_PROFILES for a fixed-vector policy.
     """
     key = (name or "handtuned").lower()
     if key == "handtuned":

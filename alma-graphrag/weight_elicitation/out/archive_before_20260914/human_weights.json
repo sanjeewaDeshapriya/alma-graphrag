@@ -1,0 +1,93 @@
+{
+  "source_dump": "study_data_v4-rooms-20260818.json",
+  "material_version": "v4-rooms-20260818",
+  "estimator": "per-display-condition non-negative conditional logit with log-rank nuisance, macro-averaged over strata",
+  "inputs": "human choice study only; no benchmark, literature or prior",
+  "seed": 20260902,
+  "l2": 1.0,
+  "facility_definition": "all_ranks",
+  "strata_sizes": {
+    "distance": 986,
+    "travel": 696,
+    "rating": 278,
+    "price": 272
+  },
+  "weights_per_stratum": {
+    "distance": {
+      "spatial": 0.5306,
+      "accessibility": 0.4621,
+      "facility": 0.0,
+      "economic": 0.0073,
+      "disruption": 0.0
+    },
+    "travel": {
+      "spatial": 0.2605,
+      "accessibility": 0.5275,
+      "facility": 0.0,
+      "economic": 0.0107,
+      "disruption": 0.2013
+    },
+    "rating": {
+      "spatial": 0.0,
+      "accessibility": 0.0,
+      "facility": 1.0,
+      "economic": 0.0,
+      "disruption": 0.0
+    },
+    "price": {
+      "spatial": 0.4009,
+      "accessibility": 0.137,
+      "facility": 0.0,
+      "economic": 0.4621,
+      "disruption": 0.0
+    }
+  },
+  "weights": {
+    "spatial": 0.2709,
+    "accessibility": 0.2561,
+    "facility": 0.2273,
+    "economic": 0.2,
+    "disruption": 0.0458
+  },
+  "reserved": {
+    "economic": 0.2
+  },
+  "weights_unconstrained": {
+    "spatial": 0.298,
+    "accessibility": 0.2816,
+    "facility": 0.25,
+    "economic": 0.1201,
+    "disruption": 0.0503
+  },
+  "bootstrap_ci_95": {
+    "spatial": [
+      0.17705917098115145,
+      0.32120988608066897
+    ],
+    "accessibility": [
+      0.2035721478733197,
+      0.34805371308201505
+    ],
+    "facility": [
+      0.21111247262233546,
+      0.26882937130300727
+    ],
+    "economic": [
+      0.19999999999999996,
+      0.20000000000000004
+    ],
+    "disruption": [
+      0.027316193618235295,
+      0.11914140032355963
+    ]
+  },
+  "held_out": {
+    "macro_ndcg10": 0.3810093787444782,
+    "macro_top1": 0.1521898201027984
+  },
+  "cohort": {
+    "choice_sets": 2232,
+    "participants": 241,
+    "held_out_participants": 72
+  }
+}

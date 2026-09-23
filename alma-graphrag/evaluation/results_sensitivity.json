@@ -1,0 +1,195 @@
+{
+  "queryset": "E:\\Research\\Project\\alma-graphrag\\evaluation\\queryset.json",
+  "bands": {
+    "parameter": "gold tolerance bands",
+    "scales": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      3.0
+    ],
+    "rows": [
+      {
+        "scale": 0.0,
+        "bands": {
+          "price": 0.0,
+          "rating": 0.0,
+          "star": 0.0,
+          "travel_min": 0.0,
+          "disruption_min": 0.0
+        },
+        "winner": "WeightedGraphRAG",
+        "order": [
+          "WeightedGraphRAG",
+          "Filter",
+          "Keyword",
+          "CrossEncoder",
+          "Hybrid",
+          "SemanticVec"
+        ],
+        "tau_vs_default": 1.0,
+        "mean_gold_size": 10.73,
+        "ndcg": {
+          "Filter": 0.6528,
+          "Keyword": 0.4465,
+          "SemanticVec": 0.2496,
+          "Hybrid": 0.3879,
+          "CrossEncoder": 0.3912,
+          "WeightedGraphRAG": 0.9694
+        }
+      },
+      {
+        "scale": 0.5,
+        "bands": {
+          "price": 0.075,
+          "rating": 0.1,
+          "star": 0.5,
+          "travel_min": 1.0,
+          "disruption_min": 1.5
+        },
+        "winner": "WeightedGraphRAG",
+        "order": [
+          "WeightedGraphRAG",
+          "Filter",
+          "Keyword",
+          "Hybrid",
+          "CrossEncoder",
+          "SemanticVec"
+        ],
+        "tau_vs_default": 0.8667,
+        "mean_gold_size": 13.98,
+        "ndcg": {
+          "Filter": 0.608,
+          "Keyword": 0.4885,
+          "SemanticVec": 0.2802,
+          "Hybrid": 0.4279,
+          "CrossEncoder": 0.4128,
+          "WeightedGraphRAG": 0.8899
+        }
+      },
+      {
+        "scale": 1.0,
+        "bands": {
+          "price": 0.15,
+          "rating": 0.2,
+          "star": 1.0,
+          "travel_min": 2.0,
+          "disruption_min": 3.0
+        },
+        "winner": "WeightedGraphRAG",
+        "order": [
+          "WeightedGraphRAG",
+          "Filter",
+          "Keyword",
+          "Hybrid",
+          "CrossEncoder",
+          "SemanticVec"
+        ],
+        "tau_vs_default": 0.8667,
+        "mean_gold_size": 19.02,
+        "ndcg": {
+          "Filter": 0.5762,
+          "Keyword": 0.5331,
+          "SemanticVec": 0.3171,
+          "Hybrid": 0.4809,
+          "CrossEncoder": 0.4381,
+          "WeightedGraphRAG": 0.8279
+        }
+      },
+      {
+        "scale": 1.5,
+        "bands": {
+          "price": 0.225,
+          "rating": 0.3,
+          "star": 1.5,
+          "travel_min": 3.0,
+          "disruption_min": 4.5
+        },
+        "winner": "WeightedGraphRAG",
+        "order": [
+          "WeightedGraphRAG",
+          "Filter",
+          "Keyword",
+          "Hybrid",
+          "CrossEncoder",
+          "SemanticVec"
+        ],
+        "tau_vs_default": 0.8667,
+        "mean_gold_size": 23.17,
+        "ndcg": {
+          "Filter": 0.5871,
+          "Keyword": 0.572,
+          "SemanticVec": 0.3552,
+          "Hybrid": 0.526,
+          "CrossEncoder": 0.4689,
+          "WeightedGraphRAG": 0.8185
+        }
+      },
+      {
+        "scale": 2.0,
+        "bands": {
+          "price": 0.3,
+          "rating": 0.4,
+          "star": 2.0,
+          "travel_min": 4.0,
+          "disruption_min": 6.0
+        },
+        "winner": "WeightedGraphRAG",
+        "order": [
+          "WeightedGraphRAG",
+          "Keyword",
+          "Filter",
+          "Hybrid",
+          "CrossEncoder",
+          "SemanticVec"
+        ],
+        "tau_vs_default": 0.7333,
+        "mean_gold_size": 26.47,
+        "ndcg": {
+          "Filter": 0.5974,
+          "Keyword": 0.6051,
+          "SemanticVec": 0.3969,
+          "Hybrid": 0.5614,
+          "CrossEncoder": 0.4928,
+          "WeightedGraphRAG": 0.8072
+        }
+      },
+      {
+        "scale": 3.0,
+        "bands": {
+          "price": 0.45,
+          "rating": 0.6,
+          "star": 3.0,
+          "travel_min": 6.0,
+          "disruption_min": 9.0
+        },
+        "winner": "WeightedGraphRAG",
+        "order": [
+          "WeightedGraphRAG",
+          "Keyword",
+          "Hybrid",
+          "Filter",
+          "CrossEncoder",
+          "SemanticVec"
+        ],
+        "tau_vs_default": 0.6,
+        "mean_gold_size": 33.47,
+        "ndcg": {
+          "Filter": 0.5837,
+          "Keyword": 0.6255,
+          "SemanticVec": 0.4625,
+          "Hybrid": 0.5982,
+          "CrossEncoder": 0.5626,
+          "WeightedGraphRAG": 0.7756
+        }
+      }
+    ],
+    "winner_stable": true,
+    "winners": [
+      "WeightedGraphRAG"
+    ],
+    "min_tau": 0.6
+  }
+}

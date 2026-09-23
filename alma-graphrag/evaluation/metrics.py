@@ -21,10 +21,8 @@ def precision_at_k(ranked: Sequence[str], relevant: Set[str], k: int) -> float:
     if k <= 0:
         return 0.0
     topk = ranked[:k]
-    if not topk:
-        return 0.0
     hits = sum(1 for x in topk if x in relevant)
-    return hits / len(topk)
+    return hits / k
 
 
 def recall_at_k(ranked: Sequence[str], relevant: Set[str], k: int) -> float:

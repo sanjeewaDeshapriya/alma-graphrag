@@ -462,16 +462,24 @@ def _per_task(rank_lists: Dict[str, List[str]],
 
 
 def _bootstrap_vs(per_query: Dict[str, np.ndarray], reference: str,
-                  reps: int = 5000, seed: int = 7) -> Dict[str, Any]:
+                  participants: Sequence[str], reps: int = 5000,
+                  seed: int = 7) -> Dict[str, Any]:
+    """Clustered paired bootstrap over participants' repeated choices."""
     rng = np.random.default_rng(seed)
     out: Dict[str, Any] = {}
     ref = per_query[reference]
+    if len(participants) != len(ref):
+        raise ValueError("participants must align one-to-one with score observations")
+    people, inverse = np.unique(np.asarray(participants), return_inverse=True)
+    clusters = [np.flatnonzero(inverse == index) for index in range(len(people))]
     for name, vals in per_query.items():
         if name == reference:
             continue
         diff = ref - vals
-        boots = np.array([diff[rng.integers(0, len(diff), len(diff))].mean()
-                          for _ in range(reps)])
+        boots = np.array([
+            diff[np.concatenate([clusters[index] for index in rng.integers(0, len(people), len(people))])].mean()
+            for _ in range(reps)
+        ])
         lo, hi = np.percentile(boots, [2.5, 97.5])
         p = 2 * min(float((boots <= 0).mean()), float((boots >= 0).mean()))
         out[name] = {"mean_diff": round(float(diff.mean()), 4),
@@ -589,8 +597,10 @@ def run_human_evaluation(
         "significance": {
             "reference": reference,
             "metric": f"nDCG@{k}",
-            "tests": "paired bootstrap over held-out choices, 5000 resamples",
-            "vs": _bootstrap_vs(ndcg_vectors, reference),
+            "tests": "paired participant-cluster bootstrap over held-out choices, 5000 resamples",
+            "vs": _bootstrap_vs(
+                ndcg_vectors, reference, [participant for participant, _, _ in test_obs]
+            ),
         },
         "tasks": [
             {

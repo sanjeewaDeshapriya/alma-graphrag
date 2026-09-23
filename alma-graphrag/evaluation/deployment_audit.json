@@ -1,0 +1,79 @@
+{
+  "audited_at": "2026-09-14T03:08:23+00:00",
+  "city": "Colombo",
+  "graph": {
+    "signals": 58,
+    "signal_newest": "2026-07-18T18:28:14.859516+00:00",
+    "signal_age_days": 57,
+    "signal_distinct_batches": 1,
+    "events": 207,
+    "event_severity": {
+      "medium": 207
+    },
+    "affected_edges": 45,
+    "affected_events": 3,
+    "affected_hotels": 34,
+    "affected_oldest_event_age_days": 100,
+    "affected_distinct_impacts": 45,
+    "affected_impact_range": [
+      0.0008,
+      0.5335
+    ],
+    "pool_hotels": 58,
+    "pool_price_estimated": 24,
+    "pool_last_updated": "2026-07-18T18:27:55.142658",
+    "near_hotel_edges": 470,
+    "traffic_minus_free_flow_min": -1.58,
+    "travel_time_edges": 58
+  },
+  "code": {
+    "retriever_time_predicate_on_signals": {
+      "file": "src/graph/retriever.py (_candidate_query)",
+      "value": false
+    },
+    "event_linker_constant_impact": {
+      "file": "src/graph/loader.py (link_hotel_event)",
+      "value": true
+    },
+    "event_end_equals_published": {
+      "file": "src/ingest/event_linker.py",
+      "value": true
+    },
+    "gazetteer_used_by_scheduled_ingest": {
+      "file": "src/**",
+      "value": false
+    },
+    "scheduler_uses_flat_event_linker": {
+      "file": "src/scheduler/jobs.py",
+      "value": true
+    },
+    "graded_linker_is_offline_script": {
+      "file": "scripts/build_graph_topology.py",
+      "value": true
+    },
+    "graded_linker_version_controlled": {
+      "file": "scripts/build_graph_topology.py (git ls-files)",
+      "value": false
+    },
+    "cors_wildcard": {
+      "file": "src/api/main.py",
+      "value": true
+    },
+    "api_auth_dependency": {
+      "file": "src/api/main.py",
+      "value": false
+    },
+    "answer_cache_key_question_only": {
+      "file": "src/crag/graph.py (run_crag)",
+      "value": true
+    },
+    "fallback_answers_cached": {
+      "file": "src/crag/graph.py (run_crag)",
+      "value": true
+    },
+    "ci_workflows_present": {
+      "file": ".github/workflows",
+      "value": false
+    }
+  }
+}

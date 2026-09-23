@@ -62,6 +62,15 @@ and `accessibility` correlate +0.898 in the material, so their split remains far
 weaker evidence than their separate values suggest — the total is the estimand,
 and `--emit-profile` prints both.
 
+Position control (2026-09-13)
+-----------------------------
+Each stratum's logit used a single -log(rank) column until the share audit
+showed the choices form a cliff at rank 3 that a log curve cannot fit. The
+strata are now fitted with `--position-spec` (default `dummies:3`); `neglog`
+reproduces the shipped `human` profile. The estimator is registered as
+`per_sort_macro` in estimators.py, and `--gates` runs the acceptance gates on
+it. `--emit-profile` is refused for a vector that has not passed them.
+
 Reproducibility
 ---------------
 One seed drives the regularisation search, the participant-level validation
@@ -82,9 +91,11 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from weight_elicitation import MATERIAL, OUT, REPO, latest_dump
+from weight_elicitation.choice_model import DEFAULT_POSITION, PositionSpec
 from weight_elicitation.fit_weights import (
     DIMS,
     ChoiceSets,
+    apply_position_spec,
     build_choice_sets,
     facility_scores,
     failed_attention,
@@ -120,6 +131,12 @@ def fit_strata(cs: ChoiceSets, l2: float) -> Tuple[Dict[str, np.ndarray], np.nda
         if len(idx) < MIN_SETS:
             continue
         beta = fit_mnl(cs.subset(idx), use_position=True, non_negative=True, l2=l2)
+        # A stratum whose every component is pinned at zero is DROPPED. The
+        # shared `to_simplex` maps that to 0.2 each, which would enter the
+        # average as "this display condition weighted everything equally" when
+        # it really means the position terms explained the whole stratum.
+        if np.clip(beta[:5], 0.0, None).sum() <= 1e-8:
+            continue
         per[name] = to_simplex(beta)
     if not per:
         raise RuntimeError("no stratum had enough sets to fit")
@@ -251,7 +268,14 @@ def main() -> int:
                     help="pin dimensions to declared values, e.g. "
                          "'economic=0.20'. Recorded in the artifact as a "
                          "CONSTRAINT, never as an estimate.")
+    ap.add_argument("--position-spec", type=PositionSpec.parse, default=DEFAULT_POSITION,
+                    help="dummies:K (default dummies:3), topk:K, neglog (reproduces "
+                         "the shipped `human` profile), none")
+    ap.add_argument("--gates", action="store_true",
+                    help="run the acceptance gates on the per-stratum estimator")
+    ap.add_argument("--placebo-reps", type=int, default=200)
     ap.add_argument("--emit-profile", action="store_true")
+    ap.add_argument("--allow-ungated", action="store_true")
     ap.add_argument("--check-reproducible", action="store_true")
     args = ap.parse_args()
 
@@ -260,17 +284,21 @@ def main() -> int:
     material = load_material(args.material)
     fac = facility_scores(material, args.facility_def)
     failed = failed_attention(resp)
-    cs = build_choice_sets(resp, fac, args.pool_size,
-                           args.drop_failed_attention, failed)
+    cs_raw = build_choice_sets(resp, fac, args.pool_size,
+                               args.drop_failed_attention, failed)
+    cs = apply_position_spec(cs_raw, args.position_spec)
     print(f"source     : {dump.name}")
+    print(f"position   : {args.position_spec.label()}  "
+          f"({len(cs_raw) - len(cs)} sets dropped by it)")
     print(f"material   : {ver}   facility-def={args.facility_def}")
     print(f"choice sets: {len(cs)}   participants: {len(np.unique(cs.participants))}")
     print("display conditions:")
     for name, modes in STRATA.items():
         print(f"  {name:<9} n={len(stratum_index(cs, modes)):>5}")
 
-    tr_idx, te_idx = split_participants(cs, args.test_frac, args.seed)
-    tr, te = cs.subset(tr_idx), cs.subset(te_idx)
+    tr_idx, _ = split_participants(cs, args.test_frac, args.seed)
+    _, te_idx = split_participants(cs_raw, args.test_frac, args.seed)
+    tr, te = cs.subset(tr_idx), cs_raw.subset(te_idx)
     print(f"\nheld out {len(np.unique(te.participants))} participants "
           f"({len(te)} sets); fitting on {len(tr)}")
 
@@ -325,11 +353,28 @@ def main() -> int:
     print(f"\nheld-out macro nDCG@10 = {held['macro_ndcg10']:.4f}   "
           f"top1 = {held['macro_top1']:.4f}")
 
+    gate_report = None
+    if args.gates:
+        from weight_elicitation.choice_model import choice_data_from_choice_sets
+        from weight_elicitation.gates import GateConfig, evaluate_gates, format_report
+        gate_report = evaluate_gates(
+            choice_data_from_choice_sets(cs_raw),
+            "per_sort_macro", estimator_kwargs={"l2": best_l2},
+            spec=args.position_spec,
+            config=GateConfig(placebo_reps=args.placebo_reps, seed=args.seed),
+            name=f"fit_human_weights per_sort_macro (l2={best_l2})",
+            progress=lambda m: print(f"  running {m}"))
+        print("\n" + format_report(gate_report))
+    shippable = bool(gate_report and gate_report["shippable"]) and not reserve
+
     payload = {
         "source_dump": dump.name,
         "material_version": ver,
+        "position_spec": args.position_spec.label(),
+        "shippable": shippable,
+        "gates": gate_report if gate_report else "not run (use --gates)",
         "estimator": ("per-display-condition non-negative conditional logit with "
-                      "log-rank nuisance, macro-averaged over strata"),
+                      f"{args.position_spec.label()} position terms, macro-averaged over strata"),
         "inputs": "human choice study only; no benchmark, literature or prior",
         "seed": args.seed,
         "l2": best_l2,
@@ -349,9 +394,15 @@ def main() -> int:
                    "held_out_participants": int(len(np.unique(te.participants)))},
     }
     args.out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(f"\nwrote {args.out.relative_to(REPO)}")
+    print(f"\nwrote {args.out.resolve().relative_to(REPO)}")
 
     if args.emit_profile:
+        if not shippable and not args.allow_ungated:
+            raise SystemExit("\nREFUSING --emit-profile: this vector has not passed the "
+                             "acceptance gates (run with --gates; a --reserve vector "
+                             "is a constraint and never passes).")
+        if not shippable:
+            print("\n# UNGATED - failed or skipped the acceptance gates; do not ship")
         print("\n# paste into src/graph/retriever.py")
         print("BALANCED_WEIGHTS = ScoringWeights(")
         print("    " + ", ".join(f"{d}={v:.3f}" for d, v in zip(DIMS, w_final)) + ",")

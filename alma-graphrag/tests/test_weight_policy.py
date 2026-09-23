@@ -144,7 +144,12 @@ def test_static_profile_rejects_unknown_name():
 
 def test_get_policy_resolves_known_names():
     assert isinstance(get_policy("handtuned"), HandTunedPolicy)
-    assert isinstance(get_policy("elicited"), StaticProfilePolicy)
+    assert isinstance(get_policy("handset"), StaticProfilePolicy)
+
+
+def test_get_policy_rejects_unsupported_historical_profile():
+    with pytest.raises(KeyError):
+        get_policy("elicited")
 
 
 def test_get_policy_rejects_unknown_name():

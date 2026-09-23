@@ -43,8 +43,11 @@ from src.config import SCORING_WEIGHTS_PROFILE
 from src.crag.query_parser import parse_query
 from src.graph.retriever import (
     DEFAULT_PRICE_POLICY,
+    HISTORICAL_WEIGHT_PROFILES,
     WEIGHT_PROFILES,
+    ScoringWeights,
     WeightedRetriever,
+    apply_intent_adjustments,
 )
 
 logger = logging.getLogger("alma.eval.harness")
@@ -99,18 +102,46 @@ def gold_for_query(
             graded_gold(pool, query["gold"], bands), "rule")
 
 
-def resolve_intents(queries: List[Dict[str, Any]], city: str) -> Dict[str, Any]:
+def resolve_intents(queries: List[Dict[str, Any]], city: str,
+                    cache_path: Optional[Path | str] = None) -> Dict[str, Any]:
     """Parse every query ONCE. Returns {query_id: QueryIntent}.
 
     See the module docstring: sharing one parse across systems is what makes the
     comparison a comparison of retrieval rather than of parser draws.
+
+    `cache_path` freezes the parse ACROSS runs as well. The LLM slot-filler is
+    not deterministic even at temperature 0 (measured 2026-09-14: the same
+    price-slice query parsed to different sort intents on consecutive calls,
+    moving that slice's headline nDCG by 0.045 between runs). When the file
+    exists, intents for questions it holds are read from it; any question it
+    lacks is parsed live and the file is rewritten, so a results file can be
+    reproduced exactly by re-running against the same intent file.
     """
+    import json
+    from src.crag.query_parser import QueryIntent
+
+    cached: Dict[str, Dict[str, Any]] = {}
+    path = Path(cache_path) if cache_path else None
+    if path and path.exists():
+        cached = json.loads(path.read_text(encoding="utf-8")).get("intents", {})
+
     intents: Dict[str, Any] = {}
+    changed = False
     for q in queries:
-        intent = parse_query(q["question"], default_city=city)
+        key = f"{city}::{q['question']}"
+        if key in cached:
+            intent = QueryIntent(**cached[key])
+        else:
+            intent = parse_query(q["question"], default_city=city)
+            cached[key] = intent.to_dict()
+            changed = True
         if not intent.city:
             intent.city = city
         intents[q["id"]] = intent
+    if path and changed:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"note": "frozen query intents; delete to re-parse",
+                                    "intents": cached}, indent=2), encoding="utf-8")
     return intents
 
 
@@ -152,6 +183,15 @@ def _travel_time(hotel: Dict[str, Any]) -> Optional[float]:
 # Benchmark diagnostic — can this query set see a weight change at all?
 # ---------------------------------------------------------------------------
 
+class _StaticWeightModel:
+    """Non-serving counterfactual vector used only for sensitivity analysis."""
+
+    def __init__(self, weights: ScoringWeights) -> None:
+        self.weights = weights
+
+    def predict(self, intent: Any, _candidates: Any) -> ScoringWeights:
+        return apply_intent_adjustments(self.weights, intent)
+
 def weight_sensitivity(
     queryset_path: Path | str = DEFAULT_QUERYSET,
     profiles: Sequence[str] = ("handset", "elicited", "blended", "balanced"),
@@ -183,9 +223,15 @@ def weight_sensitivity(
     # reading of the query than the metrics were computed on.
     intents = intents or resolve_intents(queries, city)
 
+    vectors = {**HISTORICAL_WEIGHT_PROFILES, **WEIGHT_PROFILES}
+    missing = [profile for profile in profiles if profile not in vectors]
+    if missing:
+        raise ValueError(f"unknown sensitivity profile(s): {', '.join(missing)}")
     retrievers = {
-        p: WeightedRetriever(weight_profile=p, cache_candidates=True)
-        for p in profiles
+        profile: WeightedRetriever(
+            weight_model=_StaticWeightModel(vectors[profile]), cache_candidates=True
+        )
+        for profile in profiles
     }
 
     rows: List[Dict[str, Any]] = []
@@ -217,13 +263,17 @@ def weight_sensitivity(
         })
 
     n = len(rows) or 1
-    by_cat: Dict[str, Dict[str, Any]] = defaultdict(lambda: {"n": 0, "changed": 0})
+    by_cat: Dict[str, Dict[str, Any]] = defaultdict(
+        lambda: {"n": 0, "changed": 0, "order_changed": 0}
+    )
     for r in rows:
         c = by_cat[r["category"]]
         c["n"] += 1
         c["changed"] += 1 if r["changed"] else 0
+        c["order_changed"] += 1 if r["order_changed"] else 0
     for c in by_cat.values():
         c["fraction"] = round(c["changed"] / c["n"], 4) if c["n"] else 0.0
+        c["order_fraction"] = round(c["order_changed"] / c["n"], 4) if c["n"] else 0.0
 
     return {
         "profiles": list(profiles),
@@ -239,6 +289,38 @@ def weight_sensitivity(
     }
 
 
+def assess_reportability(
+    *,
+    query_count: int,
+    human_query_count: int,
+    vector_index: Dict[str, Any],
+    by_category: Dict[str, Dict[str, Dict[str, float]]],
+    sensitivity: Optional[Dict[str, Any]],
+    ndcg_key: str,
+) -> Dict[str, Any]:
+    """State whether an evaluation can support comparative research claims."""
+    blockers: List[str] = []
+    warnings: List[str] = []
+    if human_query_count < query_count:
+        blockers.append("human relevance gold is incomplete; rule-based labels remain")
+    if vector_index.get("stale"):
+        blockers.append("vector index and graph candidate pools differ")
+    if sensitivity:
+        blind = [
+            category for category, values in sensitivity["by_category"].items()
+            if values["fraction"] == 0.0 and values["order_fraction"] == 0.0
+        ]
+        if blind:
+            warnings.append("weight-blind categories: " + ", ".join(sorted(blind)))
+    near_perfect = [
+        category for category, values in by_category.items()
+        if values.get(GRAPH_SYSTEM, {}).get(ndcg_key, 0.0) >= 0.99
+    ]
+    if near_perfect:
+        warnings.append("near-perfect reference categories: " + ", ".join(sorted(near_perfect)))
+    return {"reportable": not blockers, "blockers": blockers, "warnings": warnings}
+
+
 # ---------------------------------------------------------------------------
 # Aggregate evaluation (the results.json producer)
 # ---------------------------------------------------------------------------
@@ -252,6 +334,7 @@ def run_evaluation(
     weight_policies: Optional[List[str]] = None,
     bands: ToleranceBands = DEFAULT_BANDS,
     include_sensitivity: bool = True,
+    intent_cache: Optional[Path | str] = None,
     **baseline_opts: Any,
 ) -> Dict[str, Any]:
     spec = load_spec(queryset_path)
@@ -263,8 +346,11 @@ def run_evaluation(
     human_relevant: Dict[str, List[str]] = human.get("relevant", {})
 
     pool = fetch_city_hotels(city)
-    intents = resolve_intents(queries, city)
-    baselines = all_baselines(weight_profiles, price_policies, weight_policies,
+    intents = resolve_intents(queries, city, intent_cache)
+    available_profiles = [name for name in (weight_profiles or []) if name in WEIGHT_PROFILES]
+    default_profile = (SCORING_WEIGHTS_PROFILE
+                       if SCORING_WEIGHTS_PROFILE in WEIGHT_PROFILES else "handset")
+    baselines = all_baselines(available_profiles, price_policies, weight_policies,
                               **baseline_opts)
     system_order = [b.name for b in baselines]
 
@@ -309,6 +395,8 @@ def run_evaluation(
         for c in cats
     }
     best = max(overall.items(), key=lambda kv: kv[1].get(f"nDCG@{k}", 0.0))
+    sensitivity = weight_sensitivity(queryset_path, k=k, intents=intents) if include_sensitivity else None
+    vector_index = _vector_index_meta(city, len(pool))
 
     # Paired significance vs the proposed system on the headline metric.
     significance: Dict[str, Any] = {}
@@ -340,7 +428,8 @@ def run_evaluation(
             # produced it; see evaluation/sensitivity.py for the sweep.
             "tolerance_bands": bands.to_dict(),
         },
-        "vector_index": _vector_index_meta(city, len(pool)),
+        "vector_index": vector_index,
+        "intent_cache": str(intent_cache) if intent_cache else None,
         "price_policy": {
             "default": DEFAULT_PRICE_POLICY,
             "compared": list(price_policies or []),
@@ -350,12 +439,12 @@ def run_evaluation(
             ) if pool else 0.0,
         },
         "weight_profiles": {
-            "default": SCORING_WEIGHTS_PROFILE,
-            "compared": list(weight_profiles or []),
+            "default": default_profile,
+            "compared": available_profiles,
             "policies": list(weight_policies or []),
             "vectors": {
                 name: WEIGHT_PROFILES[name].to_dict()
-                for name in ([SCORING_WEIGHTS_PROFILE] + list(weight_profiles or []))
+                for name in ([default_profile] + available_profiles)
                 if name in WEIGHT_PROFILES
             },
         },
@@ -365,20 +454,24 @@ def run_evaluation(
         "best_ndcg": round(best[1].get(f"nDCG@{k}", 0.0), 4),
         "significance": significance,
         "per_query": per_query,
+        "research_validity": assess_reportability(
+            query_count=len(queries), human_query_count=len(human_relevant),
+            vector_index=vector_index, by_category=by_category, sensitivity=sensitivity,
+            ndcg_key=f"nDCG@{k}",
+        ),
     }
 
-    if include_sensitivity:
-        sens = weight_sensitivity(queryset_path, k=k, intents=intents)
+    if sensitivity:
         out["weight_sensitivity"] = {
-            kk: v for kk, v in sens.items() if kk != "per_query"
+            kk: v for kk, v in sensitivity.items() if kk != "per_query"
         }
-        if sens["sensitive_fraction"] < 0.5:
+        if sensitivity["sensitive_fraction"] < 0.5:
             logger.warning(
                 "Only %.0f%% of queries change their top-%d when the weight "
                 "vector changes. This query set cannot measure a re-weighting "
                 "method; regenerate with generate_queries.py "
                 "--min-weight-sensitivity.",
-                100 * sens["sensitive_fraction"], k,
+                100 * sensitivity["sensitive_fraction"], k,
             )
 
     return out

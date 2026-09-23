@@ -72,7 +72,7 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from src.crag.query_parser import QueryIntent, parse_query
 from src.graph.query import _get_driver
-from src.graph.retriever import WeightedRetriever
+from src.graph.retriever import WEIGHT_PROFILES, WeightedRetriever
 from src.search import vector_store as vs
 from src.search.embedder import embed_one
 
@@ -745,6 +745,9 @@ def all_baselines(weight_profiles: Optional[List[str]] = None,
     baselines.append(WeightedGraphBaseline())
 
     for name in (weight_profiles or []):
+        if name not in WEIGHT_PROFILES:
+            logger.warning("weight profile %r is unavailable and will be skipped", name)
+            continue
         baselines.append(WeightedGraphBaseline(weight_profile=name))
     for policy in (weight_policies or []):
         try:

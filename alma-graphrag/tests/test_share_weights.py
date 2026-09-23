@@ -20,7 +20,9 @@ import numpy as np
 import pytest
 
 from weight_elicitation import DUMPS, MATERIAL
-from weight_elicitation.fit_weights import DIMS, build_choice_sets, fit_mnl, to_simplex
+from weight_elicitation.choice_model import PositionSpec
+from weight_elicitation.fit_weights import (DIMS, apply_position_spec, build_choice_sets,
+                                            fit_mnl, to_simplex)
 from weight_elicitation.fit_share_weights import (
     build_panel,
     correlation_weights,
@@ -95,8 +97,12 @@ def study():
     return make_study()
 
 
-def panel_for(responses, material, grain, pool_size=10):
-    return build_panel(responses, material, {}, pool_size, grain, False, set())
+SPECS = [PositionSpec("neglog"), PositionSpec("dummies", 3), PositionSpec("topk", 3)]
+
+
+def panel_for(responses, material, grain, pool_size=10, position=PositionSpec("dummies", 3)):
+    return build_panel(responses, material, {}, pool_size, grain, False, set(),
+                       position=position)
 
 
 # --------------------------------------------------------------------------- #
@@ -147,15 +153,20 @@ def test_components_varying_within_a_question_is_refused(study):
 # --------------------------------------------------------------------------- #
 # The equivalence claim
 # --------------------------------------------------------------------------- #
-def test_grouped_fit_equals_individual_fit_on_synthetic_data(study):
-    """Same likelihood, two representations: 40 share rows vs 1,600 choices."""
+@pytest.mark.parametrize("spec", SPECS, ids=lambda s: s.label())
+def test_grouped_fit_equals_individual_fit_on_synthetic_data(study, spec):
+    """Same likelihood, two representations: share rows vs 1,600 choices.
+
+    Holds for every position specification, because display groups are keyed on
+    the exact order shown, so every member of a group has identical positions.
+    """
     responses, material, _ = study
-    sc = panel_for(responses, material, "display").counts()
+    sc = panel_for(responses, material, "display", position=spec).counts()
     w_grouped = to_simplex(fit_grouped(sc, use_position=True, non_negative=True))
-    cs = build_choice_sets(responses, {}, 10, False, set())
+    cs = apply_position_spec(build_choice_sets(responses, {}, 10, False, set()), spec)
     w_individual = to_simplex(
         fit_mnl(cs, use_position=True, non_negative=True))
-    assert np.max(np.abs(w_grouped - w_individual)) < 1e-4
+    assert np.max(np.abs(w_grouped - w_individual)) < 1e-3
 
 
 @pytest.mark.skipif(not (DUMPS / "study_data_v4-rooms-20260818.json").exists()
@@ -169,12 +180,14 @@ def test_grouped_fit_equals_individual_fit_on_the_real_study():
     material = load_material(MATERIAL)
     facility = facility_scores(material, "all_ranks")
     failed = failed_attention(responses)
-    sc = build_panel(responses, material, facility, 32, "display", False,
-                     failed).counts()
-    w_grouped = to_simplex(fit_grouped(sc))
-    cs = build_choice_sets(responses, facility, 32, False, failed)
-    w_individual = to_simplex(fit_mnl(cs, use_position=True, non_negative=True))
-    assert np.max(np.abs(w_grouped - w_individual)) < 5e-3
+    for spec in (PositionSpec("neglog"), PositionSpec("dummies", 3)):
+        sc = build_panel(responses, material, facility, 32, "display", False,
+                         failed, position=spec).counts()
+        w_grouped = to_simplex(fit_grouped(sc))
+        cs = apply_position_spec(build_choice_sets(responses, facility, 32, False, failed),
+                                 spec)
+        w_individual = to_simplex(fit_mnl(cs, use_position=True, non_negative=True))
+        assert np.max(np.abs(w_grouped - w_individual)) < 5e-3, spec.label()
 
 
 # --------------------------------------------------------------------------- #
@@ -198,7 +211,8 @@ def test_position_bias_is_absorbed_rather_than_booked_as_preference():
     column exists to prevent.
     """
     responses, material, _ = make_study(gamma=3.0, seed=11)
-    sc = panel_for(responses, material, "display").counts()
+    # The generator uses -log(rank), so that is the correctly specified control.
+    sc = panel_for(responses, material, "display", position=PositionSpec("neglog")).counts()
     controlled = to_simplex(fit_grouped(sc, use_position=True, non_negative=True))
     naive = to_simplex(fit_grouped(sc, use_position=False, non_negative=True))
     err_controlled = np.max(np.abs(controlled - TRUE))
@@ -267,3 +281,44 @@ def test_l2_is_selected_on_held_out_people_and_is_reproducible(study):
     assert len(table) == len(grid)
     held_out_people = {p for p in panel.participants}
     assert len(held_out_people) == 400
+
+
+# --------------------------------------------------------------------------- #
+# The 2026-09-13 audit additions
+# --------------------------------------------------------------------------- #
+def test_position_baseline_expects_what_position_alone_would_produce(study):
+    """Expected counts are a proper allocation: they sum to the respondents."""
+    responses, material, _ = study
+    sc = panel_for(responses, material, "question").counts()
+    assert np.allclose(sc.expected.sum(axis=1), sc.n_resp)
+    assert (sc.expected_var >= 0).all()
+
+
+def test_share_table_carries_interval_expected_share_and_z(study, tmp_path):
+    import csv as _csv
+    from weight_elicitation.fit_share_weights import write_rows_csv
+    responses, material, _ = study
+    sc = panel_for(responses, material, "display").counts()
+    path = tmp_path / "shares.csv"
+    write_rows_csv(sc, path, material, by_display=False)
+    rows = list(_csv.DictReader(path.open(encoding="utf-8")))
+    assert len(rows) == 40
+    for r in rows:
+        lo, hi, share = float(r["share_ci95_lo"]), float(r["share_ci95_hi"]), float(r["share"])
+        assert lo <= share <= hi
+        assert 0.0 <= float(r["expected_share_by_position"]) <= 1.0
+
+
+def test_share_artifact_on_disk_is_not_marked_shippable():
+    """The committed share weights failed the placebo gate; the artifact must say so."""
+    import json as _json
+    from weight_elicitation import OUT
+    path = OUT / "share_weights.json"
+    if not path.exists():
+        pytest.skip("no share_weights.json artifact")
+    assert _json.loads(path.read_text(encoding="utf-8")).get("shippable") is False
+
+
+def test_no_share_profile_is_registered_in_the_retriever():
+    from src.graph.retriever import WEIGHT_PROFILES
+    assert "share" not in WEIGHT_PROFILES

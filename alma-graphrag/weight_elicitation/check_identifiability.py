@@ -47,14 +47,17 @@ def load_design(material_path: Path) -> Tuple[List[np.ndarray], List[str]]:
         if task.get("is_attention_check"):
             continue
         ac = anchored[task["anchor_id"]]
-        rows = []
-        for hid in task["option_ids"]:
-            g = hotels[hid]["components_global"]
-            a = ac[hid]
-            rows.append([a["spatial"], a["accessibility"],
-                         g["facility"], g["economic"], g["disruption"]])
-        designs.append(np.asarray(rows, dtype=float))
-        labels.append(f'{task["id"]} @ {task["anchor_id"]}')
+        choice_sets = task.get("choice_sets") or [task["option_ids"]]
+        for block, option_ids in enumerate(choice_sets, start=1):
+            rows = []
+            for hid in option_ids:
+                g = hotels[hid]["components_global"]
+                a = ac[hid]
+                rows.append([a["spatial"], a["accessibility"],
+                             g["facility"], g["economic"], g["disruption"]])
+            designs.append(np.asarray(rows, dtype=float))
+            suffix = f" block {block}" if len(choice_sets) > 1 else ""
+            labels.append(f'{task["id"]} @ {task["anchor_id"]}{suffix}')
     return designs, labels
 
 

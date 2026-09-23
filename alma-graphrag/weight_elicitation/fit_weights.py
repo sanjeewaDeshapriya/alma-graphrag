@@ -19,7 +19,7 @@ the simplex, are the retriever's `ScoringWeights`.
 Three things make this more than a plain logit, and all three come out of
 `docs/Weight_Elicitation_Data_Audit.md`:
 
-1. POSITION IS A NUISANCE PARAMETER.
+1. POSITION IS A NUISANCE PARAMETER — AND ITS SHAPE MATTERS.
    46% of participants picked the hotel at rank 1 and 78% picked rank 1-2, on a
    list sorted by one of the very components being estimated. Within a choice
    set, rank correlates +0.686 with `spatial` and +0.670 with `accessibility`.
@@ -27,9 +27,17 @@ Three things make this more than a plain logit, and all three come out of
    proximity — which is exactly how the published weights reached
    spatial + accessibility = 0.964.
 
-   So a log-rank term is estimated alongside the components and then DISCARDED.
+   So position terms are estimated alongside the components and then DISCARDED.
    At retrieval time there is no pre-existing position: the retriever produces
    the ordering. Position belongs in the fit and nowhere else.
+
+   Until 2026-09-13 that term was a single -log(rank) column. The choices have a
+   cliff, not a curve (45.8 / 32.6 / 21.0% at ranks 1 / 2 / 3, 13 of 2,232 below),
+   and the misfit was absorbed by the components: under -log the components
+   "improve" the likelihood by chi2(5) = 121, under rank dummies by 8.7
+   (p = 0.12). `--position-spec` now defaults to `dummies:3`; `neglog` is kept
+   only to reproduce the published wave-1 numbers. See choice_model.py and
+   docs/Weight_Elicitation_Share_Audit.md.
 
 2. `facility` IS RECOMPUTED, NOT READ.
    The stored vectors carry the `min(n_facilities / 40, 1.0)` ceiling that
@@ -68,6 +76,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from weight_elicitation import DUMPS, MATERIAL, OUT, REPO, latest_dump
+from weight_elicitation.choice_model import DEFAULT_POSITION, PositionSpec
 
 DIMS = ["spatial", "accessibility", "facility", "economic", "disruption"]
 SORT_MODES = ["distance", "travel", "rating", "price_asc", "price_desc"]
@@ -140,16 +149,18 @@ class ChoiceSets:
     """
 
     def __init__(self, X: np.ndarray, mask: np.ndarray, y: np.ndarray,
-                 participants: np.ndarray, sorts: np.ndarray):
+                 participants: np.ndarray, sorts: np.ndarray,
+                 tasks: Optional[np.ndarray] = None):
         self.X, self.mask, self.y = X, mask, y
         self.participants, self.sorts = participants, sorts
+        self.tasks = tasks if tasks is not None else np.array(["?"] * len(y))
 
     def __len__(self) -> int:
         return len(self.y)
 
     def subset(self, idx: np.ndarray) -> "ChoiceSets":
         return ChoiceSets(self.X[idx], self.mask[idx], self.y[idx],
-                          self.participants[idx], self.sorts[idx])
+                          self.participants[idx], self.sorts[idx], self.tasks[idx])
 
 
 def build_choice_sets(responses: List[dict],
@@ -167,6 +178,7 @@ def build_choice_sets(responses: List[dict],
     labels: List[int] = []
     pids: List[str] = []
     sorts: List[str] = []
+    tasks: List[str] = []
 
     for r in responses:
         if r.get("isAttentionCheck"):
@@ -198,6 +210,7 @@ def build_choice_sets(responses: List[dict],
         labels.append(next(i for i, o in enumerate(opts) if o.get("chosen")))
         pids.append(r["participantId"])
         sorts.append((r.get("timing") or {}).get("final_sort") or "unknown")
+        tasks.append(r.get("taskId") or "?")
 
     m = max(len(a) for a in rows)
     k = rows[0].shape[1]
@@ -207,7 +220,26 @@ def build_choice_sets(responses: List[dict],
         X[i, : len(a)] = a
         mask[i, : len(a)] = True
     return ChoiceSets(X, mask, np.asarray(labels), np.asarray(pids),
-                      np.asarray(sorts))
+                      np.asarray(sorts), np.asarray(tasks))
+
+
+def apply_position_spec(cs: ChoiceSets, spec: PositionSpec = DEFAULT_POSITION) -> ChoiceSets:
+    """Replace the -log(rank) column with the position terms `spec` defines.
+
+    `build_choice_sets` always stores -log(rank) in column 5 (the rank is
+    recoverable from it exactly). This swaps that one column for the chosen
+    specification, restricts the mask for `topk`, and drops the rows whose
+    chosen hotel falls outside it. Columns with no variation are dropped, so a
+    `dummies:3` spec on 5-option sets does not leave a dead "beyond 3" column.
+    """
+    pos = np.where(cs.mask, np.rint(np.exp(-cs.X[:, :, 5])), 0).astype(int)
+    P, mask, _names = spec.columns(pos, cs.mask)
+    keep = mask[np.arange(len(cs)), cs.y]
+    live = [j for j in range(P.shape[2]) if np.any(P[keep][:, :, j][mask[keep]])]
+    X = np.concatenate([cs.X[:, :, :5], P[:, :, live]], axis=2)
+    X = np.where(mask[:, :, None], X, 0.0)
+    out = ChoiceSets(X, mask, cs.y, cs.participants, cs.sorts, cs.tasks)
+    return out.subset(np.where(keep)[0])
 
 
 def failed_attention(responses: List[dict]) -> set:
@@ -261,15 +293,17 @@ def neg_loglik(beta: np.ndarray, cs: ChoiceSets, l2: float,
 
 def fit_mnl(cs: ChoiceSets, *, use_position: bool, non_negative: bool,
             l2: float = 0.0, toward_prior: bool = False) -> np.ndarray:
-    k = 6 if use_position else 5
+    """Columns 0-4 are the components; every column after them is a position
+    term (one -log(rank) column, or the indicators `apply_position_spec` made)."""
+    k = cs.X.shape[2] if use_position else 5
     view = cs if use_position else ChoiceSets(
-        cs.X[:, :, :5], cs.mask, cs.y, cs.participants, cs.sorts)
+        cs.X[:, :, :5], cs.mask, cs.y, cs.participants, cs.sorts, cs.tasks)
     if non_negative:
         # Components are all "higher is better", and the retriever cannot use a
         # negative weight. Constraining during estimation is not the same as
         # clipping afterwards: the optimiser redistributes the mass properly
         # instead of leaving the survivors distorted by a partner it later cut.
-        bounds = [(0.0, None)] * 5 + ([(None, None)] if use_position else [])
+        bounds = [(0.0, None)] * 5 + [(None, None)] * (k - 5)
     else:
         bounds = [(None, None)] * k
     res = minimize(neg_loglik, np.zeros(k), args=(view, l2, toward_prior),
@@ -372,8 +406,19 @@ def main() -> None:
     ap.add_argument("--drop-failed-attention", action="store_true",
                     help="sensitivity analysis: exclude the participants who "
                          "failed the attention check (NOT the primary spec)")
+    ap.add_argument("--position-spec", type=PositionSpec.parse,
+                    default=DEFAULT_POSITION,
+                    help="position control: dummies:K (default dummies:3), topk:K, "
+                         "neglog (reproduces the published wave-1 fit), none")
+    ap.add_argument("--gates", action="store_true",
+                    help="run the acceptance gates on the deployed estimator "
+                         "(placebo, LR, clustered CI, held-out, leave-one-task-out)")
+    ap.add_argument("--placebo-reps", type=int, default=200)
     ap.add_argument("--emit-profile", action="store_true",
-                    help="print ScoringWeights source for src/graph/retriever.py")
+                    help="print ScoringWeights source for src/graph/retriever.py "
+                         "(refused unless --gates passed every dimension)")
+    ap.add_argument("--allow-ungated", action="store_true",
+                    help="emit anyway; recorded in the artifact as ungated")
     args = ap.parse_args()
 
     if args.dump is None:
@@ -390,8 +435,11 @@ def main() -> None:
     facility = facility_scores(material, args.facility_def)
     failed = failed_attention(responses)
 
-    cs = build_choice_sets(responses, facility, args.pool_size,
-                           args.drop_failed_attention, failed)
+    cs_raw = build_choice_sets(responses, facility, args.pool_size,
+                               args.drop_failed_attention, failed)
+    # Fitting uses the position specification; held-out ranking metrics score
+    # the components over every hotel that was on screen, so they use cs_raw.
+    cs = apply_position_spec(cs_raw, args.position_spec)
 
     print("=" * 78)
     print(f"ALMA-GraphRAG — weight elicitation fit   (material {version})")
@@ -403,6 +451,8 @@ def main() -> None:
     print(f"analysis cohort    : {len(cs)} choice sets from "
           f"{len(np.unique(cs.participants))} participants")
     print(f"facility definition: {args.facility_def}")
+    print(f"position control   : {args.position_spec.label()}"
+          f"  ({len(cs_raw) - len(cs)} sets dropped by it)")
     fac_sd = np.array([cs.X[i][cs.mask[i]][:, 2].std() for i in range(len(cs))]).mean()
     spa_sd = np.array([cs.X[i][cs.mask[i]][:, 0].std() for i in range(len(cs))]).mean()
     print(f"  facility within-set sd {fac_sd:.4f}  vs spatial {spa_sd:.4f}"
@@ -424,9 +474,13 @@ def main() -> None:
     n_val = max(1, int(len(people) * args.val_frac))
     test_people = set(people[:n_test])
     val_people = set(people[n_test:n_test + n_val])
-    where = np.array([2 if p in test_people else 1 if p in val_people else 0
-                      for p in cs.participants])
-    train, valid, test = cs.subset(where == 0), cs.subset(where == 1), cs.subset(where == 2)
+    def split(c: ChoiceSets):
+        where = np.array([2 if p in test_people else 1 if p in val_people else 0
+                          for p in c.participants])
+        return c.subset(where == 0), c.subset(where == 1), c.subset(where == 2)
+
+    train, _, _ = split(cs)
+    _, valid, test = split(cs_raw)
     for nm, s in (("train", train), ("valid", valid), ("test", test)):
         print(f"  {nm:6s}: {len(s):5d} sets / "
               f"{len(np.unique(s.participants)):3d} people")
@@ -480,16 +534,17 @@ def main() -> None:
         print(f"\n{name}  —  {m['label']}")
         print("  raw     : " + "  ".join(f"{d[:6]}={v:+.3f}"
                                          for d, v in zip(DIMS, m["beta"][:5])))
-        if len(m["beta"]) == 6:
-            print(f"  position: {m['beta'][5]:+.3f}   "
-                  f"(positive = pull toward the top of the list)")
+        if len(m["beta"]) > 5:
+            print("  position: " + "  ".join(f"{v:+.3f}" for v in m["beta"][5:])
+                  + "   (fitted, then discarded)")
         print("  simplex : " + fmt(m["weights"]))
 
-    ll_naive = -neg_loglik(np.append(b_naive, 0.0), train, 0.0)
+    n_pos = train.X.shape[2] - 5
+    ll_naive = -neg_loglik(np.append(b_naive, np.zeros(n_pos)), train, 0.0)
     ll_pos = -neg_loglik(b_pos, train, 0.0)
     print(f"\nlog-likelihood  no position {ll_naive:>12,.0f}")
     print(f"                + position  {ll_pos:>12,.0f}"
-          f"   (Δ2LL = {2 * (ll_pos - ll_naive):,.0f} on 1 df)")
+          f"   (Δ2LL = {2 * (ll_pos - ll_naive):,.0f} on {n_pos} df)")
 
     # ---- held-out evaluation ----------------------------------------------- #
     print("\n" + "-" * 78)
@@ -511,7 +566,7 @@ def main() -> None:
     # An equal mixture says exactly that: trust the evidence and the prior
     # equally on the dimensions where the evidence is weak.
     blended = 0.5 * models["deployed"]["weights"] + 0.5 * HANDSET
-    models["blended"] = dict(beta=np.append(blended, 0.0), weights=blended,
+    models["blended"] = dict(beta=blended, weights=blended,
                              label="0.5 x deployed + 0.5 x hand-set prior")
 
     cands = {"handset (shipped prior)": HANDSET,
@@ -598,11 +653,30 @@ def main() -> None:
     else:
         print("  not enough room-choice variation to fit")
 
+    # ---- acceptance gates --------------------------------------------------- #
+    gate_report = None
+    if args.gates:
+        from weight_elicitation.choice_model import choice_data_from_choice_sets
+        from weight_elicitation.gates import GateConfig, evaluate_gates, format_report
+        print("\n" + "-" * 78)
+        data = choice_data_from_choice_sets(cs_raw)
+        gate_report = evaluate_gates(
+            data, "prior_map", estimator_kwargs={"l2": best_lam},
+            spec=args.position_spec,
+            config=GateConfig(placebo_reps=args.placebo_reps, seed=args.seed),
+            name=f"fit_weights deployed (prior_map, lambda={best_lam:g})",
+            progress=lambda m: print(f"  running {m}"))
+        print(format_report(gate_report))
+    shippable = bool(gate_report and gate_report["shippable"])
+
     # ---- persist ------------------------------------------------------------ #
     args.out.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "material_version": version,
         "source_dump": args.dump.name,
+        "position_spec": args.position_spec.label(),
+        "shippable": shippable,
+        "gates": gate_report if gate_report else "not run (use --gates)",
         "facility_definition": args.facility_def,
         "cohort": {
             "choice_sets": len(cs),
@@ -622,10 +696,17 @@ def main() -> None:
         "recommended": best,
     }
     args.out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(f"\nwrote {args.out.relative_to(REPO)}")
+    print(f"\nwrote {args.out.resolve().relative_to(REPO)}")
 
     if args.emit_profile:
+        if not shippable and not args.allow_ungated:
+            raise SystemExit(
+                "\nREFUSING --emit-profile: the deployed weights have not passed the "
+                "acceptance gates (run with --gates). Pass --allow-ungated only to "
+                "print a vector you will label as ungated.")
         w = models["deployed"]["weights"]
+        if not shippable:
+            print("\n# UNGATED - failed or skipped the acceptance gates; do not ship")
         print("\n# paste into src/graph/retriever.py")
         print("ELICITED_WEIGHTS = ScoringWeights(")
         print("    " + ", ".join(f"{d}={v:.3f}" for d, v in zip(DIMS, w)) + ",")

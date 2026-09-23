@@ -156,6 +156,10 @@ def main() -> int:
     ap.add_argument("--with-llm", action="store_true",
                     help="include the LLM re-ranker (costs one API call per "
                          "query per cell; cached, but the first run is slow)")
+    ap.add_argument("--intent-cache", default=None,
+                    help="frozen parsed intents (evaluation/intents_main.json); "
+                         "without it every cell re-parses with the LLM, which "
+                         "is not deterministic")
     args = ap.parse_args()
 
     if not (args.bands or args.price):
@@ -166,6 +170,7 @@ def main() -> int:
         "include_floors": False,
         "include_ablations": False,
         "include_ltr": False,
+        "intent_cache": args.intent_cache,
     }
 
     report: Dict[str, Any] = {"queryset": args.queryset}

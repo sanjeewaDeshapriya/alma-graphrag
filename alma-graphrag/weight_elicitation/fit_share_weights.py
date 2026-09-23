@@ -67,8 +67,27 @@ position is deterministic (1,551 of 1,600 cells carry a single value) and the
 control is exact rather than averaged. At `--grain question` the ten questions
 stay whole and the control is an average over sorts.
 
+Audit result (2026-09-13) - read before quoting anything this prints
+--------------------------------------------------------------------
+The shares are the right thing to REPORT and the wrong thing to ship weights
+from. On wave 1 the per-question macro estimator fails the placebo test: fed
+choices driven by list position alone it returns economic .233 and facility
+.289, more than the real data gives, because clipping ten noisy fits at zero
+and averaging the corners cannot produce zero. With a position control that
+matches the data (`dummies:3`, the new default) the components add nothing
+beyond position (chi2(5) = 8.7, p = .12), and every top hotel's share equals
+the share its list positions predict (Shangri-La on t1: 32.1% vs 31.4%).
+So `shippable` is false unless `--gates` passes, and `--emit-profile` refuses
+otherwise. See docs/Weight_Elicitation_Share_Audit.md.
+
+The CSV now carries, per question x hotel, a Wilson 95% interval on the share
+and the share EXPECTED FROM POSITION ALONE: the empirical P(choose | rank, sort
+mode) from the same responses, applied to the ranks this hotel was actually
+shown at. `position_z` is (chosen - expected) / sd under that baseline, so a
+hotel preferred beyond where it sat shows up as a large positive z.
+
 Outputs `out/choice_shares.csv` (the row-by-row table), `out/share_weights.json`
-(weights, correlations, intervals) and a report on stdout.
+(weights, correlations, intervals, gates) and a report on stdout.
 """
 from __future__ import annotations
 
@@ -87,9 +106,11 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from weight_elicitation import DUMPS, MATERIAL, OUT, REPO, latest_dump
+from weight_elicitation.choice_model import DEFAULT_POSITION, PositionSpec, wilson_interval
 from weight_elicitation.fit_weights import (
     DIMS,
     HANDSET,
+    apply_position_spec,
     build_choice_sets,
     facility_scores,
     failed_attention,
@@ -103,6 +124,14 @@ from weight_elicitation.fit_weights import (
 )
 
 SORT_MODES = ("distance", "travel", "rating", "price_asc", "price_desc")
+
+
+def _rel(path: Path) -> str:
+    """Repo-relative when possible; an output written elsewhere keeps its path."""
+    try:
+        return str(Path(path).resolve().relative_to(REPO))
+    except ValueError:
+        return str(path)
 
 
 def _task_order(task_id: str) -> int:
@@ -120,23 +149,29 @@ class SharePanel:
     three `np.add.at` calls -- instead of re-walking 2,232 responses x 32
     options, which is what lets a few hundred replicates finish in seconds.
 
-    exposed[j, h]    participant j had hotel h on screen for their task
-    neglogpos[j, h]  -log of the position it occupied (0 where not exposed)
+    exposed[j, h]    hotel h was in participant j's choice set (on screen, and
+                     inside the top k for a `topk` position spec)
+    rank[j, h]       the position it occupied (0 where not on screen)
+    posfeat[j, h, p] the position terms of the spec (0 where not exposed)
     chosen[j]        index of the hotel they booked
     group[j]         which group (question, or question x sort) the row joins
+    sorts[j]         the sort the participant had applied
     """
 
     def __init__(self, hotels: List[str], names: Dict[str, str],
                  groups: List[tuple], features: np.ndarray,
-                 exposed: np.ndarray, neglogpos: np.ndarray,
+                 exposed: np.ndarray, rank: np.ndarray, posfeat: np.ndarray,
+                 pos_names: List[str], position: PositionSpec,
                  chosen: np.ndarray, group: np.ndarray,
-                 participants: np.ndarray, task_meta: Dict[str, dict],
-                 grain: str):
+                 participants: np.ndarray, sorts: np.ndarray,
+                 task_meta: Dict[str, dict], grain: str):
         self.hotels, self.names = hotels, names
         self.groups, self.features = groups, features          # features (G,H,5)
-        self.exposed, self.neglogpos = exposed, neglogpos
+        self.exposed, self.rank = exposed, rank
+        self.posfeat, self.pos_names, self.position = posfeat, pos_names, position
+        self.neglogpos = np.where(exposed, -np.log(np.maximum(rank, 1)), 0.0)
         self.chosen, self.group = chosen, group
-        self.participants = participants
+        self.participants, self.sorts = participants, sorts
         self.task_meta, self.grain = task_meta, grain
 
     @property
@@ -157,17 +192,49 @@ class SharePanel:
         """Aggregate a set of responses into the per-group share table."""
         if rows is None:
             rows = np.arange(len(self.chosen))
-        G, H = self.n_groups, self.n_hotels
+        G, H, Pn = self.n_groups, self.n_hotels, self.posfeat.shape[2]
         n_exposed = np.zeros((G, H))
         sum_nlp = np.zeros((G, H))
+        sum_pos = np.zeros((G, H, Pn))
         n_chosen = np.zeros((G, H))
         n_resp = np.zeros(G)
         g = self.group[rows]
         np.add.at(n_exposed, g, self.exposed[rows].astype(float))
         np.add.at(sum_nlp, g, self.neglogpos[rows])
+        np.add.at(sum_pos, g, self.posfeat[rows])
         np.add.at(n_chosen, (g, self.chosen[rows]), 1.0)
         np.add.at(n_resp, g, 1.0)
-        return ShareCounts(self, n_exposed, sum_nlp, n_chosen, n_resp)
+        exp_cnt, exp_var = self.position_baseline(rows)
+        return ShareCounts(self, n_exposed, sum_nlp, n_chosen, n_resp, sum_pos,
+                           exp_cnt, exp_var)
+
+    def position_baseline(self, rows: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """Expected choices per (group, hotel) if people chose by position ONLY.
+
+        P(choose | rank r, sort s) is the empirical share of the sort-s responses
+        whose chosen hotel sat at rank r, renormalised over the hotels each
+        response could choose from. No functional form is assumed, which is the
+        point: the -log(rank) curve over-predicts rank 1 by ~17 points on wave 1
+        and turns Shangri-La's 32% into an apparent under-selection.
+        Returns expected counts and the Poisson-binomial variance.
+        """
+        G, H = self.n_groups, self.n_hotels
+        rk, ex, ch = self.rank[rows], self.exposed[rows], self.chosen[rows]
+        srt = self.sorts[rows]
+        max_r = int(self.rank.max()) + 1
+        prob = np.zeros((len(rows), H))
+        for mode in np.unique(srt):
+            sel = srt == mode
+            chosen_rank = rk[sel][np.arange(sel.sum()), ch[sel]]
+            q = np.bincount(chosen_rank, minlength=max_r).astype(float) / max(sel.sum(), 1)
+            prob[sel] = np.where(ex[sel], q[rk[sel]], 0.0)
+        tot = prob.sum(axis=1, keepdims=True)
+        prob = np.where(tot > 0, prob / np.maximum(tot, 1e-300), 0.0)
+        exp_cnt, exp_var = np.zeros((G, H)), np.zeros((G, H))
+        g = self.group[rows]
+        np.add.at(exp_cnt, g, prob)
+        np.add.at(exp_var, g, prob * (1.0 - prob))
+        return exp_cnt, exp_var
 
 
 class ShareCounts:
@@ -178,13 +245,19 @@ class ShareCounts:
     """
 
     def __init__(self, panel: SharePanel, n_exposed: np.ndarray,
-                 sum_nlp: np.ndarray, n_chosen: np.ndarray, n_resp: np.ndarray):
+                 sum_nlp: np.ndarray, n_chosen: np.ndarray, n_resp: np.ndarray,
+                 sum_pos: np.ndarray, expected: np.ndarray, expected_var: np.ndarray):
         self.panel = panel
         self.n_exposed, self.n_chosen, self.n_resp = n_exposed, n_chosen, n_resp
         denom = np.maximum(n_exposed, 1.0)
         self.share = np.where(n_exposed > 0, n_chosen / denom, 0.0)
-        # Mean -log(rank) over the people who actually saw the hotel.
+        # Mean -log(rank) over the people who actually saw the hotel (reported).
         self.mean_nlp = np.where(n_exposed > 0, sum_nlp / denom, 0.0)
+        # Mean of each position term: the exact control when rank is fixed
+        # within a group, which it is at display grain.
+        self.mean_pos = np.where((n_exposed > 0)[:, :, None],
+                                 sum_pos / denom[:, :, None], 0.0)
+        self.expected, self.expected_var = expected, expected_var
         self.mask = n_exposed > 0
 
     def design(self, use_position: bool) -> Tuple[np.ndarray, np.ndarray]:
@@ -199,7 +272,7 @@ class ShareCounts:
         """
         X = self.panel.features
         if use_position:
-            X = np.concatenate([X, self.mean_nlp[:, :, None]], axis=2)
+            X = np.concatenate([X, self.mean_pos], axis=2)
         avail = np.where(self.mask,
                          self.n_exposed / np.maximum(self.n_resp[:, None], 1.0), 1.0)
         logavail = np.where(avail > 0, np.log(np.maximum(avail, 1e-12)), 0.0)
@@ -208,7 +281,7 @@ class ShareCounts:
 
 def build_panel(responses: List[dict], material: dict, facility: Dict[str, float],
                 pool_size: int, grain: str, drop_failed: bool,
-                failed: set) -> SharePanel:
+                failed: set, position: PositionSpec = DEFAULT_POSITION) -> SharePanel:
     hotels = list(material["hotels"])
     names = {h: material["hotels"][h].get("name", h) for h in hotels}
     hidx = {h: i for i, h in enumerate(hotels)}
@@ -236,11 +309,27 @@ def build_panel(responses: List[dict], material: dict, facility: Dict[str, float
                     f"table is not a sufficient statistic for this dump")
             comps[key] = v
 
+    variants: Dict[tuple, Dict[tuple, int]] = {}
+
     def group_key(r: dict) -> Optional[tuple]:
         if grain == "question":
             return (r["taskId"],)
         sort = (r.get("timing") or {}).get("final_sort")
-        return None if sort not in SORT_MODES else (r["taskId"], sort)
+        if sort not in SORT_MODES:
+            return None
+        # The display group is (question, sort, EXACT ORDER SHOWN). Within
+        # (question, sort) rank is usually fixed, but ties in the sort key and
+        # filters leave some hotels at rank 3 for one participant and rank 4
+        # for another. Averaging those two position indicators is not the same
+        # likelihood, so the grouped fit would stop being exact the moment the
+        # position terms are indicators rather than a smooth curve. Keying on
+        # the order keeps every group's positions identical, and the identity
+        # with the individual-level fit exact.
+        order = tuple(sorted((o["hotel_id"], o.get("displayed_position"))
+                             for o in r["options"]
+                             if o.get("displayed_position") is not None))
+        slot = variants.setdefault((r["taskId"], sort), {})
+        return (r["taskId"], sort, slot.setdefault(order, len(slot)))
 
     keep: List[dict] = []
     keys: List[tuple] = []
@@ -265,8 +354,8 @@ def build_panel(responses: List[dict], material: dict, facility: Dict[str, float
     gidx = {k: i for i, k in enumerate(groups)}
 
     n, H = len(keep), len(hotels)
-    exposed = np.zeros((n, H), dtype=bool)
-    neglogpos = np.zeros((n, H))
+    shown = np.zeros((n, H), dtype=bool)
+    rank = np.zeros((n, H), dtype=int)
     chosen = np.zeros(n, dtype=int)
     group = np.zeros(n, dtype=int)
     for j, (r, k) in enumerate(zip(keep, keys)):
@@ -276,10 +365,24 @@ def build_panel(responses: List[dict], material: dict, facility: Dict[str, float
             if p is None or not o.get("components"):
                 continue
             i = hidx[o["hotel_id"]]
-            exposed[j, i] = True
-            neglogpos[j, i] = -np.log(max(float(p), 1.0))
+            shown[j, i] = True
+            rank[j, i] = int(max(int(p), 1))
             if o.get("chosen"):
                 chosen[j] = i
+
+    # Position terms. A `topk` spec shrinks the choice set to ranks 1..k and
+    # drops the responses whose chosen hotel sat below it.
+    posfeat, exposed, pos_names = position.columns(rank, shown)
+    inside = exposed[np.arange(n), chosen]
+    if not inside.all():
+        sel = np.where(inside)[0]
+        keep = [keep[i] for i in sel]
+        exposed, rank, posfeat = exposed[sel], rank[sel], posfeat[sel]
+        chosen, group = chosen[sel], group[sel]
+        n = len(sel)
+    live = [c for c in range(posfeat.shape[2]) if np.any(posfeat[:, :, c][exposed])]
+    posfeat = posfeat[:, :, live]
+    pos_names = [pos_names[c] for c in live]
 
     features = np.zeros((len(groups), H, 5))
     for gi, k in enumerate(groups):
@@ -288,9 +391,12 @@ def build_panel(responses: List[dict], material: dict, facility: Dict[str, float
             if v is not None:
                 features[gi, hi] = v
 
-    return SharePanel(hotels, names, groups, features, exposed, neglogpos,
+    return SharePanel(hotels, names, groups, features, exposed,
+                      np.where(exposed, rank, 0), posfeat, pos_names, position,
                       chosen, group,
                       np.array([r["participantId"] for r in keep]),
+                      np.array([(r.get("timing") or {}).get("final_sort") or "unknown"
+                                for r in keep]),
                       task_meta, grain)
 
 
@@ -343,7 +449,7 @@ def fit_grouped(sc: ShareCounts, *, use_position: bool = True,
     if non_negative:
         # Components are "higher is better" and the retriever cannot use a
         # negative weight; the position nuisance is left free.
-        bounds = [(0.0, None)] * 5 + ([(None, None)] if use_position else [])
+        bounds = [(0.0, None)] * 5 + [(None, None)] * (k - 5)
     else:
         bounds = [(None, None)] * k
     res = minimize(grouped_objective, np.zeros(k),
@@ -603,7 +709,12 @@ def iter_cells(sc: ShareCounts, by_display: bool):
     """
     panel = sc.panel
     if by_display:
-        blocks = [([gi], key) for gi, key in enumerate(panel.groups)]
+        # Order variants of one (question, sort) are estimation detail; the
+        # table a person reads merges them back.
+        merged: Dict[tuple, List[int]] = {}
+        for gi, key in enumerate(panel.groups):
+            merged.setdefault(tuple(key[:2]), []).append(gi)
+        blocks = [(rows, key) for key, rows in merged.items()]
     else:
         blocks = [(list(panel.rows_for_task(t)), (t,)) for t in panel.tasks()]
     for rows, key in blocks:
@@ -616,7 +727,10 @@ def iter_cells(sc: ShareCounts, by_display: bool):
         order = np.argsort(-share)
         rank = np.empty(panel.n_hotels, dtype=int)
         rank[order] = np.arange(1, panel.n_hotels + 1)
-        yield key, n_resp, exposed, chosen, share, mean_nlp, rank, rows[0]
+        expected = sc.expected[rows].sum(axis=0)
+        exp_var = sc.expected_var[rows].sum(axis=0)
+        yield (key, n_resp, exposed, chosen, share, mean_nlp, rank, rows[0],
+               expected, exp_var)
 
 
 def write_rows_csv(sc: ShareCounts, path: Path, material: dict,
@@ -628,14 +742,16 @@ def write_rows_csv(sc: ShareCounts, path: Path, material: dict,
     if by_display:
         cols.append("sort_mode")
     cols += ["hotel_id", "hotel_name", "n_respondents", "n_shown", "n_chosen",
-             "share", "share_pct", "rank_in_group", "mean_neg_log_position",
+             "share", "share_pct", "share_ci95_lo", "share_ci95_hi",
+             "expected_share_by_position", "position_lift", "position_z",
+             "rank_in_group", "mean_neg_log_position",
              *DIMS, "price_lkr", "rating", "star", "distance_km"]
     path.parent.mkdir(parents=True, exist_ok=True)
     n = 0
     with path.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(cols)
-        for key, n_resp, exposed, chosen, share, mean_nlp, rank, gi in \
+        for key, n_resp, exposed, chosen, share, mean_nlp, rank, gi, expected, exp_var in \
                 iter_cells(sc, by_display):
             meta = panel.task_meta.get(key[0], {})
             for hi, hid in enumerate(panel.hotels):
@@ -647,10 +763,18 @@ def write_rows_csv(sc: ShareCounts, path: Path, material: dict,
                        meta.get("secondary_dimension", "")]
                 if by_display:
                     row.append(key[1])
+                lo, hi_ = wilson_interval(float(chosen[hi]), float(exposed[hi]))
+                sd = float(np.sqrt(exp_var[hi]))
                 row += [hid, panel.names.get(hid, hid),
                         int(n_resp), int(exposed[hi]), int(chosen[hi]),
                         round(float(share[hi]), 6),
                         round(100.0 * float(share[hi]), 2),
+                        round(lo, 6), round(hi_, 6),
+                        round(float(expected[hi] / max(n_resp, 1.0)), 6),
+                        (round(float(chosen[hi] / expected[hi]), 4)
+                         if expected[hi] > 0 else ""),
+                        (round(float((chosen[hi] - expected[hi]) / sd), 3)
+                         if sd > 0 else ""),
                         int(rank[hi]), round(float(mean_nlp[hi]), 4),
                         *[round(float(v), 4) for v in panel.features[gi, hi]],
                         a.get("price_lkr"), a.get("rating"), a.get("star"),
@@ -664,7 +788,7 @@ def print_share_table(sc: ShareCounts, top: int) -> None:
     panel = sc.panel
     # Same walk as the CSV, so the table on screen and the table on disk can
     # never disagree about what a percentage means.
-    for key, n_resp_f, exposed, chosen, share, _mnlp, _rank, gi in \
+    for key, n_resp_f, exposed, chosen, share, _mnlp, _rank, gi, expected, exp_var in \
             iter_cells(sc, by_display=False):
         t, n_resp = key[0], int(n_resp_f)
         meta = panel.task_meta.get(t, {})
@@ -676,9 +800,13 @@ def print_share_table(sc: ShareCounts, top: int) -> None:
             if chosen[hi] == 0 or shown >= top:
                 break
             f = panel.features[gi, hi]
-            print(f"   {100.0 * share[hi]:5.1f}%  "
+            lo, hi_ = wilson_interval(float(chosen[hi]), float(exposed[hi]))
+            sd = float(np.sqrt(exp_var[hi]))
+            z = (chosen[hi] - expected[hi]) / sd if sd > 0 else float("nan")
+            print(f"   {100.0 * share[hi]:5.1f}% [{100 * lo:4.1f}-{100 * hi_:4.1f}]  "
                   f"{int(chosen[hi]):>3}/{int(exposed[hi]):<3}  "
-                  f"{panel.names[panel.hotels[hi]][:34]:34s} "
+                  f"{panel.names[panel.hotels[hi]][:30]:30s} "
+                  f"pos-expected {100.0 * expected[hi] / max(n_resp, 1):5.1f}%  z={z:+5.1f}  "
                   + " ".join(f"{d[:3]}={v:.2f}" for d, v in zip(DIMS, f)))
             shown += 1
         picked = int((chosen > 0).sum())
@@ -721,7 +849,15 @@ def main() -> int:
                     choices=["per_question", "pooled", "correlation"],
                     help="which vector is reported as THE estimate and printed "
                          "by --emit-profile")
-    ap.add_argument("--emit-profile", action="store_true")
+    ap.add_argument("--position-spec", type=PositionSpec.parse, default=DEFAULT_POSITION,
+                    help="dummies:K (default dummies:3), topk:K, neglog (reproduces "
+                         "the 2026-09-07 share weights), none")
+    ap.add_argument("--gates", action="store_true",
+                    help="run the acceptance gates on the shipped estimator")
+    ap.add_argument("--placebo-reps", type=int, default=200)
+    ap.add_argument("--emit-profile", action="store_true",
+                    help="print a ScoringWeights profile (refused unless --gates passed)")
+    ap.add_argument("--allow-ungated", action="store_true")
     ap.add_argument("--check-equivalence", action="store_true",
                     help="refit the individual-level logit and report the gap")
     args = ap.parse_args()
@@ -735,7 +871,8 @@ def main() -> int:
     failed = failed_attention(responses)
 
     panel = build_panel(responses, material, facility, args.pool_size,
-                        args.grain, args.drop_failed_attention, failed)
+                        args.grain, args.drop_failed_attention, failed,
+                        position=args.position_spec)
     sc = panel.counts()
     never = int(((sc.n_chosen.sum(axis=0) == 0)
                  & (sc.n_exposed.sum(axis=0) > 0)).sum())
@@ -750,6 +887,8 @@ def main() -> int:
     print(f"responses     : {len(panel.chosen)} from "
           f"{len(np.unique(panel.participants))} participants")
     print(f"facility def  : {args.facility_def}")
+    print(f"position      : {args.position_spec.label()}  "
+          f"(terms: {', '.join(panel.pos_names) or 'none'})")
     print(f"share rows    : {int(sc.mask.sum())}   "
           f"(hotels never chosen anywhere: {never} of {panel.n_hotels})")
     if panel.grain == "question":
@@ -835,8 +974,9 @@ def main() -> int:
     b_pooled = fit_grouped(sc, l2=l2)
     w_pooled = to_simplex(b_pooled)
     print(f"  pooled over all rows           {fmt(w_pooled)}")
-    print(f"  position coefficient           {b_pooled[5]:+.3f}   "
-          f"(fitted, then discarded)")
+    print("  position terms                 "
+          + "  ".join(f"{nm}={v:+.3f}" for nm, v in zip(panel.pos_names, b_pooled[5:]))
+          + "   (fitted, then discarded)")
 
     b_nopos = fit_grouped(sc, use_position=False, l2=l2)
     print(f"  pooled, no position control    {fmt(to_simplex(b_nopos))}   "
@@ -894,7 +1034,8 @@ def main() -> int:
     # ---- the sufficiency claim, checked rather than asserted ---------------- #
     equiv = None
     if args.check_equivalence:
-        b_ind = fit_mnl(cs, use_position=True, non_negative=True, l2=l2)
+        b_ind = fit_mnl(apply_position_spec(cs, args.position_spec),
+                        use_position=True, non_negative=True, l2=l2)
         w_ind = to_simplex(b_ind)
         gap = float(np.max(np.abs(w_ind - w_pooled)))
         equiv = {"individual_level": {d: float(v) for d, v in zip(DIMS, w_ind)},
@@ -908,6 +1049,38 @@ def main() -> int:
         print(f"  max abs difference: {gap:.2e}"
               + ("   OK" if gap < 5e-3 else "   <- LARGER THAN EXPECTED"))
 
+    # ---- concentration per question (A3) ----------------------------------- #
+    question_summary: Dict[str, dict] = {}
+    for key, n_resp_f, exposed, chosen, share_c, *_rest in iter_cells(sc, by_display=False):
+        sh = chosen / max(n_resp_f, 1.0)
+        hhi = float((sh ** 2).sum())
+        question_summary[key[0]] = {
+            "n_respondents": int(n_resp_f),
+            "hotels_chosen_at_least_once": int((chosen > 0).sum()),
+            "hotels_shown_never_chosen": int(((chosen == 0) & (exposed > 0)).sum()),
+            "herfindahl": round(hhi, 4),
+            "effective_number_of_hotels": round(1.0 / hhi, 2) if hhi > 0 else None,
+            "top_share": round(float(share_c.max()), 4),
+        }
+
+    # ---- acceptance gates --------------------------------------------------- #
+    gate_report = None
+    if args.gates:
+        from weight_elicitation.choice_model import choice_data_from_choice_sets
+        from weight_elicitation.gates import GateConfig, evaluate_gates, format_report
+        est_name = {"per_question": "per_task_macro", "pooled": "pooled_nonneg"}.get(args.shipped)
+        if est_name is None:
+            print("\n(gates skipped: the correlation estimator is not a choice model)")
+        else:
+            gate_report = evaluate_gates(
+                choice_data_from_choice_sets(cs), est_name, estimator_kwargs={"l2": l2},
+                spec=args.position_spec,
+                config=GateConfig(placebo_reps=args.placebo_reps, seed=args.seed),
+                name=f"fit_share_weights {args.shipped} ({est_name}, l2={l2:g})",
+                progress=lambda m: print(f"  running {m}"))
+            print("\n" + format_report(gate_report))
+    shippable = bool(gate_report and gate_report["shippable"])
+
     # ---- persist ------------------------------------------------------------ #
     n_rows = write_rows_csv(sc, args.csv, material, by_display=False)
     n_disp = (write_rows_csv(sc, args.csv_display, material, by_display=True)
@@ -916,8 +1089,18 @@ def main() -> int:
         "source_dump": dump.name,
         "material_version": version,
         "estimator": ("grouped (aggregate) conditional logit on per-question "
-                      "selection shares, mean log-rank nuisance, non-negative, "
-                      f"macro-averaged over questions; grain={panel.grain}"),
+                      f"selection shares, {args.position_spec.label()} position terms, "
+                      f"non-negative, macro-averaged over questions; grain={panel.grain}"),
+        "position_spec": args.position_spec.label(),
+        "position_terms": panel.pos_names,
+        "shippable": shippable,
+        "shippable_note": ("passed every acceptance gate" if shippable else
+                           "NOT SHIPPABLE: " + ("failed the acceptance gates"
+                                                if gate_report else
+                                                "acceptance gates not run (--gates)")
+                           + ". Report the shares; do not deploy these weights."),
+        "gates": gate_report if gate_report else "not run (use --gates)",
+        "question_summary": question_summary,
         "grain": panel.grain,
         "seed": args.seed,
         "l2": float(l2),
@@ -942,26 +1125,31 @@ def main() -> int:
             zip(DIMS, [round(float(x), 4) for x in to_simplex(b_nopos)])),
         "weights_from_correlation": dict(
             zip(DIMS, [round(float(x), 4) for x in w_corr])),
-        "position_coefficient": float(b_pooled[5]),
+        "position_coefficients": dict(zip(panel.pos_names, map(float, b_pooled[5:]))),
         "correlations_per_question": per_q,
         "correlations_pooled": pooled,
         "bootstrap_ci_95": ci,
         "fit_quality": fitq,
         "equivalence_check": equiv,
-        "shares_csv": str(args.csv.relative_to(REPO)),
-        "shares_by_display_csv": (str(args.csv_display.relative_to(REPO))
+        "shares_csv": _rel(args.csv),
+        "shares_by_display_csv": (_rel(args.csv_display)
                                   if n_disp else None),
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(f"\nwrote {args.csv.relative_to(REPO)}  ({n_rows} rows, "
+    print(f"\nwrote {_rel(args.csv)}  ({n_rows} rows, "
           f"one per question x hotel)")
     if n_disp:
-        print(f"wrote {args.csv_display.relative_to(REPO)}  ({n_disp} rows, "
+        print(f"wrote {_rel(args.csv_display)}  ({n_disp} rows, "
               f"split by sort mode)")
-    print(f"wrote {args.out.relative_to(REPO)}")
+    print(f"wrote {_rel(args.out)}")
 
     if args.emit_profile:
+        if not shippable and not args.allow_ungated:
+            raise SystemExit("\nREFUSING --emit-profile: share weights have not passed "
+                             "the acceptance gates (see shippable_note in the artifact).")
+        if not shippable:
+            print("\n# UNGATED - failed or skipped the acceptance gates; do not ship")
         print("\n# paste into src/graph/retriever.py")
         print("SHARE_WEIGHTS = ScoringWeights(")
         print("    " + ", ".join(f"{d}={v:.3f}" for d, v in zip(DIMS, shipped)) + ",")

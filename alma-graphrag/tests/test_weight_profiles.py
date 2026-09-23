@@ -1,11 +1,8 @@
 """Tests for the named composite-weight profiles.
 
-`handset` is the original hand-tuned prior; `elicited` and `blended` come from
-the discrete-choice study in studies/weight-elicitation; `balanced` re-weights
-price and quality back to booking-stage literature values, because the study
-measured consideration-stage behaviour and cannot identify them. The profiles are
-selectable at runtime (SCORING_WEIGHTS_PROFILE) and per-retriever, so the
-evaluation harness can score them head-to-head on identical gold.
+`handset` is the sole deployable prior until a captured human-choice artifact
+passes every acceptance gate. `elicited`, `blended`, and `balanced` are retained
+as historical research vectors, not runtime-selectable profiles.
 
 These tests run offline — no Neo4j, no pgvector.
 """
@@ -20,6 +17,7 @@ from src.graph.retriever import (
     BLENDED_WEIGHTS,
     ELICITED_WEIGHTS,
     HANDSET_WEIGHTS,
+    HISTORICAL_WEIGHT_PROFILES,
     WEIGHT_PROFILES,
     ScoringWeights,
     WeightedRetriever,
@@ -27,8 +25,10 @@ from src.graph.retriever import (
     weights_for_intent,
     weights_for_profile,
 )
+from evaluation.harness import _StaticWeightModel
 
-ALL_PROFILES = ["handset", "elicited", "blended", "balanced", "human"]
+ALL_PROFILES = ["handset"]
+HISTORICAL_PROFILES = ["elicited", "blended", "balanced"]
 
 
 def _total(w: ScoringWeights) -> float:
@@ -39,8 +39,9 @@ def _total(w: ScoringWeights) -> float:
 # The profile table
 # ---------------------------------------------------------------------------
 
-def test_registry_holds_exactly_the_documented_profiles():
+def test_registry_holds_only_deployable_profiles():
     assert set(WEIGHT_PROFILES) == set(ALL_PROFILES)
+    assert set(HISTORICAL_WEIGHT_PROFILES) == set(HISTORICAL_PROFILES)
 
 
 @pytest.mark.parametrize("name", ALL_PROFILES)
@@ -94,7 +95,7 @@ def test_blended_is_the_equal_mixture_of_elicited_and_the_prior():
 
 
 def test_blended_keeps_every_component_usable():
-    """The reason `blended` is the deployable profile.
+    """The historical blended vector has non-zero components.
 
     A retriever scoring with economic = 0 cannot answer "cheapest hotel near
     Galle Face", and one with disruption = 0 discards the thesis's contribution.
@@ -134,42 +135,39 @@ def test_balanced_gives_price_a_literature_sized_share():
     assert BALANCED_WEIGHTS.economic > 3 * BLENDED_WEIGHTS.economic
 
 
-def test_human_profile_matches_its_artifact():
-    """`human` is fitted from the study alone; keep code and artifact in step.
+def test_current_human_fit_is_not_selectable_after_failing_acceptance_gates():
+    """Wave 1 is position-biased, so its calculated weights cannot reach serving."""
+    assert HUMAN_WEIGHTS is None
+    assert "human" not in WEIGHT_PROFILES
 
-    Regenerate with:
-        python -m weight_elicitation.fit_human_weights --emit-profile
-    """
+
+def test_load_human_weights_accepts_a_passing_captured_data_artifact(tmp_path):
     import json
-    from pathlib import Path
-    art = (Path(__file__).resolve().parents[1] / "weight_elicitation" / "out"
-           / "human_weights.json")
-    if not art.exists():
-        pytest.skip("human_weights.json not present")
-    for dim, v in json.loads(art.read_text(encoding="utf-8"))["weights"].items():
-        assert getattr(HUMAN_WEIGHTS, dim) == pytest.approx(v, abs=5e-4)
+    from src.graph.retriever import load_human_weights
 
+    artifact = tmp_path / "human_weights.json"
+    artifact.write_text(json.dumps({
+        "shippable": True,
+        "weights": {
+            "spatial": 0.25,
+            "accessibility": 0.20,
+            "facility": 0.25,
+            "economic": 0.15,
+            "disruption": 0.15,
+        },
+    }), encoding="utf-8")
 
-def test_human_profile_gives_price_a_nonzero_weight():
-    """The point of the stratified estimator.
-
-    Pooling every display condition into one logit reports economic = 0.000 with
-    a CI spanning zero. Estimating per display condition and macro-averaging
-    recovers 0.120, CI [0.049, 0.256], excluding zero.
-    """
-    assert HUMAN_WEIGHTS.economic > 0.05
-    assert HUMAN_WEIGHTS.economic > ELICITED_WEIGHTS.economic
-
-
-def test_human_profile_location_total_below_the_pooled_fit():
-    """Removing the proximity-sorted majority's vote lowers location mass."""
-    human_loc = HUMAN_WEIGHTS.spatial + HUMAN_WEIGHTS.accessibility
-    elicited_loc = ELICITED_WEIGHTS.spatial + ELICITED_WEIGHTS.accessibility
-    assert human_loc < elicited_loc
+    assert load_human_weights(artifact).to_dict() == {
+        "spatial": 0.25,
+        "accessibility": 0.20,
+        "facility": 0.25,
+        "economic": 0.15,
+        "disruption": 0.15,
+    }
 
 
 def test_balanced_matches_the_fitted_artifact():
-    """The shipped vector must equal what the fitter last produced.
+    """The historical vector must equal what the fitter last produced.
 
     `balanced` is no longer hand-picked: scripts/fit_weight_profile.py learns it
     and writes evaluation/fitted_weights.json. If someone edits the constant by
@@ -237,7 +235,7 @@ def test_base_weights_returns_the_named_profile(name):
 
 
 def test_base_weights_is_case_insensitive():
-    assert base_weights("ELICITED").to_dict() == ELICITED_WEIGHTS.to_dict()
+    assert base_weights("HANDSET").to_dict() == HANDSET_WEIGHTS.to_dict()
 
 
 def test_unknown_profile_falls_back_to_handset_without_raising():
@@ -278,22 +276,14 @@ def test_cheapest_intent_raises_economic_on_every_profile(name):
     assert cheap.economic > base.economic
 
 
-def test_elicited_recovers_a_price_signal_on_cheapest_queries():
-    """Base economic is 0.0, but the +0.20 intent bump must still bite.
-
-    Without this the elicited profile would be permanently price-blind, which
-    would make "cheapest hotel" unanswerable.
-    """
-    w = weights_for_intent(QueryIntent(sort_intent="cheapest"), "elicited")
-    assert w.economic > 0.10
+def test_historical_profiles_cannot_be_selected_at_runtime():
+    for name in HISTORICAL_PROFILES:
+        assert base_weights(name).to_dict() == HANDSET_WEIGHTS.to_dict()
 
 
-def test_profiles_produce_different_rankings_signal():
-    intent = QueryIntent()
-    vecs = {name: weights_for_intent(intent, name).to_dict() for name in ALL_PROFILES}
-    assert vecs["handset"] != vecs["elicited"]
-    assert vecs["blended"] != vecs["elicited"]
-    assert vecs["blended"] != vecs["handset"]
+def test_historical_vectors_are_available_only_to_the_counterfactual_model():
+    weights = _StaticWeightModel(ELICITED_WEIGHTS).predict(QueryIntent(sort_intent="cheapest"), [])
+    assert weights.economic > ELICITED_WEIGHTS.economic
 
 
 def test_user_profile_still_overrides_the_weight_profile():
@@ -306,11 +296,9 @@ def test_user_profile_still_overrides_the_weight_profile():
 
 def test_weight_profile_used_when_no_user_profile_supplied():
     w = weights_for_profile(None, QueryIntent(), event_active=False,
-                            weight_profile="elicited")
-    # Compare against the profile itself rather than a literal, so a refit of
-    # the study data does not have to be mirrored by hand in this assertion.
-    assert w.facility == pytest.approx(ELICITED_WEIGHTS.facility)
-    assert w.accessibility == pytest.approx(ELICITED_WEIGHTS.accessibility)
+                            weight_profile="handset")
+    assert w.facility == pytest.approx(HANDSET_WEIGHTS.facility)
+    assert w.accessibility == pytest.approx(HANDSET_WEIGHTS.accessibility)
     assert _total(w) == pytest.approx(1.0)
 
 
@@ -320,14 +308,13 @@ def test_weight_profile_used_when_no_user_profile_supplied():
 
 def test_retriever_records_its_profile():
     assert WeightedRetriever().weight_profile is None
-    assert WeightedRetriever(weight_profile="blended").weight_profile == "blended"
+    assert WeightedRetriever(weight_profile="handset").weight_profile == "handset"
 
 
 def test_baseline_names_distinguish_profiles():
     """Distinct names keep the systems as separate rows in results.json."""
     assert WeightedGraphBaseline().name == "WeightedGraphRAG"
-    assert WeightedGraphBaseline("elicited").name == "WeightedGraphRAG[elicited]"
-    assert WeightedGraphBaseline("blended").name == "WeightedGraphRAG[blended]"
+    assert WeightedGraphBaseline("handset").name == "WeightedGraphRAG[handset]"
 
 
 def test_all_baselines_adds_one_row_per_requested_profile(monkeypatch):
@@ -349,3 +336,11 @@ def test_all_baselines_names_are_unique(monkeypatch):
     monkeypatch.setattr(bl.vs, "is_available", lambda *a, **k: False)
     names = [b.name for b in all_baselines(ALL_PROFILES)]
     assert len(names) == len(set(names))
+
+
+def test_all_baselines_skips_unavailable_profiles(monkeypatch):
+    import evaluation.baselines as bl
+    monkeypatch.setattr(bl.vs, "is_available", lambda *a, **k: False)
+    names = [b.name for b in all_baselines(["elicited", "human"])]
+    assert "WeightedGraphRAG[elicited]" not in names
+    assert "WeightedGraphRAG[human]" not in names

@@ -297,6 +297,21 @@ def test_isolated_hotel_falls_back_to_own_exposure():
     assert scored.raw["diffusion"]["self_weight"] == pytest.approx(1.0)
 
 
+def test_diffusion_fills_missing_evidence_without_diluting_local_signal():
+    r = WeightedRetriever(self_weight=0.5)
+    local_only = hotel("local", signal_severities=["heavy"], signal_etas=[15.0])
+    local_with_calm_neighbours = hotel(
+        "local-neighbours", signal_severities=["heavy"], signal_etas=[15.0],
+        nbr_count=6, nbr_eta=0.0, nbr_severity=0.0,
+    )
+    scored = {h.id: h for h in r._score(
+        [local_only, local_with_calm_neighbours], QueryIntent(), EQUAL_WEIGHTS
+    )}
+    assert (scored["local-neighbours"].components["disruption"]
+            == pytest.approx(scored["local"].components["disruption"]))
+    assert scored["local-neighbours"].raw["diffusion"]["self_weight"] == pytest.approx(1.0)
+
+
 def test_own_heavy_traffic_lowers_disruption_score():
     r = WeightedRetriever()
     clean = hotel("clean")

@@ -1,0 +1,299 @@
+{
+  "note": "frozen query intents; delete to re-parse",
+  "intents": {
+    "Colombo::cheaper hotels in colombo": {
+      "city": "colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "cheaper",
+        "colombo"
+      ]
+    },
+    "Colombo::good value stays in colombo": {
+      "city": "colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "value",
+        "stays",
+        "colombo"
+      ]
+    },
+    "Colombo::the most affordable places to stay": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "most",
+        "affordable",
+        "places",
+        "stay"
+      ]
+    },
+    "Colombo::budget friendly hotels near the city centre": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [
+        "city centre"
+      ],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "close",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "budget",
+        "friendly",
+        "city",
+        "centre"
+      ]
+    },
+    "Colombo::cheapest rooms i can book tonight": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "cheapest",
+        "rooms",
+        "can",
+        "book",
+        "tonight"
+      ]
+    },
+    "Colombo::economical hotels that are still well rated": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": 4.0,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "economical",
+        "still",
+        "well",
+        "rated"
+      ]
+    },
+    "Colombo::cheap hotels that are still highly rated": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": 4.0,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "highest_rated",
+      "price_preference": "low",
+      "raw_keywords": [
+        "cheap",
+        "still",
+        "highly",
+        "rated"
+      ]
+    },
+    "Colombo::save money on a colombo stay": {
+      "city": "colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "save",
+        "money",
+        "colombo",
+        "stay"
+      ]
+    },
+    "Colombo::low cost hotels with quick access to the centre": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "close",
+      "accessibility_priority": "high",
+      "avoid_traffic": true,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "low",
+        "cost",
+        "quick",
+        "access",
+        "centre"
+      ]
+    },
+    "Colombo::wallet friendly accommodation in colombo": {
+      "city": "colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "cheapest",
+      "price_preference": "low",
+      "raw_keywords": [
+        "wallet",
+        "friendly",
+        "accommodation",
+        "colombo"
+      ]
+    },
+    "Colombo::upmarket hotels in colombo": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [
+        "market"
+      ],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "best_overall",
+      "price_preference": "high",
+      "raw_keywords": [
+        "upmarket",
+        "colombo"
+      ]
+    },
+    "Colombo::luxury stays worth splurging on": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": null,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "highest_rated",
+      "price_preference": "high",
+      "raw_keywords": [
+        "luxury",
+        "stays",
+        "worth",
+        "splurging"
+      ]
+    },
+    "Colombo::high end hotels with excellent ratings": {
+      "city": "Colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": 4.5,
+      "min_star": 4,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "highest_rated",
+      "price_preference": "high",
+      "raw_keywords": [
+        "high",
+        "end",
+        "excellent",
+        "ratings"
+      ]
+    },
+    "Colombo::premium accommodation in colombo": {
+      "city": "colombo",
+      "required_amenities": [],
+      "near_attractions": [],
+      "max_price_lkr": null,
+      "min_price_lkr": null,
+      "min_rating": null,
+      "min_star": 4,
+      "board_preference": null,
+      "proximity_preference": "any",
+      "accessibility_priority": "normal",
+      "avoid_traffic": false,
+      "sort_intent": "best_overall",
+      "price_preference": "high",
+      "raw_keywords": [
+        "premium",
+        "accommodation",
+        "colombo"
+      ]
+    }
+  }
+}
