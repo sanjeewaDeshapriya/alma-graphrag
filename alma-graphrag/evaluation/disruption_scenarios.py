@@ -76,7 +76,7 @@ DEFAULT_INTENTS = ROOT / "evaluation" / "intents_disruption.json"
 DEFAULT_OUT = ROOT / "evaluation" / "results_disruption.json"
 
 SCENARIO_PREFIX = "scenario"
-REFERENCE = "WeightedGraphRAG"
+REFERENCE = "WeightedGraphRAG"   # reset by main() to the scoring mode's system name
 
 # Event impact at the centre by announced severity; decays linearly with distance.
 EVENT_SEVERITY_SCALE = {"high": 1.0, "medium": 0.6, "low": 0.3}
@@ -353,7 +353,8 @@ class GraphInjector:
 # Evaluation
 # ---------------------------------------------------------------------------
 
-def build_systems() -> List[Any]:
+def build_systems(mode: str = "weighted") -> List[Any]:
+    from evaluation import robustness
     from evaluation.baselines import (
         FilterBaseline, HybridBaseline, KeywordBaseline, PopularityBaseline,
         RandomBaseline, SemanticBaseline, WeightedGraphBaseline,
@@ -361,13 +362,17 @@ def build_systems() -> List[Any]:
     from evaluation.robustness import DropComponent
     from src.search import vector_store as vs
 
+    robustness._MODE = mode          # DropComponent reads it (uniform vs ladder)
+    prefix = "WeightedGraphRAG" if mode == "weighted" else "GraphRAG[unweighted]"
+
     systems: List[Any] = [RandomBaseline(), PopularityBaseline(), FilterBaseline()]
     if vs.is_available():
         systems += [KeywordBaseline(), SemanticBaseline(), HybridBaseline()]
-    full = WeightedGraphBaseline(label=REFERENCE)
-    no_dis = WeightedGraphBaseline(label="WeightedGraphRAG[w/o disruption]")
+    full = WeightedGraphBaseline(label=REFERENCE, scoring_mode=mode)
+    no_dis = WeightedGraphBaseline(label=f"{prefix}[w/o disruption]", scoring_mode=mode)
     no_dis._retriever.weight_model = DropComponent("disruption")
-    no_diff = WeightedGraphBaseline(label="WeightedGraphRAG[w/o diffusion]", self_weight=1.0)
+    no_diff = WeightedGraphBaseline(label=f"{prefix}[w/o diffusion]", self_weight=1.0,
+                                    scoring_mode=mode)
     return systems + [full, no_dis, no_diff]
 
 
@@ -537,9 +542,20 @@ def main() -> None:
     ap.add_argument("--grid-radius", type=float, default=1.0)
     ap.add_argument("--grid-peak", type=float, default=15.0)
     ap.add_argument("--cleanup", action="store_true", help="remove every scenario-tagged node and exit")
+    ap.add_argument("--scoring-mode", default=None, choices=["weighted", "unweighted"],
+                    help="defaults to the SCORING_MODE env var (weighted)")
     args = ap.parse_args()
+    from evaluation.baselines import graph_system_name
+    from src.graph.retriever import resolve_scoring_mode
+    global REFERENCE
+    mode = resolve_scoring_mode(args.scoring_mode)
+    REFERENCE = graph_system_name(mode)
+    suffix = "" if mode == "weighted" else "_unweighted"
     if args.grid and args.out == DEFAULT_OUT:
-        args.out = ROOT / "evaluation" / "results_disruption_grid.json"
+        args.out = ROOT / "evaluation" / f"results_disruption_grid{suffix}.json"
+    elif args.out == DEFAULT_OUT and suffix:
+        args.out = ROOT / "evaluation" / f"results_disruption{suffix}.json"
+    print(f"scoring mode: {mode} (reference {REFERENCE})")
     logging.basicConfig(level=logging.ERROR)
 
     injector = GraphInjector()
@@ -563,13 +579,14 @@ def main() -> None:
     intents = resolve_intents(queries, city, args.intent_cache)
     avoid = sum(1 for i in intents.values() if getattr(i, "avoid_traffic", False))
 
-    systems = build_systems()
+    systems = build_systems(mode)
     levels: List[Optional[float]] = (
         [float(x) for x in args.coverage.split(",") if x.strip()] or [None]
     )
 
     out: Dict[str, Any] = {
         "generated": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "scoring_mode": mode, "reference": REFERENCE,
         "city": city, "k": k,
         "queryset": str(args.queryset.relative_to(ROOT)),
         "n_queries": len(queries),
@@ -604,7 +621,7 @@ def main() -> None:
     if injector.leftovers():
         raise RuntimeError("scenario nodes remain in the graph after the run")
     args.out.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    print(f"\nwrote {args.out.relative_to(ROOT)} (graph clean: 0 scenario nodes)")
+    print(f"\nwrote {args.out.resolve()} (graph clean: 0 scenario nodes)")
 
 
 if __name__ == "__main__":

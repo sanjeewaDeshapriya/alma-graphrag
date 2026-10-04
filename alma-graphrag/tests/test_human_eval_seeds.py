@@ -44,9 +44,10 @@ def study():
 def test_one_split_reports_every_ranker_and_the_fitted_vector(study):
     out = one_split(study, seed=0, holdout=0.3, k=3, min_votes=1)
     rankers = set(out) - {"fitted_weights"}
-    assert {"handset", "fitted-on-train"} <= rankers
+    # `unweighted` is graph-only GraphRAG (equal weights), always reported.
+    assert {"handset", "fitted-on-train", "unweighted"} <= rankers
     # `human` joins whenever the study fit is loadable, gated out or not.
-    assert rankers <= {"handset", "fitted-on-train", "human"}
+    assert rankers <= {"handset", "fitted-on-train", "human", "unweighted"}
     for name in rankers:
         assert 0.0 <= out[name]["choice_ndcg"] <= 1.0
         assert out[name]["mean_rank"] >= 1.0

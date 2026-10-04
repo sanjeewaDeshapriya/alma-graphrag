@@ -1,0 +1,530 @@
+{
+  "generated": "2026-09-25T05:08:58",
+  "scoring_mode": "unweighted",
+  "sets": {
+    "main": {
+      "n_queries": 60,
+      "pool": 77,
+      "ablation": {
+        "rows": [
+          {
+            "system": "Full",
+            "ndcg": 0.7672
+          },
+          {
+            "system": "w/o spatial",
+            "ndcg": 0.72,
+            "delta": -0.0472,
+            "ci_low": -0.0685,
+            "ci_high": -0.0267,
+            "p_holm": 0.0014,
+            "significant": true
+          },
+          {
+            "system": "w/o accessibility",
+            "ndcg": 0.7156,
+            "delta": -0.0516,
+            "ci_low": -0.0729,
+            "ci_high": -0.0307,
+            "p_holm": 0.0002,
+            "significant": true
+          },
+          {
+            "system": "w/o facility",
+            "ndcg": 0.7358,
+            "delta": -0.0315,
+            "ci_low": -0.0556,
+            "ci_high": -0.0111,
+            "p_holm": 0.0642,
+            "significant": false
+          },
+          {
+            "system": "w/o economic",
+            "ndcg": 0.8559,
+            "delta": 0.0887,
+            "ci_low": 0.0511,
+            "ci_high": 0.1281,
+            "p_holm": 0.0004,
+            "significant": true
+          },
+          {
+            "system": "w/o disruption",
+            "ndcg": 0.7592,
+            "delta": -0.008,
+            "ci_low": -0.014,
+            "ci_high": -0.0027,
+            "p_holm": 0.1992,
+            "significant": false
+          },
+          {
+            "system": "w/o feasibility filter",
+            "ndcg": 0.4944,
+            "delta": -0.2729,
+            "ci_low": -0.3615,
+            "ci_high": -0.1904,
+            "p_holm": 0.0,
+            "significant": true
+          },
+          {
+            "system": "w/o neighbourhood diffusion",
+            "ndcg": 0.7672,
+            "delta": -0.0,
+            "ci_low": -0.0,
+            "ci_high": -0.0,
+            "p_holm": 1.0,
+            "significant": false
+          },
+          {
+            "system": "only spatial",
+            "ndcg": 0.7413,
+            "delta": -0.0259,
+            "ci_low": -0.0699,
+            "ci_high": 0.0142,
+            "p_holm": 1.0,
+            "significant": false
+          },
+          {
+            "system": "only accessibility",
+            "ndcg": 0.8842,
+            "delta": 0.117,
+            "ci_low": 0.0454,
+            "ci_high": 0.1904,
+            "p_holm": 0.1003,
+            "significant": false
+          },
+          {
+            "system": "only facility",
+            "ndcg": 0.6501,
+            "delta": -0.1171,
+            "ci_low": -0.1823,
+            "ci_high": -0.0503,
+            "p_holm": 0.0065,
+            "significant": true
+          },
+          {
+            "system": "only economic",
+            "ndcg": 0.6082,
+            "delta": -0.159,
+            "ci_low": -0.2062,
+            "ci_high": -0.1124,
+            "p_holm": 0.0,
+            "significant": true
+          },
+          {
+            "system": "only disruption",
+            "ndcg": 0.6668,
+            "delta": -0.1005,
+            "ci_low": -0.1463,
+            "ci_high": -0.0568,
+            "p_holm": 0.0006,
+            "significant": true
+          },
+          {
+            "system": "Filter",
+            "ndcg": 0.5011,
+            "delta": -0.2661,
+            "ci_low": -0.3459,
+            "ci_high": -0.1884,
+            "p_holm": 0.0,
+            "significant": true
+          }
+        ],
+        "by_category": {
+          "multi_dimensional": {
+            "Full": 0.9001,
+            "w/o spatial": 0.8597,
+            "w/o accessibility": 0.8383,
+            "w/o facility": 0.8976,
+            "w/o economic": 0.93,
+            "w/o disruption": 0.8796,
+            "w/o feasibility filter": 0.5764,
+            "w/o neighbourhood diffusion": 0.9001,
+            "only spatial": 0.8977,
+            "only accessibility": 0.9361,
+            "only facility": 0.7805,
+            "only economic": 0.7783,
+            "only disruption": 0.8615,
+            "Filter": 0.7185
+          },
+          "quality": {
+            "Full": 0.9583,
+            "w/o spatial": 0.9583,
+            "w/o accessibility": 0.9583,
+            "w/o facility": 0.9583,
+            "w/o economic": 0.9583,
+            "w/o disruption": 0.9583,
+            "w/o feasibility filter": 0.0753,
+            "w/o neighbourhood diffusion": 0.9583,
+            "only spatial": 0.9583,
+            "only accessibility": 0.9583,
+            "only facility": 0.9583,
+            "only economic": 0.9583,
+            "only disruption": 0.9583,
+            "Filter": 0.9583
+          },
+          "amenity": {
+            "Full": 0.7858,
+            "w/o spatial": 0.8299,
+            "w/o accessibility": 0.8231,
+            "w/o facility": 0.6301,
+            "w/o economic": 0.7423,
+            "w/o disruption": 0.7858,
+            "w/o feasibility filter": 0.6826,
+            "w/o neighbourhood diffusion": 0.7858,
+            "only spatial": 0.534,
+            "only accessibility": 0.581,
+            "only facility": 1.0,
+            "only economic": 0.6835,
+            "only disruption": 0.5693,
+            "Filter": 0.5
+          },
+          "economic": {
+            "Full": 0.8297,
+            "w/o spatial": 0.8297,
+            "w/o accessibility": 0.8297,
+            "w/o facility": 0.8297,
+            "w/o economic": 0.8297,
+            "w/o disruption": 0.8297,
+            "w/o feasibility filter": 0.5025,
+            "w/o neighbourhood diffusion": 0.8297,
+            "only spatial": 0.8297,
+            "only accessibility": 0.8297,
+            "only facility": 0.8297,
+            "only economic": 0.8297,
+            "only disruption": 0.8297,
+            "Filter": 0.8297
+          },
+          "accessibility": {
+            "Full": 0.405,
+            "w/o spatial": 0.2311,
+            "w/o accessibility": 0.27,
+            "w/o facility": 0.3902,
+            "w/o economic": 0.7584,
+            "w/o disruption": 0.3953,
+            "w/o feasibility filter": 0.405,
+            "w/o neighbourhood diffusion": 0.405,
+            "only spatial": 0.5394,
+            "only accessibility": 1.0,
+            "only facility": 0.1042,
+            "only economic": 0.0908,
+            "only disruption": 0.3527,
+            "Filter": 0.0
+          },
+          "disruption": {
+            "Full": 0.7243,
+            "w/o spatial": 0.6114,
+            "w/o accessibility": 0.574,
+            "w/o facility": 0.7087,
+            "w/o economic": 0.9169,
+            "w/o disruption": 0.7067,
+            "w/o feasibility filter": 0.7243,
+            "w/o neighbourhood diffusion": 0.7243,
+            "only spatial": 0.689,
+            "only accessibility": 1.0,
+            "only facility": 0.2279,
+            "only economic": 0.3083,
+            "only disruption": 0.4289,
+            "Filter": 0.0
+          }
+        }
+      },
+      "simplex": {
+        "skipped": "unweighted mode uses no weight vector"
+      },
+      "latency": {
+        "Random": {
+          "n": 300,
+          "median_ms": 11.36,
+          "p95_ms": 14.32,
+          "mean_ms": 11.71
+        },
+        "Popularity": {
+          "n": 300,
+          "median_ms": 12.74,
+          "p95_ms": 18.34,
+          "mean_ms": 13.55
+        },
+        "Filter": {
+          "n": 300,
+          "median_ms": 11.33,
+          "p95_ms": 12.36,
+          "mean_ms": 11.46
+        },
+        "Keyword": {
+          "n": 300,
+          "median_ms": 3.02,
+          "p95_ms": 3.83,
+          "mean_ms": 2.96
+        },
+        "SemanticVec": {
+          "n": 300,
+          "median_ms": 5.56,
+          "p95_ms": 6.62,
+          "mean_ms": 5.48
+        },
+        "Hybrid": {
+          "n": 300,
+          "median_ms": 9.38,
+          "p95_ms": 17.61,
+          "mean_ms": 10.36
+        },
+        "CrossEncoder": {
+          "n": 300,
+          "median_ms": 789.35,
+          "p95_ms": 1165.66,
+          "mean_ms": 840.35
+        },
+        "LTR": {
+          "n": 300,
+          "median_ms": 29.14,
+          "p95_ms": 33.7,
+          "mean_ms": 29.5
+        },
+        "LTR[doc-only]": {
+          "n": 300,
+          "median_ms": 29.0,
+          "p95_ms": 43.38,
+          "mean_ms": 31.58
+        },
+        "GraphRAG[unweighted] (cached pool)": {
+          "n": 300,
+          "median_ms": 3.45,
+          "p95_ms": 14.08,
+          "mean_ms": 5.61
+        },
+        "GraphRAG[unweighted] (graph round trip)": {
+          "n": 300,
+          "median_ms": 88.07,
+          "p95_ms": 159.04,
+          "mean_ms": 94.99
+        }
+      }
+    },
+    "price": {
+      "n_queries": 20,
+      "pool": 77,
+      "ablation": {
+        "rows": [
+          {
+            "system": "Full",
+            "ndcg": 0.7818
+          },
+          {
+            "system": "w/o spatial",
+            "ndcg": 0.8429,
+            "delta": 0.0611,
+            "ci_low": 0.0484,
+            "ci_high": 0.072,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "w/o accessibility",
+            "ndcg": 0.8709,
+            "delta": 0.0891,
+            "ci_low": 0.0691,
+            "ci_high": 0.1092,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "w/o facility",
+            "ndcg": 0.7626,
+            "delta": -0.0192,
+            "ci_low": -0.0348,
+            "ci_high": -0.0043,
+            "p_holm": 0.5619,
+            "significant": false
+          },
+          {
+            "system": "w/o economic",
+            "ndcg": 0.3777,
+            "delta": -0.4041,
+            "ci_low": -0.4791,
+            "ci_high": -0.3229,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "w/o disruption",
+            "ndcg": 0.7894,
+            "delta": 0.0076,
+            "ci_low": -0.0013,
+            "ci_high": 0.0187,
+            "p_holm": 1.0,
+            "significant": false
+          },
+          {
+            "system": "w/o feasibility filter",
+            "ndcg": 0.7292,
+            "delta": -0.0526,
+            "ci_low": -0.0978,
+            "ci_high": -0.0165,
+            "p_holm": 0.0718,
+            "significant": false
+          },
+          {
+            "system": "w/o neighbourhood diffusion",
+            "ndcg": 0.7818,
+            "delta": -0.0,
+            "ci_low": -0.0,
+            "ci_high": -0.0,
+            "p_holm": 1.0,
+            "significant": false
+          },
+          {
+            "system": "only spatial",
+            "ndcg": 0.3735,
+            "delta": -0.4083,
+            "ci_low": -0.4825,
+            "ci_high": -0.3277,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "only accessibility",
+            "ndcg": 0.3577,
+            "delta": -0.4241,
+            "ci_low": -0.4753,
+            "ci_high": -0.3646,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "only facility",
+            "ndcg": 0.3723,
+            "delta": -0.4096,
+            "ci_low": -0.5282,
+            "ci_high": -0.288,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "only economic",
+            "ndcg": 0.9751,
+            "delta": 0.1933,
+            "ci_low": 0.1515,
+            "ci_high": 0.2293,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "only disruption",
+            "ndcg": 0.3275,
+            "delta": -0.4544,
+            "ci_low": -0.4994,
+            "ci_high": -0.4049,
+            "p_holm": 0.001,
+            "significant": true
+          },
+          {
+            "system": "Filter",
+            "ndcg": 0.2361,
+            "delta": -0.5457,
+            "ci_low": -0.6369,
+            "ci_high": -0.4476,
+            "p_holm": 0.001,
+            "significant": true
+          }
+        ],
+        "by_category": {
+          "economic_ranked": {
+            "Full": 0.7818,
+            "w/o spatial": 0.8429,
+            "w/o accessibility": 0.8709,
+            "w/o facility": 0.7626,
+            "w/o economic": 0.3777,
+            "w/o disruption": 0.7894,
+            "w/o feasibility filter": 0.7292,
+            "w/o neighbourhood diffusion": 0.7818,
+            "only spatial": 0.3735,
+            "only accessibility": 0.3577,
+            "only facility": 0.3723,
+            "only economic": 0.9751,
+            "only disruption": 0.3275,
+            "Filter": 0.2361
+          }
+        }
+      },
+      "simplex": {
+        "skipped": "unweighted mode uses no weight vector"
+      }
+    }
+  },
+  "disruption_diagnostic": {
+    "queries": 60,
+    "topk_set_changed_without_disruption": 8,
+    "topk_order_changed_without_disruption": 43,
+    "pool_disruption_min": 0.729,
+    "pool_disruption_max": 1.0,
+    "pool_disruption_sd": 0.0841,
+    "pool_route_delay_values_min": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      1.0,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      2.0,
+      2.1,
+      2.2,
+      2.4,
+      3.8
+    ],
+    "queries_graded_on_delay": 0,
+    "gold_constraints_by_category": {
+      "multi_dimensional": {
+        "max_price+min_rating": 7,
+        "max_price+max_travel_time": 3
+      },
+      "quality": {
+        "min_rating": 10
+      },
+      "amenity": {
+        "max_price+required_amenities": 5,
+        "required_amenities": 5
+      },
+      "economic": {
+        "max_price": 8,
+        "min_price": 2
+      },
+      "accessibility": {
+        "max_travel_time": 10
+      },
+      "disruption": {
+        "max_travel_time": 10
+      }
+    }
+  },
+  "personalisation_check": {
+    "event": {
+      "name": "F1 Street Race",
+      "lat": 6.9244,
+      "lng": 79.8487,
+      "impact_radius_km": 3.0,
+      "severity": "high"
+    },
+    "k": 5,
+    "event_seeker": {
+      "min_km": 0.74,
+      "max_km": 2.0
+    },
+    "quiet_seeker": {
+      "min_km": 0.39,
+      "max_km": 1.96
+    },
+    "overlap": 2
+  }
+}

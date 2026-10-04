@@ -67,6 +67,13 @@ def main() -> None:
                         help="JSON file of frozen parsed intents. Read when present, "
                              "written for any query it lacks. The LLM slot-filler is "
                              "not deterministic, so pass this for reproducible runs.")
+    parser.add_argument("--scoring-mode", default=None, choices=["weighted", "unweighted"],
+                        help="rank the proposed system as weighted GraphRAG or as "
+                             "graph-only (unweighted, equal weights) GraphRAG. "
+                             "Defaults to the SCORING_MODE env var (weighted).")
+    parser.add_argument("--compare-modes", action="store_true",
+                        help="also add the other scoring mode as an extra row, so "
+                             "weighted and unweighted GraphRAG share one table")
     args = parser.parse_args()
 
     profiles = [p.strip() for p in args.weight_profiles.split(",") if p.strip()]
@@ -85,8 +92,11 @@ def main() -> None:
         include_floors=not args.no_floors,
         include_ablations=not args.no_ablations,
         intent_cache=args.intent_cache,
+        scoring_mode=args.scoring_mode,
+        compare_modes=args.compare_modes,
     )
     city, k = out["city"], out["k"]
+    print(f"Scoring mode: {out['scoring_mode']} (reference system: {out['reference_system']})")
     system_order = out["system_order"]
     metric_keys = [f"P@{k}", f"R@{k}", f"nDCG@{k}", "MRR"]
 

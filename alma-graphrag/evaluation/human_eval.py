@@ -534,8 +534,13 @@ def run_human_evaluation(
     seed: int = 42,
     anchor_fair: bool = True,
     restrict_to_indexed: bool = False,
+    scoring_mode: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Evaluate every system against real booking choices.
+
+    In unweighted mode (SCORING_MODE=unweighted) the graph scoring model ranks
+    with equal weights and no weight vector is fitted or compared - the
+    graph-only configuration measured against the same text baselines.
 
     Weights are fitted on TRAIN participants and scored on TEST participants —
     splitting by participant, never by row, because one person's ten choices are
@@ -567,6 +572,8 @@ def run_human_evaluation(
     train_obs = [o for o in study.observations if o[0] not in test_p]
     test_obs = [o for o in study.observations if o[0] in test_p]
 
+    from src.graph.retriever import resolve_scoring_mode
+    mode = resolve_scoring_mode(scoring_mode)
     fitted = fit_weights(study, train_obs)
     # Served profiles plus the research-only vectors (the human fit that failed
     # its acceptance gates). Ranking with one here cannot deploy it; it is how
@@ -577,6 +584,8 @@ def run_human_evaluation(
         for name, w in profiles.items()
     }
     weight_vectors["WeightedGraphRAG[fitted-on-train]"] = fitted
+    if mode == "unweighted":
+        weight_vectors = {"GraphRAG[unweighted]": np.full(len(DIMS), 1.0 / len(DIMS))}
 
     rankers = build_rankers(study, anchor_fair, weight_vectors)
     system_order = list(rankers)
@@ -600,13 +609,15 @@ def run_human_evaluation(
         n: np.array([ndcg_at_k(rank_lists[n][t], {h}, k) for _p, t, h in test_obs])
         for n in system_order
     }
-    reference = "WeightedGraphRAG[fitted-on-train]"
+    reference = ("GraphRAG[unweighted]" if mode == "unweighted"
+                 else "WeightedGraphRAG[fitted-on-train]")
     best = max(per_choice.items(), key=lambda kv: kv[1].get(f"nDCG@{k}", 0.0))
 
     pool_sizes = {t: len(study.pool(s["anchor_id"])) for t, s in study.tasks.items()}
     return {
         "available": True,
         "evaluation": "choice-based (human ground truth)",
+        "scoring_mode": mode,
         "material_version": material.get("version"),
         "normalisation": material.get("normalisation", "pct_rank"),
         "anchor_fair": anchor_fair,

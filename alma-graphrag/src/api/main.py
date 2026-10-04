@@ -376,6 +376,7 @@ def retrieve_debug(req: RetrieveDebugRequest) -> dict:
         "city": result.city,
         "intent": intent.to_dict(),
         "weights": result.weights.to_dict(),
+        "scoring_mode": result.scoring_mode,
         "candidate_count": result.candidate_count,
         "filters_relaxed": result.filters_relaxed,
         "ranked": [
@@ -445,6 +446,7 @@ def recommend_personalized(req: PersonalizedRequest) -> dict:
         "profile": profile.to_dict() if profile else None,
         "event": event.to_dict() if event else None,
         "weights": result.weights.to_dict(),
+        "scoring_mode": result.scoring_mode,
         "ranked": [
             {
                 "rank": i + 1,

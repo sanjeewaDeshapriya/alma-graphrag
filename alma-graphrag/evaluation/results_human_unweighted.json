@@ -1,0 +1,702 @@
+{
+  "available": true,
+  "evaluation": "choice-based (human ground truth)",
+  "scoring_mode": "unweighted",
+  "material_version": "v4-rooms-20260818",
+  "normalisation": "pct_rank",
+  "anchor_fair": true,
+  "k": 10,
+  "cohort": "clean",
+  "cohort_stats": {
+    "participants_total": 247,
+    "dropped_attention": 145,
+    "dropped_speeder": 7,
+    "participants_kept": 95
+  },
+  "min_votes": 2,
+  "candidate_set_size": 32,
+  "restricted_to_indexed": false,
+  "n_observations": 949,
+  "n_train_participants": 67,
+  "n_test_participants": 28,
+  "n_train_choices": 669,
+  "n_test_choices": 280,
+  "skipped": {
+    "cohort": 1409,
+    "chosen_outside_candidate_set": 1,
+    "attention_task": 95
+  },
+  "system_order": [
+    "Filter",
+    "Keyword",
+    "SemanticVec",
+    "Hybrid",
+    "GraphRAG[unweighted]"
+  ],
+  "weights": {
+    "GraphRAG[unweighted]": {
+      "spatial": 0.2,
+      "accessibility": 0.2,
+      "facility": 0.2,
+      "economic": 0.2,
+      "disruption": 0.2
+    }
+  },
+  "per_choice": {
+    "Filter": {
+      "P@10": 0.0354,
+      "R@10": 0.3536,
+      "nDCG@10": 0.1952,
+      "MRR": 0.176,
+      "mean_rank": 17.1821
+    },
+    "Keyword": {
+      "P@10": 0.0396,
+      "R@10": 0.3964,
+      "nDCG@10": 0.1706,
+      "MRR": 0.1314,
+      "mean_rank": 16.0679
+    },
+    "SemanticVec": {
+      "P@10": 0.0246,
+      "R@10": 0.2464,
+      "nDCG@10": 0.0972,
+      "MRR": 0.0939,
+      "mean_rank": 16.5393
+    },
+    "Hybrid": {
+      "P@10": 0.0321,
+      "R@10": 0.3214,
+      "nDCG@10": 0.1744,
+      "MRR": 0.1631,
+      "mean_rank": 16.5786
+    },
+    "GraphRAG[unweighted]": {
+      "P@10": 0.0893,
+      "R@10": 0.8929,
+      "nDCG@10": 0.5436,
+      "MRR": 0.4382,
+      "mean_rank": 5.35
+    }
+  },
+  "per_task": {
+    "Filter": {
+      "P@10": 0.15,
+      "R@10": 0.3283,
+      "nDCG@10": 0.3644,
+      "gradedNDCG@10": 0.239,
+      "MRR": 0.7444
+    },
+    "Keyword": {
+      "P@10": 0.19,
+      "R@10": 0.405,
+      "nDCG@10": 0.2658,
+      "gradedNDCG@10": 0.2433,
+      "MRR": 0.2917
+    },
+    "SemanticVec": {
+      "P@10": 0.11,
+      "R@10": 0.21,
+      "nDCG@10": 0.1507,
+      "gradedNDCG@10": 0.1404,
+      "MRR": 0.2218
+    },
+    "Hybrid": {
+      "P@10": 0.15,
+      "R@10": 0.3133,
+      "nDCG@10": 0.2695,
+      "gradedNDCG@10": 0.2484,
+      "MRR": 0.4491
+    },
+    "GraphRAG[unweighted]": {
+      "P@10": 0.37,
+      "R@10": 0.8317,
+      "nDCG@10": 0.7426,
+      "gradedNDCG@10": 0.7709,
+      "MRR": 0.8
+    }
+  },
+  "selection_share_gold": {
+    "definition": "held-out selections per task; relevant when votes >= min_votes",
+    "tasks": {
+      "t1": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lpb1537",
+            "votes": 11,
+            "selection_share": 0.3929,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp3e58e",
+            "votes": 6,
+            "selection_share": 0.2143,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp71118",
+            "votes": 6,
+            "selection_share": 0.2143,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp33ddb",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp6f007",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t10": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp72a36",
+            "votes": 9,
+            "selection_share": 0.3214,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp857b8",
+            "votes": 6,
+            "selection_share": 0.2143,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp5f0e5",
+            "votes": 5,
+            "selection_share": 0.1786,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpc0df6",
+            "votes": 5,
+            "selection_share": 0.1786,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t2": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp857b8",
+            "votes": 15,
+            "selection_share": 0.5357,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp72a36",
+            "votes": 5,
+            "selection_share": 0.1786,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp5f0e5",
+            "votes": 3,
+            "selection_share": 0.1071,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpc0df6",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp656d40c7",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t3": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp71118",
+            "votes": 8,
+            "selection_share": 0.2857,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp3e58e",
+            "votes": 6,
+            "selection_share": 0.2143,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp81760",
+            "votes": 5,
+            "selection_share": 0.1786,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp9855f",
+            "votes": 4,
+            "selection_share": 0.1429,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp6f007",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t4": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp76eba",
+            "votes": 14,
+            "selection_share": 0.5,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 9,
+            "selection_share": 0.3214,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp6f007",
+            "votes": 3,
+            "selection_share": 0.1071,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp67286",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t5": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp72a36",
+            "votes": 16,
+            "selection_share": 0.5714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp6e625",
+            "votes": 8,
+            "selection_share": 0.2857,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp656d40c7",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t6": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp40d3f",
+            "votes": 10,
+            "selection_share": 0.3571,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp7c172",
+            "votes": 9,
+            "selection_share": 0.3214,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp76eba",
+            "votes": 3,
+            "selection_share": 0.1071,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp67708",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp656d40c7",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t7": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp857b8",
+            "votes": 13,
+            "selection_share": 0.4643,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpc0df6",
+            "votes": 10,
+            "selection_share": 0.3571,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp5f0e5",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp65589ffb",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          },
+          {
+            "hotel_id": "lp656d40c7",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      },
+      "t8": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp656d40c7",
+            "votes": 9,
+            "selection_share": 0.3214,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp6557c6e0",
+            "votes": 8,
+            "selection_share": 0.2857,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp5f0e5",
+            "votes": 3,
+            "selection_share": 0.1071,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp656d3aa9",
+            "votes": 3,
+            "selection_share": 0.1071,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp6574b103",
+            "votes": 3,
+            "selection_share": 0.1071,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          }
+        ]
+      },
+      "t9": {
+        "n_choices": 28,
+        "hotels": [
+          {
+            "hotel_id": "lp7c172",
+            "votes": 10,
+            "selection_share": 0.3571,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp40d3f",
+            "votes": 9,
+            "selection_share": 0.3214,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp67708",
+            "votes": 6,
+            "selection_share": 0.2143,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lp656d40c7",
+            "votes": 2,
+            "selection_share": 0.0714,
+            "relevant": true
+          },
+          {
+            "hotel_id": "lpb1537",
+            "votes": 1,
+            "selection_share": 0.0357,
+            "relevant": false
+          }
+        ]
+      }
+    }
+  },
+  "random_baseline": {
+    "P@10": 0.0312,
+    "R@10": 0.3125,
+    "mean_rank": 16.5
+  },
+  "significance": {
+    "reference": "GraphRAG[unweighted]",
+    "metric": "nDCG@10",
+    "tests": "paired participant-cluster bootstrap over held-out choices, 5000 resamples",
+    "vs": {
+      "Filter": {
+        "mean_diff": 0.3485,
+        "ci_low": 0.2256,
+        "ci_high": 0.4564,
+        "p": 0.0,
+        "significant": true
+      },
+      "Keyword": {
+        "mean_diff": 0.3731,
+        "ci_low": 0.3278,
+        "ci_high": 0.414,
+        "p": 0.0,
+        "significant": true
+      },
+      "SemanticVec": {
+        "mean_diff": 0.4464,
+        "ci_low": 0.3936,
+        "ci_high": 0.4939,
+        "p": 0.0,
+        "significant": true
+      },
+      "Hybrid": {
+        "mean_diff": 0.3693,
+        "ci_low": 0.3245,
+        "ci_high": 0.4104,
+        "p": 0.0,
+        "significant": true
+      }
+    }
+  },
+  "tasks": [
+    {
+      "id": "t1",
+      "persona": "Evening walker",
+      "anchor": "galle_face",
+      "context": "You are visiting Colombo and want to walk to Galle Face Green every evening. Being close enough to reach it on foot matters most, but you are also paying for the room yourself and cannot overspend. Which hotel would you book?",
+      "primary_dimension": "spatial",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Shangri-La Colombo",
+        "votes": 11
+      }
+    },
+    {
+      "id": "t10",
+      "persona": "Business traveller",
+      "anchor": "battaramulla",
+      "context": "You are again booking for two days of meetings in Battaramulla, with short and predictable travel as your priority and a comfortable room to return to. Which hotel would you book?",
+      "primary_dimension": "accessibility",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Best Western Elyon Colombo",
+        "votes": 9
+      }
+    },
+    {
+      "id": "t2",
+      "persona": "Business traveller",
+      "anchor": "battaramulla",
+      "context": "You have two days of back-to-back meetings at government offices in Battaramulla. Reaching them quickly and predictably each morning decides your booking, though you would still like somewhere comfortable to work in the evening. Which hotel would you book?",
+      "primary_dimension": "accessibility",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Zylan Colombo",
+        "votes": 15
+      }
+    },
+    {
+      "id": "t3",
+      "persona": "Self-funded worker",
+      "anchor": "fort",
+      "context": "You are working in Colombo Fort for a week and paying for the room yourself, so cost comes first - but a long daily commute would eat into your working day. Which hotel would you book?",
+      "primary_dimension": "economic",
+      "n_test_choices": 28,
+      "gold_size": 6,
+      "top_pick": {
+        "hotel": "CityRest Fort",
+        "votes": 8
+      }
+    },
+    {
+      "id": "t4",
+      "persona": "Family on holiday",
+      "anchor": "bambalapitiya",
+      "context": "You are travelling with your family and two young children and visiting relatives in Bambalapitiya. A pool, space and good on-site facilities matter most, and being near the family helps. Which hotel would you book?",
+      "primary_dimension": "facility",
+      "n_test_choices": 28,
+      "gold_size": 3,
+      "top_pick": {
+        "hotel": "Radisson Hotel Colombo",
+        "votes": 14
+      }
+    },
+    {
+      "id": "t5",
+      "persona": "Light sleeper",
+      "anchor": "nugegoda",
+      "context": "You are attending an event in Nugegoda but you are a light sleeper who cannot rest with traffic noise and crowds. A calm area matters most, though you do not want to pay a premium for it. Which hotel would you book?",
+      "primary_dimension": "disruption",
+      "n_test_choices": 28,
+      "gold_size": 3,
+      "top_pick": {
+        "hotel": "Best Western Elyon Colombo",
+        "votes": 16
+      }
+    },
+    {
+      "id": "t6",
+      "persona": "Beach weekender",
+      "anchor": "mount_lavinia",
+      "context": "You want a weekend by the sea at Mount Lavinia. Being close to the beach is the point of the trip, but you also want somewhere peaceful rather than a busy strip. Which hotel would you book?",
+      "primary_dimension": "spatial",
+      "n_test_choices": 28,
+      "gold_size": 5,
+      "top_pick": {
+        "hotel": "Global Towers Hotel & Apartments",
+        "votes": 10
+      }
+    },
+    {
+      "id": "t7",
+      "persona": "Long-stay consultant",
+      "anchor": "rajagiriya",
+      "context": "You are on a three-week assignment with an office in Rajagiriya and a fixed daily allowance, so the nightly rate matters a great deal - but a slow commute every day would wear you down. Which hotel would you book?",
+      "primary_dimension": "economic",
+      "n_test_choices": 28,
+      "gold_size": 3,
+      "top_pick": {
+        "hotel": "Zylan Colombo",
+        "votes": 13
+      }
+    },
+    {
+      "id": "t8",
+      "persona": "Value-seeking couple",
+      "anchor": "kollupitiya",
+      "context": "You and your partner are staying near Kollupitiya for a few nights and want a genuinely nice hotel - good rooms and facilities - at a price that still feels like value rather than a splurge. Which hotel would you book?",
+      "primary_dimension": "facility",
+      "n_test_choices": 28,
+      "gold_size": 6,
+      "top_pick": {
+        "hotel": "Sheraton Colombo Hotel",
+        "votes": 9
+      }
+    },
+    {
+      "id": "t9",
+      "persona": "Remote worker",
+      "anchor": "dehiwala",
+      "context": "You are working remotely for two weeks near Dehiwala. You need somewhere quiet enough to take calls all day, but you also do not want to be cut off from shops and transport. Which hotel would you book?",
+      "primary_dimension": "disruption",
+      "n_test_choices": 28,
+      "gold_size": 4,
+      "top_pick": {
+        "hotel": "Mirage Colombo",
+        "votes": 10
+      }
+    }
+  ],
+  "best_system": "GraphRAG[unweighted]",
+  "best_ndcg": 0.5436
+}

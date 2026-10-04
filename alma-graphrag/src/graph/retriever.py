@@ -27,7 +27,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from src.config import SCORING_WEIGHTS_PROFILE
+from src.config import SCORING_MODE, SCORING_WEIGHTS_PROFILE
 from src.crag.query_parser import QueryIntent
 from src.graph.query import _get_driver
 
@@ -187,6 +187,34 @@ class ScoringWeights:
 HANDSET_WEIGHTS = ScoringWeights(
     spatial=0.25, accessibility=0.20, facility=0.25, economic=0.15, disruption=0.15,
 )
+
+# Graph-only (unweighted) GraphRAG: every criterion counts the same. Used when
+# SCORING_MODE=unweighted, where no profile, intent ladder or learned vector is
+# consulted - the ranking then owes nothing to any choice of weights.
+UNIFORM_WEIGHTS = ScoringWeights(
+    spatial=0.2, accessibility=0.2, facility=0.2, economic=0.2, disruption=0.2,
+)
+
+SCORING_MODES = ("weighted", "unweighted")
+
+
+def resolve_scoring_mode(mode: Optional[str] = None) -> str:
+    """The scoring mode to use: `mode` if given, else SCORING_MODE from config.
+
+    An unknown value falls back to 'weighted' with a warning rather than raising,
+    in the same spirit as an unknown weight profile.
+    """
+    name = (mode or SCORING_MODE or "weighted").strip().lower()
+    if name not in SCORING_MODES:
+        logger.warning("Unknown SCORING_MODE %r; using 'weighted'", name)
+        return "weighted"
+    return name
+
+
+def uniform_weights() -> ScoringWeights:
+    """A fresh copy of the equal-weight vector (callers may mutate it)."""
+    return ScoringWeights(spatial=0.2, accessibility=0.2, facility=0.2,
+                          economic=0.2, disruption=0.2)
 
 ELICITED_WEIGHTS = ScoringWeights(
     spatial=0.381, accessibility=0.472, facility=0.097, economic=0.000, disruption=0.050,
@@ -600,6 +628,7 @@ class RetrievalResult:
     hotels: List[ScoredHotel]
     filters_relaxed: bool = False
     candidate_count: int = 0
+    scoring_mode: str = "weighted"
 
 
 # ---------------------------------------------------------------------------
@@ -888,8 +917,12 @@ class WeightedRetriever:
         weight_model: Any = None,
         cache_candidates: bool = False,
         research_profile: bool = False,
+        scoring_mode: Optional[str] = None,
     ) -> None:
         self.weight_profile = weight_profile
+        # weighted (default) or unweighted graph-only ranking; None follows
+        # SCORING_MODE from config, which is how the env var reaches serving.
+        self.scoring_mode = resolve_scoring_mode(scoring_mode)
         # Evaluation-only: allows RESEARCH_WEIGHT_PROFILES to be ranked with.
         self.research_profile = bool(research_profile)
         if price_policy not in PRICE_POLICIES:
@@ -918,7 +951,8 @@ class WeightedRetriever:
     ) -> RetrievalResult:
         city = intent.city
         if not city:
-            return RetrievalResult(city=None, intent=intent, weights=ScoringWeights(), hotels=[])
+            return RetrievalResult(city=None, intent=intent, weights=ScoringWeights(), hotels=[],
+                                   scoring_mode=self.scoring_mode)
 
         # A user profile overrides the proximity preference (e.g. quiet seeker
         # wants distance from the centre / event).
@@ -927,11 +961,21 @@ class WeightedRetriever:
 
         candidates = self._fetch_candidates(city)
 
-        # Weight resolution, in precedence order:
+        # Weight resolution.
+        #
+        # Unweighted mode (graph-only GraphRAG): equal weights, ignoring profile
+        # weights and the intent ladder - the profile still sets the proximity
+        # preference above. Only an explicit weight model overrides it, which is
+        # how an experiment (an ablation dropping one component) runs in this
+        # mode.
+        #
+        # Weighted mode, in precedence order (unchanged):
         #   1. an explicit UserProfile (personalised request) — always wins
         #   2. a learned weight model, if one was supplied
         #   3. the hand-written intent rules over the configured profile
-        if profile is not None:
+        if self.scoring_mode == "unweighted" and self.weight_model is None:
+            weights = uniform_weights()
+        elif self.scoring_mode == "weighted" and profile is not None:
             weights = weights_for_profile(profile, intent, event_active=event is not None,
                                           weight_profile=self.weight_profile,
                                           research=self.research_profile)
@@ -948,7 +992,7 @@ class WeightedRetriever:
 
         result = RetrievalResult(
             city=city, intent=intent, weights=weights, hotels=[],
-            candidate_count=len(candidates),
+            candidate_count=len(candidates), scoring_mode=self.scoring_mode,
         )
         if not candidates:
             return result
@@ -963,8 +1007,8 @@ class WeightedRetriever:
         scored.sort(key=lambda h: h.score, reverse=True)
         result.hotels = scored[:limit]
         logger.info(
-            "Weighted retrieve: city=%s candidates=%d filtered=%d returned=%d weights=%s profile=%s event=%s",
-            city, len(candidates), len(filtered), len(result.hotels), weights.to_dict(),
+            "Graph retrieve (%s): city=%s candidates=%d filtered=%d returned=%d weights=%s profile=%s event=%s",
+            self.scoring_mode, city, len(candidates), len(filtered), len(result.hotels), weights.to_dict(),
             getattr(profile, "id", None), getattr(event, "name", None),
         )
         return result

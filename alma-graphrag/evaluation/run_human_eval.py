@@ -44,16 +44,27 @@ def main() -> None:
                          "the baselines cannot see the task anchor.")
     ap.add_argument("--restrict-to-indexed", action="store_true",
                     help="keep only hotels present in the pgvector index")
-    ap.add_argument("--out", default=str(DEFAULT_HUMAN_RESULTS))
+    ap.add_argument("--out", default=None,
+                    help="default: evaluation/results_human.json (weighted) or "
+                         "evaluation/results_human_unweighted.json (unweighted)")
+    ap.add_argument("--scoring-mode", default=None, choices=["weighted", "unweighted"],
+                    help="defaults to the SCORING_MODE env var (weighted)")
     args = ap.parse_args()
+    from src.graph.retriever import resolve_scoring_mode
+    mode = resolve_scoring_mode(args.scoring_mode)
+    if args.out is None:
+        args.out = str(DEFAULT_HUMAN_RESULTS if mode == "weighted" else
+                       Path(DEFAULT_HUMAN_RESULTS).with_name("results_human_unweighted.json"))
 
     out = run_human_evaluation(
         responses_path=args.responses, material_path=args.material, k=args.k,
         cohort=args.cohort, holdout=args.holdout, min_votes=args.min_votes,
         seed=args.seed, anchor_fair=not args.deployed_index,
         restrict_to_indexed=args.restrict_to_indexed,
+        scoring_mode=mode,
     )
     k = out["k"]
+    print(f"Scoring mode: {out['scoring_mode']}")
 
     print(f"\nChoice-based evaluation — material {out['material_version']} "
           f"({out['normalisation']})")
