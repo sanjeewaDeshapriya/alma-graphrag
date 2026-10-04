@@ -44,7 +44,8 @@ from typing import Any, Callable, Dict, List, Optional
 
 import numpy as np
 
-from evaluation.baselines import FilterBaseline, WeightedGraphBaseline, all_baselines, fetch_city_hotels
+from evaluation.baselines import (FilterBaseline, WeightedGraphBaseline, all_baselines,
+                                  fetch_city_hotels, graph_system_name)
 from evaluation.gold import DEFAULT_BANDS
 from evaluation.harness import gold_for_query, load_spec, resolve_intents
 from evaluation.metrics import evaluate_ranking
@@ -55,7 +56,15 @@ from src.graph.retriever import (
     apply_intent_adjustments,
     base_weights,
     clear_candidate_cache,
+    resolve_scoring_mode,
+    uniform_weights,
 )
+
+# weighted | unweighted - set by main() from --scoring-mode or SCORING_MODE. In
+# unweighted mode every graph system ranks with equal weights and no intent
+# ladder, and the weight-specific studies (intent ladder, weight simplex) are
+# skipped because they have nothing to vary.
+_MODE = resolve_scoring_mode()
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -77,7 +86,10 @@ class DropComponent:
     component: str
 
     def predict(self, intent: Any, _pool: Any) -> ScoringWeights:
-        w = apply_intent_adjustments(base_weights("handset"), intent)
+        if _MODE == "unweighted":
+            w = uniform_weights()       # equal weights over the remaining four
+        else:
+            w = apply_intent_adjustments(base_weights("handset"), intent)
         setattr(w, self.component, 0.0)
         return w.normalised()
 
@@ -118,9 +130,10 @@ class _NoFilterRetriever(WeightedRetriever):
 
 def _graph_system(label: str, model: Any = None, self_weight: float = 0.7,
                   no_filter: bool = False) -> WeightedGraphBaseline:
-    b = WeightedGraphBaseline(label=label, self_weight=self_weight)
+    b = WeightedGraphBaseline(label=label, self_weight=self_weight, scoring_mode=_MODE)
     if no_filter:
-        b._retriever = _NoFilterRetriever(self_weight=self_weight, cache_candidates=True)
+        b._retriever = _NoFilterRetriever(self_weight=self_weight, cache_candidates=True,
+                                          scoring_mode=_MODE)
     if model is not None:
         b._retriever.weight_model = model
     return b
@@ -160,7 +173,8 @@ def run_ablation(bench: Bench) -> Dict[str, Any]:
     systems: Dict[str, Any] = {"Full": _graph_system("Full")}
     for c in COMPONENT_NAMES:
         systems[f"w/o {c}"] = _graph_system(f"w/o {c}", DropComponent(c))
-    systems["w/o intent ladder"] = _graph_system("w/o intent ladder", NoIntentLadder())
+    if _MODE == "weighted":
+        systems["w/o intent ladder"] = _graph_system("w/o intent ladder", NoIntentLadder())
     systems["w/o feasibility filter"] = _graph_system("w/o feasibility filter", no_filter=True)
     systems["w/o neighbourhood diffusion"] = _graph_system("w/o diffusion", self_weight=1.0)
     for c in COMPONENT_NAMES:
@@ -233,18 +247,19 @@ def run_simplex(bench: Bench, samples: int, seed: int) -> Dict[str, Any]:
 
 
 def run_latency(bench: Bench, reps: int) -> Dict[str, Any]:
-    systems = all_baselines(include_llm=False, include_ablations=False)
+    systems = all_baselines(include_llm=False, include_ablations=False, scoring_mode=_MODE)
     for b in systems:
         if hasattr(b, "fit"):
             b.fit(bench.pool, bench.queries,
                   lambda q: bench.gold[q["id"]][1], intents=bench.intents)
-    served = WeightedGraphBaseline(label="WeightedGraphRAG (graph round trip)")
+    ref = graph_system_name(_MODE)
+    served = WeightedGraphBaseline(label=f"{ref} (graph round trip)", scoring_mode=_MODE)
     served._retriever.cache_candidates = False
     systems.append(served)
 
     out: Dict[str, Any] = {}
     for b in systems:
-        if b.name == "WeightedGraphRAG":
+        if b.name == ref:
             clear_candidate_cache()
             bench.ndcg(b)          # fill the pool cache once: scoring-only timing
         else:
@@ -260,7 +275,7 @@ def run_latency(bench: Bench, reps: int) -> Dict[str, Any]:
                     b.retrieve(q["question"], bench.city, bench.k, intent=intent)
                 times.append((time.perf_counter() - t0) * 1000.0)
         a = np.array(times)
-        name = "WeightedGraphRAG (cached pool)" if b.name == "WeightedGraphRAG" else b.name
+        name = f"{ref} (cached pool)" if b.name == ref else b.name
         out[name] = {
             "n": int(a.size),
             "median_ms": round(float(np.median(a)), 2),
@@ -289,7 +304,7 @@ def disruption_diagnostic(bench: Bench) -> Dict[str, Any]:
         order_changed += a != b
 
     from src.crag.query_parser import QueryIntent
-    pool = WeightedRetriever(cache_candidates=True).retrieve(
+    pool = WeightedRetriever(cache_candidates=True, scoring_mode=_MODE).retrieve(
         QueryIntent(city=bench.city), limit=len(bench.pool)).hotels
     dis = np.array([h.components["disruption"] for h in pool])
     delays = sorted({float(h.raw.get("max_eta_change_min") or 0.0) for h in pool})
@@ -327,7 +342,7 @@ def personalisation_check(city: str = "Colombo", k: int = 5) -> Dict[str, Any]:
 
     event = ActiveEvent(name="F1 Street Race", lat=6.9244, lng=79.8487,
                         impact_radius_km=3.0, severity="high")
-    retriever = WeightedRetriever(cache_candidates=True)
+    retriever = WeightedRetriever(cache_candidates=True, scoring_mode=_MODE)
     out: Dict[str, Any] = {"event": event.to_dict(), "k": k}
     tops = {}
     for pid in ("event_seeker", "quiet_seeker"):
@@ -348,8 +363,18 @@ def main() -> None:
     ap.add_argument("--skip-latency", action="store_true")
     ap.add_argument("--diagnostic-only", action="store_true",
                     help="recompute only the disruption diagnostic and merge it into --out")
-    ap.add_argument("--out", type=Path, default=ROOT / "evaluation" / "results_robustness.json")
+    ap.add_argument("--out", type=Path, default=None,
+                    help="default: evaluation/results_robustness.json (weighted) or "
+                         "evaluation/results_robustness_unweighted.json (unweighted)")
+    ap.add_argument("--scoring-mode", default=None, choices=["weighted", "unweighted"],
+                    help="defaults to the SCORING_MODE env var (weighted)")
     args = ap.parse_args()
+    global _MODE
+    _MODE = resolve_scoring_mode(args.scoring_mode)
+    if args.out is None:
+        args.out = ROOT / "evaluation" / ("results_robustness.json" if _MODE == "weighted"
+                                          else "results_robustness_unweighted.json")
+    print(f"scoring mode: {_MODE}", flush=True)
 
     if args.diagnostic_only:
         result = json.loads(args.out.read_text(encoding="utf-8"))
@@ -359,15 +384,19 @@ def main() -> None:
         print(json.dumps(result["disruption_diagnostic"], indent=2))
         return
 
-    result: Dict[str, Any] = {"generated": time.strftime("%Y-%m-%dT%H:%M:%S"), "sets": {}}
+    result: Dict[str, Any] = {"generated": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                              "scoring_mode": _MODE, "sets": {}}
     for name, (qs, intents) in QUERY_SETS.items():
         t = time.time()
         bench = Bench(qs, intents)
         block: Dict[str, Any] = {"n_queries": len(bench.queries), "pool": len(bench.pool)}
         block["ablation"] = run_ablation(bench)
         print(f"[{name}] ablation done ({time.time() - t:.0f}s)", flush=True)
-        block["simplex"] = run_simplex(bench, args.samples, args.seed)
-        print(f"[{name}] simplex done ({time.time() - t:.0f}s)", flush=True)
+        if _MODE == "weighted":
+            block["simplex"] = run_simplex(bench, args.samples, args.seed)
+            print(f"[{name}] simplex done ({time.time() - t:.0f}s)", flush=True)
+        else:
+            block["simplex"] = {"skipped": "unweighted mode uses no weight vector"}
         if name == "main" and not args.skip_latency:
             block["latency"] = run_latency(bench, args.latency_reps)
             print(f"[{name}] latency done ({time.time() - t:.0f}s)", flush=True)

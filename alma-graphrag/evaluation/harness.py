@@ -35,7 +35,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
-from evaluation.baselines import all_baselines, fetch_city_hotels
+from evaluation.baselines import all_baselines, fetch_city_hotels, graph_system_name
 from evaluation.gold import DEFAULT_BANDS, ToleranceBands, graded_gold, relevant_set
 from evaluation.metrics import evaluate_ranking, mean_metrics
 from evaluation.stats import compare_systems
@@ -43,6 +43,7 @@ from src.config import SCORING_WEIGHTS_PROFILE
 from src.crag.query_parser import parse_query
 from src.graph.retriever import (
     DEFAULT_PRICE_POLICY,
+    resolve_scoring_mode,
     HISTORICAL_WEIGHT_PROFILES,
     RESEARCH_WEIGHT_PROFILES,
     WEIGHT_PROFILES,
@@ -304,6 +305,7 @@ def assess_reportability(
     by_category: Dict[str, Dict[str, Dict[str, float]]],
     sensitivity: Optional[Dict[str, Any]],
     ndcg_key: str,
+    reference: str = GRAPH_SYSTEM,
 ) -> Dict[str, Any]:
     """State whether an evaluation can support comparative research claims."""
     blockers: List[str] = []
@@ -321,7 +323,7 @@ def assess_reportability(
             warnings.append("weight-blind categories: " + ", ".join(sorted(blind)))
     near_perfect = [
         category for category, values in by_category.items()
-        if values.get(GRAPH_SYSTEM, {}).get(ndcg_key, 0.0) >= 0.99
+        if values.get(reference, {}).get(ndcg_key, 0.0) >= 0.99
     ]
     if near_perfect:
         warnings.append("near-perfect reference categories: " + ", ".join(sorted(near_perfect)))
@@ -342,9 +344,17 @@ def run_evaluation(
     bands: ToleranceBands = DEFAULT_BANDS,
     include_sensitivity: bool = True,
     intent_cache: Optional[Path | str] = None,
+    scoring_mode: Optional[str] = None,
+    compare_modes: bool = False,
     **baseline_opts: Any,
 ) -> Dict[str, Any]:
     spec = load_spec(queryset_path)
+    mode = resolve_scoring_mode(scoring_mode)
+    reference = graph_system_name(mode)
+    if mode == "unweighted":
+        # The sensitivity sweep swaps weight profiles; it has no meaning for a
+        # ranking that uses none.
+        include_sensitivity = False
     city = spec["city"]
     k = int(spec.get("k", 10))
     queries = spec["queries"]
@@ -361,6 +371,7 @@ def run_evaluation(
     default_profile = (SCORING_WEIGHTS_PROFILE
                        if SCORING_WEIGHTS_PROFILE in WEIGHT_PROFILES else "handset")
     baselines = all_baselines(available_profiles, price_policies, weight_policies,
+                              scoring_mode=mode, compare_modes=compare_modes,
                               **baseline_opts)
     system_order = [b.name for b in baselines]
 
@@ -411,16 +422,16 @@ def run_evaluation(
 
     # Paired significance vs the proposed system on the headline metric.
     significance: Dict[str, Any] = {}
-    if GRAPH_SYSTEM in results and len(queries) >= 2:
+    if reference in results and len(queries) >= 2:
         ndcg_key = f"nDCG@{k}"
         per_system = {name: [m[ndcg_key] for m in results[name]] for name in system_order}
         significance = {
-            "reference": GRAPH_SYSTEM,
+            "reference": reference,
             "metric": ndcg_key,
             "tests": "paired bootstrap 95% CI + Wilcoxon signed-rank, Holm-corrected",
             "vs": {
                 name: {kk: (round(v, 4) if isinstance(v, float) else v) for kk, v in block.items()}
-                for name, block in compare_systems(per_system, GRAPH_SYSTEM).items()
+                for name, block in compare_systems(per_system, reference).items()
             },
         }
 
@@ -430,6 +441,10 @@ def run_evaluation(
         "n_queries": len(queries),
         "pool_size": len(pool),
         "system_order": system_order,
+        # weighted = weighted GraphRAG (profile + intent ladder); unweighted =
+        # graph-only GraphRAG with equal weights. See SCORING_MODE in src/config.py.
+        "scoring_mode": mode,
+        "reference_system": reference,
         "gold_meta": {
             "used_human": bool(human_relevant),
             "human_queries": len(human_relevant),
@@ -471,7 +486,7 @@ def run_evaluation(
         "research_validity": assess_reportability(
             query_count=len(queries), human_query_count=len(human_relevant),
             vector_index=vector_index, by_category=by_category, sensitivity=sensitivity,
-            ndcg_key=f"nDCG@{k}",
+            ndcg_key=f"nDCG@{k}", reference=reference,
         ),
     }
 
@@ -540,7 +555,7 @@ def inspect_query(
 
     systems: List[Dict[str, Any]] = []
     for b in all_baselines(include_ltr=False):
-        ranked = (graph_ranked if b.name == GRAPH_SYSTEM
+        ranked = (graph_ranked if b.name == graph_system_name()
                   else _retrieve(b, query, city, k, intent))
         metrics = evaluate_ranking(ranked, gold_set, k, gains=gains)
         rows: List[Dict[str, Any]] = []
@@ -556,7 +571,7 @@ def inspect_query(
                 "travel_time_min": _travel_time(h),
                 "relevant": hid in gold_set,
             }
-            if b.name == GRAPH_SYSTEM and hid in comp_by_id:
+            if b.name == graph_system_name() and hid in comp_by_id:
                 entry.update(comp_by_id[hid])
             rows.append(entry)
         systems.append({

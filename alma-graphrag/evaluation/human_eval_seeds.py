@@ -41,6 +41,8 @@ def one_split(study: Study, seed: int, holdout: float, k: int, min_votes: int):
                "fitted-on-train": fit_weights(study, train)}
     if "human" in known:
         vectors["human"] = np.array([getattr(known["human"], d) for d in DIMS])
+    # Graph-only (unweighted) GraphRAG: equal weights, fitted on nothing.
+    vectors["unweighted"] = np.full(len(DIMS), 1.0 / len(DIMS))
     votes = collections.defaultdict(collections.Counter)
     for _p, task, hid in test:
         votes[task][hid] += 1
@@ -73,8 +75,16 @@ def main():
     ap.add_argument("--holdout", type=float, default=0.3)
     ap.add_argument("--k", type=int, default=10)
     ap.add_argument("--min-votes", type=int, default=2)
-    ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--out", default=None,
+                    help="default: results_human_seeds.json, or "
+                         "results_human_seeds_unweighted.json when SCORING_MODE=unweighted")
+    ap.add_argument("--scoring-mode", default=None, choices=["weighted", "unweighted"])
     args = ap.parse_args()
+    from src.graph.retriever import resolve_scoring_mode
+    mode = resolve_scoring_mode(args.scoring_mode)
+    if args.out is None:
+        args.out = str(OUT if mode == "weighted"
+                       else OUT.with_name("results_human_seeds_unweighted.json"))
 
     material = load_material(DEFAULT_MATERIAL)
     rows = load_responses(DEFAULT_RESPONSES)
@@ -82,13 +92,17 @@ def main():
     study = Study(material, rows, keep)
 
     runs = [one_split(study, s, args.holdout, args.k, args.min_votes) for s in range(args.seeds)]
-    systems = [name for name in ("handset", "human", "fitted-on-train") if name in runs[0]]
+    systems = [name for name in ("unweighted", "handset", "human", "fitted-on-train")
+               if name in runs[0]]
     gain = [r["fitted-on-train"]["choice_ndcg"] - r["handset"]["choice_ndcg"] for r in runs]
     task_gain = [r["fitted-on-train"]["task_graded_ndcg"] - r["handset"]["task_graded_ndcg"] for r in runs]
     weights = {d: summarise([r["fitted_weights"][d] for r in runs]) for d in DIMS}
     zero_share = {d: round(sum(1 for r in runs if r["fitted_weights"][d] == 0.0) / len(runs), 3)
                   for d in DIMS}
     result = {
+        "scoring_mode": mode,
+        "unweighted_minus_handset_choice_ndcg": summarise(
+            [r["unweighted"]["choice_ndcg"] - r["handset"]["choice_ndcg"] for r in runs]),
         "seeds": args.seeds, "holdout": args.holdout, "k": args.k, "min_votes": args.min_votes,
         "cohort_stats": stats, "participants": len(study.participants()),
         "systems": systems,

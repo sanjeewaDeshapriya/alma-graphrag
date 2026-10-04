@@ -99,6 +99,19 @@ REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 # docs/Weight_Elicitation_Data_Audit.md
 SCORING_WEIGHTS_PROFILE = os.getenv("SCORING_WEIGHTS_PROFILE", "handset").lower()
 
+# How the graph retriever ranks the hotels that survive the feasibility filter.
+#   weighted   - weighted GraphRAG: a weight profile (SCORING_WEIGHTS_PROFILE)
+#                adjusted by the query intent and by traveller profiles.
+#   unweighted - graph-only GraphRAG: the same graph, feasibility filter and five
+#                percentile components, combined with equal weights (0.2 each);
+#                no weight profile, no intent ladder, no profile or learned
+#                weights. Direction flips (premium price, "far from the centre")
+#                still apply, because they define what "better" means, not how
+#                much a criterion counts.
+# Serving and every evaluation script read this; each script also accepts
+# --scoring-mode to override it for one run.
+SCORING_MODE = os.getenv("SCORING_MODE", "weighted").strip().lower()
+
 CRAG_MIN_SCORE = float(os.getenv("CRAG_MIN_SCORE", "0.6"))
 CRAG_MAX_RETRIES = int(os.getenv("CRAG_MAX_RETRIES", "1"))
 

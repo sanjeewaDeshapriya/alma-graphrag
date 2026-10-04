@@ -1,0 +1,1939 @@
+{
+  "evaluation": "human-choice only (selection-share graded); no rule-based labels",
+  "cohort": "clean",
+  "cohort_stats": {
+    "participants_total": 247,
+    "dropped_attention": 145,
+    "dropped_speeder": 7,
+    "participants_kept": 95
+  },
+  "participants": 95,
+  "choices": 949,
+  "queries": 10,
+  "k": 10,
+  "candidates_per_query": 32,
+  "systems": [
+    "GraphRAG[unweighted]",
+    "Keyword",
+    "SemanticVec",
+    "Hybrid",
+    "CrossEncoder",
+    "Filter"
+  ],
+  "scores": {
+    "GraphRAG[unweighted]": {
+      "nDCG@10": 0.7403531044548596,
+      "P@10": 0.49000000000000005,
+      "R@10": 0.6024062049062049,
+      "coverage@10": 0.8482306830907055,
+      "MRR": 0.8,
+      "top1_accuracy": 0.6,
+      "top1_share": 0.20105263157894737,
+      "favourite_rank": 2.8
+    },
+    "Keyword": {
+      "nDCG@10": 0.24004673980641145,
+      "P@10": 0.29,
+      "R@10": 0.345021645021645,
+      "coverage@10": 0.37006718924972004,
+      "MRR": 0.46011904761904765,
+      "top1_accuracy": 0.3,
+      "top1_share": 0.02105263157894737,
+      "favourite_rank": 17.0
+    },
+    "SemanticVec": {
+      "nDCG@10": 0.1441821311592661,
+      "P@10": 0.21000000000000002,
+      "R@10": 0.2608441558441558,
+      "coverage@10": 0.23171332586786111,
+      "MRR": 0.355037185037185,
+      "top1_accuracy": 0.2,
+      "top1_share": 0.011578947368421053,
+      "favourite_rank": 15.5
+    },
+    "Hybrid": {
+      "nDCG@10": 0.24723095450706206,
+      "P@10": 0.23000000000000004,
+      "R@10": 0.2771572871572871,
+      "coverage@10": 0.2969316909294513,
+      "MRR": 0.6170634920634921,
+      "top1_accuracy": 0.5,
+      "top1_share": 0.06526315789473684,
+      "favourite_rank": 17.0
+    },
+    "CrossEncoder": {
+      "nDCG@10": 0.3219326499382137,
+      "P@10": 0.24000000000000005,
+      "R@10": 0.2925541125541125,
+      "coverage@10": 0.3952407614781635,
+      "MRR": 0.5809523809523809,
+      "top1_accuracy": 0.4,
+      "top1_share": 0.07789473684210527,
+      "favourite_rank": 11.0
+    },
+    "Filter": {
+      "nDCG@10": 0.34173525772151103,
+      "P@10": 0.39,
+      "R@10": 0.4967568542568543,
+      "coverage@10": 0.38993281075027997,
+      "MRR": 1.0,
+      "top1_accuracy": 1.0,
+      "top1_share": 0.10115341545352745,
+      "favourite_rank": 16.0
+    }
+  },
+  "per_task_scores": {
+    "GraphRAG[unweighted]": {
+      "t1": {
+        "nDCG@10": 0.666050388379308,
+        "P@10": 0.6,
+        "R@10": 0.6,
+        "coverage@10": 0.8210526315789475,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.21052631578947367,
+        "favourite_rank": 7.0
+      },
+      "t2": {
+        "nDCG@10": 0.6093673370768053,
+        "P@10": 0.5,
+        "R@10": 0.5555555555555556,
+        "coverage@10": 0.8631578947368421,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 4.0
+      },
+      "t3": {
+        "nDCG@10": 0.8574831380946597,
+        "P@10": 0.7,
+        "R@10": 0.6363636363636364,
+        "coverage@10": 0.7789473684210527,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.18947368421052632,
+        "favourite_rank": 2.0
+      },
+      "t4": {
+        "nDCG@10": 0.751593567171719,
+        "P@10": 0.5,
+        "R@10": 0.625,
+        "coverage@10": 0.8842105263157894,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.37894736842105264,
+        "favourite_rank": 1.0
+      },
+      "t5": {
+        "nDCG@10": 0.8953408219023942,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.8315789473684211,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.47368421052631576,
+        "favourite_rank": 1.0
+      },
+      "t6": {
+        "nDCG@10": 0.9256975306461882,
+        "P@10": 0.6,
+        "R@10": 0.75,
+        "coverage@10": 0.8947368421052632,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.42105263157894735,
+        "favourite_rank": 1.0
+      },
+      "t7": {
+        "nDCG@10": 0.5952683481201633,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.8421052631578948,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 3.0
+      },
+      "t8": {
+        "nDCG@10": 0.5161804474302888,
+        "P@10": 0.5,
+        "R@10": 0.7142857142857143,
+        "coverage@10": 0.8105263157894737,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 6.0
+      },
+      "t9": {
+        "nDCG@10": 0.9317407961601382,
+        "P@10": 0.5,
+        "R@10": 0.7142857142857143,
+        "coverage@10": 0.9368421052631578,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.3368421052631579,
+        "favourite_rank": 1.0
+      },
+      "t10": {
+        "nDCG@10": 0.6548086695669314,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.8191489361702128,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 2.0
+      }
+    },
+    "Keyword": {
+      "t1": {
+        "nDCG@10": 0.1899620519514296,
+        "P@10": 0.5,
+        "R@10": 0.5,
+        "coverage@10": 0.30526315789473685,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.010526315789473684,
+        "favourite_rank": 31.0
+      },
+      "t2": {
+        "nDCG@10": 0.193191597891774,
+        "P@10": 0.3,
+        "R@10": 0.3333333333333333,
+        "coverage@10": 0.3263157894736842,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 26.0
+      },
+      "t3": {
+        "nDCG@10": 0.6411857358504572,
+        "P@10": 0.6,
+        "R@10": 0.5454545454545454,
+        "coverage@10": 0.6842105263157895,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.18947368421052632,
+        "favourite_rank": 10.0
+      },
+      "t4": {
+        "nDCG@10": 0.004614615972416864,
+        "P@10": 0.1,
+        "R@10": 0.125,
+        "coverage@10": 0.010526315789473684,
+        "MRR": 0.125,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 18.0
+      },
+      "t5": {
+        "nDCG@10": 0.2760630839478235,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.4842105263157894,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 4.0
+      },
+      "t6": {
+        "nDCG@10": 0.09639321434517228,
+        "P@10": 0.3,
+        "R@10": 0.375,
+        "coverage@10": 0.18947368421052632,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.010526315789473684,
+        "favourite_rank": 17.0
+      },
+      "t7": {
+        "nDCG@10": 0.16912233419887826,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.3894736842105263,
+        "MRR": 0.14285714285714285,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 26.0
+      },
+      "t8": {
+        "nDCG@10": 0.27344977908737006,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.41052631578947363,
+        "MRR": 0.3333333333333333,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 29.0
+      },
+      "t9": {
+        "nDCG@10": 0.21245805038450102,
+        "P@10": 0.1,
+        "R@10": 0.14285714285714285,
+        "coverage@10": 0.3368421052631579,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 4.0
+      },
+      "t10": {
+        "nDCG@10": 0.34402693443429166,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.5638297872340425,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 5.0
+      }
+    },
+    "SemanticVec": {
+      "t1": {
+        "nDCG@10": 0.05321542353639566,
+        "P@10": 0.3,
+        "R@10": 0.3,
+        "coverage@10": 0.07368421052631578,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.010526315789473684,
+        "favourite_rank": 23.0
+      },
+      "t2": {
+        "nDCG@10": 0.0,
+        "P@10": 0.0,
+        "R@10": 0.0,
+        "coverage@10": 0,
+        "MRR": 0.09090909090909091,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 14.0
+      },
+      "t3": {
+        "nDCG@10": 0.3369416964246515,
+        "P@10": 0.3,
+        "R@10": 0.2727272727272727,
+        "coverage@10": 0.4631578947368421,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 5.0
+      },
+      "t4": {
+        "nDCG@10": 0.010062340383973951,
+        "P@10": 0.2,
+        "R@10": 0.25,
+        "coverage@10": 0.021052631578947368,
+        "MRR": 0.2,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 15.0
+      },
+      "t5": {
+        "nDCG@10": 0.0,
+        "P@10": 0.0,
+        "R@10": 0.0,
+        "coverage@10": 0,
+        "MRR": 0.07142857142857142,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 16.0
+      },
+      "t6": {
+        "nDCG@10": 0.1599944941883103,
+        "P@10": 0.4,
+        "R@10": 0.5,
+        "coverage@10": 0.33684210526315783,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 19.0
+      },
+      "t7": {
+        "nDCG@10": 0.0,
+        "P@10": 0.0,
+        "R@10": 0.0,
+        "coverage@10": 0,
+        "MRR": 0.07692307692307693,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 13.0
+      },
+      "t8": {
+        "nDCG@10": 0.4167861807639031,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.5684210526315789,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.10526315789473684,
+        "favourite_rank": 18.0
+      },
+      "t9": {
+        "nDCG@10": 0.4052852375004376,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.7263157894736841,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 4.0
+      },
+      "t10": {
+        "nDCG@10": 0.05953593879498873,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.1276595744680851,
+        "MRR": 0.1111111111111111,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 28.0
+      }
+    },
+    "Hybrid": {
+      "t1": {
+        "nDCG@10": 0.16130745789582543,
+        "P@10": 0.4,
+        "R@10": 0.4,
+        "coverage@10": 0.26315789473684215,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.010526315789473684,
+        "favourite_rank": 30.0
+      },
+      "t2": {
+        "nDCG@10": 0.11679641798333291,
+        "P@10": 0.2,
+        "R@10": 0.2222222222222222,
+        "coverage@10": 0.14736842105263157,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 22.0
+      },
+      "t3": {
+        "nDCG@10": 0.6588012586286518,
+        "P@10": 0.4,
+        "R@10": 0.36363636363636365,
+        "coverage@10": 0.6,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.18947368421052632,
+        "favourite_rank": 5.0
+      },
+      "t4": {
+        "nDCG@10": 0.010086589453882635,
+        "P@10": 0.2,
+        "R@10": 0.25,
+        "coverage@10": 0.021052631578947368,
+        "MRR": 0.16666666666666666,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 16.0
+      },
+      "t5": {
+        "nDCG@10": 0.20980996149641754,
+        "P@10": 0.1,
+        "R@10": 0.14285714285714285,
+        "coverage@10": 0.47368421052631576,
+        "MRR": 0.14285714285714285,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 7.0
+      },
+      "t6": {
+        "nDCG@10": 0.05931132814736596,
+        "P@10": 0.2,
+        "R@10": 0.25,
+        "coverage@10": 0.0736842105263158,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.010526315789473684,
+        "favourite_rank": 21.0
+      },
+      "t7": {
+        "nDCG@10": 0.04675404983412099,
+        "P@10": 0.1,
+        "R@10": 0.14285714285714285,
+        "coverage@10": 0.11578947368421053,
+        "MRR": 0.1111111111111111,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 25.0
+      },
+      "t8": {
+        "nDCG@10": 0.5332848728951162,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.5684210526315789,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.10526315789473684,
+        "favourite_rank": 27.0
+      },
+      "t9": {
+        "nDCG@10": 0.6186107136339825,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.6210526315789473,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.3368421052631579,
+        "favourite_rank": 1.0
+      },
+      "t10": {
+        "nDCG@10": 0.057546895101925094,
+        "P@10": 0.1,
+        "R@10": 0.14285714285714285,
+        "coverage@10": 0.0851063829787234,
+        "MRR": 0.25,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 16.0
+      }
+    },
+    "CrossEncoder": {
+      "t1": {
+        "nDCG@10": 0.2205026564672004,
+        "P@10": 0.3,
+        "R@10": 0.3,
+        "coverage@10": 0.25263157894736843,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.010526315789473684,
+        "favourite_rank": 23.0
+      },
+      "t2": {
+        "nDCG@10": 0.29478478897636007,
+        "P@10": 0.3,
+        "R@10": 0.3333333333333333,
+        "coverage@10": 0.631578947368421,
+        "MRR": 0.14285714285714285,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 8.0
+      },
+      "t3": {
+        "nDCG@10": 0.6229260551723592,
+        "P@10": 0.4,
+        "R@10": 0.36363636363636365,
+        "coverage@10": 0.5368421052631579,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.18947368421052632,
+        "favourite_rank": 6.0
+      },
+      "t4": {
+        "nDCG@10": 0.0052105939395428865,
+        "P@10": 0.1,
+        "R@10": 0.125,
+        "coverage@10": 0.010526315789473684,
+        "MRR": 0.16666666666666666,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 15.0
+      },
+      "t5": {
+        "nDCG@10": 0.020980996149641756,
+        "P@10": 0.1,
+        "R@10": 0.14285714285714285,
+        "coverage@10": 0.031578947368421054,
+        "MRR": 0.3333333333333333,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 23.0
+      },
+      "t6": {
+        "nDCG@10": 0.2790343724455546,
+        "P@10": 0.3,
+        "R@10": 0.375,
+        "coverage@10": 0.5473684210526315,
+        "MRR": 0.5,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 10.0
+      },
+      "t7": {
+        "nDCG@10": 0.3302925563469157,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.5157894736842106,
+        "MRR": 0.3333333333333333,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 3.0
+      },
+      "t8": {
+        "nDCG@10": 0.604899317867929,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.5052631578947369,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.24210526315789474,
+        "favourite_rank": 13.0
+      },
+      "t9": {
+        "nDCG@10": 0.541944412747244,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.4421052631578947,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.3368421052631579,
+        "favourite_rank": 1.0
+      },
+      "t10": {
+        "nDCG@10": 0.2987507492693892,
+        "P@10": 0.2,
+        "R@10": 0.2857142857142857,
+        "coverage@10": 0.4787234042553191,
+        "MRR": 0.3333333333333333,
+        "top1_accuracy": 0.0,
+        "top1_share": 0.0,
+        "favourite_rank": 8.0
+      }
+    },
+    "Filter": {
+      "t1": {
+        "nDCG@10": 0.3980859250442369,
+        "P@10": 0.3,
+        "R@10": 0.3,
+        "coverage@10": 0.4631578947368421,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.06315789473684211,
+        "favourite_rank": 3.0
+      },
+      "t2": {
+        "nDCG@10": 0.3154197115936483,
+        "P@10": 0.5,
+        "R@10": 0.5555555555555556,
+        "coverage@10": 0.5052631578947369,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.06315789473684211,
+        "favourite_rank": 9.0
+      },
+      "t3": {
+        "nDCG@10": 0.2856788227186883,
+        "P@10": 0.3,
+        "R@10": 0.2727272727272727,
+        "coverage@10": 0.21052631578947367,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.09473684210526316,
+        "favourite_rank": 20.0
+      },
+      "t4": {
+        "nDCG@10": 0.610484940988286,
+        "P@10": 0.5,
+        "R@10": 0.625,
+        "coverage@10": 0.4947368421052631,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.3684210526315789,
+        "favourite_rank": 21.0
+      },
+      "t5": {
+        "nDCG@10": 0.16476574991452947,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.16842105263157894,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.07368421052631578,
+        "favourite_rank": 19.0
+      },
+      "t6": {
+        "nDCG@10": 0.1804907672214065,
+        "P@10": 0.4,
+        "R@10": 0.5,
+        "coverage@10": 0.17894736842105263,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.06315789473684211,
+        "favourite_rank": 29.0
+      },
+      "t7": {
+        "nDCG@10": 0.33320326465802697,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.6000000000000001,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.06315789473684211,
+        "favourite_rank": 9.0
+      },
+      "t8": {
+        "nDCG@10": 0.5741914501114342,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.6736842105263158,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.021052631578947368,
+        "favourite_rank": 2.0
+      },
+      "t9": {
+        "nDCG@10": 0.20848178594397004,
+        "P@10": 0.3,
+        "R@10": 0.42857142857142855,
+        "coverage@10": 0.16842105263157894,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.10526315789473684,
+        "favourite_rank": 29.0
+      },
+      "t10": {
+        "nDCG@10": 0.346550159020884,
+        "P@10": 0.4,
+        "R@10": 0.5714285714285714,
+        "coverage@10": 0.43617021276595747,
+        "MRR": 1.0,
+        "top1_accuracy": 1.0,
+        "top1_share": 0.09574468085106383,
+        "favourite_rank": 19.0
+      }
+    }
+  },
+  "random_expected": {
+    "nDCG@10": 0.21085217016797045,
+    "P@10": 0.25373,
+    "R@10": 0.313213170995671,
+    "coverage@10": 0.3132086674132139,
+    "MRR": 0.471308144664503,
+    "top1_accuracy": 0.2551,
+    "top1_share": 0.031442206047032475,
+    "favourite_rank": 16.49985
+  },
+  "per_choice": {
+    "GraphRAG[unweighted]": {
+      "hit@10": 0.8482613277133825,
+      "mean_rank": 6.365648050579558,
+      "median_rank": 4.0
+    },
+    "Keyword": {
+      "hit@10": 0.3698630136986301,
+      "mean_rank": 16.558482613277135,
+      "median_rank": 17.0
+    },
+    "SemanticVec": {
+      "hit@10": 0.23182297154899895,
+      "mean_rank": 16.889357218124342,
+      "median_rank": 16.0
+    },
+    "Hybrid": {
+      "hit@10": 0.2971548998946259,
+      "mean_rank": 17.211801896733405,
+      "median_rank": 18.0
+    },
+    "CrossEncoder": {
+      "hit@10": 0.3951527924130664,
+      "mean_rank": 14.453108535300316,
+      "median_rank": 13.0
+    },
+    "Filter": {
+      "hit@10": 0.3898840885142255,
+      "mean_rank": 16.28345626975764,
+      "median_rank": 19.0
+    }
+  },
+  "significance": {
+    "method": "participant-clustered bootstrap (10000 resamples), Holm-corrected; diff = GraphRAG minus system",
+    "nDCG@10": {
+      "Keyword": {
+        "mean_diff": 0.49552153055413256,
+        "ci_low": 0.46915168265811147,
+        "ci_high": 0.51919664610789,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "SemanticVec": {
+        "mean_diff": 0.5900153798165314,
+        "ci_low": 0.5585886050342174,
+        "ci_high": 0.6182224907964432,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "Hybrid": {
+        "mean_diff": 0.4884143188974703,
+        "ci_low": 0.46115844704378806,
+        "ci_high": 0.5138040310790088,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "CrossEncoder": {
+        "mean_diff": 0.41447041771422866,
+        "ci_low": 0.3829015995558923,
+        "ci_high": 0.44406981840826926,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "Filter": {
+        "mean_diff": 0.39386455297686723,
+        "ci_low": 0.2955267888797413,
+        "ci_high": 0.4836835397251258,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      }
+    },
+    "coverage@10": {
+      "Keyword": {
+        "mean_diff": 0.4780858406718829,
+        "ci_low": 0.44027967525195966,
+        "ci_high": 0.5139647256438971,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "SemanticVec": {
+        "mean_diff": 0.6164902564905232,
+        "ci_low": 0.5696876061120544,
+        "ci_high": 0.6608062709966406,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "Hybrid": {
+        "mean_diff": 0.5511685602122623,
+        "ci_low": 0.5125246404053612,
+        "ci_high": 0.5884210526315787,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "CrossEncoder": {
+        "mean_diff": 0.4529176083101282,
+        "ci_low": 0.4119482082866742,
+        "ci_high": 0.49228636106395,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      },
+      "Filter": {
+        "mean_diff": 0.4580366045028164,
+        "ci_low": 0.36470684776457274,
+        "ci_high": 0.5452631578947369,
+        "p": 0.0001,
+        "p_holm": 0.0005,
+        "significant": true
+      }
+    }
+  },
+  "wins_ties_losses_nDCG": {
+    "Keyword": [
+      10,
+      0,
+      0
+    ],
+    "SemanticVec": [
+      10,
+      0,
+      0
+    ],
+    "Hybrid": [
+      9,
+      0,
+      1
+    ],
+    "CrossEncoder": [
+      9,
+      0,
+      1
+    ],
+    "Filter": [
+      9,
+      0,
+      1
+    ]
+  },
+  "tasks": [
+    {
+      "task": "t1",
+      "persona": "Evening walker",
+      "anchor": "galle_face",
+      "criterion": "spatial",
+      "question": "You are visiting Colombo and want to walk to Galle Face Green every evening. Being close enough to reach it on foot matters most, but you are also paying for the room yourself and cannot overspend. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 10,
+      "chosen": [
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 34,
+          "share": 0.3579,
+          "rank_GraphRAG[unweighted]": 7,
+          "rank_Keyword": 31,
+          "rank_SemanticVec": 23,
+          "rank_Hybrid": 30,
+          "rank_CrossEncoder": 23,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "CityRest Fort",
+          "id": "lp71118",
+          "votes": 20,
+          "share": 0.2105,
+          "rank_GraphRAG[unweighted]": 1,
+          "rank_Keyword": 13,
+          "rank_SemanticVec": 20,
+          "rank_Hybrid": 17,
+          "rank_CrossEncoder": 12,
+          "rank_Filter": 31
+        },
+        {
+          "hotel": "The Kingsbury Colombo",
+          "id": "lp3e58e",
+          "votes": 18,
+          "share": 0.1895,
+          "rank_GraphRAG[unweighted]": 3,
+          "rank_Keyword": 4,
+          "rank_SemanticVec": 18,
+          "rank_Hybrid": 6,
+          "rank_CrossEncoder": 2,
+          "rank_Filter": 23
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 29,
+          "rank_Keyword": 19,
+          "rank_SemanticVec": 16,
+          "rank_Hybrid": 21,
+          "rank_CrossEncoder": 19,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Clock Inn Colombo",
+          "id": "lp6f007",
+          "votes": 5,
+          "share": 0.0526,
+          "rank_GraphRAG[unweighted]": 17,
+          "rank_Keyword": 5,
+          "rank_SemanticVec": 6,
+          "rank_Hybrid": 3,
+          "rank_CrossEncoder": 6,
+          "rank_Filter": 28
+        },
+        {
+          "hotel": "Taj Samudra, Colombo",
+          "id": "lp33ddb",
+          "votes": 4,
+          "share": 0.0421,
+          "rank_GraphRAG[unweighted]": 6,
+          "rank_Keyword": 9,
+          "rank_SemanticVec": 22,
+          "rank_Hybrid": 13,
+          "rank_CrossEncoder": 30,
+          "rank_Filter": 13
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 4,
+          "share": 0.0421,
+          "rank_GraphRAG[unweighted]": 25,
+          "rank_Keyword": 20,
+          "rank_SemanticVec": 21,
+          "rank_Hybrid": 26,
+          "rank_CrossEncoder": 20,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Hotel Janaki",
+          "id": "lp6e625",
+          "votes": 2,
+          "share": 0.0211,
+          "rank_GraphRAG[unweighted]": 19,
+          "rank_Keyword": 22,
+          "rank_SemanticVec": 25,
+          "rank_Hybrid": 28,
+          "rank_CrossEncoder": 28,
+          "rank_Filter": 25
+        },
+        {
+          "hotel": "Galle Face Hotel",
+          "id": "lp803e1",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 8,
+          "rank_Keyword": 1,
+          "rank_SemanticVec": 1,
+          "rank_Hybrid": 1,
+          "rank_CrossEncoder": 1,
+          "rank_Filter": 11
+        },
+        {
+          "hotel": "The Steuart by Citrus",
+          "id": "lp81760",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 10,
+          "rank_SemanticVec": 2,
+          "rank_Hybrid": 4,
+          "rank_CrossEncoder": 11,
+          "rank_Filter": 20
+        }
+      ]
+    },
+    {
+      "task": "t2",
+      "persona": "Business traveller",
+      "anchor": "battaramulla",
+      "criterion": "accessibility",
+      "question": "You have two days of back-to-back meetings at government offices in Battaramulla. Reaching them quickly and predictably each morning decides your booking, though you would still like somewhere comfortable to work in the evening. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 9,
+      "chosen": [
+        {
+          "hotel": "Zylan Colombo",
+          "id": "lp857b8",
+          "votes": 35,
+          "share": 0.3684,
+          "rank_GraphRAG[unweighted]": 4,
+          "rank_Keyword": 26,
+          "rank_SemanticVec": 14,
+          "rank_Hybrid": 22,
+          "rank_CrossEncoder": 8,
+          "rank_Filter": 9
+        },
+        {
+          "hotel": "Fern Colombo",
+          "id": "lpc0df6",
+          "votes": 19,
+          "share": 0.2,
+          "rank_GraphRAG[unweighted]": 3,
+          "rank_Keyword": 20,
+          "rank_SemanticVec": 26,
+          "rank_Hybrid": 25,
+          "rank_CrossEncoder": 7,
+          "rank_Filter": 26
+        },
+        {
+          "hotel": "Best Western Elyon Colombo",
+          "id": "lp72a36",
+          "votes": 17,
+          "share": 0.1789,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 4,
+          "rank_SemanticVec": 25,
+          "rank_Hybrid": 13,
+          "rank_CrossEncoder": 25,
+          "rank_Filter": 19
+        },
+        {
+          "hotel": "Paradise Road Tintagel Colombo",
+          "id": "lp5f0e5",
+          "votes": 10,
+          "share": 0.1053,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 5,
+          "rank_SemanticVec": 11,
+          "rank_Hybrid": 2,
+          "rank_CrossEncoder": 27,
+          "rank_Filter": 15
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 14,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 24,
+          "rank_Hybrid": 31,
+          "rank_CrossEncoder": 10,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 4,
+          "share": 0.0421,
+          "rank_GraphRAG[unweighted]": 24,
+          "rank_Keyword": 7,
+          "rank_SemanticVec": 13,
+          "rank_Hybrid": 8,
+          "rank_CrossEncoder": 18,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 2,
+          "share": 0.0211,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 24,
+          "rank_SemanticVec": 27,
+          "rank_Hybrid": 28,
+          "rank_CrossEncoder": 29,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Marino Beach Colombo",
+          "id": "lp102b02",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 13,
+          "rank_Keyword": 17,
+          "rank_SemanticVec": 32,
+          "rank_Hybrid": 27,
+          "rank_CrossEncoder": 13,
+          "rank_Filter": 5
+        },
+        {
+          "hotel": "Global Towers Hotel & Apartments",
+          "id": "lp40d3f",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 7,
+          "rank_Keyword": 30,
+          "rank_SemanticVec": 18,
+          "rank_Hybrid": 26,
+          "rank_CrossEncoder": 32,
+          "rank_Filter": 32
+        }
+      ]
+    },
+    {
+      "task": "t3",
+      "persona": "Self-funded worker",
+      "anchor": "fort",
+      "criterion": "economic",
+      "question": "You are working in Colombo Fort for a week and paying for the room yourself, so cost comes first - but a long daily commute would eat into your working day. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 11,
+      "chosen": [
+        {
+          "hotel": "CityRest Fort",
+          "id": "lp71118",
+          "votes": 18,
+          "share": 0.1895,
+          "rank_GraphRAG[unweighted]": 1,
+          "rank_Keyword": 1,
+          "rank_SemanticVec": 4,
+          "rank_Hybrid": 1,
+          "rank_CrossEncoder": 1,
+          "rank_Filter": 31
+        },
+        {
+          "hotel": "The Steuart by Citrus",
+          "id": "lp81760",
+          "votes": 18,
+          "share": 0.1895,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 10,
+          "rank_SemanticVec": 5,
+          "rank_Hybrid": 5,
+          "rank_CrossEncoder": 6,
+          "rank_Filter": 20
+        },
+        {
+          "hotel": "Fairway Colombo - Sri Lanka's First Hotel With Robot Technology",
+          "id": "lp9855f",
+          "votes": 13,
+          "share": 0.1368,
+          "rank_GraphRAG[unweighted]": 4,
+          "rank_Keyword": 7,
+          "rank_SemanticVec": 11,
+          "rank_Hybrid": 7,
+          "rank_CrossEncoder": 12,
+          "rank_Filter": 22
+        },
+        {
+          "hotel": "The Kingsbury Colombo",
+          "id": "lp3e58e",
+          "votes": 9,
+          "share": 0.0947,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 29,
+          "rank_SemanticVec": 19,
+          "rank_Hybrid": 26,
+          "rank_CrossEncoder": 22,
+          "rank_Filter": 23
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 9,
+          "share": 0.0947,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 18,
+          "rank_SemanticVec": 14,
+          "rank_Hybrid": 16,
+          "rank_CrossEncoder": 26,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Clock Inn Colombo",
+          "id": "lp6f007",
+          "votes": 8,
+          "share": 0.0842,
+          "rank_GraphRAG[unweighted]": 19,
+          "rank_Keyword": 5,
+          "rank_SemanticVec": 6,
+          "rank_Hybrid": 2,
+          "rank_CrossEncoder": 2,
+          "rank_Filter": 28
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 8,
+          "share": 0.0842,
+          "rank_GraphRAG[unweighted]": 9,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 24,
+          "rank_Hybrid": 31,
+          "rank_CrossEncoder": 29,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Zest Metropole",
+          "id": "lp655a9e91",
+          "votes": 7,
+          "share": 0.0737,
+          "rank_GraphRAG[unweighted]": 3,
+          "rank_Keyword": 6,
+          "rank_SemanticVec": 29,
+          "rank_Hybrid": 15,
+          "rank_CrossEncoder": 4,
+          "rank_Filter": 17
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 3,
+          "share": 0.0316,
+          "rank_GraphRAG[unweighted]": 26,
+          "rank_Keyword": 20,
+          "rank_SemanticVec": 17,
+          "rank_Hybrid": 23,
+          "rank_CrossEncoder": 13,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Galle Face Hotel",
+          "id": "lp803e1",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 6,
+          "rank_Keyword": 31,
+          "rank_SemanticVec": 13,
+          "rank_Hybrid": 25,
+          "rank_CrossEncoder": 21,
+          "rank_Filter": 11
+        },
+        {
+          "hotel": "Hotel Janaki",
+          "id": "lp6e625",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 16,
+          "rank_Keyword": 9,
+          "rank_SemanticVec": 21,
+          "rank_Hybrid": 14,
+          "rank_CrossEncoder": 28,
+          "rank_Filter": 25
+        }
+      ]
+    },
+    {
+      "task": "t4",
+      "persona": "Family on holiday",
+      "anchor": "bambalapitiya",
+      "criterion": "facility",
+      "question": "You are travelling with your family and two young children and visiting relatives in Bambalapitiya. A pool, space and good on-site facilities matter most, and being near the family helps. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 8,
+      "chosen": [
+        {
+          "hotel": "Radisson Hotel Colombo",
+          "id": "lp76eba",
+          "votes": 36,
+          "share": 0.3789,
+          "rank_GraphRAG[unweighted]": 1,
+          "rank_Keyword": 18,
+          "rank_SemanticVec": 15,
+          "rank_Hybrid": 16,
+          "rank_CrossEncoder": 15,
+          "rank_Filter": 21
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 35,
+          "share": 0.3684,
+          "rank_GraphRAG[unweighted]": 8,
+          "rank_Keyword": 14,
+          "rank_SemanticVec": 20,
+          "rank_Hybrid": 18,
+          "rank_CrossEncoder": 16,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Clock Inn Colombo",
+          "id": "lp6f007",
+          "votes": 8,
+          "share": 0.0842,
+          "rank_GraphRAG[unweighted]": 6,
+          "rank_Keyword": 11,
+          "rank_SemanticVec": 30,
+          "rank_Hybrid": 20,
+          "rank_CrossEncoder": 31,
+          "rank_Filter": 28
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 7,
+          "share": 0.0737,
+          "rank_GraphRAG[unweighted]": 17,
+          "rank_Keyword": 29,
+          "rank_SemanticVec": 14,
+          "rank_Hybrid": 27,
+          "rank_CrossEncoder": 18,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Colombo Court Hotel & Spa",
+          "id": "lp67286",
+          "votes": 4,
+          "share": 0.0421,
+          "rank_GraphRAG[unweighted]": 10,
+          "rank_Keyword": 30,
+          "rank_SemanticVec": 12,
+          "rank_Hybrid": 23,
+          "rank_CrossEncoder": 23,
+          "rank_Filter": 14
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 3,
+          "share": 0.0316,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 26,
+          "rank_SemanticVec": 22,
+          "rank_Hybrid": 29,
+          "rank_CrossEncoder": 14,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Marino Beach Colombo",
+          "id": "lp102b02",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 7,
+          "rank_Keyword": 8,
+          "rank_SemanticVec": 9,
+          "rank_Hybrid": 6,
+          "rank_CrossEncoder": 6,
+          "rank_Filter": 5
+        },
+        {
+          "hotel": "Granbell Hotel Colombo",
+          "id": "lp6557c6e0",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 13,
+          "rank_Keyword": 16,
+          "rank_SemanticVec": 5,
+          "rank_Hybrid": 7,
+          "rank_CrossEncoder": 20,
+          "rank_Filter": 4
+        }
+      ]
+    },
+    {
+      "task": "t5",
+      "persona": "Light sleeper",
+      "anchor": "nugegoda",
+      "criterion": "disruption",
+      "question": "You are attending an event in Nugegoda but you are a light sleeper who cannot rest with traffic noise and crowds. A calm area matters most, though you do not want to pay a premium for it. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 7,
+      "chosen": [
+        {
+          "hotel": "Best Western Elyon Colombo",
+          "id": "lp72a36",
+          "votes": 45,
+          "share": 0.4737,
+          "rank_GraphRAG[unweighted]": 1,
+          "rank_Keyword": 4,
+          "rank_SemanticVec": 16,
+          "rank_Hybrid": 7,
+          "rank_CrossEncoder": 23,
+          "rank_Filter": 19
+        },
+        {
+          "hotel": "Hotel Janaki",
+          "id": "lp6e625",
+          "votes": 24,
+          "share": 0.2526,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 14,
+          "rank_SemanticVec": 24,
+          "rank_Hybrid": 20,
+          "rank_CrossEncoder": 28,
+          "rank_Filter": 25
+        },
+        {
+          "hotel": "Supun Arcade Residency",
+          "id": "lp67708",
+          "votes": 10,
+          "share": 0.1053,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 32,
+          "rank_Hybrid": 32,
+          "rank_CrossEncoder": 11,
+          "rank_Filter": 30
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 7,
+          "share": 0.0737,
+          "rank_GraphRAG[unweighted]": 12,
+          "rank_Keyword": 30,
+          "rank_SemanticVec": 29,
+          "rank_Hybrid": 31,
+          "rank_CrossEncoder": 14,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 5,
+          "share": 0.0526,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 31,
+          "rank_SemanticVec": 14,
+          "rank_Hybrid": 27,
+          "rank_CrossEncoder": 27,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 3,
+          "share": 0.0316,
+          "rank_GraphRAG[unweighted]": 22,
+          "rank_Keyword": 22,
+          "rank_SemanticVec": 23,
+          "rank_Hybrid": 29,
+          "rank_CrossEncoder": 3,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Marino Beach Colombo",
+          "id": "lp102b02",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 11,
+          "rank_Keyword": 6,
+          "rank_SemanticVec": 28,
+          "rank_Hybrid": 14,
+          "rank_CrossEncoder": 32,
+          "rank_Filter": 5
+        }
+      ]
+    },
+    {
+      "task": "t6",
+      "persona": "Beach weekender",
+      "anchor": "mount_lavinia",
+      "criterion": "spatial",
+      "question": "You want a weekend by the sea at Mount Lavinia. Being close to the beach is the point of the trip, but you also want somewhere peaceful rather than a busy strip. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 8,
+      "chosen": [
+        {
+          "hotel": "Mirage Colombo",
+          "id": "lp7c172",
+          "votes": 40,
+          "share": 0.4211,
+          "rank_GraphRAG[unweighted]": 1,
+          "rank_Keyword": 17,
+          "rank_SemanticVec": 19,
+          "rank_Hybrid": 21,
+          "rank_CrossEncoder": 10,
+          "rank_Filter": 29
+        },
+        {
+          "hotel": "Global Towers Hotel & Apartments",
+          "id": "lp40d3f",
+          "votes": 21,
+          "share": 0.2211,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 26,
+          "rank_SemanticVec": 7,
+          "rank_Hybrid": 16,
+          "rank_CrossEncoder": 23,
+          "rank_Filter": 32
+        },
+        {
+          "hotel": "Supun Arcade Residency",
+          "id": "lp67708",
+          "votes": 11,
+          "share": 0.1158,
+          "rank_GraphRAG[unweighted]": 4,
+          "rank_Keyword": 10,
+          "rank_SemanticVec": 16,
+          "rank_Hybrid": 11,
+          "rank_CrossEncoder": 2,
+          "rank_Filter": 30
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 17,
+          "rank_Keyword": 5,
+          "rank_SemanticVec": 10,
+          "rank_Hybrid": 3,
+          "rank_CrossEncoder": 11,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Radisson Hotel Colombo",
+          "id": "lp76eba",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 28,
+          "rank_SemanticVec": 20,
+          "rank_Hybrid": 29,
+          "rank_CrossEncoder": 22,
+          "rank_Filter": 21
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 9,
+          "rank_Keyword": 31,
+          "rank_SemanticVec": 24,
+          "rank_Hybrid": 31,
+          "rank_CrossEncoder": 27,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 4,
+          "share": 0.0421,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 6,
+          "rank_Hybrid": 18,
+          "rank_CrossEncoder": 13,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Marino Beach Colombo",
+          "id": "lp102b02",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 8,
+          "rank_Keyword": 1,
+          "rank_SemanticVec": 2,
+          "rank_Hybrid": 1,
+          "rank_CrossEncoder": 8,
+          "rank_Filter": 5
+        }
+      ]
+    },
+    {
+      "task": "t7",
+      "persona": "Long-stay consultant",
+      "anchor": "rajagiriya",
+      "criterion": "economic",
+      "question": "You are on a three-week assignment with an office in Rajagiriya and a fixed daily allowance, so the nightly rate matters a great deal - but a slow commute every day would wear you down. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 7,
+      "chosen": [
+        {
+          "hotel": "Zylan Colombo",
+          "id": "lp857b8",
+          "votes": 43,
+          "share": 0.4526,
+          "rank_GraphRAG[unweighted]": 3,
+          "rank_Keyword": 26,
+          "rank_SemanticVec": 13,
+          "rank_Hybrid": 25,
+          "rank_CrossEncoder": 3,
+          "rank_Filter": 9
+        },
+        {
+          "hotel": "Fern Colombo",
+          "id": "lpc0df6",
+          "votes": 26,
+          "share": 0.2737,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 7,
+          "rank_SemanticVec": 32,
+          "rank_Hybrid": 21,
+          "rank_CrossEncoder": 13,
+          "rank_Filter": 26
+        },
+        {
+          "hotel": "Paradise Road Tintagel Colombo",
+          "id": "lp5f0e5",
+          "votes": 11,
+          "share": 0.1158,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 9,
+          "rank_SemanticVec": 16,
+          "rank_Hybrid": 9,
+          "rank_CrossEncoder": 28,
+          "rank_Filter": 15
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 16,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 19,
+          "rank_Hybrid": 28,
+          "rank_CrossEncoder": 8,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 5,
+          "share": 0.0526,
+          "rank_GraphRAG[unweighted]": 22,
+          "rank_Keyword": 31,
+          "rank_SemanticVec": 20,
+          "rank_Hybrid": 29,
+          "rank_CrossEncoder": 20,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 3,
+          "share": 0.0316,
+          "rank_GraphRAG[unweighted]": 32,
+          "rank_Keyword": 29,
+          "rank_SemanticVec": 26,
+          "rank_Hybrid": 30,
+          "rank_CrossEncoder": 18,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Supun Arcade Residency",
+          "id": "lp67708",
+          "votes": 1,
+          "share": 0.0105,
+          "rank_GraphRAG[unweighted]": 13,
+          "rank_Keyword": 28,
+          "rank_SemanticVec": 31,
+          "rank_Hybrid": 32,
+          "rank_CrossEncoder": 31,
+          "rank_Filter": 30
+        }
+      ]
+    },
+    {
+      "task": "t8",
+      "persona": "Value-seeking couple",
+      "anchor": "kollupitiya",
+      "criterion": "facility",
+      "question": "You and your partner are staying near Kollupitiya for a few nights and want a genuinely nice hotel - good rooms and facilities - at a price that still feels like value rather than a splurge. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 7,
+      "chosen": [
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 27,
+          "share": 0.2842,
+          "rank_GraphRAG[unweighted]": 6,
+          "rank_Keyword": 29,
+          "rank_SemanticVec": 18,
+          "rank_Hybrid": 27,
+          "rank_CrossEncoder": 13,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Granbell Hotel Colombo",
+          "id": "lp6557c6e0",
+          "votes": 23,
+          "share": 0.2421,
+          "rank_GraphRAG[unweighted]": 4,
+          "rank_Keyword": 4,
+          "rank_SemanticVec": 7,
+          "rank_Hybrid": 2,
+          "rank_CrossEncoder": 1,
+          "rank_Filter": 4
+        },
+        {
+          "hotel": "Amari Colombo, Sri Lanka",
+          "id": "lp6574b103",
+          "votes": 15,
+          "share": 0.1579,
+          "rank_GraphRAG[unweighted]": 7,
+          "rank_Keyword": 12,
+          "rank_SemanticVec": 5,
+          "rank_Hybrid": 5,
+          "rank_CrossEncoder": 3,
+          "rank_Filter": 12
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 12,
+          "share": 0.1263,
+          "rank_GraphRAG[unweighted]": 30,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 16,
+          "rank_Hybrid": 28,
+          "rank_CrossEncoder": 20,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Sofia Colombo City Hotel",
+          "id": "lp656d3aa9",
+          "votes": 10,
+          "share": 0.1053,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 3,
+          "rank_SemanticVec": 1,
+          "rank_Hybrid": 1,
+          "rank_CrossEncoder": 2,
+          "rank_Filter": 18
+        },
+        {
+          "hotel": "Paradise Road Tintagel Colombo",
+          "id": "lp5f0e5",
+          "votes": 6,
+          "share": 0.0632,
+          "rank_GraphRAG[unweighted]": 24,
+          "rank_Keyword": 10,
+          "rank_SemanticVec": 8,
+          "rank_Hybrid": 6,
+          "rank_CrossEncoder": 31,
+          "rank_Filter": 15
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 2,
+          "share": 0.0211,
+          "rank_GraphRAG[unweighted]": 10,
+          "rank_Keyword": 30,
+          "rank_SemanticVec": 23,
+          "rank_Hybrid": 31,
+          "rank_CrossEncoder": 29,
+          "rank_Filter": 1
+        }
+      ]
+    },
+    {
+      "task": "t9",
+      "persona": "Remote worker",
+      "anchor": "dehiwala",
+      "criterion": "disruption",
+      "question": "You are working remotely for two weeks near Dehiwala. You need somewhere quiet enough to take calls all day, but you also do not want to be cut off from shops and transport. Which hotel would you book?",
+      "choices": 95,
+      "distinct_hotels": 7,
+      "chosen": [
+        {
+          "hotel": "Mirage Colombo",
+          "id": "lp7c172",
+          "votes": 32,
+          "share": 0.3368,
+          "rank_GraphRAG[unweighted]": 1,
+          "rank_Keyword": 4,
+          "rank_SemanticVec": 4,
+          "rank_Hybrid": 1,
+          "rank_CrossEncoder": 1,
+          "rank_Filter": 29
+        },
+        {
+          "hotel": "Global Towers Hotel & Apartments",
+          "id": "lp40d3f",
+          "votes": 27,
+          "share": 0.2842,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 18,
+          "rank_SemanticVec": 6,
+          "rank_Hybrid": 9,
+          "rank_CrossEncoder": 32,
+          "rank_Filter": 32
+        },
+        {
+          "hotel": "Supun Arcade Residency",
+          "id": "lp67708",
+          "votes": 15,
+          "share": 0.1579,
+          "rank_GraphRAG[unweighted]": 4,
+          "rank_Keyword": 23,
+          "rank_SemanticVec": 32,
+          "rank_Hybrid": 31,
+          "rank_CrossEncoder": 17,
+          "rank_Filter": 30
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 10,
+          "share": 0.1053,
+          "rank_GraphRAG[unweighted]": 9,
+          "rank_Keyword": 31,
+          "rank_SemanticVec": 10,
+          "rank_Hybrid": 23,
+          "rank_CrossEncoder": 8,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Radisson Hotel Colombo",
+          "id": "lp76eba",
+          "votes": 5,
+          "share": 0.0526,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 20,
+          "rank_SemanticVec": 15,
+          "rank_Hybrid": 21,
+          "rank_CrossEncoder": 13,
+          "rank_Filter": 21
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 4,
+          "share": 0.0421,
+          "rank_GraphRAG[unweighted]": 18,
+          "rank_Keyword": 26,
+          "rank_SemanticVec": 22,
+          "rank_Hybrid": 28,
+          "rank_CrossEncoder": 24,
+          "rank_Filter": 2
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 2,
+          "share": 0.0211,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 21,
+          "rank_Hybrid": 30,
+          "rank_CrossEncoder": 30,
+          "rank_Filter": 3
+        }
+      ]
+    },
+    {
+      "task": "t10",
+      "persona": "Business traveller",
+      "anchor": "battaramulla",
+      "criterion": "accessibility",
+      "question": "You are again booking for two days of meetings in Battaramulla, with short and predictable travel as your priority and a comfortable room to return to. Which hotel would you book?",
+      "choices": 94,
+      "distinct_hotels": 7,
+      "chosen": [
+        {
+          "hotel": "Best Western Elyon Colombo",
+          "id": "lp72a36",
+          "votes": 25,
+          "share": 0.266,
+          "rank_GraphRAG[unweighted]": 2,
+          "rank_Keyword": 5,
+          "rank_SemanticVec": 28,
+          "rank_Hybrid": 16,
+          "rank_CrossEncoder": 8,
+          "rank_Filter": 19
+        },
+        {
+          "hotel": "Zylan Colombo",
+          "id": "lp857b8",
+          "votes": 24,
+          "share": 0.2553,
+          "rank_GraphRAG[unweighted]": 4,
+          "rank_Keyword": 26,
+          "rank_SemanticVec": 16,
+          "rank_Hybrid": 26,
+          "rank_CrossEncoder": 22,
+          "rank_Filter": 9
+        },
+        {
+          "hotel": "Fern Colombo",
+          "id": "lpc0df6",
+          "votes": 20,
+          "share": 0.2128,
+          "rank_GraphRAG[unweighted]": 3,
+          "rank_Keyword": 4,
+          "rank_SemanticVec": 31,
+          "rank_Hybrid": 19,
+          "rank_CrossEncoder": 3,
+          "rank_Filter": 26
+        },
+        {
+          "hotel": "MaRadha Colombo",
+          "id": "lp65589ffb",
+          "votes": 9,
+          "share": 0.0957,
+          "rank_GraphRAG[unweighted]": 14,
+          "rank_Keyword": 32,
+          "rank_SemanticVec": 22,
+          "rank_Hybrid": 30,
+          "rank_CrossEncoder": 24,
+          "rank_Filter": 1
+        },
+        {
+          "hotel": "Paradise Road Tintagel Colombo",
+          "id": "lp5f0e5",
+          "votes": 8,
+          "share": 0.0851,
+          "rank_GraphRAG[unweighted]": 5,
+          "rank_Keyword": 10,
+          "rank_SemanticVec": 9,
+          "rank_Hybrid": 4,
+          "rank_CrossEncoder": 29,
+          "rank_Filter": 15
+        },
+        {
+          "hotel": "Shangri-La Colombo",
+          "id": "lpb1537",
+          "votes": 4,
+          "share": 0.0426,
+          "rank_GraphRAG[unweighted]": 31,
+          "rank_Keyword": 27,
+          "rank_SemanticVec": 25,
+          "rank_Hybrid": 29,
+          "rank_CrossEncoder": 21,
+          "rank_Filter": 3
+        },
+        {
+          "hotel": "Sheraton Colombo Hotel",
+          "id": "lp656d40c7",
+          "votes": 4,
+          "share": 0.0426,
+          "rank_GraphRAG[unweighted]": 24,
+          "rank_Keyword": 20,
+          "rank_SemanticVec": 10,
+          "rank_Hybrid": 15,
+          "rank_CrossEncoder": 18,
+          "rank_Filter": 2
+        }
+      ]
+    }
+  ]
+}

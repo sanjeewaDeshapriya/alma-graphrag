@@ -72,8 +72,8 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from src.crag.query_parser import QueryIntent, parse_query
 from src.graph.query import _get_driver
-from src.graph.retriever import (RESEARCH_WEIGHT_PROFILES, WEIGHT_PROFILES,
-                                 WeightedRetriever)
+from src.graph.retriever import (RESEARCH_WEIGHT_PROFILES, SCORING_MODES, WEIGHT_PROFILES,
+                                 WeightedRetriever, resolve_scoring_mode)
 from src.search import vector_store as vs
 from src.search.embedder import embed_one
 
@@ -604,6 +604,17 @@ class LTRBaseline:
 # Proposed system
 # ---------------------------------------------------------------------------
 
+def graph_system_name(scoring_mode: Optional[str] = None) -> str:
+    """Row name of the proposed graph system in a given scoring mode.
+
+    Weighted keeps the historical name, so every existing results file and test
+    still refers to the same row; unweighted gets its own name so the two can sit
+    side by side in one table.
+    """
+    return ("GraphRAG[unweighted]" if resolve_scoring_mode(scoring_mode) == "unweighted"
+            else "WeightedGraphRAG")
+
+
 class WeightedGraphBaseline:
     """The proposed system.
 
@@ -619,9 +630,11 @@ class WeightedGraphBaseline:
                  weight_policy: Optional[str] = None,
                  self_weight: float = 0.7,
                  label: Optional[str] = None,
-                 research_profile: bool = False) -> None:
+                 research_profile: bool = False,
+                 scoring_mode: Optional[str] = None) -> None:
         self.weight_profile = weight_profile
         self.research_profile = bool(research_profile)
+        self.scoring_mode = resolve_scoring_mode(scoring_mode)
         tags = []
         if weight_policy:
             tags.append(weight_policy)
@@ -631,9 +644,12 @@ class WeightedGraphBaseline:
             tags.append(f"price={price_policy}")
         if self_weight >= 1.0:
             tags.append("no-diffusion")
-        self.name = label or (
-            "WeightedGraphRAG" if not tags else f"WeightedGraphRAG[{','.join(tags)}]"
-        )
+        if self.scoring_mode == "unweighted":
+            self.name = label or f"GraphRAG[{','.join(['unweighted'] + tags)}]"
+        else:
+            self.name = label or (
+                "WeightedGraphRAG" if not tags else f"WeightedGraphRAG[{','.join(tags)}]"
+            )
 
         model = None
         if weight_policy:
@@ -644,6 +660,7 @@ class WeightedGraphBaseline:
             weight_profile=weight_profile, price_policy=price_policy,
             self_weight=self_weight, weight_model=model,
             research_profile=research_profile,
+            scoring_mode=self.scoring_mode,
             # Safe here and only here: the graph is static for the duration of
             # an evaluation run, and without it a ten-system table issues the
             # expensive multi-hop query several hundred times identically.
@@ -698,7 +715,9 @@ def all_baselines(weight_profiles: Optional[List[str]] = None,
                   include_llm: bool = True,
                   include_cross_encoder: bool = True,
                   include_ltr: bool = True,
-                  include_ablations: bool = True) -> List[Any]:
+                  include_ablations: bool = True,
+                  scoring_mode: Optional[str] = None,
+                  compare_modes: bool = False) -> List[Any]:
     """Assemble the comparison line-up, skipping whatever is unavailable.
 
     Every optional system logs the reason it was skipped, so a thin table can be
@@ -746,7 +765,20 @@ def all_baselines(weight_profiles: Optional[List[str]] = None,
         else:
             logger.warning("LTR skipped — scikit-learn not importable.")
 
-    baselines.append(WeightedGraphBaseline())
+    mode = resolve_scoring_mode(scoring_mode)
+    baselines.append(WeightedGraphBaseline(scoring_mode=mode))
+    if compare_modes:
+        # The other mode as an extra row, so weighted and unweighted GraphRAG
+        # are compared on identical gold in one run.
+        other = [m for m in SCORING_MODES if m != mode][0]
+        baselines.append(WeightedGraphBaseline(scoring_mode=other))
+
+    if mode == "unweighted" and (weight_profiles or weight_policies):
+        # Weight profiles and weight policies ARE weights; in a graph-only run
+        # they would silently reintroduce what the mode exists to exclude.
+        logger.warning("SCORING_MODE=unweighted: skipping weight profiles %s and "
+                       "weight policies %s", weight_profiles or [], weight_policies or [])
+        weight_profiles, weight_policies = [], []
 
     for name in (weight_profiles or []):
         if name in WEIGHT_PROFILES:
@@ -764,13 +796,11 @@ def all_baselines(weight_profiles: Optional[List[str]] = None,
         except (FileNotFoundError, KeyError) as exc:
             logger.warning("weight policy %r skipped — %s", policy, exc)
     for pp in (price_policies or []):
-        baselines.append(WeightedGraphBaseline(price_policy=pp))
+        baselines.append(WeightedGraphBaseline(price_policy=pp, scoring_mode=mode))
 
     if include_ablations:
         # self_weight = 1.0 disables neighbourhood diffusion, isolating what the
         # multi-hop traversal contributes.
-        baselines.append(WeightedGraphBaseline(
-            self_weight=1.0, label="WeightedGraphRAG[no-diffusion]"
-        ))
+        baselines.append(WeightedGraphBaseline(self_weight=1.0, scoring_mode=mode))
 
     return baselines
