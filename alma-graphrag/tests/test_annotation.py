@@ -1,5 +1,6 @@
 import pytest
 
+from evaluation.annotation.aggregate import annotation_status, validate_annotations
 from evaluation.annotation.agreement import (
     aggregate_gold,
     binarize,
@@ -62,3 +63,25 @@ def test_aggregate_gold():
     gold = aggregate_gold(labels)
     assert gold["q1"] == {"h1", "h3"}
     assert gold["q2"] == set()
+
+
+def test_annotation_status_counts_missing_judgments():
+    status = annotation_status({"q1": {"h1": [2, 1, None]}}, annotator_count=3)
+    assert status["items"] == 1
+    assert status["judgments"] == 2
+    assert status["complete_items"] == 0
+    assert status["missing_judgments"] == 1
+
+
+def test_human_gold_requires_complete_agreeing_annotations():
+    with pytest.raises(ValueError, match="judgments are missing"):
+        validate_annotations({"q1": {"h1": [2, 1, None]}}, 3, 0.667)
+
+    with pytest.raises(ValueError, match="alpha"):
+        validate_annotations({"q1": {"h1": [0, 2, 0], "h2": [2, 0, 2]}}, 3, 0.667)
+
+    status, alpha = validate_annotations(
+        {"q1": {"h1": [2, 2, 2], "h2": [0, 0, 0]}}, 3, 0.667
+    )
+    assert status["complete_items"] == 2
+    assert alpha == pytest.approx(1.0)

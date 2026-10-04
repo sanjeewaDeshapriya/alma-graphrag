@@ -55,6 +55,12 @@ class QueryIntent:
     accessibility_priority: str = "normal"  # high | normal
     avoid_traffic: bool = False
     sort_intent: str = "best_overall"       # best_overall | cheapest | highest_rated | most_accessible
+    # Which DIRECTION the `economic` component should point. The component is
+    # defined "cheaper scores higher", which silently makes every premium query
+    # ("upmarket hotels in colombo") rank the cheapest hotels first — and the
+    # bigger the economic weight, the worse that gets. `high` flips it, the same
+    # way proximity_preference="far" flips `spatial`.
+    price_preference: str = "any"           # low | high | any
 
     raw_keywords: List[str] = field(default_factory=list)
 
@@ -65,6 +71,13 @@ class QueryIntent:
 # ---------------------------------------------------------------------------
 # Deterministic regex extraction
 # ---------------------------------------------------------------------------
+
+_BUDGET_TERMS = ["cheap", "budget", "affordable", "lowest price", "least expensive",
+                 "value for money", "good value", "economical", "inexpensive", "low cost",
+                 "save money", "wallet friendly"]
+
+_PREMIUM_TERMS = ["upmarket", "high end", "high-end", "premium", "luxury", "luxurious",
+                  "splurge", "splurging", "upscale", "five star", "5 star", "top end"]
 
 # Canonical amenity → mention synonyms (lowercase). Matching is substring-based.
 _AMENITY_SYNONYMS: Dict[str, List[str]] = {
@@ -93,7 +106,11 @@ _ATTRACTION_KEYWORDS = [
 
 _QUIET_TERMS = ["quiet", "calm", "peaceful", "secluded", "tranquil", "relaxing", "away from"]
 _CLOSE_TERMS = ["walkable", "walking distance", "close to", "near the", "next to", "in the heart"]
-_TRAFFIC_TERMS = ["avoid traffic", "low traffic", "no traffic", "easy access", "good road", "stable eta", "quick access", "fast access"]
+_TRAFFIC_TERMS = ["avoid traffic", "low traffic", "no traffic", "easy access", "good road", "stable eta", "quick access", "fast access",
+                  # Delay phrasings used by evaluation/queryset_disruption.json. Without
+                  # them only the LLM slot-fill could raise the disruption weight, and
+                  # that pass is neither deterministic nor always available.
+                  "traffic delay", "congestion", "stuck in traffic", "rush hour", "road closure"]
 _ACCESS_TERMS = ["accessible", "accessibility", "easy to reach", "good access", "transport"]
 
 _STOPWORDS = {
@@ -180,8 +197,17 @@ def _regex_intent(question: str, default_city: Optional[str]) -> QueryIntent:
     if any(p in t for p in _ACCESS_TERMS):
         intent.accessibility_priority = "high"
 
+    # Price direction. Checked before sort intent because "luxury" belongs to
+    # both: it asks for quality AND signals that dearer is better, whereas
+    # "upmarket"/"high end"/"premium" carry no rating claim at all and used to
+    # fall through to best_overall with `economic` still pointing at cheap.
+    if any(p in t for p in _PREMIUM_TERMS):
+        intent.price_preference = "high"
+    elif any(p in t for p in _BUDGET_TERMS):
+        intent.price_preference = "low"
+
     # Sort intent
-    if any(p in t for p in ["cheap", "budget", "affordable", "lowest price", "least expensive"]):
+    if any(p in t for p in _BUDGET_TERMS):
         intent.sort_intent = "cheapest"
     elif any(p in t for p in ["top-rated", "highest rated", "best rated", "luxury", "5 star", "five star"]):
         intent.sort_intent = "highest_rated"
@@ -211,6 +237,7 @@ Extract the user's intent into STRICT JSON (no markdown, no prose). Schema:
   "min_rating": number or null,
   "min_star": integer or null,
   "proximity_preference": "close" | "far" | "any",
+  "price_preference": "low" | "high" | "any",
   "accessibility_priority": "high" | "normal",
   "avoid_traffic": boolean,
   "sort_intent": "best_overall" | "cheapest" | "highest_rated" | "most_accessible"
@@ -256,8 +283,9 @@ def parse_query(question: str, default_city: Optional[str] = None) -> QueryInten
     """Translate a natural-language question into a structured QueryIntent.
 
     Regex extraction always runs; LLM output (if available) overrides/enriches
-    the higher-level slots and the city. The merge is conservative — LLM values
-    win for scalar intent slots, and list slots are unioned.
+    the higher-level slots and the city. The merge is conservative — a specific
+    LLM value wins for scalar intent slots, a neutral one never erases a
+    specific regex value, and list slots are unioned.
     """
     intent = _regex_intent(question, default_city)
     llm = _llm_intent(question)
@@ -280,14 +308,26 @@ def parse_query(question: str, default_city: Optional[str] = None) -> QueryInten
             if llm.get(key) is not None:
                 setattr(intent, key, llm[key])
 
-        if llm.get("proximity_preference") in ("close", "far", "any"):
-            intent.proximity_preference = llm["proximity_preference"]
-        if llm.get("accessibility_priority") in ("high", "normal"):
-            intent.accessibility_priority = llm["accessibility_priority"]
-        if isinstance(llm.get("avoid_traffic"), bool):
-            intent.avoid_traffic = llm["avoid_traffic"]
-        if llm.get("sort_intent") in ("best_overall", "cheapest", "highest_rated", "most_accessible"):
-            intent.sort_intent = llm["sort_intent"]
+        # Intent slots: a SPECIFIC LLM value wins, but the neutral value ("any",
+        # "normal", "best_overall", False) never overwrites a specific value the
+        # regex pass found. The model returns the neutral value when it has no
+        # opinion, and letting that win erased correct readings: "premium
+        # accommodation in colombo" regex-parses to price_preference="high",
+        # gemini-2.5-flash answered "any", and the premium query ranked the
+        # cheapest hotels first (measured 2026-09-14, price slice p0014).
+        def _merge_choice(key: str, allowed: tuple, neutral: str) -> None:
+            value = llm.get(key)
+            if value in allowed and (value != neutral or getattr(intent, key) == neutral):
+                setattr(intent, key, value)
+
+        _merge_choice("proximity_preference", ("close", "far", "any"), "any")
+        _merge_choice("price_preference", ("low", "high", "any"), "any")
+        _merge_choice("accessibility_priority", ("high", "normal"), "normal")
+        _merge_choice("sort_intent",
+                      ("best_overall", "cheapest", "highest_rated", "most_accessible"),
+                      "best_overall")
+        if llm.get("avoid_traffic") is True:
+            intent.avoid_traffic = True
 
     logger.info(
         "Parsed intent: city=%s amenities=%s attractions=%s price<=%s rating>=%s prox=%s avoid_traffic=%s sort=%s",

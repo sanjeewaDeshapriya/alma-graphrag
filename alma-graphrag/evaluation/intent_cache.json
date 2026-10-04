@@ -1,0 +1,1601 @@
+{
+ "Colombo||affordable hotels under 30000 rated above 4.3": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 30000,
+  "min_price_lkr": null,
+  "min_rating": 4.3,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "affordable",
+   "under",
+   "rated",
+   "above"
+  ]
+ },
+ "Colombo||top-rated hotels above 4.8 in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.8,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "rated",
+   "above",
+   "colombo"
+  ]
+ },
+ "Colombo||front desk hotels under 30000": {
+  "city": "Colombo",
+  "required_amenities": [
+   "front desk"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": 30000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "front",
+   "desk",
+   "under"
+  ]
+ },
+ "Colombo||affordable hotels under 25000 rated above 4.4 in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": 4.4,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "affordable",
+   "under",
+   "rated",
+   "above",
+   "colombo"
+  ]
+ },
+ "Colombo||budget hotels below 25000 easy to reach within 6 minutes": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "budget",
+   "below",
+   "easy",
+   "reach",
+   "within",
+   "minutes"
+  ]
+ },
+ "Colombo||budget hotels below 25000 easy to reach within 7 minutes": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "budget",
+   "below",
+   "easy",
+   "reach",
+   "within",
+   "minutes"
+  ]
+ },
+ "Colombo||hotels rated at least 4.7": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.7,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "rated",
+   "least"
+  ]
+ },
+ "Colombo||affordable places under rs 15000": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "affordable",
+   "places",
+   "under"
+  ]
+ },
+ "Colombo||hotels close to the centre, at most 4 minutes away": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "close",
+   "centre",
+   "most",
+   "minutes",
+   "away"
+  ]
+ },
+ "Colombo||minimal commute hotels under 4 minutes in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "minimal",
+   "commute",
+   "under",
+   "minutes",
+   "colombo"
+  ]
+ },
+ "Colombo||well reviewed places rated over 4.8": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.8,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "well",
+   "reviewed",
+   "places",
+   "rated",
+   "over"
+  ]
+ },
+ "Colombo||top-rated hotels above 4.8": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.8,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "rated",
+   "above"
+  ]
+ },
+ "Colombo||easily reachable hotels within 3 minutes in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "easily",
+   "reachable",
+   "within",
+   "minutes",
+   "colombo"
+  ]
+ },
+ "Colombo||avoid congestion, hotels easy to get to within 5 minutes in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "avoid",
+   "congestion",
+   "easy",
+   "get",
+   "within",
+   "minutes",
+   "colombo"
+  ]
+ },
+ "Colombo||stays where hot water is included": {
+  "city": "Colombo",
+  "required_amenities": [
+   "hot water"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "stays",
+   "hot",
+   "water",
+   "included"
+  ]
+ },
+ "Colombo||highly rated hotels over 4.8": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.8,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "highly",
+   "rated",
+   "over"
+  ]
+ },
+ "Colombo||premium hotels over 80000 lkr": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": 80000,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "high",
+  "raw_keywords": [
+   "premium",
+   "over",
+   "lkr"
+  ]
+ },
+ "Colombo||top-rated hotels above 4.7": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.7,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "rated",
+   "above"
+  ]
+ },
+ "Colombo||hot water hotels in colombo": {
+  "city": "Colombo",
+  "required_amenities": [
+   "hot water"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "hot",
+   "water",
+   "colombo"
+  ]
+ },
+ "Colombo||quick access hotels under 3 min commute": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "quick",
+   "access",
+   "under",
+   "min",
+   "commute"
+  ]
+ },
+ "Colombo||stays unaffected by road closures and jams": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "stays",
+   "unaffected",
+   "road",
+   "closures",
+   "jams"
+  ]
+ },
+ "Colombo||hotels with front desk below 30000 lkr": {
+  "city": "Colombo",
+  "required_amenities": [
+   "front desk"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": 30000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "front",
+   "desk",
+   "below",
+   "lkr"
+  ]
+ },
+ "Colombo||quick access hotels under 3 min commute in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "quick",
+   "access",
+   "under",
+   "min",
+   "commute",
+   "colombo"
+  ]
+ },
+ "Colombo||value for money hotels under 15000": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "value",
+   "money",
+   "under"
+  ]
+ },
+ "Colombo||hotels rated at least 4.8 in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.8,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "rated",
+   "least",
+   "colombo"
+  ]
+ },
+ "Colombo||good hotels below 25000 with rating 4.3 or higher": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": 4.3,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "low",
+  "raw_keywords": [
+   "below",
+   "rating",
+   "higher"
+  ]
+ },
+ "Colombo||hot water hotels": {
+  "city": "Colombo",
+  "required_amenities": [
+   "hot water"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "hot",
+   "water"
+  ]
+ },
+ "Colombo||budget stays below 15000 rupees": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "budget",
+   "stays",
+   "below",
+   "rupees"
+  ]
+ },
+ "Colombo||hotels reachable despite rush hour in 5 minutes or less in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "reachable",
+   "despite",
+   "rush",
+   "hour",
+   "minutes",
+   "less",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels with air conditioning below 30000 lkr": {
+  "city": "Colombo",
+  "required_amenities": [
+   "air conditioning"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": 30000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "air",
+   "conditioning",
+   "below",
+   "lkr"
+  ]
+ },
+ "Colombo||need a room with hot water": {
+  "city": "Colombo",
+  "required_amenities": [
+   "hot water"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "need",
+   "room",
+   "hot",
+   "water"
+  ]
+ },
+ "Colombo||affordable hotels under 25000 rated above 4.4": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": 4.4,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "affordable",
+   "under",
+   "rated",
+   "above"
+  ]
+ },
+ "Colombo||hotels i can afford under 15000 lkr": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "can",
+   "afford",
+   "under",
+   "lkr"
+  ]
+ },
+ "Colombo||avoid congestion, hotels easy to get to within 5 minutes": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "avoid",
+   "congestion",
+   "easy",
+   "get",
+   "within",
+   "minutes"
+  ]
+ },
+ "Colombo||easily reachable hotels within 5 minutes": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "easily",
+   "reachable",
+   "within",
+   "minutes"
+  ]
+ },
+ "Colombo||hotels with reliable travel time under 6 min even with roadworks": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "reliable",
+   "travel",
+   "time",
+   "under",
+   "min",
+   "even",
+   "roadworks"
+  ]
+ },
+ "Colombo||inexpensive rooms below 15000 a night in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "inexpensive",
+   "rooms",
+   "below",
+   "night",
+   "colombo"
+  ]
+ },
+ "Colombo||highly rated hotels over 4.7 in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.7,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "highly",
+   "rated",
+   "over",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels reachable despite rush hour in 5 minutes or less": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "reachable",
+   "despite",
+   "rush",
+   "hour",
+   "minutes",
+   "less"
+  ]
+ },
+ "Colombo||stays unaffected by road closures and jams in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "stays",
+   "unaffected",
+   "road",
+   "closures",
+   "jams",
+   "colombo"
+  ]
+ },
+ "Colombo||premium hotels over 80000 lkr in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": 80000,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "high",
+  "raw_keywords": [
+   "premium",
+   "over",
+   "lkr",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels that stay reachable in heavy traffic under 6 min in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "stay",
+   "reachable",
+   "heavy",
+   "traffic",
+   "under",
+   "min",
+   "colombo"
+  ]
+ },
+ "Colombo||minimal commute hotels under 3 minutes": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "minimal",
+   "commute",
+   "under",
+   "minutes"
+  ]
+ },
+ "Colombo||value for money hotels under 15000 in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "value",
+   "money",
+   "under",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels within 3 minutes drive from the city": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "within",
+   "minutes",
+   "drive",
+   "from",
+   "city"
+  ]
+ },
+ "Colombo||inexpensive rooms below 15000 a night": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "inexpensive",
+   "rooms",
+   "below",
+   "night"
+  ]
+ },
+ "Colombo||affordable hotels under 25000 rated above 4.3": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": 4.3,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "affordable",
+   "under",
+   "rated",
+   "above"
+  ]
+ },
+ "Colombo||hotels with front desk below 30000 lkr in colombo": {
+  "city": "colombo",
+  "required_amenities": [
+   "front desk"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": 30000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "front",
+   "desk",
+   "below",
+   "lkr",
+   "colombo"
+  ]
+ },
+ "Colombo||excellent hotels rated 4.8 or better": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.8,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "excellent",
+   "rated",
+   "better"
+  ]
+ },
+ "Colombo||quick access hotels under 4 min commute": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "quick",
+   "access",
+   "under",
+   "min",
+   "commute"
+  ]
+ },
+ "Colombo||air conditioning hotels under 30000 in colombo": {
+  "city": "Colombo",
+  "required_amenities": [
+   "air conditioning"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": 30000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "air",
+   "conditioning",
+   "under",
+   "colombo"
+  ]
+ },
+ "Colombo||good hotels below 25000 with rating 4.4 or higher in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": 4.4,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "low",
+  "raw_keywords": [
+   "below",
+   "rating",
+   "higher",
+   "colombo"
+  ]
+ },
+ "Colombo||affordable hotels under 25000 rated above 4.3 in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": 4.3,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "low",
+  "raw_keywords": [
+   "affordable",
+   "under",
+   "rated",
+   "above",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels costing at most 15000 lkr": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 15000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "costing",
+   "most",
+   "lkr"
+  ]
+ },
+ "Colombo||hotels within 5 minutes drive from the city": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "within",
+   "minutes",
+   "drive",
+   "from",
+   "city"
+  ]
+ },
+ "Colombo||places that have hot water in colombo": {
+  "city": "Colombo",
+  "required_amenities": [
+   "hot water"
+  ],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "places",
+   "hot",
+   "water",
+   "colombo"
+  ]
+ },
+ "Colombo||cheap hotels under 25000 with quick 7 min access in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": 25000,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "cheap",
+   "under",
+   "quick",
+   "min",
+   "access",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels with reliable travel time under 5 min even with roadworks in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "reliable",
+   "travel",
+   "time",
+   "under",
+   "min",
+   "even",
+   "roadworks",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels not slowed by traffic, within 6 minutes in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "high",
+  "avoid_traffic": true,
+  "sort_intent": "best_overall",
+  "price_preference": "any",
+  "raw_keywords": [
+   "not",
+   "slowed",
+   "traffic",
+   "within",
+   "minutes",
+   "colombo"
+  ]
+ },
+ "Colombo||hotels rated at least 4.7 in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.7,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "any",
+  "raw_keywords": [
+   "rated",
+   "least",
+   "colombo"
+  ]
+ },
+ "Colombo||cheaper hotels in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "cheaper",
+   "colombo"
+  ]
+ },
+ "Colombo||good value stays in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "value",
+   "stays",
+   "colombo"
+  ]
+ },
+ "Colombo||the most affordable places to stay": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "most",
+   "affordable",
+   "places",
+   "stay"
+  ]
+ },
+ "Colombo||budget friendly hotels near the city centre": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [
+   "city centre"
+  ],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "budget",
+   "friendly",
+   "city",
+   "centre"
+  ]
+ },
+ "Colombo||cheapest rooms i can book tonight": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "cheapest",
+   "rooms",
+   "can",
+   "book",
+   "tonight"
+  ]
+ },
+ "Colombo||economical hotels that are still well rated": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "low",
+  "raw_keywords": [
+   "economical",
+   "still",
+   "well",
+   "rated"
+  ]
+ },
+ "Colombo||cheap hotels that are still highly rated": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.0,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "cheap",
+   "still",
+   "highly",
+   "rated"
+  ]
+ },
+ "Colombo||save money on a colombo stay": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "save",
+   "money",
+   "colombo",
+   "stay"
+  ]
+ },
+ "Colombo||low cost hotels with quick access to the centre": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "close",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "low",
+   "cost",
+   "quick",
+   "access",
+   "centre"
+  ]
+ },
+ "Colombo||wallet friendly accommodation in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "cheapest",
+  "price_preference": "low",
+  "raw_keywords": [
+   "wallet",
+   "friendly",
+   "accommodation",
+   "colombo"
+  ]
+ },
+ "Colombo||upmarket hotels in colombo": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [
+   "market"
+  ],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "high",
+  "raw_keywords": [
+   "upmarket",
+   "colombo"
+  ]
+ },
+ "Colombo||luxury stays worth splurging on": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "high",
+  "raw_keywords": [
+   "luxury",
+   "stays",
+   "worth",
+   "splurging"
+  ]
+ },
+ "Colombo||high end hotels with excellent ratings": {
+  "city": "Colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": 4.5,
+  "min_star": 5,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "highest_rated",
+  "price_preference": "high",
+  "raw_keywords": [
+   "high",
+   "end",
+   "excellent",
+   "ratings"
+  ]
+ },
+ "Colombo||premium accommodation in colombo": {
+  "city": "colombo",
+  "required_amenities": [],
+  "near_attractions": [],
+  "max_price_lkr": null,
+  "min_price_lkr": null,
+  "min_rating": null,
+  "min_star": null,
+  "board_preference": null,
+  "proximity_preference": "any",
+  "accessibility_priority": "normal",
+  "avoid_traffic": false,
+  "sort_intent": "best_overall",
+  "price_preference": "high",
+  "raw_keywords": [
+   "premium",
+   "accommodation",
+   "colombo"
+  ]
+ }
+}

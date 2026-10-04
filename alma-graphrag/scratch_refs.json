@@ -1,0 +1,902 @@
+{
+ "878fc7a0-065f-316e-a2fc-c64c8157e8b7": {
+  "type": "paper-conference",
+  "id": "878fc7a0-065f-316e-a2fc-c64c8157e8b7",
+  "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+  "author": [
+   {
+    "family": "Lewis",
+    "given": "Patrick",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Perez",
+    "given": "Ethan",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Piktus",
+    "given": "Aleksandra",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Petroni",
+    "given": "Fabio",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Karpukhin",
+    "given": "Vladimir",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Goyal",
+    "given": "Naman",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Kuttler",
+    "given": "Heinrich",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Lewis",
+    "given": "Mike",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Yih",
+    "given": "Wen-tau",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Rocktaschel",
+    "given": "Tim",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Riedel",
+    "given": "Sebastian",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Kiela",
+    "given": "Douwe",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Advances in Neural Information Processing Systems (NeurIPS)",
+  "URL": "https://arxiv.org/abs/2005.11401",
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "container-title-short": ""
+ },
+ "49448b10-6c77-3af4-9513-3ab19830ac45": {
+  "type": "article-journal",
+  "id": "49448b10-6c77-3af4-9513-3ab19830ac45",
+  "title": "Survey of Hallucination in Natural Language Generation",
+  "author": [
+   {
+    "family": "Ji",
+    "given": "Ziwei",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "ACM Computing Surveys",
+  "container-title-short": "ACM Comput. Surv.",
+  "DOI": "10.1145/3571730",
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "page": "1-38",
+  "issue": "12",
+  "volume": "55"
+ },
+ "2b2e3b7d-c6d2-32c8-b8be-1e83602a5a01": {
+  "type": "article-journal",
+  "id": "2b2e3b7d-c6d2-32c8-b8be-1e83602a5a01",
+  "title": "Knowledge Graphs",
+  "author": [
+   {
+    "family": "Hogan",
+    "given": "Aidan",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "ACM Computing Surveys",
+  "container-title-short": "ACM Comput. Surv.",
+  "DOI": "10.1145/3447772",
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "page": "1-37",
+  "issue": "4",
+  "volume": "54"
+ },
+ "ab1e2aff-cc7d-3a31-9250-47c94cfe0c43": {
+  "type": "article-journal",
+  "id": "ab1e2aff-cc7d-3a31-9250-47c94cfe0c43",
+  "title": "Retrieval-Augmented Generation with Graphs (GraphRAG): A Comprehensive Survey",
+  "author": [
+   {
+    "family": "Han",
+    "given": "Yu",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2501.00309",
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "volume": "arXiv:2501.00309",
+  "container-title-short": ""
+ },
+ "e83f7f77-867f-3f6b-b50e-88b4f76cb5bc": {
+  "type": "article-journal",
+  "id": "e83f7f77-867f-3f6b-b50e-88b4f76cb5bc",
+  "title": "Graph Retrieval-Augmented Generation: A Survey",
+  "author": [
+   {
+    "family": "Peng",
+    "given": "Boci",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2408.08921",
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "volume": "arXiv:2408.08921",
+  "container-title-short": ""
+ },
+ "5fde88de-663f-336e-9651-c9bd63e4024e": {
+  "type": "article-journal",
+  "id": "5fde88de-663f-336e-9651-c9bd63e4024e",
+  "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization",
+  "author": [
+   {
+    "family": "Edge",
+    "given": "Darren",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2404.16130",
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "volume": "arXiv:2404.16130",
+  "container-title-short": ""
+ },
+ "ff537a68-d479-399d-9b9f-b712d9277697": {
+  "type": "report",
+  "id": "ff537a68-d479-399d-9b9f-b712d9277697",
+  "title": "Annual Statistical Report 2023",
+  "author": [
+   {
+    "family": "Authority",
+    "given": "Sri Lanka Tourism Development",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "publisher-place": "Colombo, Sri Lanka",
+  "publisher": "SLTDA",
+  "container-title-short": ""
+ },
+ "c62e6509-a0d3-3eb2-9799-51cda04c3beb": {
+  "type": "article-journal",
+  "id": "c62e6509-a0d3-3eb2-9799-51cda04c3beb",
+  "title": "TravelAgent: An AI Assistant for Personalized Travel Planning",
+  "author": [
+   {
+    "family": "Chen",
+    "given": "Aili",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Ge",
+    "given": "Xuyang",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Fu",
+    "given": "Ziquan",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Xiao",
+    "given": "Yanghua",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Chen",
+    "given": "Jiangjie",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2409.08069",
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "volume": "arXiv:2409.08069",
+  "container-title-short": ""
+ },
+ "45f4fdaf-9432-35f0-8436-87f6ba889d3b": {
+  "type": "paper-conference",
+  "id": "45f4fdaf-9432-35f0-8436-87f6ba889d3b",
+  "title": "MAPS: A Multi-Aspect Personalized POI Recommender System",
+  "author": [
+   {
+    "family": "Baral",
+    "given": "Ramesh",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Li",
+    "given": "Tao",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Proceedings of the 10th ACM Conference on Recommender Systems (RecSys)",
+  "DOI": "10.1145/2959100.2959187",
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "page": "281-284",
+  "container-title-short": ""
+ },
+ "567b5cac-c760-32f6-9757-414806ed112c": {
+  "type": "paper-conference",
+  "id": "567b5cac-c760-32f6-9757-414806ed112c",
+  "title": "A Practice of Tourism Knowledge Graph Construction Based on Heterogeneous Information",
+  "author": [
+   {
+    "family": "Xiao",
+    "given": "Dinghe",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Proceedings of the International Conference on Natural Language Processing and Knowledge Engineering",
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "container-title-short": ""
+ },
+ "9bee4ec6-4fe4-350a-8486-f4f922c590d9": {
+  "type": "article-journal",
+  "id": "9bee4ec6-4fe4-350a-8486-f4f922c590d9",
+  "title": "Data-Driven Methodology for Knowledge Graph Generation Within the Tourism Domain",
+  "author": [
+   {
+    "family": "Chessa",
+    "given": "Alessandro",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Fenu",
+    "given": "Gianni",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Motta",
+    "given": "Enrico",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Osborne",
+    "given": "Francesco",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Reforgiato Recupero",
+    "given": "Diego",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Salatino",
+    "given": "Angelo",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Secchi",
+    "given": "Luca",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "IEEE Access",
+  "DOI": "10.1109/ACCESS.2023.3292153",
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "page": "67567-67599",
+  "volume": "11",
+  "container-title-short": ""
+ },
+ "f462acdf-5377-3039-bbda-faab265f0fd1": {
+  "type": "article-journal",
+  "id": "f462acdf-5377-3039-bbda-faab265f0fd1",
+  "title": "Corrective Retrieval Augmented Generation",
+  "author": [
+   {
+    "family": "Yan",
+    "given": "Shi-Qi",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2401.15884",
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "volume": "arXiv:2401.15884",
+  "container-title-short": ""
+ },
+ "fbbc6552-5490-3dc7-806a-bec6deb6560f": {
+  "type": "article-journal",
+  "id": "fbbc6552-5490-3dc7-806a-bec6deb6560f",
+  "title": "LightRAG: Simple and Fast Retrieval-Augmented Generation",
+  "author": [
+   {
+    "family": "Guo",
+    "given": "Zirui",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2410.05779",
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "volume": "arXiv:2410.05779",
+  "container-title-short": ""
+ },
+ "3f0834fb-88a6-3676-b4e0-41e32abe92f6": {
+  "type": "article-journal",
+  "id": "3f0834fb-88a6-3676-b4e0-41e32abe92f6",
+  "title": "Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG",
+  "author": [
+   {
+    "family": "Singh",
+    "given": "Aditi",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2501.09136",
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "volume": "arXiv:2501.09136",
+  "container-title-short": ""
+ },
+ "efc107c0-947f-30a1-acb9-8e0af6487a33": {
+  "type": "article-journal",
+  "id": "efc107c0-947f-30a1-acb9-8e0af6487a33",
+  "title": "The German Tourism Knowledge Graph",
+  "author": [
+   {
+    "family": "Serles",
+    "given": "Umutcan",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Karle",
+    "given": "Elias",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Fensel",
+    "given": "Dieter",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "arXiv preprint",
+  "URL": "https://arxiv.org/abs/2404.09587",
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "volume": "arXiv:2404.09587",
+  "container-title-short": ""
+ },
+ "ea981564-45c5-3fe6-baa0-a2f42ef06f04": {
+  "type": "paper-conference",
+  "id": "ea981564-45c5-3fe6-baa0-a2f42ef06f04",
+  "title": "Making Travel Smarter: Extracting Travel Information From E-Mail Itineraries Using Named Entity Recognition",
+  "author": [
+   {
+    "family": "Kaushik",
+    "given": "Divyansh",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Gupta",
+    "given": "Shashank",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Raju",
+    "given": "Chakradhar",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Dias",
+    "given": "Reuben",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Ghosh",
+    "given": "Sanjib",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Proceedings of the International Conference Recent Advances in Natural Language Processing (RANLP)",
+  "issued": {
+   "date-parts": [
+    [
+     2017
+    ]
+   ]
+  },
+  "page": "354-362",
+  "container-title-short": ""
+ },
+ "1ebd2c98-926f-3298-8ff9-31c178ff93e3": {
+  "type": "article-journal",
+  "id": "1ebd2c98-926f-3298-8ff9-31c178ff93e3",
+  "title": "A Vector Space Model for Automatic Indexing",
+  "author": [
+   {
+    "family": "Salton",
+    "given": "Gerard",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Wong",
+    "given": "Anita",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Yang",
+    "given": "Chung-Shu",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Communications of the ACM",
+  "container-title-short": "Commun. ACM",
+  "DOI": "10.1145/361219.361220",
+  "issued": {
+   "date-parts": [
+    [
+     1975
+    ]
+   ]
+  },
+  "page": "613-620",
+  "issue": "11",
+  "volume": "18"
+ },
+ "5dc87f74-f3f1-31ac-873f-fbfe3dbee501": {
+  "type": "paper-conference",
+  "id": "5dc87f74-f3f1-31ac-873f-fbfe3dbee501",
+  "title": "Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods",
+  "author": [
+   {
+    "family": "Cormack",
+    "given": "Gordon",
+    "parse-names": false,
+    "dropping-particle": "V",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Clarke",
+    "given": "Charles L A",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Buettcher",
+    "given": "Stefan",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Proceedings of the 32nd International ACM SIGIR Conference",
+  "DOI": "10.1145/1571941.1572114",
+  "issued": {
+   "date-parts": [
+    [
+     2009
+    ]
+   ]
+  },
+  "page": "758-759",
+  "container-title-short": ""
+ },
+ "f1be459d-1439-3aef-ad43-a80b912a244d": {
+  "type": "book",
+  "id": "f1be459d-1439-3aef-ad43-a80b912a244d",
+  "title": "Graph Databases: New Opportunities for Connected Data",
+  "author": [
+   {
+    "family": "Robinson",
+    "given": "Ian",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Webber",
+    "given": "Jim",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Eifrem",
+    "given": "Emil",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2015
+    ]
+   ]
+  },
+  "publisher-place": "Sebastopol, CA, USA",
+  "edition": "2nd",
+  "publisher": "O'Reilly Media",
+  "container-title-short": ""
+ },
+ "70dc4fdc-bfe5-3c52-a9c9-f59afba9714f": {
+  "type": "paper-conference",
+  "id": "70dc4fdc-bfe5-3c52-a9c9-f59afba9714f",
+  "title": "Cypher: An Evolving Query Language for Property Graphs",
+  "author": [
+   {
+    "family": "Francis",
+    "given": "Nadime",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Proceedings of the ACM SIGMOD International Conference on Management of Data",
+  "DOI": "10.1145/3183713.3190657",
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "page": "1433-1445",
+  "container-title-short": ""
+ },
+ "29e6545f-8812-3c49-ad5c-ee2c95f4ef0e": {
+  "type": "article-journal",
+  "id": "29e6545f-8812-3c49-ad5c-ee2c95f4ef0e",
+  "title": "Design Science in Information Systems Research",
+  "author": [
+   {
+    "family": "Hevner",
+    "given": "Alan R",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "March",
+    "given": "Salvatore T",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Park",
+    "given": "Jinsoo",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Ram",
+    "given": "Sudha",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "MIS Quarterly",
+  "DOI": "10.2307/25148625",
+  "issued": {
+   "date-parts": [
+    [
+     2004
+    ]
+   ]
+  },
+  "page": "75-105",
+  "issue": "1",
+  "volume": "28",
+  "container-title-short": ""
+ },
+ "48dad277-d7f0-315a-b61e-f07487d95263": {
+  "type": "article-journal",
+  "id": "48dad277-d7f0-315a-b61e-f07487d95263",
+  "title": "A Design Science Research Methodology for Information Systems Research",
+  "author": [
+   {
+    "family": "Peffers",
+    "given": "Ken",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Tuunanen",
+    "given": "Tuure",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Rothenberger",
+    "given": "Marcus A",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Chatterjee",
+    "given": "Samir",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "Journal of Management Information Systems",
+  "DOI": "10.2753/MIS0742-1222240302",
+  "issued": {
+   "date-parts": [
+    [
+     2007
+    ]
+   ]
+  },
+  "page": "45-77",
+  "issue": "3",
+  "volume": "24",
+  "container-title-short": ""
+ },
+ "1be33d73-06f2-3bab-94c1-30f6300dec05": {
+  "type": "article-journal",
+  "id": "1be33d73-06f2-3bab-94c1-30f6300dec05",
+  "title": "Cumulated Gain-Based Evaluation of IR Techniques",
+  "author": [
+   {
+    "family": "Jarvelin",
+    "given": "Kalervo",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Kekalainen",
+    "given": "Jaana",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "container-title": "ACM Transactions on Information Systems",
+  "container-title-short": "ACM Trans. Inf. Syst.",
+  "DOI": "10.1145/582415.582418",
+  "issued": {
+   "date-parts": [
+    [
+     2002
+    ]
+   ]
+  },
+  "page": "422-446",
+  "issue": "4",
+  "volume": "20"
+ },
+ "0d9d2c0d-571c-3042-bf3c-1966ba244ae6": {
+  "type": "report",
+  "id": "0d9d2c0d-571c-3042-bf3c-1966ba244ae6",
+  "title": "The Scrum Guide: The Definitive Guide to Scrum",
+  "author": [
+   {
+    "family": "Schwaber",
+    "given": "Ken",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   },
+   {
+    "family": "Sutherland",
+    "given": "Jeff",
+    "parse-names": false,
+    "dropping-particle": "",
+    "non-dropping-particle": ""
+   }
+  ],
+  "URL": "https://scrumguides.org",
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "container-title-short": ""
+ }
+}

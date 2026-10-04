@@ -1,0 +1,14 @@
+{
+  "label_source": "deterministic model-assisted prelabel parser",
+  "human_annotation_compatible": false,
+  "aggregation_eligible": false,
+  "input": "E:\\Research\\Project\\alma-graphrag\\evaluation\\annotation\\sheets\\annotator_1.csv",
+  "output": "E:\\Research\\Project\\alma-graphrag\\evaluation\\annotation\\sheets\\model_assisted_prelabels.csv",
+  "items": 2054,
+  "labels": {
+    "0": 1133,
+    "1": 434,
+    "2": 487
+  },
+  "method": "Parses only visible question text and hotel attributes; hidden gold fields are not read. Scores 2 for all constraints met, 1 for a borderline, missing, or single failed constraint in a multi-constraint query, and 0 for an incorrect single-constraint result or multiple failures."
+}

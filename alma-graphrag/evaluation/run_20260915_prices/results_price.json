@@ -1,0 +1,2001 @@
+{
+  "city": "Colombo",
+  "k": 10,
+  "n_queries": 14,
+  "pool_size": 58,
+  "system_order": [
+    "Random",
+    "Popularity",
+    "Filter",
+    "Keyword",
+    "SemanticVec",
+    "Hybrid",
+    "CrossEncoder",
+    "LTR",
+    "LTR[doc-only]",
+    "WeightedGraphRAG",
+    "WeightedGraphRAG[handset]",
+    "WeightedGraphRAG[elicited]",
+    "WeightedGraphRAG[blended]",
+    "WeightedGraphRAG[balanced]",
+    "WeightedGraphRAG[human]",
+    "WeightedGraphRAG[no-diffusion]"
+  ],
+  "gold_meta": {
+    "used_human": false,
+    "human_queries": 0,
+    "alpha": null,
+    "ndcg_gains": "graded (2 full / 1 partial)",
+    "tolerance_bands": {
+      "price": 0.15,
+      "rating": 0.2,
+      "star": 1.0,
+      "travel_min": 2.0,
+      "disruption_min": 3.0
+    }
+  },
+  "vector_index": {
+    "available": true,
+    "indexed": 58,
+    "stale": false
+  },
+  "intent_cache": "evaluation/run_20260914/intents_price.json",
+  "price_policy": {
+    "default": "neutral",
+    "compared": [],
+    "pool_missing_price": 5,
+    "pool_missing_rate": 0.0862
+  },
+  "weight_profiles": {
+    "default": "handset",
+    "compared": [
+      "handset",
+      "elicited",
+      "blended",
+      "balanced",
+      "human"
+    ],
+    "policies": [],
+    "vectors": {
+      "handset": {
+        "spatial": 0.25,
+        "accessibility": 0.2,
+        "facility": 0.25,
+        "economic": 0.15,
+        "disruption": 0.15
+      },
+      "elicited": {
+        "spatial": 0.381,
+        "accessibility": 0.472,
+        "facility": 0.097,
+        "economic": 0.0,
+        "disruption": 0.05
+      },
+      "blended": {
+        "spatial": 0.316,
+        "accessibility": 0.336,
+        "facility": 0.173,
+        "economic": 0.075,
+        "disruption": 0.1
+      },
+      "balanced": {
+        "spatial": 0.078,
+        "accessibility": 0.096,
+        "facility": 0.365,
+        "economic": 0.311,
+        "disruption": 0.15
+      }
+    }
+  },
+  "overall": {
+    "Random": {
+      "P@10": 0.6928571428571428,
+      "R@10": 0.1973010342348321,
+      "nDCG@10": 0.5425912080131455,
+      "MRR": 0.8392857142857143
+    },
+    "Popularity": {
+      "P@10": 0.6285714285714284,
+      "R@10": 0.19888833582213375,
+      "nDCG@10": 0.4082525803538765,
+      "MRR": 0.6428571428571429
+    },
+    "Filter": {
+      "P@10": 0.6142857142857142,
+      "R@10": 0.19174547867927655,
+      "nDCG@10": 0.40414970431441816,
+      "MRR": 0.6428571428571429
+    },
+    "Keyword": {
+      "P@10": 0.6714285714285716,
+      "R@10": 0.17375974780155964,
+      "nDCG@10": 0.6099587864992203,
+      "MRR": 1.0
+    },
+    "SemanticVec": {
+      "P@10": 0.6285714285714284,
+      "R@10": 0.18012416348653285,
+      "nDCG@10": 0.46423095974179057,
+      "MRR": 0.7226190476190476
+    },
+    "Hybrid": {
+      "P@10": 0.7000000000000001,
+      "R@10": 0.19949670925280683,
+      "nDCG@10": 0.5787142446976666,
+      "MRR": 0.880952380952381
+    },
+    "CrossEncoder": {
+      "P@10": 0.5714285714285714,
+      "R@10": 0.15705160112825617,
+      "nDCG@10": 0.43542255258742774,
+      "MRR": 0.6488095238095237
+    },
+    "LTR": {
+      "P@10": 0.9571428571428572,
+      "R@10": 0.2954261379348488,
+      "nDCG@10": 0.9290466325418718,
+      "MRR": 0.9387755102040816
+    },
+    "LTR[doc-only]": {
+      "P@10": 0.7071428571428572,
+      "R@10": 0.16277307671035895,
+      "nDCG@10": 0.7016063746425338,
+      "MRR": 0.7142857142857143
+    },
+    "WeightedGraphRAG": {
+      "P@10": 0.8642857142857142,
+      "R@10": 0.23981389303688957,
+      "nDCG@10": 0.7214366702170026,
+      "MRR": 0.9285714285714286
+    },
+    "WeightedGraphRAG[handset]": {
+      "P@10": 0.8642857142857142,
+      "R@10": 0.23981389303688957,
+      "nDCG@10": 0.7214366702170026,
+      "MRR": 0.9285714285714286
+    },
+    "WeightedGraphRAG[elicited]": {
+      "P@10": 0.8142857142857144,
+      "R@10": 0.2148138930368896,
+      "nDCG@10": 0.6487823910420741,
+      "MRR": 0.7685374149659863
+    },
+    "WeightedGraphRAG[blended]": {
+      "P@10": 0.8142857142857144,
+      "R@10": 0.2148138930368896,
+      "nDCG@10": 0.6704855314551909,
+      "MRR": 0.7916666666666667
+    },
+    "WeightedGraphRAG[balanced]": {
+      "P@10": 0.9785714285714286,
+      "R@10": 0.2969567501797467,
+      "nDCG@10": 0.9272476366174233,
+      "MRR": 1.0
+    },
+    "WeightedGraphRAG[human]": {
+      "P@10": 0.8642857142857142,
+      "R@10": 0.23981389303688957,
+      "nDCG@10": 0.7214366702170026,
+      "MRR": 0.9285714285714286
+    },
+    "WeightedGraphRAG[no-diffusion]": {
+      "P@10": 0.8642857142857142,
+      "R@10": 0.23981389303688957,
+      "nDCG@10": 0.7214366702170026,
+      "MRR": 0.9285714285714286
+    }
+  },
+  "by_category": {
+    "economic_ranked": {
+      "Random": {
+        "P@10": 0.6928571428571428,
+        "R@10": 0.1973010342348321,
+        "nDCG@10": 0.5425912080131455,
+        "MRR": 0.8392857142857143
+      },
+      "Popularity": {
+        "P@10": 0.6285714285714284,
+        "R@10": 0.19888833582213375,
+        "nDCG@10": 0.4082525803538765,
+        "MRR": 0.6428571428571429
+      },
+      "Filter": {
+        "P@10": 0.6142857142857142,
+        "R@10": 0.19174547867927655,
+        "nDCG@10": 0.40414970431441816,
+        "MRR": 0.6428571428571429
+      },
+      "Keyword": {
+        "P@10": 0.6714285714285716,
+        "R@10": 0.17375974780155964,
+        "nDCG@10": 0.6099587864992203,
+        "MRR": 1.0
+      },
+      "SemanticVec": {
+        "P@10": 0.6285714285714284,
+        "R@10": 0.18012416348653285,
+        "nDCG@10": 0.46423095974179057,
+        "MRR": 0.7226190476190476
+      },
+      "Hybrid": {
+        "P@10": 0.7000000000000001,
+        "R@10": 0.19949670925280683,
+        "nDCG@10": 0.5787142446976666,
+        "MRR": 0.880952380952381
+      },
+      "CrossEncoder": {
+        "P@10": 0.5714285714285714,
+        "R@10": 0.15705160112825617,
+        "nDCG@10": 0.43542255258742774,
+        "MRR": 0.6488095238095237
+      },
+      "LTR": {
+        "P@10": 0.9571428571428572,
+        "R@10": 0.2954261379348488,
+        "nDCG@10": 0.9290466325418718,
+        "MRR": 0.9387755102040816
+      },
+      "LTR[doc-only]": {
+        "P@10": 0.7071428571428572,
+        "R@10": 0.16277307671035895,
+        "nDCG@10": 0.7016063746425338,
+        "MRR": 0.7142857142857143
+      },
+      "WeightedGraphRAG": {
+        "P@10": 0.8642857142857142,
+        "R@10": 0.23981389303688957,
+        "nDCG@10": 0.7214366702170026,
+        "MRR": 0.9285714285714286
+      },
+      "WeightedGraphRAG[handset]": {
+        "P@10": 0.8642857142857142,
+        "R@10": 0.23981389303688957,
+        "nDCG@10": 0.7214366702170026,
+        "MRR": 0.9285714285714286
+      },
+      "WeightedGraphRAG[elicited]": {
+        "P@10": 0.8142857142857144,
+        "R@10": 0.2148138930368896,
+        "nDCG@10": 0.6487823910420741,
+        "MRR": 0.7685374149659863
+      },
+      "WeightedGraphRAG[blended]": {
+        "P@10": 0.8142857142857144,
+        "R@10": 0.2148138930368896,
+        "nDCG@10": 0.6704855314551909,
+        "MRR": 0.7916666666666667
+      },
+      "WeightedGraphRAG[balanced]": {
+        "P@10": 0.9785714285714286,
+        "R@10": 0.2969567501797467,
+        "nDCG@10": 0.9272476366174233,
+        "MRR": 1.0
+      },
+      "WeightedGraphRAG[human]": {
+        "P@10": 0.8642857142857142,
+        "R@10": 0.23981389303688957,
+        "nDCG@10": 0.7214366702170026,
+        "MRR": 0.9285714285714286
+      },
+      "WeightedGraphRAG[no-diffusion]": {
+        "P@10": 0.8642857142857142,
+        "R@10": 0.23981389303688957,
+        "nDCG@10": 0.7214366702170026,
+        "MRR": 0.9285714285714286
+      }
+    }
+  },
+  "best_system": "LTR",
+  "best_ndcg": 0.929,
+  "significance": {
+    "reference": "WeightedGraphRAG",
+    "metric": "nDCG@10",
+    "tests": "paired bootstrap 95% CI + Wilcoxon signed-rank, Holm-corrected",
+    "vs": {
+      "Random": {
+        "mean_diff": 0.1788,
+        "ci_low": 0.0886,
+        "ci_high": 0.266,
+        "p": 0.004,
+        "p_holm": 0.0403,
+        "significant": true
+      },
+      "Popularity": {
+        "mean_diff": 0.3132,
+        "ci_low": 0.0667,
+        "ci_high": 0.5484,
+        "p": 0.0082,
+        "p_holm": 0.0742,
+        "significant": false
+      },
+      "Filter": {
+        "mean_diff": 0.3173,
+        "ci_low": 0.0726,
+        "ci_high": 0.5505,
+        "p": 0.0082,
+        "p_holm": 0.0742,
+        "significant": false
+      },
+      "Keyword": {
+        "mean_diff": 0.1115,
+        "ci_low": 0.0454,
+        "ci_high": 0.1762,
+        "p": 0.0107,
+        "p_holm": 0.0742,
+        "significant": false
+      },
+      "SemanticVec": {
+        "mean_diff": 0.2572,
+        "ci_low": 0.1048,
+        "ci_high": 0.3947,
+        "p": 0.0107,
+        "p_holm": 0.0742,
+        "significant": false
+      },
+      "Hybrid": {
+        "mean_diff": 0.1427,
+        "ci_low": 0.0763,
+        "ci_high": 0.2034,
+        "p": 0.0031,
+        "p_holm": 0.0336,
+        "significant": true
+      },
+      "CrossEncoder": {
+        "mean_diff": 0.286,
+        "ci_low": 0.1806,
+        "ci_high": 0.3916,
+        "p": 0.0006,
+        "p_holm": 0.0092,
+        "significant": true
+      },
+      "LTR": {
+        "mean_diff": -0.2076,
+        "ci_low": -0.38,
+        "ci_high": -0.0297,
+        "p": 0.0082,
+        "p_holm": 0.0742,
+        "significant": false
+      },
+      "LTR[doc-only]": {
+        "mean_diff": 0.0198,
+        "ci_low": -0.0727,
+        "ci_high": 0.121,
+        "p": 0.8735,
+        "p_holm": 1.0,
+        "significant": false
+      },
+      "WeightedGraphRAG[handset]": {
+        "mean_diff": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "p": 1.0,
+        "p_holm": 1.0,
+        "significant": false
+      },
+      "WeightedGraphRAG[elicited]": {
+        "mean_diff": 0.0727,
+        "ci_low": 0.0454,
+        "ci_high": 0.1046,
+        "p": 0.0008,
+        "p_holm": 0.0116,
+        "significant": true
+      },
+      "WeightedGraphRAG[blended]": {
+        "mean_diff": 0.051,
+        "ci_low": 0.0206,
+        "ci_high": 0.0846,
+        "p": 0.0008,
+        "p_holm": 0.0116,
+        "significant": true
+      },
+      "WeightedGraphRAG[balanced]": {
+        "mean_diff": -0.2058,
+        "ci_low": -0.2964,
+        "ci_high": -0.1247,
+        "p": 0.0008,
+        "p_holm": 0.0116,
+        "significant": true
+      },
+      "WeightedGraphRAG[human]": {
+        "mean_diff": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "p": 1.0,
+        "p_holm": 1.0,
+        "significant": false
+      },
+      "WeightedGraphRAG[no-diffusion]": {
+        "mean_diff": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "p": 1.0,
+        "p_holm": 1.0,
+        "significant": false
+      }
+    }
+  },
+  "per_query": [
+    {
+      "id": "p0001",
+      "question": "cheaper hotels in colombo",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 0.9,
+          "R@10": 0.2,
+          "nDCG@10": 0.5491,
+          "MRR": 0.5
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.7548,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.4226,
+          "MRR": 0.3333
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.7173,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.9,
+          "R@10": 0.2,
+          "nDCG@10": 0.6188,
+          "MRR": 0.5
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0002",
+      "question": "good value stays in colombo",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.7445,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.6781,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.6185,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.9,
+          "R@10": 0.2,
+          "nDCG@10": 0.6321,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.3505,
+          "MRR": 0.3333
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0003",
+      "question": "the most affordable places to stay",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.7776,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8349,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.4099,
+          "MRR": 0.3333
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.6617,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.6147,
+          "MRR": 1.0
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0004",
+      "question": "budget friendly hotels near the city centre",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.5931,
+          "MRR": 0.5
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.5,
+          "R@10": 0.1111,
+          "nDCG@10": 0.6332,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.863,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.695,
+          "MRR": 1.0
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0005",
+      "question": "cheapest rooms i can book tonight",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.6493,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.8135,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.3633,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.7546,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.7657,
+          "MRR": 1.0
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0006",
+      "question": "economical hotels that are still well rated",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        },
+        "min_rating": 4.0
+      },
+      "gold_source": "rule",
+      "n_relevant": 41,
+      "scores": {
+        "Random": {
+          "P@10": 0.6,
+          "R@10": 0.1463,
+          "nDCG@10": 0.5783,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1463,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1463,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.1707,
+          "nDCG@10": 0.6778,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.6,
+          "R@10": 0.1463,
+          "nDCG@10": 0.2939,
+          "MRR": 0.25
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.1707,
+          "nDCG@10": 0.5659,
+          "MRR": 0.5
+        },
+        "CrossEncoder": {
+          "P@10": 0.6,
+          "R@10": 0.1463,
+          "nDCG@10": 0.4005,
+          "MRR": 0.5
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.9653,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.886,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.886,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.815,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.8186,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.886,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2439,
+          "nDCG@10": 0.886,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0007",
+      "question": "cheap hotels that are still highly rated",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        },
+        "min_rating": 4.3
+      },
+      "gold_source": "rule",
+      "n_relevant": 35,
+      "scores": {
+        "Random": {
+          "P@10": 0.6,
+          "R@10": 0.1714,
+          "nDCG@10": 0.5233,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1714,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1714,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.8,
+          "R@10": 0.2286,
+          "nDCG@10": 0.6748,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.4,
+          "R@10": 0.1143,
+          "nDCG@10": 0.1884,
+          "MRR": 0.2
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.2,
+          "nDCG@10": 0.5478,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.3,
+          "R@10": 0.0857,
+          "nDCG@10": 0.1197,
+          "MRR": 0.25
+        },
+        "LTR": {
+          "P@10": 0.4,
+          "R@10": 0.1143,
+          "nDCG@10": 0.1363,
+          "MRR": 0.1429
+        },
+        "LTR[doc-only]": {
+          "P@10": 0.9,
+          "R@10": 0.2571,
+          "nDCG@10": 0.8225,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.7472,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.7472,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.711,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.705,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.8629,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.7472,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2857,
+          "nDCG@10": 0.7472,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0008",
+      "question": "save money on a colombo stay",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.7819,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.6659,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.6294,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.7014,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.4407,
+          "MRR": 0.3333
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0009",
+      "question": "low cost hotels with quick access to the centre",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.4396,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.6986,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.9,
+          "R@10": 0.2,
+          "nDCG@10": 0.8131,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.9,
+          "R@10": 0.2,
+          "nDCG@10": 0.6898,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.3852,
+          "MRR": 0.5
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8578,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.9669,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0010",
+      "question": "wallet friendly accommodation in colombo",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_cheaper": {
+          "full": 25000,
+          "partial": 40000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 45,
+      "scores": {
+        "Random": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.5432,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.1333,
+          "nDCG@10": 0.2635,
+          "MRR": 0.5
+        },
+        "Keyword": {
+          "P@10": 0.8,
+          "R@10": 0.1778,
+          "nDCG@10": 0.5387,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.4324,
+          "MRR": 0.5
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.653,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.7,
+          "R@10": 0.1556,
+          "nDCG@10": 0.6249,
+          "MRR": 1.0
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8637,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8968,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 1.0,
+          "R@10": 0.2222,
+          "nDCG@10": 0.8984,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0011",
+      "question": "upmarket hotels in colombo",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_premium": {
+          "full": 45000,
+          "partial": 30000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 20,
+      "scores": {
+        "Random": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.5252,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.7701,
+          "MRR": 1.0
+        },
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.7701,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.1,
+          "R@10": 0.05,
+          "nDCG@10": 0.2815,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.5524,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.2255,
+          "MRR": 0.3333
+        },
+        "CrossEncoder": {
+          "P@10": 0.2,
+          "R@10": 0.1,
+          "nDCG@10": 0.1952,
+          "MRR": 1.0
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.5,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3366,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3366,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.13,
+          "MRR": 0.1429
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.1519,
+          "MRR": 0.25
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 1.0,
+          "R@10": 0.5,
+          "nDCG@10": 0.8815,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3366,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3366,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0012",
+      "question": "luxury stays worth splurging on",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_premium": {
+          "full": 45000,
+          "partial": 30000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 20,
+      "scores": {
+        "Random": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.1926,
+          "MRR": 0.25
+        },
+        "Popularity": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.7701,
+          "MRR": 1.0
+        },
+        "Filter": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.7701,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.2766,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.3446,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.4101,
+          "MRR": 0.5
+        },
+        "CrossEncoder": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3207,
+          "MRR": 0.3333
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.5,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2801,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2801,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.1395,
+          "MRR": 0.2
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.1577,
+          "MRR": 0.25
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 0.9,
+          "R@10": 0.45,
+          "nDCG@10": 0.7465,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2801,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2801,
+          "MRR": 0.5
+        }
+      }
+    },
+    {
+      "id": "p0013",
+      "question": "high end hotels with excellent ratings",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_premium": {
+          "full": 45000,
+          "partial": 30000
+        },
+        "min_rating": 4.3
+      },
+      "gold_source": "rule",
+      "n_relevant": 20,
+      "scores": {
+        "Random": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.3557,
+          "MRR": 0.5
+        },
+        "Popularity": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.7701,
+          "MRR": 1.0
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.7413,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.2321,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.2,
+          "R@10": 0.1,
+          "nDCG@10": 0.2111,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3529,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.2742,
+          "MRR": 0.3333
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.5,
+          "nDCG@10": 0.905,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.3757,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.3757,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.2018,
+          "MRR": 0.25
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.2141,
+          "MRR": 0.3333
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 0.9,
+          "R@10": 0.45,
+          "nDCG@10": 0.7911,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.3757,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.3757,
+          "MRR": 1.0
+        }
+      }
+    },
+    {
+      "id": "p0014",
+      "question": "premium accommodation in colombo",
+      "category": "economic_ranked",
+      "gold": {
+        "prefer_premium": {
+          "full": 45000,
+          "partial": 30000
+        }
+      },
+      "gold_source": "rule",
+      "n_relevant": 20,
+      "scores": {
+        "Random": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.3428,
+          "MRR": 1.0
+        },
+        "Popularity": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.7701,
+          "MRR": 1.0
+        },
+        "Filter": {
+          "P@10": 0.6,
+          "R@10": 0.3,
+          "nDCG@10": 0.7413,
+          "MRR": 1.0
+        },
+        "Keyword": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.4122,
+          "MRR": 1.0
+        },
+        "SemanticVec": {
+          "P@10": 0.7,
+          "R@10": 0.35,
+          "nDCG@10": 0.5864,
+          "MRR": 1.0
+        },
+        "Hybrid": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.3268,
+          "MRR": 1.0
+        },
+        "CrossEncoder": {
+          "P@10": 0.3,
+          "R@10": 0.15,
+          "nDCG@10": 0.2902,
+          "MRR": 1.0
+        },
+        "LTR": {
+          "P@10": 1.0,
+          "R@10": 0.5,
+          "nDCG@10": 1.0,
+          "MRR": 1.0
+        },
+        "LTR[doc-only]": {
+          "P@10": 0.0,
+          "R@10": 0.0,
+          "nDCG@10": 0.0,
+          "MRR": 0.0
+        },
+        "WeightedGraphRAG": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2889,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG[handset]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2889,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG[elicited]": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.1821,
+          "MRR": 0.1667
+        },
+        "WeightedGraphRAG[blended]": {
+          "P@10": 0.4,
+          "R@10": 0.2,
+          "nDCG@10": 0.1983,
+          "MRR": 0.25
+        },
+        "WeightedGraphRAG[balanced]": {
+          "P@10": 0.9,
+          "R@10": 0.45,
+          "nDCG@10": 0.7326,
+          "MRR": 1.0
+        },
+        "WeightedGraphRAG[human]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2889,
+          "MRR": 0.5
+        },
+        "WeightedGraphRAG[no-diffusion]": {
+          "P@10": 0.5,
+          "R@10": 0.25,
+          "nDCG@10": 0.2889,
+          "MRR": 0.5
+        }
+      }
+    }
+  ],
+  "weight_sensitivity": {
+    "profiles": [
+      "handset",
+      "elicited",
+      "blended",
+      "balanced"
+    ],
+    "k": 10,
+    "n_queries": 14,
+    "sensitive": 14,
+    "sensitive_fraction": 1.0,
+    "order_sensitive": 14,
+    "order_sensitive_fraction": 1.0,
+    "by_category": {
+      "economic_ranked": {
+        "n": 14,
+        "changed": 14,
+        "fraction": 1.0
+      }
+    }
+  },
+  "notes": [
+    "INVALID ROW: 'WeightedGraphRAG[human]' is the handset vector. A concurrent edit at 2026-09-15 07:39 removed 'human' from WEIGHT_PROFILES while this run was starting, and base_weights() silently falls back to handset for unknown names. Ignore that row.",
+    "Prices re-snapshotted from LiteAPI on 2026-09-15 (median of cheapest offer over check-ins +14/+21/+28 d). Ladder cut points in queryset_price.json are the July LKR values, so 'cheaper' gold now covers 45 of 58 hotels."
+  ]
+}

@@ -21,6 +21,7 @@
         <a class="nav-link step-nav" href="#" data-step="3">3 · Metrics</a>
         <a class="nav-link step-nav" href="#" data-step="4">4 · Run &amp; Results</a>
         <a class="nav-link step-nav" href="#" data-step="5">5 · Per-Query Inspector</a>
+        <a class="nav-link step-nav" href="#" data-step="6">6 · Human Choices</a>
       </nav>
       <a class="nav-link back-link" href="./index.html">← Back to Console</a>
       <p class="sidebar-note">Comparative retrieval evaluation</p>
@@ -47,6 +48,7 @@
         <button class="step-chip" data-step="3"><b>3</b> Metrics</button>
         <button class="step-chip" data-step="4"><b>4</b> Run &amp; Results</button>
         <button class="step-chip" data-step="5"><b>5</b> Inspector</button>
+        <button class="step-chip" data-step="6"><b>6</b> Human Choices</button>
       </div>
 
       <!-- STEP 1 — QUERY SET & GOLD -->
@@ -234,6 +236,79 @@
           <div id="inspectHead" class="inspect-head"></div>
           <div id="inspectGrid" class="inspect-grid">
             <p class="content-placeholder">Choose a query above and press Inspect.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 6 — CHOICE-BASED EVALUATION -->
+      <section class="step-panel" data-step="6">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Step 6 — Evaluated against real human choices</h2>
+            <div class="toolbar">
+              <button id="loadHumanBtn" class="btn btn-primary">Load latest</button>
+              <button id="runHumanBtn" class="btn btn-accent">Run live</button>
+            </div>
+          </div>
+          <p class="muted step-lead">
+            Steps 1&ndash;5 grade against <code>evaluation/gold.py</code> &mdash; rules we wrote.
+            This step grades against what <b>247 participants actually booked</b> in the
+            discrete-choice study. It answers a different question: not &ldquo;does the ranking
+            satisfy the stated constraints?&rdquo; but &ldquo;does it predict what people choose?&rdquo;
+          </p>
+
+          <div class="callout callout-warn">
+            <b>Why both evaluations are reported.</b> The rule-based gold is nearly blind to
+            ranking: hard filtering prunes on the same predicates the gold grades on, so 45 of 60
+            queries score identically across every weight configuration. The choice data separates
+            them clearly &mdash; but it cannot measure price sensitivity (participants spent no real
+            money) and covers only ten scenarios. Neither replaces the other.
+          </div>
+
+          <div id="humanStats" class="stats-grid"></div>
+          <p id="humanStatus" class="muted step-lead">
+            Load the last saved run, or evaluate live against the study responses.
+          </p>
+
+          <h3 class="block-title">A &mdash; Per choice <span class="muted">(ground truth = the one hotel that participant booked)</span></h3>
+          <p class="muted small">
+            Exactly one relevant item per query, so <b>P@10 is capped at 1/32</b> and
+            <b>R@10 equals the hit rate</b>. Mean rank and MRR are the informative columns here.
+          </p>
+          <div class="table-wrap">
+            <table id="humanChoiceTable">
+              <thead><tr id="humanChoiceHead"><th>System</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <h3 class="block-title">B &mdash; Per task <span class="muted">(ground truth = hotels the held-out group chose)</span></h3>
+          <p class="muted small">
+            Aggregating votes restores a multi-item gold set, which is what P/R/nDCG were designed
+            for. Graded nDCG uses the vote count as gain.
+          </p>
+          <div class="table-wrap">
+            <table id="humanTaskTable">
+              <thead><tr id="humanTaskHead"><th>System</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <h3 class="block-title">C &mdash; Significance</h3>
+          <div class="table-wrap">
+            <table id="humanSigTable">
+              <thead><tr><th>vs</th><th>mean diff</th><th>95% CI</th><th>p</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <h3 class="block-title">The scenarios used as queries</h3>
+          <div class="table-wrap">
+            <table id="humanTaskList">
+              <thead><tr><th>Task</th><th>Persona</th><th>Anchor</th><th>Primary</th>
+                <th>Choices</th><th>Gold size</th><th>Top human pick</th></tr></thead>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </section>

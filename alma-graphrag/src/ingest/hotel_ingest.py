@@ -117,6 +117,47 @@ def _ingest_liteapi(
     return total
 
 
+def ingest_new_liteapi_hotels(
+    city: str,
+    target: int,
+    use_llm_extract: bool = LLM_EXTRACT_ENABLED,
+) -> int:
+    """Discover and ingest up to ``target`` catalogue hotels absent from the graph."""
+    if target <= 0:
+        raise ValueError("target must be positive")
+    loader = GraphLoader()
+    extractor = LLMExtractor() if use_llm_extract else None
+    ner = NERExtractor()
+    client = LiteApiClient()
+    try:
+        with loader.driver.session() as session:
+            existing_ids = {
+                str(row["id"])
+                for row in session.run(
+                    """
+                    MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)
+                    WHERE toLower(c.name) = toLower($city)
+                    RETURN h.id AS id
+                    """,
+                    {"city": city},
+                )
+            }
+        hotels = client.scrape_catalogue_city(city, existing_ids=existing_ids, target=target)
+        for hotel in hotels:
+            loader.upsert_hotel(hotel)
+            loader.upsert_hotel_extras(hotel["id"], hotel)
+            loader.upsert_amenities(hotel["id"], hotel.get("amenities", []))
+            loader.upsert_room_types(hotel["id"], hotel.get("room_types", []))
+            loader.upsert_board_types(hotel["id"], hotel.get("board_types", []))
+            _ner_enrich(ner, loader, hotel)
+            _llm_enrich(extractor, loader, hotel)
+        logger.info("LiteAPI catalogue: ingested %d new hotels for %s", len(hotels), city)
+        return len(hotels)
+    finally:
+        client.close()
+        loader.close()
+
+
 def _ner_enrich(ner: NERExtractor, loader: GraphLoader, hotel: dict) -> None:
     """NER-based entity extraction — runs on every hotel, no API cost."""
     try:

@@ -47,6 +47,10 @@ def test_k_zero_and_empty_ranking():
     assert precision_at_k([], {"a"}, 5) == 0.0
 
 
+def test_precision_at_k_penalises_short_rankings():
+    assert precision_at_k(["a"], {"a"}, 5) == 0.2
+
+
 def test_ndcg_rewards_earlier_hits():
     relevant = {"a"}
     early = ndcg_at_k(["a", "b", "c"], relevant, 3)

@@ -101,23 +101,43 @@ def init_schema() -> None:
         conn.close()
 
 
+def _upsert_rows(cursor: Any, rows: List[Dict[str, Any]]) -> None:
+    for row in rows:
+        cursor.execute(
+            f"""
+            INSERT INTO {TABLE} (id, city, name, doc, tsv, embedding)
+            VALUES (%s, %s, %s, %s, to_tsvector('english', %s), %s::vector)
+            ON CONFLICT (id) DO UPDATE SET
+                city = EXCLUDED.city, name = EXCLUDED.name,
+                doc = EXCLUDED.doc, tsv = EXCLUDED.tsv,
+                embedding = EXCLUDED.embedding
+            """,
+            (row["id"], row["city"], row["name"], row["doc"], row["doc"],
+             _vec_literal(row["embedding"])),
+        )
+
+
 def index_hotels(rows: List[Dict[str, Any]]) -> int:
     """Upsert hotel rows. Each row: {id, city, name, doc, embedding}."""
     conn = _connect(register_vector_type=False)
     try:
         with conn.cursor() as cur:
-            for r in rows:
-                cur.execute(
-                    f"""
-                    INSERT INTO {TABLE} (id, city, name, doc, tsv, embedding)
-                    VALUES (%s, %s, %s, %s, to_tsvector('english', %s), %s::vector)
-                    ON CONFLICT (id) DO UPDATE SET
-                        city = EXCLUDED.city, name = EXCLUDED.name,
-                        doc = EXCLUDED.doc, tsv = EXCLUDED.tsv,
-                        embedding = EXCLUDED.embedding
-                    """,
-                    (r["id"], r["city"], r["name"], r["doc"], r["doc"], _vec_literal(r["embedding"])),
-                )
+            _upsert_rows(cur, rows)
+        conn.commit()
+    finally:
+        conn.close()
+    return len(rows)
+
+
+def replace_city_hotels(city: str, rows: List[Dict[str, Any]]) -> int:
+    """Atomically replace one city's index rows with a fresh graph snapshot."""
+    if any(str(row["city"]).lower() != city.lower() for row in rows):
+        raise ValueError("every replacement row must belong to the requested city")
+    conn = _connect(register_vector_type=False)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(f"DELETE FROM {TABLE} WHERE lower(city) = lower(%s)", (city,))
+            _upsert_rows(cur, rows)
         conn.commit()
     finally:
         conn.close()

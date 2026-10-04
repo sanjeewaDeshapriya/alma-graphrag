@@ -1,0 +1,181 @@
+{
+  "description": "Delay-graded queries (max_added_delay_min, thresholds 3/5/10 min). Degenerate on off-peak snapshots; use with peak-hour data or evaluation/disruption_scenarios.py. Built by evaluation/build_delay_queries.py.",
+  "city": "Colombo",
+  "k": 10,
+  "queries": [
+    {
+      "id": "d001",
+      "question": "hotels in colombo where traffic delay stays under 3 minutes",
+      "gold": {
+        "max_added_delay_min": 3.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d002",
+      "question": "avoid congestion, no more than 3 minutes of added drive time",
+      "gold": {
+        "max_added_delay_min": 3.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d003",
+      "question": "hotels not stuck in traffic, under 3 min added delay",
+      "gold": {
+        "max_added_delay_min": 3.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d004",
+      "question": "rush hour safe hotels with under 3 extra minutes on the road",
+      "gold": {
+        "max_added_delay_min": 3.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d005",
+      "question": "hotels unaffected by a road closure, less than 3 min added delay",
+      "gold": {
+        "max_added_delay_min": 3.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d006",
+      "question": "hotels in colombo where traffic delay stays under 5 minutes",
+      "gold": {
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d007",
+      "question": "avoid congestion, no more than 5 minutes of added drive time",
+      "gold": {
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d008",
+      "question": "hotels not stuck in traffic, under 5 min added delay",
+      "gold": {
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d009",
+      "question": "rush hour safe hotels with under 5 extra minutes on the road",
+      "gold": {
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d010",
+      "question": "hotels unaffected by a road closure, less than 5 min added delay",
+      "gold": {
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d011",
+      "question": "hotels in colombo where traffic delay stays under 10 minutes",
+      "gold": {
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d012",
+      "question": "avoid congestion, no more than 10 minutes of added drive time",
+      "gold": {
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d013",
+      "question": "hotels not stuck in traffic, under 10 min added delay",
+      "gold": {
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d014",
+      "question": "rush hour safe hotels with under 10 extra minutes on the road",
+      "gold": {
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d015",
+      "question": "hotels unaffected by a road closure, less than 10 min added delay",
+      "gold": {
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay"
+    },
+    {
+      "id": "d016",
+      "question": "hotels under 30000 lkr with less than 5 minutes traffic delay",
+      "gold": {
+        "max_price": 30000,
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay_multi"
+    },
+    {
+      "id": "d017",
+      "question": "hotels under 45000 lkr that avoid congestion, under 5 min added delay",
+      "gold": {
+        "max_price": 45000,
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay_multi"
+    },
+    {
+      "id": "d018",
+      "question": "hotels with rating 4.3 or higher and under 5 minutes traffic delay",
+      "gold": {
+        "min_rating": 4.3,
+        "max_added_delay_min": 5.0
+      },
+      "category": "delay_multi"
+    },
+    {
+      "id": "d019",
+      "question": "hotels under 30000 lkr with less than 10 minutes traffic delay",
+      "gold": {
+        "max_price": 30000,
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay_multi"
+    },
+    {
+      "id": "d020",
+      "question": "hotels under 45000 lkr that avoid congestion, under 10 min added delay",
+      "gold": {
+        "max_price": 45000,
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay_multi"
+    },
+    {
+      "id": "d021",
+      "question": "hotels with rating 4.3 or higher and under 10 minutes traffic delay",
+      "gold": {
+        "min_rating": 4.3,
+        "max_added_delay_min": 10.0
+      },
+      "category": "delay_multi"
+    }
+  ]
+}

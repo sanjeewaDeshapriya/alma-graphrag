@@ -113,7 +113,7 @@ def main() -> None:
             }
             for i, h in enumerate(hotels)
         ]
-        vs.index_hotels(rows)
+        vs.replace_city_hotels(city, rows)
         total += len(rows)
         print(f"  {city}: indexed {len(rows)} hotels")
 

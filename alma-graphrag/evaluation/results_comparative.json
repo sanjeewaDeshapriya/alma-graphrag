@@ -1,0 +1,760 @@
+{
+  "note": "Parallel evaluations only: rule-based relevance uses the benchmark query set; human-choice metrics use held-out study selections. Do not average or test them together.",
+  "rule_based": {
+    "query_count": 60,
+    "pool_size": 77,
+    "gold_meta": {
+      "used_human": false,
+      "human_queries": 0,
+      "alpha": null,
+      "ndcg_gains": "graded (2 full / 1 partial)",
+      "tolerance_bands": {
+        "price": 0.15,
+        "rating": 0.2,
+        "star": 1.0,
+        "travel_min": 2.0,
+        "disruption_min": 3.0
+      }
+    },
+    "research_validity": {
+      "reportable": false,
+      "blockers": [
+        "human relevance gold is incomplete; rule-based labels remain"
+      ],
+      "warnings": []
+    }
+  },
+  "human_choice": {
+    "material_version": "v4-rooms-20260818",
+    "test_participants": 28,
+    "test_choices": 280,
+    "min_votes": 2,
+    "selection_share_gold": {
+      "definition": "held-out selections per task; relevant when votes >= min_votes",
+      "tasks": {
+        "t1": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lpb1537",
+              "votes": 11,
+              "selection_share": 0.3929,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp3e58e",
+              "votes": 6,
+              "selection_share": 0.2143,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp71118",
+              "votes": 6,
+              "selection_share": 0.2143,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp33ddb",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp6f007",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t10": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp72a36",
+              "votes": 9,
+              "selection_share": 0.3214,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp857b8",
+              "votes": 6,
+              "selection_share": 0.2143,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp5f0e5",
+              "votes": 5,
+              "selection_share": 0.1786,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpc0df6",
+              "votes": 5,
+              "selection_share": 0.1786,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t2": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp857b8",
+              "votes": 15,
+              "selection_share": 0.5357,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp72a36",
+              "votes": 5,
+              "selection_share": 0.1786,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp5f0e5",
+              "votes": 3,
+              "selection_share": 0.1071,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpc0df6",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp656d40c7",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t3": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp71118",
+              "votes": 8,
+              "selection_share": 0.2857,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp3e58e",
+              "votes": 6,
+              "selection_share": 0.2143,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp81760",
+              "votes": 5,
+              "selection_share": 0.1786,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp9855f",
+              "votes": 4,
+              "selection_share": 0.1429,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp6f007",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t4": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp76eba",
+              "votes": 14,
+              "selection_share": 0.5,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 9,
+              "selection_share": 0.3214,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp6f007",
+              "votes": 3,
+              "selection_share": 0.1071,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp67286",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t5": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp72a36",
+              "votes": 16,
+              "selection_share": 0.5714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp6e625",
+              "votes": 8,
+              "selection_share": 0.2857,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp656d40c7",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t6": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp40d3f",
+              "votes": 10,
+              "selection_share": 0.3571,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp7c172",
+              "votes": 9,
+              "selection_share": 0.3214,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp76eba",
+              "votes": 3,
+              "selection_share": 0.1071,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp67708",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp656d40c7",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t7": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp857b8",
+              "votes": 13,
+              "selection_share": 0.4643,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpc0df6",
+              "votes": 10,
+              "selection_share": 0.3571,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp5f0e5",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp65589ffb",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            },
+            {
+              "hotel_id": "lp656d40c7",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        },
+        "t8": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp656d40c7",
+              "votes": 9,
+              "selection_share": 0.3214,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp6557c6e0",
+              "votes": 8,
+              "selection_share": 0.2857,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp5f0e5",
+              "votes": 3,
+              "selection_share": 0.1071,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp656d3aa9",
+              "votes": 3,
+              "selection_share": 0.1071,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp6574b103",
+              "votes": 3,
+              "selection_share": 0.1071,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            }
+          ]
+        },
+        "t9": {
+          "n_choices": 28,
+          "hotels": [
+            {
+              "hotel_id": "lp7c172",
+              "votes": 10,
+              "selection_share": 0.3571,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp40d3f",
+              "votes": 9,
+              "selection_share": 0.3214,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp67708",
+              "votes": 6,
+              "selection_share": 0.2143,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lp656d40c7",
+              "votes": 2,
+              "selection_share": 0.0714,
+              "relevant": true
+            },
+            {
+              "hotel_id": "lpb1537",
+              "votes": 1,
+              "selection_share": 0.0357,
+              "relevant": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "matrix": [
+    {
+      "system": "Random",
+      "rule_based": {
+        "P@10": 0.23499999999999996,
+        "R@10": 0.1341548925963298,
+        "nDCG@10": 0.20163173994482478,
+        "MRR": 0.4361044973544972
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "Popularity",
+      "rule_based": {
+        "P@10": 0.18999999999999997,
+        "R@10": 0.11389168963276645,
+        "nDCG@10": 0.1885924189905803,
+        "MRR": 0.19499999999999998
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "Filter",
+      "rule_based": {
+        "P@10": 0.4116666666666667,
+        "R@10": 0.22852621040763818,
+        "nDCG@10": 0.5010867777661602,
+        "MRR": 0.5433333333333332
+      },
+      "human_choice_per_choice": {
+        "P@10": 0.0354,
+        "R@10": 0.3536,
+        "nDCG@10": 0.1952,
+        "MRR": 0.176,
+        "mean_rank": 17.1821
+      },
+      "human_choice_per_task": {
+        "P@10": 0.15,
+        "R@10": 0.3283,
+        "nDCG@10": 0.3644,
+        "gradedNDCG@10": 0.239,
+        "MRR": 0.7444
+      }
+    },
+    {
+      "system": "Keyword",
+      "rule_based": {
+        "P@10": 0.4883333333333334,
+        "R@10": 0.3440517456285887,
+        "nDCG@10": 0.5257158231225147,
+        "MRR": 0.7630555555555555
+      },
+      "human_choice_per_choice": {
+        "P@10": 0.0396,
+        "R@10": 0.3964,
+        "nDCG@10": 0.1706,
+        "MRR": 0.1314,
+        "mean_rank": 16.0679
+      },
+      "human_choice_per_task": {
+        "P@10": 0.19,
+        "R@10": 0.405,
+        "nDCG@10": 0.2658,
+        "gradedNDCG@10": 0.2433,
+        "MRR": 0.2917
+      }
+    },
+    {
+      "system": "SemanticVec",
+      "rule_based": {
+        "P@10": 0.29666666666666663,
+        "R@10": 0.19183885217171193,
+        "nDCG@10": 0.26150930077487716,
+        "MRR": 0.5136441798941799
+      },
+      "human_choice_per_choice": {
+        "P@10": 0.0246,
+        "R@10": 0.2464,
+        "nDCG@10": 0.0972,
+        "MRR": 0.0939,
+        "mean_rank": 16.5393
+      },
+      "human_choice_per_task": {
+        "P@10": 0.11,
+        "R@10": 0.21,
+        "nDCG@10": 0.1507,
+        "gradedNDCG@10": 0.1404,
+        "MRR": 0.2218
+      }
+    },
+    {
+      "system": "Hybrid",
+      "rule_based": {
+        "P@10": 0.42166666666666663,
+        "R@10": 0.2903233332351668,
+        "nDCG@10": 0.4448490374363439,
+        "MRR": 0.7713624338624339
+      },
+      "human_choice_per_choice": {
+        "P@10": 0.0321,
+        "R@10": 0.3214,
+        "nDCG@10": 0.1744,
+        "MRR": 0.1631,
+        "mean_rank": 16.5786
+      },
+      "human_choice_per_task": {
+        "P@10": 0.15,
+        "R@10": 0.3133,
+        "nDCG@10": 0.2695,
+        "gradedNDCG@10": 0.2484,
+        "MRR": 0.4491
+      }
+    },
+    {
+      "system": "CrossEncoder",
+      "rule_based": {
+        "P@10": 0.4033333333333332,
+        "R@10": 0.2429604244425782,
+        "nDCG@10": 0.372634281582091,
+        "MRR": 0.6837500000000001
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "LTR",
+      "rule_based": {
+        "P@10": 0.9149999999999999,
+        "R@10": 0.5970300135796338,
+        "nDCG@10": 0.9581749469625724,
+        "MRR": 0.9666666666666667
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "LTR[doc-only]",
+      "rule_based": {
+        "P@10": 0.5349999999999999,
+        "R@10": 0.3276703571933588,
+        "nDCG@10": 0.5051060799405914,
+        "MRR": 0.7615740740740741
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "WeightedGraphRAG",
+      "rule_based": {
+        "P@10": 0.7283333333333332,
+        "R@10": 0.4733152780227927,
+        "nDCG@10": 0.8119855824629737,
+        "MRR": 0.9374999999999999
+      },
+      "human_choice_per_choice": {
+        "P@10": 0.0893,
+        "R@10": 0.8929,
+        "nDCG@10": 0.585,
+        "MRR": 0.4905,
+        "mean_rank": 4.7214
+      },
+      "human_choice_per_task": {
+        "P@10": 0.37,
+        "R@10": 0.8317,
+        "nDCG@10": 0.7997,
+        "gradedNDCG@10": 0.8306,
+        "MRR": 0.95
+      }
+    },
+    {
+      "system": "WeightedGraphRAG[human]",
+      "rule_based": {
+        "P@10": 0.6933333333333334,
+        "R@10": 0.42695793166544627,
+        "nDCG@10": 0.7465268662731731,
+        "MRR": 0.8969841269841272
+      },
+      "human_choice_per_choice": {
+        "P@10": 0.0893,
+        "R@10": 0.8929,
+        "nDCG@10": 0.5557,
+        "MRR": 0.4553,
+        "mean_rank": 5.3357
+      },
+      "human_choice_per_task": {
+        "P@10": 0.37,
+        "R@10": 0.8483,
+        "nDCG@10": 0.7693,
+        "gradedNDCG@10": 0.7908,
+        "MRR": 0.9
+      }
+    },
+    {
+      "system": "WeightedGraphRAG[human_informed]",
+      "rule_based": {
+        "P@10": 0.7016666666666667,
+        "R@10": 0.4317585014660161,
+        "nDCG@10": 0.7614497840225607,
+        "MRR": 0.9173611111111112
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "WeightedGraphRAG[human-price-aware]",
+      "rule_based": {
+        "P@10": 0.7183333333333332,
+        "R@10": 0.46598927069678536,
+        "nDCG@10": 0.8042338002018776,
+        "MRR": 0.9374999999999999
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "WeightedGraphRAG[no-diffusion]",
+      "rule_based": {
+        "P@10": 0.7283333333333332,
+        "R@10": 0.4733152780227927,
+        "nDCG@10": 0.8119855824629737,
+        "MRR": 0.9374999999999999
+      },
+      "human_choice_per_choice": null,
+      "human_choice_per_task": null
+    },
+    {
+      "system": "WeightedGraphRAG[elicited]",
+      "rule_based": null,
+      "human_choice_per_choice": {
+        "P@10": 0.0893,
+        "R@10": 0.8929,
+        "nDCG@10": 0.646,
+        "MRR": 0.5717,
+        "mean_rank": 4.0536
+      },
+      "human_choice_per_task": {
+        "P@10": 0.37,
+        "R@10": 0.8317,
+        "nDCG@10": 0.8637,
+        "gradedNDCG@10": 0.9131,
+        "MRR": 1.0
+      }
+    },
+    {
+      "system": "WeightedGraphRAG[blended]",
+      "rule_based": null,
+      "human_choice_per_choice": {
+        "P@10": 0.0893,
+        "R@10": 0.8929,
+        "nDCG@10": 0.6417,
+        "MRR": 0.5651,
+        "mean_rank": 4.0714
+      },
+      "human_choice_per_task": {
+        "P@10": 0.37,
+        "R@10": 0.8317,
+        "nDCG@10": 0.8479,
+        "gradedNDCG@10": 0.9071,
+        "MRR": 1.0
+      }
+    },
+    {
+      "system": "WeightedGraphRAG[balanced]",
+      "rule_based": null,
+      "human_choice_per_choice": {
+        "P@10": 0.0689,
+        "R@10": 0.6893,
+        "nDCG@10": 0.4262,
+        "MRR": 0.3615,
+        "mean_rank": 8.7821
+      },
+      "human_choice_per_task": {
+        "P@10": 0.26,
+        "R@10": 0.5983,
+        "nDCG@10": 0.5557,
+        "gradedNDCG@10": 0.6066,
+        "MRR": 0.775
+      }
+    },
+    {
+      "system": "WeightedGraphRAG[handset]",
+      "rule_based": null,
+      "human_choice_per_choice": {
+        "P@10": 0.0893,
+        "R@10": 0.8929,
+        "nDCG@10": 0.585,
+        "MRR": 0.4905,
+        "mean_rank": 4.7214
+      },
+      "human_choice_per_task": {
+        "P@10": 0.37,
+        "R@10": 0.8317,
+        "nDCG@10": 0.7997,
+        "gradedNDCG@10": 0.8306,
+        "MRR": 0.95
+      }
+    },
+    {
+      "system": "WeightedGraphRAG[fitted-on-train]",
+      "rule_based": null,
+      "human_choice_per_choice": {
+        "P@10": 0.0893,
+        "R@10": 0.8929,
+        "nDCG@10": 0.6551,
+        "MRR": 0.5828,
+        "mean_rank": 3.8643
+      },
+      "human_choice_per_task": {
+        "P@10": 0.37,
+        "R@10": 0.8317,
+        "nDCG@10": 0.8634,
+        "gradedNDCG@10": 0.9261,
+        "MRR": 1.0
+      }
+    }
+  ]
+}

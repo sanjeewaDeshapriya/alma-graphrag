@@ -5,6 +5,9 @@ from neo4j import GraphDatabase
 from src.config import NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD
 
 
+
+
+
 class GraphLoader:
     def __init__(self) -> None:
         self.driver = GraphDatabase.driver(

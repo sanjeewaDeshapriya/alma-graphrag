@@ -1,0 +1,2679 @@
+{
+  "source_dump": "study_data_v4-rooms-20260818.json",
+  "material_version": "v4-rooms-20260818",
+  "n_choices": 2232,
+  "n_participants": 241,
+  "config": {
+    "placebo_reps": 200,
+    "bootstrap_reps": 300,
+    "cv_folds": 5,
+    "seed": 20260913
+  },
+  "specs": {
+    "neglog": {
+      "likelihood_ratio": {
+        "position_spec": "neglog",
+        "n": 2232,
+        "df": 5,
+        "ll_null": -7725.76635852001,
+        "ll_position": -3164.5410807235967,
+        "ll_full": -3103.8314228583604,
+        "lr": 121.41931573047259,
+        "p": 1.5706037825806776e-24,
+        "mcfadden_position": 0.5903913043870752,
+        "mcfadden_full": 0.5982493802138553
+      },
+      "profiles_cv": {
+        "position_only": {
+          "ll_per_choice": -1.4181652322899654,
+          "perplexity": 4.129536744542562,
+          "top1": 0.4583333333333333,
+          "n": 2232
+        },
+        "components": {
+          "ll_per_choice": -1.3941800462391745,
+          "perplexity": 4.0316674360913485,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": 0.023985186050791054,
+          "delta_ci95": [
+            0.015621305506037214,
+            0.03253623040386062
+          ]
+        },
+        "profile:handset": {
+          "ll_per_choice": -1.418422024387164,
+          "perplexity": 4.130597313110637,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": -0.00025679209719859216,
+          "delta_ci95": [
+            -0.0014593384229386343,
+            0.0010457747071529347
+          ]
+        },
+        "profile:elicited": {
+          "ll_per_choice": -1.4127124351510236,
+          "perplexity": 4.107080498714197,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": 0.005452797138941684,
+          "delta_ci95": [
+            -0.00020245057201979344,
+            0.011193440243913508
+          ]
+        },
+        "profile:blended": {
+          "ll_per_choice": -1.415684883848378,
+          "perplexity": 4.119306746738002,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": 0.002480348441587496,
+          "delta_ci95": [
+            -0.0015784624485769775,
+            0.006657677024534183
+          ]
+        },
+        "profile:balanced": {
+          "ll_per_choice": -1.412132742464545,
+          "perplexity": 4.104700344132068,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": 0.006032489825420518,
+          "delta_ci95": [
+            0.0014883891051887825,
+            0.010263051500140405
+          ]
+        },
+        "profile:human": {
+          "ll_per_choice": -1.4178316854260453,
+          "perplexity": 4.128159580199169,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": 0.0003335468639199524,
+          "delta_ci95": [
+            -0.0017047568901150038,
+            0.0024534524368744265
+          ]
+        }
+      },
+      "gates": {
+        "pooled": {
+          "estimator": "pooled",
+          "position_spec": "neglog",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.0,
+            "accessibility": 1.0,
+            "facility": 0.0,
+            "economic": 0.0,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "neglog",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -3164.5410807235967,
+            "ll_full": -3103.8314228583604,
+            "lr": 121.41931573047259,
+            "p": 1.5706037825806776e-24,
+            "mcfadden_position": 0.5903913043870752,
+            "mcfadden_full": 0.5982493802138553
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.4181652322899654,
+              "perplexity": 4.129536744542562,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.3941800462391745,
+              "perplexity": 4.0316674360913485,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "delta_ll_per_choice": 0.023985186050791054,
+            "delta_ci95": [
+              0.015621305506037214,
+              0.03253623040386062
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.6208321018598696,
+              "ci95": [
+                -1.197863204869022,
+                -0.07271574144155912
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.12484211866640575,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 1.0,
+              "placebo_statistic": 1.5194546217660123,
+              "beta_unconstrained": 1.5194546217660123,
+              "ci95": [
+                0.9953186051996135,
+                1.979864809191995
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.10275238214706026,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": true,
+                "G4_held_out": true,
+                "G5_stability": true
+              },
+              "identified": true
+            },
+            "facility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -1.2225336966494562,
+              "ci95": [
+                -1.5754287962001565,
+                -0.884972524204164
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.06469269949453155,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -1.0920531534535687,
+              "ci95": [
+                -1.3493541071818622,
+                -0.7989183208718463
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.06007080278728177,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.572029608946278,
+              "ci95": [
+                -1.155328012266819,
+                -0.059022992777534894
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.0753903628487898,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [
+            "accessibility"
+          ],
+          "shippable": false
+        },
+        "pooled_nonneg": {
+          "estimator": "pooled_nonneg",
+          "position_spec": "neglog",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.0,
+            "accessibility": 1.0,
+            "facility": 0.0,
+            "economic": 0.0,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "neglog",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -3164.5410807235967,
+            "ll_full": -3103.8314228583604,
+            "lr": 121.41931573047259,
+            "p": 1.5706037825806776e-24,
+            "mcfadden_position": 0.5903913043870752,
+            "mcfadden_full": 0.5982493802138553
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.4181652322899654,
+              "perplexity": 4.129536744542562,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.3941800462391745,
+              "perplexity": 4.0316674360913485,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "delta_ll_per_choice": 0.023985186050791054,
+            "delta_ci95": [
+              0.015621305506037214,
+              0.03253623040386062
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.6208321018598696,
+              "ci95": [
+                -1.197863204869022,
+                -0.07271574144155912
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.03986923322354283,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 1.0,
+              "placebo_statistic": 1.0903750535523005,
+              "beta_unconstrained": 1.5194546217660123,
+              "ci95": [
+                0.9953186051996135,
+                1.979864809191995
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.04106852136025186,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": true,
+                "G4_held_out": true,
+                "G5_stability": true
+              },
+              "identified": true
+            },
+            "facility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -1.2225336966494562,
+              "ci95": [
+                -1.5754287962001565,
+                -0.884972524204164
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.08139589243746714,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -1.0920531534535687,
+              "ci95": [
+                -1.3493541071818622,
+                -0.7989183208718463
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.06923816138000564,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.572029608946278,
+              "ci95": [
+                -1.155328012266819,
+                -0.059022992777534894
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.07583220941782605,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [
+            "accessibility"
+          ],
+          "shippable": false
+        },
+        "elicited (prior_map)": {
+          "estimator": "elicited (prior_map)",
+          "position_spec": "neglog",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.0,
+            "accessibility": 1.0,
+            "facility": 0.0,
+            "economic": 0.0,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "neglog",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -3164.5410807235967,
+            "ll_full": -3103.8314228583604,
+            "lr": 121.41931573047259,
+            "p": 1.5706037825806776e-24,
+            "mcfadden_position": 0.5903913043870752,
+            "mcfadden_full": 0.5982493802138553
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.4181652322899654,
+              "perplexity": 4.129536744542562,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.3941800462391745,
+              "perplexity": 4.0316674360913485,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "delta_ll_per_choice": 0.023985186050791054,
+            "delta_ci95": [
+              0.015621305506037214,
+              0.03253623040386062
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.6208321018598696,
+              "ci95": [
+                -1.197863204869022,
+                -0.07271574144155912
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.04011905919887013,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 1.0,
+              "placebo_statistic": 1.050148039305003,
+              "beta_unconstrained": 1.5194546217660123,
+              "ci95": [
+                0.9953186051996135,
+                1.979864809191995
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.03967272601907633,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": true,
+                "G4_held_out": true,
+                "G5_stability": true
+              },
+              "identified": true
+            },
+            "facility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -1.2225336966494562,
+              "ci95": [
+                -1.5754287962001565,
+                -0.884972524204164
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.0790717483615726,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -1.0920531534535687,
+              "ci95": [
+                -1.3493541071818622,
+                -0.7989183208718463
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.06692383321719922,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.572029608946278,
+              "ci95": [
+                -1.155328012266819,
+                -0.059022992777534894
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.07163637164923403,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [
+            "accessibility"
+          ],
+          "shippable": false
+        },
+        "human (per_sort_macro)": {
+          "estimator": "human (per_sort_macro)",
+          "position_spec": "neglog",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.297974788627109,
+            "accessibility": 0.2816448407639976,
+            "facility": 0.25,
+            "economic": 0.12005186757264652,
+            "disruption": 0.050328503036246836
+          },
+          "likelihood_ratio": {
+            "position_spec": "neglog",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -3164.5410807235967,
+            "ll_full": -3103.8314228583604,
+            "lr": 121.41931573047259,
+            "p": 1.5706037825806776e-24,
+            "mcfadden_position": 0.5903913043870752,
+            "mcfadden_full": 0.5982493802138553
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.4181652322899654,
+              "perplexity": 4.129536744542562,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.3941800462391745,
+              "perplexity": 4.0316674360913485,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "delta_ll_per_choice": 0.023985186050791054,
+            "delta_ci95": [
+              0.015621305506037214,
+              0.03253623040386062
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.297974788627109,
+              "placebo_statistic": 1.1799906459822864,
+              "beta_unconstrained": -0.6208321018598696,
+              "ci95": [
+                -1.197863204869022,
+                -0.07271574144155912
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.08506235267845247,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.2816448407639976,
+              "placebo_statistic": 1.3886868674959996,
+              "beta_unconstrained": 1.5194546217660123,
+              "ci95": [
+                0.9953186051996135,
+                1.979864809191995
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.07856718217142838,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": true,
+                "G4_held_out": true,
+                "G5_stability": true
+              },
+              "identified": true
+            },
+            "facility": {
+              "weight": 0.25,
+              "placebo_statistic": 0.8411166172746317,
+              "beta_unconstrained": -1.2225336966494562,
+              "ci95": [
+                -1.5754287962001565,
+                -0.884972524204164
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.1472146612617535,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.12005186757264652,
+              "placebo_statistic": 0.1353465544653338,
+              "beta_unconstrained": -1.0920531534535687,
+              "ci95": [
+                -1.3493541071818622,
+                -0.7989183208718463
+              ],
+              "placebo_p": 0.40298507462686567,
+              "placebo_null_mean": 0.12388004149450296,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.050328503036246836,
+              "placebo_statistic": 0.2757055146111488,
+              "beta_unconstrained": -0.572029608946278,
+              "ci95": [
+                -1.155328012266819,
+                -0.059022992777534894
+              ],
+              "placebo_p": 0.04477611940298507,
+              "placebo_null_mean": 0.11173840276401759,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [
+            "accessibility"
+          ],
+          "shippable": false
+        },
+        "share (per_task_macro)": {
+          "estimator": "share (per_task_macro)",
+          "position_spec": "neglog",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.25694617073289416,
+            "accessibility": 0.3939645870016772,
+            "facility": 0.06404606635721716,
+            "economic": 0.13722966614319937,
+            "disruption": 0.1478135097650121
+          },
+          "likelihood_ratio": {
+            "position_spec": "neglog",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -3164.5410807235967,
+            "ll_full": -3103.8314228583604,
+            "lr": 121.41931573047259,
+            "p": 1.5706037825806776e-24,
+            "mcfadden_position": 0.5903913043870752,
+            "mcfadden_full": 0.5982493802138553
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.4181652322899654,
+              "perplexity": 4.129536744542562,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.3941800462391745,
+              "perplexity": 4.0316674360913485,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "delta_ll_per_choice": 0.023985186050791054,
+            "delta_ci95": [
+              0.015621305506037214,
+              0.03253623040386062
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.25694617073289416,
+              "placebo_statistic": 0.40809730416148887,
+              "beta_unconstrained": -0.6208321018598696,
+              "ci95": [
+                -1.197863204869022,
+                -0.07271574144155912
+              ],
+              "placebo_p": 0.009950248756218905,
+              "placebo_null_mean": 0.13712286434563,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.3939645870016772,
+              "placebo_statistic": 1.314160567523786,
+              "beta_unconstrained": 1.5194546217660123,
+              "ci95": [
+                0.9953186051996135,
+                1.979864809191995
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.1567375919820636,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": true,
+                "G4_held_out": true,
+                "G5_stability": true
+              },
+              "identified": true
+            },
+            "facility": {
+              "weight": 0.06404606635721716,
+              "placebo_statistic": 0.2958570552102168,
+              "beta_unconstrained": -1.2225336966494562,
+              "ci95": [
+                -1.5754287962001565,
+                -0.884972524204164
+              ],
+              "placebo_p": 0.5323383084577115,
+              "placebo_null_mean": 0.3040015295621288,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.13722966614319937,
+              "placebo_statistic": 0.23744004955080972,
+              "beta_unconstrained": -1.0920531534535687,
+              "ci95": [
+                -1.3493541071818622,
+                -0.7989183208718463
+              ],
+              "placebo_p": 0.5870646766169154,
+              "placebo_null_mean": 0.2811081418448027,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.1478135097650121,
+              "placebo_statistic": 1.1120882668550107,
+              "beta_unconstrained": -0.572029608946278,
+              "ci95": [
+                -1.155328012266819,
+                -0.059022992777534894
+              ],
+              "placebo_p": 0.004975124378109453,
+              "placebo_null_mean": 0.312493006433337,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": true,
+                "G3_interval": false,
+                "G4_held_out": true,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [
+            "accessibility"
+          ],
+          "shippable": false
+        }
+      }
+    },
+    "dummies:3": {
+      "likelihood_ratio": {
+        "position_spec": "dummies:3",
+        "n": 2232,
+        "df": 5,
+        "ll_null": -7725.76635852001,
+        "ll_position": -2455.897673219784,
+        "ll_full": -2451.5533924566953,
+        "lr": 8.688561526177182,
+        "p": 0.12214999740846955,
+        "mcfadden_position": 0.6821159792761,
+        "mcfadden_full": 0.6826782899339027
+      },
+      "profiles_cv": {
+        "position_only": {
+          "ll_per_choice": -1.1065468721481722,
+          "perplexity": 3.0238984371301614,
+          "top1": 0.4583333333333333,
+          "n": 2232
+        },
+        "components": {
+          "ll_per_choice": -1.1077330695458438,
+          "perplexity": 3.027487505838252,
+          "top1": 0.4507168458781362,
+          "n": 2232,
+          "delta_vs_position": -0.0011861973976715436,
+          "delta_ci95": [
+            -0.003669924958671793,
+            0.0011981974694554554
+          ]
+        },
+        "profile:handset": {
+          "ll_per_choice": -1.1067440235639558,
+          "perplexity": 3.0244946617595616,
+          "top1": 0.4574372759856631,
+          "n": 2232,
+          "delta_vs_position": -0.00019715141578381234,
+          "delta_ci95": [
+            -0.0020003657937317757,
+            0.0016739208814333024
+          ]
+        },
+        "profile:elicited": {
+          "ll_per_choice": -1.1068648436606956,
+          "perplexity": 3.024860103573097,
+          "top1": 0.45698924731182794,
+          "n": 2232,
+          "delta_vs_position": -0.0003179715125234694,
+          "delta_ci95": [
+            -0.0021224097467828417,
+            0.00162522540746579
+          ]
+        },
+        "profile:blended": {
+          "ll_per_choice": -1.1068307786761225,
+          "perplexity": 3.0247570635153718,
+          "top1": 0.45698924731182794,
+          "n": 2232,
+          "delta_vs_position": -0.0002839065279503163,
+          "delta_ci95": [
+            -0.002157249442574467,
+            0.0016995560878606656
+          ]
+        },
+        "profile:balanced": {
+          "ll_per_choice": -1.1066409322502673,
+          "perplexity": 3.024182878702975,
+          "top1": 0.4583333333333333,
+          "n": 2232,
+          "delta_vs_position": -9.406010209496306e-05,
+          "delta_ci95": [
+            -0.0009422510660497749,
+            0.000852960240124372
+          ]
+        },
+        "profile:human": {
+          "ll_per_choice": -1.1065216506566955,
+          "perplexity": 3.0238221708632818,
+          "top1": 0.45698924731182794,
+          "n": 2232,
+          "delta_vs_position": 2.5221491476791513e-05,
+          "delta_ci95": [
+            -0.0018192738088516286,
+            0.002019238273279443
+          ]
+        }
+      },
+      "gates": {
+        "pooled": {
+          "estimator": "pooled",
+          "position_spec": "dummies:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.8465252909085302,
+            "accessibility": 0.0,
+            "facility": 0.08742306086908289,
+            "economic": 0.06605164822238682,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "dummies:3",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -2455.897673219784,
+            "ll_full": -2451.5533924566953,
+            "lr": 8.688561526177182,
+            "p": 0.12214999740846955,
+            "mcfadden_position": 0.6821159792761,
+            "mcfadden_full": 0.6826782899339027
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.1065468721481722,
+              "perplexity": 3.0238984371301614,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.1077330695458438,
+              "perplexity": 3.027487505838252,
+              "top1": 0.4507168458781362,
+              "n": 2232
+            },
+            "delta_ll_per_choice": -0.0011861973976715436,
+            "delta_ci95": [
+              -0.003669924958671793,
+              0.0011981974694554554
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.8465252909085302,
+              "placebo_statistic": 0.6121819510415138,
+              "beta_unconstrained": 0.6121819510415138,
+              "ci95": [
+                -0.12287158674314676,
+                1.297129863454564
+              ],
+              "placebo_p": 0.05472636815920398,
+              "placebo_null_mean": 0.13899204877842095,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.30493449691998287,
+              "ci95": [
+                -0.9674241919634015,
+                0.311241541944135
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.1299706401450371,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.08742306086908289,
+              "placebo_statistic": 0.06322176140941672,
+              "beta_unconstrained": 0.06322176140941672,
+              "ci95": [
+                -0.39196881088350705,
+                0.5471352162712547
+              ],
+              "placebo_p": 0.4129353233830846,
+              "placebo_null_mean": 0.08385638307425915,
+              "loqo_positive_share": 0.9,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.06605164822238682,
+              "placebo_statistic": 0.04776659045223694,
+              "beta_unconstrained": 0.04776659045223694,
+              "ci95": [
+                -0.39747839696676807,
+                0.4995720220627104
+              ],
+              "placebo_p": 0.43283582089552236,
+              "placebo_null_mean": 0.09058961981488865,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.5170442503293085,
+              "ci95": [
+                -1.097898213192919,
+                0.03367462580939816
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.12002811437571143,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "pooled_nonneg": {
+          "estimator": "pooled_nonneg",
+          "position_spec": "dummies:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.5750270790911435,
+            "accessibility": 0.0,
+            "facility": 0.24995331599439186,
+            "economic": 0.17501960491446472,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "dummies:3",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -2455.897673219784,
+            "ll_full": -2451.5533924566953,
+            "lr": 8.688561526177182,
+            "p": 0.12214999740846955,
+            "mcfadden_position": 0.6821159792761,
+            "mcfadden_full": 0.6826782899339027
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.1065468721481722,
+              "perplexity": 3.0238984371301614,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.1077330695458438,
+              "perplexity": 3.027487505838252,
+              "top1": 0.4507168458781362,
+              "n": 2232
+            },
+            "delta_ll_per_choice": -0.0011861973976715436,
+            "delta_ci95": [
+              -0.003669924958671793,
+              0.0011981974694554554
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.5750270790911435,
+              "placebo_statistic": 0.33799401148330555,
+              "beta_unconstrained": 0.6121819510415138,
+              "ci95": [
+                -0.12287158674314676,
+                1.297129863454564
+              ],
+              "placebo_p": 0.024875621890547265,
+              "placebo_null_mean": 0.04135591948909103,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.30493449691998287,
+              "ci95": [
+                -0.9674241919634015,
+                0.311241541944135
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.04898949577883441,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.24995331599439186,
+              "placebo_statistic": 0.1469195574059357,
+              "beta_unconstrained": 0.06322176140941672,
+              "ci95": [
+                -0.39196881088350705,
+                0.5471352162712547
+              ],
+              "placebo_p": 0.30845771144278605,
+              "placebo_null_mean": 0.10660769672861316,
+              "loqo_positive_share": 0.9,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.17501960491446472,
+              "placebo_statistic": 0.10287442192594004,
+              "beta_unconstrained": 0.04776659045223694,
+              "ci95": [
+                -0.39747839696676807,
+                0.4995720220627104
+              ],
+              "placebo_p": 0.4228855721393035,
+              "placebo_null_mean": 0.11061212376175417,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.5170442503293085,
+              "ci95": [
+                -1.097898213192919,
+                0.03367462580939816
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.1283070036211147,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "elicited (prior_map)": {
+          "estimator": "elicited (prior_map)",
+          "position_spec": "dummies:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.568024002967374,
+            "accessibility": 0.0,
+            "facility": 0.2543988006279933,
+            "economic": 0.17757719640463276,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "dummies:3",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -2455.897673219784,
+            "ll_full": -2451.5533924566953,
+            "lr": 8.688561526177182,
+            "p": 0.12214999740846955,
+            "mcfadden_position": 0.6821159792761,
+            "mcfadden_full": 0.6826782899339027
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.1065468721481722,
+              "perplexity": 3.0238984371301614,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.1077330695458438,
+              "perplexity": 3.027487505838252,
+              "top1": 0.4507168458781362,
+              "n": 2232
+            },
+            "delta_ll_per_choice": -0.0011861973976715436,
+            "delta_ci95": [
+              -0.003669924958671793,
+              0.0011981974694554554
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.568024002967374,
+              "placebo_statistic": 0.328417362070991,
+              "beta_unconstrained": 0.6121819510415138,
+              "ci95": [
+                -0.12287158674314676,
+                1.297129863454564
+              ],
+              "placebo_p": 0.01990049751243781,
+              "placebo_null_mean": 0.04231137561148511,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.30493449691998287,
+              "ci95": [
+                -0.9674241919634015,
+                0.311241541944135
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.0465905776783614,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.2543988006279933,
+              "placebo_statistic": 0.14708706424342494,
+              "beta_unconstrained": 0.06322176140941672,
+              "ci95": [
+                -0.39196881088350705,
+                0.5471352162712547
+              ],
+              "placebo_p": 0.2885572139303483,
+              "placebo_null_mean": 0.10059629493829977,
+              "loqo_positive_share": 0.9,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.17757719640463276,
+              "placebo_statistic": 0.10267072184011473,
+              "beta_unconstrained": 0.04776659045223694,
+              "ci95": [
+                -0.39747839696676807,
+                0.4995720220627104
+              ],
+              "placebo_p": 0.417910447761194,
+              "placebo_null_mean": 0.1044522291277557,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.5170442503293085,
+              "ci95": [
+                -1.097898213192919,
+                0.03367462580939816
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.1173312511126665,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "human (per_sort_macro)": {
+          "estimator": "human (per_sort_macro)",
+          "position_spec": "dummies:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.39500278733383115,
+            "accessibility": 0.09682155579935103,
+            "facility": 0.27138583664764876,
+            "economic": 0.09217850290299841,
+            "disruption": 0.14461131731617075
+          },
+          "likelihood_ratio": {
+            "position_spec": "dummies:3",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -2455.897673219784,
+            "ll_full": -2451.5533924566953,
+            "lr": 8.688561526177182,
+            "p": 0.12214999740846955,
+            "mcfadden_position": 0.6821159792761,
+            "mcfadden_full": 0.6826782899339027
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.1065468721481722,
+              "perplexity": 3.0238984371301614,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.1077330695458438,
+              "perplexity": 3.027487505838252,
+              "top1": 0.4507168458781362,
+              "n": 2232
+            },
+            "delta_ll_per_choice": -0.0011861973976715436,
+            "delta_ci95": [
+              -0.003669924958671793,
+              0.0011981974694554554
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.39500278733383115,
+              "placebo_statistic": 0.38251641272516534,
+              "beta_unconstrained": 0.6121819510415138,
+              "ci95": [
+                -0.12287158674314676,
+                1.297129863454564
+              ],
+              "placebo_p": 0.009950248756218905,
+              "placebo_null_mean": 0.08695014480383724,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.09682155579935103,
+              "placebo_statistic": 0.1082931340703958,
+              "beta_unconstrained": -0.30493449691998287,
+              "ci95": [
+                -0.9674241919634015,
+                0.311241541944135
+              ],
+              "placebo_p": 0.3781094527363184,
+              "placebo_null_mean": 0.09281118131937434,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.27138583664764876,
+              "placebo_statistic": 0.21121230115774894,
+              "beta_unconstrained": 0.06322176140941672,
+              "ci95": [
+                -0.39196881088350705,
+                0.5471352162712547
+              ],
+              "placebo_p": 0.16417910447761194,
+              "placebo_null_mean": 0.12689467843111663,
+              "loqo_positive_share": 0.9,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.09217850290299841,
+              "placebo_statistic": 0.09192498069924326,
+              "beta_unconstrained": 0.04776659045223694,
+              "ci95": [
+                -0.39747839696676807,
+                0.4995720220627104
+              ],
+              "placebo_p": 0.6268656716417911,
+              "placebo_null_mean": 0.12457000119294763,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.14461131731617075,
+              "placebo_statistic": 0.09616188345929876,
+              "beta_unconstrained": -0.5170442503293085,
+              "ci95": [
+                -1.097898213192919,
+                0.03367462580939816
+              ],
+              "placebo_p": 0.527363184079602,
+              "placebo_null_mean": 0.10857311935879958,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "share (per_task_macro)": {
+          "estimator": "share (per_task_macro)",
+          "position_spec": "dummies:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.0937621708798641,
+            "accessibility": 0.08703500559091487,
+            "facility": 0.29850858291973215,
+            "economic": 0.4569210429915004,
+            "disruption": 0.06377319761798854
+          },
+          "likelihood_ratio": {
+            "position_spec": "dummies:3",
+            "n": 2232,
+            "df": 5,
+            "ll_null": -7725.76635852001,
+            "ll_position": -2455.897673219784,
+            "ll_full": -2451.5533924566953,
+            "lr": 8.688561526177182,
+            "p": 0.12214999740846955,
+            "mcfadden_position": 0.6821159792761,
+            "mcfadden_full": 0.6826782899339027
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.1065468721481722,
+              "perplexity": 3.0238984371301614,
+              "top1": 0.4583333333333333,
+              "n": 2232
+            },
+            "components": {
+              "ll_per_choice": -1.1077330695458438,
+              "perplexity": 3.027487505838252,
+              "top1": 0.4507168458781362,
+              "n": 2232
+            },
+            "delta_ll_per_choice": -0.0011861973976715436,
+            "delta_ci95": [
+              -0.003669924958671793,
+              0.0011981974694554554
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.0937621708798641,
+              "placebo_statistic": 0.3289455118759485,
+              "beta_unconstrained": 0.6121819510415138,
+              "ci95": [
+                -0.12287158674314676,
+                1.297129863454564
+              ],
+              "placebo_p": 0.06965174129353234,
+              "placebo_null_mean": 0.13980316376410085,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.08703500559091487,
+              "placebo_statistic": 0.2467825018576931,
+              "beta_unconstrained": -0.30493449691998287,
+              "ci95": [
+                -0.9674241919634015,
+                0.311241541944135
+              ],
+              "placebo_p": 0.3781094527363184,
+              "placebo_null_mean": 0.21450976699917715,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.29850858291973215,
+              "placebo_statistic": 1.0196788161849273,
+              "beta_unconstrained": 0.06322176140941672,
+              "ci95": [
+                -0.39196881088350705,
+                0.5471352162712547
+              ],
+              "placebo_p": 0.03482587064676617,
+              "placebo_null_mean": 0.5811220654168431,
+              "loqo_positive_share": 0.9,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.4569210429915004,
+              "placebo_statistic": 1.0289049792731046,
+              "beta_unconstrained": 0.04776659045223694,
+              "ci95": [
+                -0.39747839696676807,
+                0.4995720220627104
+              ],
+              "placebo_p": 0.029850746268656716,
+              "placebo_null_mean": 0.5152057555125021,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.06377319761798854,
+              "placebo_statistic": 0.19130885922989363,
+              "beta_unconstrained": -0.5170442503293085,
+              "ci95": [
+                -1.097898213192919,
+                0.03367462580939816
+              ],
+              "placebo_p": 0.8955223880597015,
+              "placebo_null_mean": 0.4528520706279494,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        }
+      }
+    },
+    "topk:3": {
+      "likelihood_ratio": {
+        "position_spec": "topk:3",
+        "n": 2219,
+        "df": 5,
+        "ll_null": -2437.8206685545356,
+        "ll_position": -2332.2992638725377,
+        "ll_full": -2328.1134287220566,
+        "lr": 8.37167030096225,
+        "p": 0.13690684930600097,
+        "mcfadden_position": 0.04328513825611502,
+        "mcfadden_full": 0.04500217807141982
+      },
+      "profiles_cv": {
+        "position_only": {
+          "ll_per_choice": -1.0519817244738825,
+          "perplexity": 2.8633198102594886,
+          "top1": 0.46101847679134744,
+          "n": 2219
+        },
+        "components": {
+          "ll_per_choice": -1.0534641966228104,
+          "perplexity": 2.867567750079926,
+          "top1": 0.45380802163136547,
+          "n": 2219,
+          "delta_vs_position": -0.0014824721489277673,
+          "delta_ci95": [
+            -0.003960147201427408,
+            0.0009929906169464555
+          ]
+        },
+        "profile:handset": {
+          "ll_per_choice": -1.0521662393676703,
+          "perplexity": 2.8638481841550867,
+          "top1": 0.4601171698963497,
+          "n": 2219,
+          "delta_vs_position": -0.00018451489378779832,
+          "delta_ci95": [
+            -0.0018411616236935502,
+            0.0015022147402229066
+          ]
+        },
+        "profile:elicited": {
+          "ll_per_choice": -1.0523045212717603,
+          "perplexity": 2.8642442299173663,
+          "top1": 0.4596665164488508,
+          "n": 2219,
+          "delta_vs_position": -0.00032279679787776275,
+          "delta_ci95": [
+            -0.0020579137396666857,
+            0.0014440804635181006
+          ]
+        },
+        "profile:blended": {
+          "ll_per_choice": -1.0522614722095027,
+          "perplexity": 2.8641209295431933,
+          "top1": 0.4596665164488508,
+          "n": 2219,
+          "delta_vs_position": -0.0002797477356200095,
+          "delta_ci95": [
+            -0.002038609208388473,
+            0.0015001902976832945
+          ]
+        },
+        "profile:balanced": {
+          "ll_per_choice": -1.052075882580269,
+          "perplexity": 2.8635894277239373,
+          "top1": 0.46101847679134744,
+          "n": 2219,
+          "delta_vs_position": -9.415810638654825e-05,
+          "delta_ci95": [
+            -0.0008316064770967536,
+            0.0006608250325787307
+          ]
+        },
+        "profile:human": {
+          "ll_per_choice": -1.0519431003634232,
+          "perplexity": 2.863209219214611,
+          "top1": 0.4601171698963497,
+          "n": 2219,
+          "delta_vs_position": 3.862411045958957e-05,
+          "delta_ci95": [
+            -0.0017449521206975439,
+            0.0018568913108675557
+          ]
+        }
+      },
+      "gates": {
+        "pooled": {
+          "estimator": "pooled",
+          "position_spec": "topk:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.9082500861749185,
+            "accessibility": 0.0,
+            "facility": 0.050738781313068394,
+            "economic": 0.04101113251201311,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "topk:3",
+            "n": 2219,
+            "df": 5,
+            "ll_null": -2437.8206685545356,
+            "ll_position": -2332.2992638725377,
+            "ll_full": -2328.1134287220566,
+            "lr": 8.37167030096225,
+            "p": 0.13690684930600097,
+            "mcfadden_position": 0.04328513825611502,
+            "mcfadden_full": 0.04500217807141982
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.0519817244738825,
+              "perplexity": 2.8633198102594886,
+              "top1": 0.46101847679134744,
+              "n": 2219
+            },
+            "components": {
+              "ll_per_choice": -1.0534641966228104,
+              "perplexity": 2.867567750079926,
+              "top1": 0.45380802163136547,
+              "n": 2219
+            },
+            "delta_ll_per_choice": -0.0014824721489277673,
+            "delta_ci95": [
+              -0.003960147201427408,
+              0.0009929906169464555
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.9082500861749185,
+              "placebo_statistic": 0.6354049393901842,
+              "beta_unconstrained": 0.6354049393901842,
+              "ci95": [
+                -0.09907582802538085,
+                1.3677453654863276
+              ],
+              "placebo_p": 0.03482587064676617,
+              "placebo_null_mean": 0.13815911675773798,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.3485473716664066,
+              "ci95": [
+                -1.0312721850328468,
+                0.2575625776877996
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.14227110644615915,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.050738781313068394,
+              "placebo_statistic": 0.035496470361746864,
+              "beta_unconstrained": 0.035496470361746864,
+              "ci95": [
+                -0.4545185490329679,
+                0.5451104456535145
+              ],
+              "placebo_p": 0.44776119402985076,
+              "placebo_null_mean": 0.08040298490657499,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.04101113251201311,
+              "placebo_statistic": 0.028691080314524626,
+              "beta_unconstrained": 0.028691080314524626,
+              "ci95": [
+                -0.42731378467735087,
+                0.5104414521809927
+              ],
+              "placebo_p": 0.4228855721393035,
+              "placebo_null_mean": 0.07566275745332379,
+              "loqo_positive_share": 0.6,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.5396953595429671,
+              "ci95": [
+                -1.1045001051248917,
+                0.04722503239244083
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.09877481044285695,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "pooled_nonneg": {
+          "estimator": "pooled_nonneg",
+          "position_spec": "topk:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.5815853681962005,
+            "accessibility": 0.0,
+            "facility": 0.23895241768895997,
+            "economic": 0.1794622141148396,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "topk:3",
+            "n": 2219,
+            "df": 5,
+            "ll_null": -2437.8206685545356,
+            "ll_position": -2332.2992638725377,
+            "ll_full": -2328.1134287220566,
+            "lr": 8.37167030096225,
+            "p": 0.13690684930600097,
+            "mcfadden_position": 0.04328513825611502,
+            "mcfadden_full": 0.04500217807141982
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.0519817244738825,
+              "perplexity": 2.8633198102594886,
+              "top1": 0.46101847679134744,
+              "n": 2219
+            },
+            "components": {
+              "ll_per_choice": -1.0534641966228104,
+              "perplexity": 2.867567750079926,
+              "top1": 0.45380802163136547,
+              "n": 2219
+            },
+            "delta_ll_per_choice": -0.0014824721489277673,
+            "delta_ci95": [
+              -0.003960147201427408,
+              0.0009929906169464555
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.5815853681962005,
+              "placebo_statistic": 0.32401895630616095,
+              "beta_unconstrained": 0.6354049393901842,
+              "ci95": [
+                -0.09907582802538085,
+                1.3677453654863276
+              ],
+              "placebo_p": 0.014925373134328358,
+              "placebo_null_mean": 0.03782698591513792,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.3485473716664066,
+              "ci95": [
+                -1.0312721850328468,
+                0.2575625776877996
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.05231850373277434,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.23895241768895997,
+              "placebo_statistic": 0.13312768377675369,
+              "beta_unconstrained": 0.035496470361746864,
+              "ci95": [
+                -0.4545185490329679,
+                0.5451104456535145
+              ],
+              "placebo_p": 0.34328358208955223,
+              "placebo_null_mean": 0.10548757953655982,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.1794622141148396,
+              "placebo_statistic": 0.09998387596000562,
+              "beta_unconstrained": 0.028691080314524626,
+              "ci95": [
+                -0.42731378467735087,
+                0.5104414521809927
+              ],
+              "placebo_p": 0.3681592039800995,
+              "placebo_null_mean": 0.08958898341557661,
+              "loqo_positive_share": 0.6,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.5396953595429671,
+              "ci95": [
+                -1.1045001051248917,
+                0.04722503239244083
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.1068751385553197,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "elicited (prior_map)": {
+          "estimator": "elicited (prior_map)",
+          "position_spec": "topk:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.5731289537387659,
+            "accessibility": 0.0,
+            "facility": 0.24407064083119362,
+            "economic": 0.18280040543004056,
+            "disruption": 0.0
+          },
+          "likelihood_ratio": {
+            "position_spec": "topk:3",
+            "n": 2219,
+            "df": 5,
+            "ll_null": -2437.8206685545356,
+            "ll_position": -2332.2992638725377,
+            "ll_full": -2328.1134287220566,
+            "lr": 8.37167030096225,
+            "p": 0.13690684930600097,
+            "mcfadden_position": 0.04328513825611502,
+            "mcfadden_full": 0.04500217807141982
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.0519817244738825,
+              "perplexity": 2.8633198102594886,
+              "top1": 0.46101847679134744,
+              "n": 2219
+            },
+            "components": {
+              "ll_per_choice": -1.0534641966228104,
+              "perplexity": 2.867567750079926,
+              "top1": 0.45380802163136547,
+              "n": 2219
+            },
+            "delta_ll_per_choice": -0.0014824721489277673,
+            "delta_ci95": [
+              -0.003960147201427408,
+              0.0009929906169464555
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.5731289537387659,
+              "placebo_statistic": 0.3144214697996267,
+              "beta_unconstrained": 0.6354049393901842,
+              "ci95": [
+                -0.09907582802538085,
+                1.3677453654863276
+              ],
+              "placebo_p": 0.014925373134328358,
+              "placebo_null_mean": 0.03772587925792731,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.3485473716664066,
+              "ci95": [
+                -1.0312721850328468,
+                0.2575625776877996
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.05059785597983959,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.24407064083119362,
+              "placebo_statistic": 0.13389839952154906,
+              "beta_unconstrained": 0.035496470361746864,
+              "ci95": [
+                -0.4545185490329679,
+                0.5451104456535145
+              ],
+              "placebo_p": 0.3383084577114428,
+              "placebo_null_mean": 0.10002804723595968,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.18280040543004056,
+              "placebo_statistic": 0.1002852356007108,
+              "beta_unconstrained": 0.028691080314524626,
+              "ci95": [
+                -0.42731378467735087,
+                0.5104414521809927
+              ],
+              "placebo_p": 0.3681592039800995,
+              "placebo_null_mean": 0.08418385082755651,
+              "loqo_positive_share": 0.6,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.0,
+              "placebo_statistic": 0.0,
+              "beta_unconstrained": -0.5396953595429671,
+              "ci95": [
+                -1.1045001051248917,
+                0.04722503239244083
+              ],
+              "placebo_p": 1.0,
+              "placebo_null_mean": 0.09766395978800185,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "human (per_sort_macro)": {
+          "estimator": "human (per_sort_macro)",
+          "position_spec": "topk:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.3118251997912524,
+            "accessibility": 0.13586212918781063,
+            "facility": 0.27139129631464004,
+            "economic": 0.13642217979744573,
+            "disruption": 0.14449919490885124
+          },
+          "likelihood_ratio": {
+            "position_spec": "topk:3",
+            "n": 2219,
+            "df": 5,
+            "ll_null": -2437.8206685545356,
+            "ll_position": -2332.2992638725377,
+            "ll_full": -2328.1134287220566,
+            "lr": 8.37167030096225,
+            "p": 0.13690684930600097,
+            "mcfadden_position": 0.04328513825611502,
+            "mcfadden_full": 0.04500217807141982
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.0519817244738825,
+              "perplexity": 2.8633198102594886,
+              "top1": 0.46101847679134744,
+              "n": 2219
+            },
+            "components": {
+              "ll_per_choice": -1.0534641966228104,
+              "perplexity": 2.867567750079926,
+              "top1": 0.45380802163136547,
+              "n": 2219
+            },
+            "delta_ll_per_choice": -0.0014824721489277673,
+            "delta_ci95": [
+              -0.003960147201427408,
+              0.0009929906169464555
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.3118251997912524,
+              "placebo_statistic": 0.22388490110313472,
+              "beta_unconstrained": 0.6354049393901842,
+              "ci95": [
+                -0.09907582802538085,
+                1.3677453654863276
+              ],
+              "placebo_p": 0.009950248756218905,
+              "placebo_null_mean": 0.06126310218979163,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.13586212918781063,
+              "placebo_statistic": 0.0704410749185404,
+              "beta_unconstrained": -0.3485473716664066,
+              "ci95": [
+                -1.0312721850328468,
+                0.2575625776877996
+              ],
+              "placebo_p": 0.527363184079602,
+              "placebo_null_mean": 0.09336963170063696,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.27139129631464004,
+              "placebo_statistic": 0.21127132848640703,
+              "beta_unconstrained": 0.035496470361746864,
+              "ci95": [
+                -0.4545185490329679,
+                0.5451104456535145
+              ],
+              "placebo_p": 0.20398009950248755,
+              "placebo_null_mean": 0.14296267540403573,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.13642217979744573,
+              "placebo_statistic": 0.08850581109521893,
+              "beta_unconstrained": 0.028691080314524626,
+              "ci95": [
+                -0.42731378467735087,
+                0.5104414521809927
+              ],
+              "placebo_p": 0.48258706467661694,
+              "placebo_null_mean": 0.09223669644017489,
+              "loqo_positive_share": 0.6,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.14449919490885124,
+              "placebo_statistic": 0.09613946700572445,
+              "beta_unconstrained": -0.5396953595429671,
+              "ci95": [
+                -1.1045001051248917,
+                0.04722503239244083
+              ],
+              "placebo_p": 0.3781094527363184,
+              "placebo_null_mean": 0.08515431568326454,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        },
+        "share (per_task_macro)": {
+          "estimator": "share (per_task_macro)",
+          "position_spec": "topk:3",
+          "config": {
+            "alpha": 0.05,
+            "placebo_reps": 200,
+            "bootstrap_reps": 300,
+            "cv_folds": 5,
+            "cv_bootstrap_reps": 1000,
+            "loqo_min_share": 0.8,
+            "min_loqo_groups": 5,
+            "seed": 20260913
+          },
+          "n_choices": 2232,
+          "n_participants": 241,
+          "weights": {
+            "spatial": 0.09155122738729823,
+            "accessibility": 0.09140318864789014,
+            "facility": 0.34210413518420213,
+            "economic": 0.3994449194649651,
+            "disruption": 0.07549652931564432
+          },
+          "likelihood_ratio": {
+            "position_spec": "topk:3",
+            "n": 2219,
+            "df": 5,
+            "ll_null": -2437.8206685545356,
+            "ll_position": -2332.2992638725377,
+            "ll_full": -2328.1134287220566,
+            "lr": 8.37167030096225,
+            "p": 0.13690684930600097,
+            "mcfadden_position": 0.04328513825611502,
+            "mcfadden_full": 0.04500217807141982
+          },
+          "held_out": {
+            "position_only": {
+              "ll_per_choice": -1.0519817244738825,
+              "perplexity": 2.8633198102594886,
+              "top1": 0.46101847679134744,
+              "n": 2219
+            },
+            "components": {
+              "ll_per_choice": -1.0534641966228104,
+              "perplexity": 2.867567750079926,
+              "top1": 0.45380802163136547,
+              "n": 2219
+            },
+            "delta_ll_per_choice": -0.0014824721489277673,
+            "delta_ci95": [
+              -0.003960147201427408,
+              0.0009929906169464555
+            ]
+          },
+          "loqo_tasks": 10,
+          "dimensions": {
+            "spatial": {
+              "weight": 0.09155122738729823,
+              "placebo_statistic": 0.34278554780861614,
+              "beta_unconstrained": 0.6354049393901842,
+              "ci95": [
+                -0.09907582802538085,
+                1.3677453654863276
+              ],
+              "placebo_p": 0.07462686567164178,
+              "placebo_null_mean": 0.14092630362320857,
+              "loqo_positive_share": 1.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": true
+              },
+              "identified": false
+            },
+            "accessibility": {
+              "weight": 0.09140318864789014,
+              "placebo_statistic": 0.23078040714386833,
+              "beta_unconstrained": -0.3485473716664066,
+              "ci95": [
+                -1.0312721850328468,
+                0.2575625776877996
+              ],
+              "placebo_p": 0.4079601990049751,
+              "placebo_null_mean": 0.20907897251664967,
+              "loqo_positive_share": 0.1,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "facility": {
+              "weight": 0.34210413518420213,
+              "placebo_statistic": 1.0602568271116266,
+              "beta_unconstrained": 0.035496470361746864,
+              "ci95": [
+                -0.4545185490329679,
+                0.5451104456535145
+              ],
+              "placebo_p": 0.029850746268656716,
+              "placebo_null_mean": 0.6272193095991551,
+              "loqo_positive_share": 0.7,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "economic": {
+              "weight": 0.3994449194649651,
+              "placebo_statistic": 1.1179806261682708,
+              "beta_unconstrained": 0.028691080314524626,
+              "ci95": [
+                -0.42731378467735087,
+                0.5104414521809927
+              ],
+              "placebo_p": 0.029850746268656716,
+              "placebo_null_mean": 0.5539119038168374,
+              "loqo_positive_share": 0.6,
+              "checks": {
+                "G1_placebo": true,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            },
+            "disruption": {
+              "weight": 0.07549652931564432,
+              "placebo_statistic": 0.16489675126198233,
+              "beta_unconstrained": -0.5396953595429671,
+              "ci95": [
+                -1.1045001051248917,
+                0.04722503239244083
+              ],
+              "placebo_p": 0.9353233830845771,
+              "placebo_null_mean": 0.46370384208723747,
+              "loqo_positive_share": 0.0,
+              "checks": {
+                "G1_placebo": false,
+                "G2_likelihood_ratio": false,
+                "G3_interval": false,
+                "G4_held_out": false,
+                "G5_stability": false
+              },
+              "identified": false
+            }
+          },
+          "identified_dimensions": [],
+          "shippable": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "source_dump": "study_data_v4-rooms-20260818.json",
+  "material_version": "v4-rooms-20260818",
+  "position_spec": "dummies:3",
+  "shippable": false,
+  "gates": {
+    "estimator": "fit_human_weights per_sort_macro (l2=0.0)",
+    "position_spec": "dummies:3",
+    "config": {
+      "alpha": 0.05,
+      "placebo_reps": 200,
+      "bootstrap_reps": 300,
+      "cv_folds": 5,
+      "cv_bootstrap_reps": 1000,
+      "loqo_min_share": 0.8,
+      "min_loqo_groups": 5,
+      "seed": 20260902
+    },
+    "n_choices": 2232,
+    "n_participants": 241,
+    "weights": {
+      "spatial": 0.4701513923545544,
+      "accessibility": 0.025796220579338756,
+      "facility": 0.10408524824585015,
+      "economic": 0.25924838763155234,
+      "disruption": 0.14071875118870433
+    },
+    "likelihood_ratio": {
+      "position_spec": "dummies:3",
+      "n": 2232,
+      "df": 5,
+      "ll_null": -7725.76635852001,
+      "ll_position": -2455.897673219784,
+      "ll_full": -2451.5533924566953,
+      "lr": 8.688561526177182,
+      "p": 0.12214999740846955,
+      "mcfadden_position": 0.6821159792761,
+      "mcfadden_full": 0.6826782899339027
+    },
+    "held_out": {
+      "position_only": {
+        "ll_per_choice": -1.109443271609569,
+        "perplexity": 3.0326695511278796,
+        "top1": 0.4583333333333333,
+        "n": 2232
+      },
+      "components": {
+        "ll_per_choice": -1.109616289637041,
+        "perplexity": 3.0331943030260504,
+        "top1": 0.45654121863799285,
+        "n": 2232
+      },
+      "delta_ll_per_choice": -0.00017301802747176888,
+      "delta_ci95": [
+        -0.002434002328822257,
+        0.002220083334340552
+      ]
+    },
+    "loqo_tasks": 10,
+    "dimensions": {
+      "spatial": {
+        "weight": 0.4701513923545544,
+        "placebo_statistic": 1.2265299956785893,
+        "beta_unconstrained": 0.6121819510415138,
+        "ci95": [
+          -0.09271536737935675,
+          1.2467034653048477
+        ],
+        "placebo_p": 0.029850746268656716,
+        "placebo_null_mean": 0.319642591087169,
+        "loqo_positive_share": 1.0,
+        "checks": {
+          "G1_placebo": true,
+          "G2_likelihood_ratio": false,
+          "G3_interval": false,
+          "G4_held_out": false,
+          "G5_stability": true
+        },
+        "identified": false
+      },
+      "accessibility": {
+        "weight": 0.025796220579338756,
+        "placebo_statistic": 0.06850761184883142,
+        "beta_unconstrained": -0.30493449691998287,
+        "ci95": [
+          -0.9587816808422257,
+          0.22960064588499043
+        ],
+        "placebo_p": 0.7014925373134329,
+        "placebo_null_mean": 0.2746781658318636,
+        "loqo_positive_share": 0.1,
+        "checks": {
+          "G1_placebo": false,
+          "G2_likelihood_ratio": false,
+          "G3_interval": false,
+          "G4_held_out": false,
+          "G5_stability": false
+        },
+        "identified": false
+      },
+      "facility": {
+        "weight": 0.10408524824585015,
+        "placebo_statistic": 0.6911660744332764,
+        "beta_unconstrained": 0.06322176140941672,
+        "ci95": [
+          -0.3515556492899564,
+          0.48819707708364346
+        ],
+        "placebo_p": 0.16417910447761194,
+        "placebo_null_mean": 1.3992641533826926,
+        "loqo_positive_share": 0.9,
+        "checks": {
+          "G1_placebo": false,
+          "G2_likelihood_ratio": false,
+          "G3_interval": false,
+          "G4_held_out": false,
+          "G5_stability": true
+        },
+        "identified": false
+      },
+      "economic": {
+        "weight": 0.25924838763155234,
+        "placebo_statistic": 2.460382177113945,
+        "beta_unconstrained": 0.04776659045223694,
+        "ci95": [
+          -0.3274573440831744,
+          0.44578542172286145
+        ],
+        "placebo_p": 0.11940298507462686,
+        "placebo_null_mean": 7.393214122463534,
+        "loqo_positive_share": 0.7,
+        "checks": {
+          "G1_placebo": false,
+          "G2_likelihood_ratio": false,
+          "G3_interval": false,
+          "G4_held_out": false,
+          "G5_stability": false
+        },
+        "identified": false
+      },
+      "disruption": {
+        "weight": 0.14071875118870433,
+        "placebo_statistic": 0.43047302445768376,
+        "beta_unconstrained": -0.5170442503293085,
+        "ci95": [
+          -1.1291788640663285,
+          0.08504694528009316
+        ],
+        "placebo_p": 0.46766169154228854,
+        "placebo_null_mean": 1.9814236330007489,
+        "loqo_positive_share": 0.0,
+        "checks": {
+          "G1_placebo": false,
+          "G2_likelihood_ratio": false,
+          "G3_interval": false,
+          "G4_held_out": false,
+          "G5_stability": false
+        },
+        "identified": false
+      }
+    },
+    "identified_dimensions": [],
+    "shippable": false
+  },
+  "estimator": "per-display-condition non-negative conditional logit with dummies:3 position terms, macro-averaged over strata",
+  "inputs": "human choice study only; no benchmark, literature or prior",
+  "seed": 20260902,
+  "l2": 0.0,
+  "facility_definition": "all_ranks",
+  "strata_sizes": {
+    "distance": 986,
+    "travel": 696,
+    "rating": 278,
+    "price": 272
+  },
+  "weights_per_stratum": {
+    "distance": {
+      "spatial": 0.863,
+      "accessibility": 0.0774,
+      "facility": 0.0,
+      "economic": 0.0596,
+      "disruption": 0.0
+    },
+    "travel": {
+      "spatial": 0.506,
+      "accessibility": 0.0,
+      "facility": 0.1314,
+      "economic": 0.0,
+      "disruption": 0.3625
+    },
+    "price": {
+      "spatial": 0.0498,
+      "accessibility": 0.0,
+      "facility": 0.201,
+      "economic": 0.6995,
+      "disruption": 0.0497
+    }
+  },
+  "weights": {
+    "spatial": 0.473,
+    "accessibility": 0.0258,
+    "facility": 0.1108,
+    "economic": 0.253,
+    "disruption": 0.1374
+  },
+  "reserved": {},
+  "weights_unconstrained": null,
+  "bootstrap_ci_95": {
+    "spatial": [
+      0.16812816439757325,
+      0.6287770707445072
+    ],
+    "accessibility": [
+      0.0,
+      0.24062867345242642
+    ],
+    "facility": [
+      0.04140313260508657,
+      0.41415233480271946
+    ],
+    "economic": [
+      0.11380895798150617,
+      0.46823283269347765
+    ],
+    "disruption": [
+      0.009232113511244793,
+      0.3212235187388346
+    ]
+  },
+  "held_out": {
+    "macro_ndcg10": 0.37917933461221653,
+    "macro_top1": 0.1581460969671466
+  },
+  "cohort": {
+    "choice_sets": 2232,
+    "participants": 241,
+    "held_out_participants": 72
+  }
+}

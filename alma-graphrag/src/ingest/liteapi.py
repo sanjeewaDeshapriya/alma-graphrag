@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence, Set
 
 import httpx
 
@@ -58,14 +58,13 @@ class LiteApiClient:
         max_results: int = 40,
         checkin: Optional[str] = None,
         checkout: Optional[str] = None,
+        hotel_ids: Optional[Sequence[str]] = None,
     ) -> Dict[str, Any]:
-        """POST /hotels/rates filtered by city + country, with hotel data included."""
+        """POST /hotels/rates by city or explicit hotel IDs, with hotel data included."""
         checkin = checkin or self._default_checkin()
         checkout = checkout or self._default_checkout(checkin)
 
         payload: Dict[str, Any] = {
-            "cityName": city,
-            "countryCode": country_code,
             "checkin": checkin,
             "checkout": checkout,
             "currency": LITEAPI_CURRENCY,
@@ -77,6 +76,11 @@ class LiteApiClient:
             "roomMapping": True,
             "timeout": LITEAPI_TIMEOUT,
         }
+        if hotel_ids:
+            payload["hotelIds"] = list(hotel_ids)
+        else:
+            payload["cityName"] = city
+            payload["countryCode"] = country_code
 
         url = f"{LITEAPI_BASE_URL}/hotels/rates"
         logger.info(
@@ -100,8 +104,6 @@ class LiteApiClient:
             return {"data": [], "hotels": []}
 
         body = resp.json()
-        print("Lite API returned result:", body)
-        logger.info("Lite API returned result: %s", body)
         n_rates = len(body.get("data") or [])
         n_meta = len(body.get("hotels") or [])
         logger.info(
@@ -109,6 +111,81 @@ class LiteApiClient:
             city, n_rates, n_meta,
         )
         return body
+
+    def list_hotels(
+        self,
+        city: str,
+        country_code: str = DEFAULT_COUNTRY_CODE,
+        limit: int = 200,
+        offset: int = 0,
+    ) -> Dict[str, Any]:
+        """GET /data/hotels catalogue metadata with deterministic pagination."""
+        url = f"{LITEAPI_BASE_URL}/data/hotels"
+        try:
+            response = self.client.get(url, params={
+                "cityName": city,
+                "countryCode": country_code,
+                "limit": limit,
+                "offset": offset,
+                "timeout": LITEAPI_TIMEOUT,
+            })
+        except httpx.RequestError as exc:
+            logger.warning("LiteAPI catalogue request failed for %s: %s", city, exc)
+            return {"data": [], "total": 0}
+        if response.status_code != 200:
+            logger.warning("LiteAPI catalogue returned %d for %s: %s",
+                           response.status_code, city, response.text[:300])
+            return {"data": [], "total": 0}
+        return response.json()
+
+    def scrape_catalogue_city(
+        self,
+        city: str,
+        *,
+        existing_ids: Optional[Set[str]] = None,
+        target: int = 35,
+        page_size: int = 200,
+    ) -> List[Dict[str, Any]]:
+        """Discover unseen catalogue hotels, then enrich them with one rate batch.
+
+        Catalogue records without current availability are retained with a null
+        price rather than dropped or assigned a fabricated rate.
+        """
+        known = {str(hotel_id) for hotel_id in (existing_ids or set())}
+        selected: List[Dict[str, Any]] = []
+        offset = 0
+        while len(selected) < target:
+            body = self.list_hotels(city, limit=page_size, offset=offset)
+            page = body.get("data") or []
+            if not page:
+                break
+            for hotel in page:
+                hotel_id = str(hotel.get("id") or "")
+                if hotel_id and hotel_id not in known:
+                    selected.append(hotel)
+                    known.add(hotel_id)
+                    if len(selected) == target:
+                        break
+            offset += len(page)
+            if offset >= int(body.get("total") or 0):
+                break
+
+        if not selected:
+            return []
+        selected_ids = [str(hotel["id"]) for hotel in selected]
+        rates = self.search_rates(city, max_results=len(selected_ids), hotel_ids=selected_ids)
+        rate_by_id = {str(entry.get("hotelId")): entry for entry in rates.get("data") or []}
+        rate_metadata = {str(hotel.get("id")): hotel for hotel in rates.get("hotels") or []}
+
+        normalised: List[Dict[str, Any]] = []
+        for catalogue_hotel in selected:
+            hotel_id = str(catalogue_hotel["id"])
+            metadata = {**catalogue_hotel, **rate_metadata.get(hotel_id, {})}
+            entry = rate_by_id.get(hotel_id, {"hotelId": hotel_id, "roomTypes": []})
+            hotel = self.normalize_hotel(entry, metadata, city)
+            if hotel:
+                normalised.append(hotel)
+        return normalised
 
     def scrape_city(self, city: str, max_results: int = 40) -> List[Dict[str, Any]]:
         """Return a list of normalised hotel dicts for a city."""
@@ -178,9 +255,9 @@ class LiteApiClient:
             "description": str(description)[:1000],
             "rating": rating,
             "price_range": self._price_range(price_per_night),
-            "price_per_night_lkr": price_per_night
-            if LITEAPI_CURRENCY == "LKR"
-            else 0.0,
+            "price_per_night_lkr": (
+                price_per_night if LITEAPI_CURRENCY == "LKR" and price_per_night else None
+            ),
             # LiteAPI prices are live nightly rates, not estimates.
             "price_estimated": False,
             "price_currency": LITEAPI_CURRENCY,

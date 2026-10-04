@@ -27,12 +27,14 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 import argparse
 import logging
+import re
 from collections import defaultdict
 
 from neo4j import GraphDatabase
 
 from src.config import NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD
 from src.ingest.canonicalize import canonical_city
+from src.ingest.traffic import haversine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("alma.scripts.fix_data")
@@ -40,6 +42,8 @@ logger = logging.getLogger("alma.scripts.fix_data")
 # Legacy Google price_level -> LKR defaults that were fabricated for hotels with
 # no real price_level. Used to detect & null placeholder prices.
 _GOOGLE_PLACEHOLDER_PRICES = {2000.0, 3500.0, 8000.0, 9000.0, 20000.0, 40000.0}
+FUZZY_DEDUPE_MAX_KM = 0.075
+FUZZY_DEDUPE_PRICE_TOLERANCE_LKR = 1.0
 
 
 def merge_city_aliases(session, dry_run: bool) -> int:
@@ -112,17 +116,70 @@ def fix_placeholder_prices(session, dry_run: bool, null_google: bool) -> int:
     return n
 
 
+def _name_key(name: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", name.lower())
+
+
+def _same_physical_hotel(first: dict, second: dict) -> bool:
+    """Match only listings that share a name core, location, and price."""
+    first_name, second_name = _name_key(first["name"]), _name_key(second["name"])
+    if first_name == second_name:
+        return True
+    if not (first_name in second_name or second_name in first_name):
+        return False
+    values = (first.get("lat"), first.get("lng"), second.get("lat"), second.get("lng"),
+              first.get("price"), second.get("price"))
+    if any(value is None for value in values):
+        return False
+    return (
+        haversine(float(first["lat"]), float(first["lng"]),
+                  float(second["lat"]), float(second["lng"])) <= FUZZY_DEDUPE_MAX_KM
+        and abs(float(first["price"]) - float(second["price"])) <= FUZZY_DEDUPE_PRICE_TOLERANCE_LKR
+    )
+
+
+def _root(parent: list[int], index: int) -> int:
+    while parent[index] != index:
+        parent[index] = parent[parent[index]]
+        index = parent[index]
+    return index
+
+
+def _group_duplicates(rows: list[dict]) -> list[dict]:
+    """Return connected duplicate groups within each city from hotel rows."""
+    by_city: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        by_city[row["city"]].append(row)
+
+    groups: list[dict] = []
+    for city, hotels in by_city.items():
+        parent = list(range(len(hotels)))
+
+        for first in range(len(hotels)):
+            for second in range(first + 1, len(hotels)):
+                if _same_physical_hotel(hotels[first], hotels[second]):
+                    first_root, second_root = _root(parent, first), _root(parent, second)
+                    if first_root != second_root:
+                        parent[second_root] = first_root
+
+        clusters: dict[int, list[dict]] = defaultdict(list)
+        for index, hotel in enumerate(hotels):
+            clusters[_root(parent, index)].append(hotel)
+        for cluster in clusters.values():
+            if len(cluster) > 1:
+                groups.append({"name": min(h["name"] for h in cluster), "city": city, "hs": cluster})
+    return sorted(groups, key=lambda group: (group["city"], group["name"]))
+
+
 def _duplicate_groups(session) -> list[dict]:
-    return session.run(
+    rows = session.run(
         """
         MATCH (h:Hotel)-[:LOCATED_IN]->(c:City)
-        WITH toLower(trim(h.name)) AS nm, c.name AS city,
-             collect({id: h.id, source: h.source, price: h.price_per_night_lkr}) AS hs
-        WHERE size(hs) > 1
-        RETURN nm AS name, city, hs
-        ORDER BY city, name
+        RETURN c.name AS city, h.id AS id, h.name AS name, h.source AS source,
+               h.price_per_night_lkr AS price, h.lat AS lat, h.lng AS lng
         """
     ).data()
+    return _group_duplicates(rows)
 
 
 def report_duplicates(session) -> int:

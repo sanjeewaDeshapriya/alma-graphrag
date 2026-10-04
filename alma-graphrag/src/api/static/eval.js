@@ -88,7 +88,7 @@ function showStep(step) {
 }
 
 function stepFromHash() {
-  const m = /^#step-([1-5])$/.exec(window.location.hash);
+  const m = /^#step-([1-6])$/.exec(window.location.hash);
   return m ? m[1] : null;
 }
 
@@ -422,12 +422,161 @@ function renderRankItem(item, systemName) {
   return node;
 }
 
+// --- step 6: choice-based evaluation ---------------------------------------
+//
+// Ground truth here is what study participants actually booked, so the tables
+// carry a different shape from steps 4-5: two views of the same choices
+// (per-choice and per-task) plus the random baseline, which is the row that
+// tells you whether a system contributed any signal at all.
+
+const HUMAN_CHOICE_KEYS = ["P@10", "R@10", "nDCG@10", "MRR", "mean_rank"];
+const HUMAN_TASK_KEYS = ["P@10", "R@10", "nDCG@10", "gradedNDCG@10", "MRR"];
+
+function humanHeadRow(rowId, keys) {
+  const head = document.getElementById(rowId);
+  head.innerHTML = "<th>System</th>" + keys.map((key) => `<th>${key}</th>`).join("");
+}
+
+function bestBy(rows, key) {
+  let best = null;
+  for (const [name, m] of rows) {
+    const v = m[key];
+    if (v === undefined) continue;
+    // mean_rank is better when smaller; every other column is better when larger.
+    if (best === null || (key === "mean_rank" ? v < best[1] : v > best[1])) best = [name, v];
+  }
+  return best ? best[0] : null;
+}
+
+function renderHumanTable(tableId, headId, data, section, keys) {
+  humanHeadRow(headId, keys);
+  const body = document.querySelector(`#${tableId} tbody`);
+  body.innerHTML = "";
+  const rows = data.system_order.map((name) => [name, data[section][name] || {}]);
+  const winners = {};
+  keys.forEach((key) => { winners[key] = bestBy(rows, key); });
+
+  for (const [name, m] of rows) {
+    const tr = el("tr");
+    if (name.startsWith("WeightedGraphRAG")) tr.classList.add("row-graph");
+    tr.appendChild(el("td", "sys-name", name));
+    for (const key of keys) {
+      const digits = key === "mean_rank" ? 2 : 3;
+      const td = el("td", null, m[key] === undefined ? "—" : fmt(m[key], digits));
+      if (winners[key] === name) td.classList.add("col-best");
+      tr.appendChild(td);
+    }
+    body.appendChild(tr);
+  }
+
+  // The random baseline only makes sense on the per-choice table.
+  if (section === "per_choice" && data.random_baseline) {
+    const rb = data.random_baseline;
+    const tr = el("tr", "row-random");
+    tr.appendChild(el("td", "sys-name", "Random"));
+    for (const key of keys) {
+      const v = rb[key];
+      tr.appendChild(el("td", null, v === undefined ? "—" : fmt(v, key === "mean_rank" ? 2 : 3)));
+    }
+    body.appendChild(tr);
+  }
+}
+
+function renderHumanSignificance(data) {
+  const body = document.querySelector("#humanSigTable tbody");
+  body.innerHTML = "";
+  const sig = data.significance || {};
+  const caption = document.querySelector("#humanSigTable").previousElementSibling;
+  if (caption && caption.classList.contains("block-title")) {
+    caption.innerHTML = `C &mdash; Significance <span class="muted">(reference: ${sig.reference || "—"}, ${sig.metric || ""})</span>`;
+  }
+  for (const [name, block] of Object.entries(sig.vs || {})) {
+    const tr = el("tr");
+    tr.appendChild(el("td", "sys-name", name));
+    tr.appendChild(el("td", null, (block.mean_diff >= 0 ? "+" : "") + fmt(block.mean_diff)));
+    tr.appendChild(el("td", null, `[${fmt(block.ci_low)}, ${fmt(block.ci_high)}]`));
+    tr.appendChild(el("td", null, block.p < 0.001 ? "<0.001" : fmt(block.p)));
+    tr.appendChild(el("td", block.significant ? "sig-win" : "sig-ns",
+      block.significant ? "significant" : "n.s."));
+    body.appendChild(tr);
+  }
+}
+
+function renderHumanTaskList(data) {
+  const body = document.querySelector("#humanTaskList tbody");
+  body.innerHTML = "";
+  for (const t of data.tasks || []) {
+    const tr = el("tr");
+    tr.appendChild(el("td", "sys-name", t.id));
+    tr.appendChild(el("td", null, t.persona || "—"));
+    tr.appendChild(el("td", null, t.anchor || "—"));
+    tr.appendChild(el("td", null, t.primary_dimension || "—"));
+    tr.appendChild(el("td", null, String(t.n_test_choices ?? 0)));
+    tr.appendChild(el("td", null, String(t.gold_size ?? 0)));
+    tr.appendChild(el("td", null, t.top_pick
+      ? `${t.top_pick.hotel} <span class="muted">(${t.top_pick.votes})</span>` : "—"));
+    tr.title = t.context || "";
+    body.appendChild(tr);
+  }
+}
+
+function renderHumanStats(data) {
+  const cards = [
+    { key: "Participants kept", val: data.cohort_stats?.participants_kept ?? "—" },
+    { key: "Held-out people", val: data.n_test_participants ?? "—" },
+    { key: "Held-out choices", val: data.n_test_choices ?? "—" },
+    { key: "Candidates / task", val: data.candidate_set_size ?? "—" },
+    { key: "Baselines", val: data.anchor_fair ? "anchor-fair" : "deployed" },
+    { key: "Best nDCG@10", val: data.best_ndcg !== undefined ? fmt(data.best_ndcg) : "—" },
+  ];
+  document.getElementById("humanStats").innerHTML = cards
+    .map((s) => `<div class="stat"><p>${s.key}</p><strong>${s.val}</strong></div>`)
+    .join("");
+}
+
+function applyHumanResults(data) {
+  renderHumanStats(data);
+  renderHumanTable("humanChoiceTable", "humanChoiceHead", data, "per_choice", HUMAN_CHOICE_KEYS);
+  renderHumanTable("humanTaskTable", "humanTaskHead", data, "per_task", HUMAN_TASK_KEYS);
+  renderHumanSignificance(data);
+  renderHumanTaskList(data);
+  document.getElementById("humanStatus").textContent =
+    `${data.n_observations} usable choices · cohort "${data.cohort}" · material ${data.material_version}`;
+}
+
+async function loadHumanResults(live = false) {
+  const status = document.getElementById("humanStatus");
+  const buttons = [document.getElementById("loadHumanBtn"), document.getElementById("runHumanBtn")];
+  buttons.forEach((b) => { b.disabled = true; });
+  status.textContent = live
+    ? "Running the choice-based evaluation (fitting weights, embedding documents)…"
+    : "Loading saved results…";
+  try {
+    const data = live
+      ? await request("/eval/human/run", { method: "POST" })
+      : await request("/eval/human/results");
+    if (!data.available) {
+      status.textContent = "No saved run yet — press “Run live” to evaluate against the study data.";
+      return;
+    }
+    applyHumanResults(data);
+    if (live) toast("Choice-based evaluation complete");
+  } catch (err) {
+    status.textContent = `Could not load: ${err.message}`;
+    toast(err.message, true);
+  } finally {
+    buttons.forEach((b) => { b.disabled = false; });
+  }
+}
+
 // --- init ------------------------------------------------------------------
 async function init() {
   setupStepper();
   document.getElementById("loadResultsBtn").addEventListener("click", () => loadResults(false));
   document.getElementById("runLiveBtn").addEventListener("click", () => loadResults(true));
   document.getElementById("inspectBtn").addEventListener("click", inspect);
+  document.getElementById("loadHumanBtn").addEventListener("click", () => loadHumanResults(false));
+  document.getElementById("runHumanBtn").addEventListener("click", () => loadHumanResults(true));
 
   try {
     await loadQueryset();
@@ -439,6 +588,11 @@ async function init() {
     const data = await request("/eval/results");
     if (data.available) applyResults(data);
   } catch (_) { /* leave step 4 empty until user runs */ }
+  // Same treatment for step 6 — show the cached choice-based run if there is one.
+  try {
+    const human = await request("/eval/human/results");
+    if (human.available) applyHumanResults(human);
+  } catch (_) { /* leave step 6 empty until user runs */ }
 }
 
 init();

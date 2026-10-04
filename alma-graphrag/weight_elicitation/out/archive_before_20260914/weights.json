@@ -1,0 +1,151 @@
+{
+  "material_version": "v4-rooms-20260818",
+  "source_dump": "study_data_v4-rooms-20260818.json",
+  "facility_definition": "all_ranks",
+  "cohort": {
+    "choice_sets": 2232,
+    "participants": 241,
+    "pool_size": 32,
+    "failed_attention_dropped": []
+  },
+  "models": {
+    "naive": {
+      "beta": [
+        4.6120648863371745,
+        2.155362178960626,
+        -1.1776144531774682,
+        -0.7566078949959713,
+        1.6023207148078034
+      ],
+      "weights": {
+        "spatial": 0.5510398888362897,
+        "accessibility": 0.25751817564727514,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.19144193551643518
+      },
+      "label": "components only, no position control (reproduces the published fit)"
+    },
+    "position_controlled": {
+      "beta": [
+        -0.42558801616053477,
+        1.2551152570006237,
+        -1.199408464725376,
+        -0.8655846246331607,
+        -0.8115230531875877,
+        2.0438832131056524
+      ],
+      "weights": {
+        "spatial": 0.0,
+        "accessibility": 1.0,
+        "facility": 0.0,
+        "economic": 0.0,
+        "disruption": 0.0
+      },
+      "label": "components + log-rank, unconstrained (inference)"
+    },
+    "deployed": {
+      "beta": [
+        0.10843819869198998,
+        0.1343721661741303,
+        0.027584718705737404,
+        0.0,
+        0.014053213567918296,
+        2.0204104184042078
+      ],
+      "weights": {
+        "spatial": 0.38122287875291505,
+        "accessibility": 0.4723957482793463,
+        "facility": 0.0969762131927352,
+        "economic": 0.0,
+        "disruption": 0.049405159775003475
+      },
+      "label": "components + log-rank nuisance, non-negative, MAP toward hand-set prior (lambda=250, chosen on validation)"
+    },
+    "blended": {
+      "beta": [
+        0.3464424994078973,
+        0.3764825924948939,
+        0.125,
+        0.07707490809720878,
+        0.075,
+        0.0
+      ],
+      "weights": {
+        "spatial": 0.3156114393764575,
+        "accessibility": 0.33619787413967317,
+        "facility": 0.1734881065963676,
+        "economic": 0.075,
+        "disruption": 0.09970257988750174
+      },
+      "label": "0.5 x deployed + 0.5 x hand-set prior"
+    }
+  },
+  "bootstrap_ci_95": {},
+  "held_out": {
+    "handset (shipped prior)": {
+      "ndcg10": 0.32507660465270954,
+      "top1": 0.11573682185455944,
+      "per_sort_mode": {
+        "distance": 0.6436426249650303,
+        "travel": 0.6316556852179044,
+        "rating": 0.09849020328528196,
+        "price_asc": 0.13836911531752796,
+        "price_desc": 0.11322539447780317
+      }
+    },
+    "naive": {
+      "ndcg10": 0.3899850620841217,
+      "top1": 0.20341010357653033,
+      "per_sort_mode": {
+        "distance": 0.7527290234879649,
+        "travel": 0.710589148850614,
+        "rating": 0.1439480769323984,
+        "price_asc": 0.1970166104713929,
+        "price_desc": 0.14564245067823828
+      }
+    },
+    "position_controlled": {
+      "ndcg10": 0.3905738266126366,
+      "top1": 0.20341010357653033,
+      "per_sort_mode": {
+        "distance": 0.6944851242860225,
+        "travel": 0.7450180807905212,
+        "rating": 0.16571927170495795,
+        "price_asc": 0.18236338045924727,
+        "price_desc": 0.165283275822434
+      }
+    },
+    "deployed": {
+      "ndcg10": 0.3940684151651571,
+      "top1": 0.20341010357653033,
+      "per_sort_mode": {
+        "distance": 0.7156803828940894,
+        "travel": 0.7460857352029061,
+        "rating": 0.14747056200441214,
+        "price_asc": 0.21135446840499736,
+        "price_desc": 0.1497509273193806
+      }
+    },
+    "blended": {
+      "ndcg10": 0.37969226062658346,
+      "top1": 0.20341010357653033,
+      "per_sort_mode": {
+        "distance": 0.711999216442748,
+        "travel": 0.7125593847784454,
+        "rating": 0.13680407924893562,
+        "price_asc": 0.1767570678636801,
+        "price_desc": 0.16034155479910805
+      }
+    }
+  },
+  "stage2_wtp": {
+    "n_sets": 2232,
+    "beta_price": -0.00016687255968121745,
+    "beta_refundable": -0.8592372464052253,
+    "beta_breakfast": 0.4273563756934672,
+    "wtp_refundable": -5149.062542377587,
+    "wtp_breakfast": 2560.974533559389
+  },
+  "recommended": "deployed"
+}

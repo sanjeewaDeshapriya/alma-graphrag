@@ -27,6 +27,7 @@ from src.ingest.traffic import fetch_all_traffic
 from src.ingest.traffic_linker import link_traffic_to_hotels, cleanup_stale_signals
 
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger("alma.scripts.traffic")
 
 
