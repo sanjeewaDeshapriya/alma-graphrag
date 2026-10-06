@@ -1,12 +1,18 @@
 """
 Evaluation API — serves the comparative-evaluation walkthrough UI (eval.html).
 
-  GET  /eval/queryset          — the 50-query evaluation set + gold predicates
-  GET  /eval/results           — latest aggregate results (cached results.json)
+  GET  /eval/queryset          — the 60-query evaluation set + gold predicates
+  GET  /eval/results?run=…     — aggregate results. run=thesis (default) is the
+                                 frozen run the thesis reports
+                                 (results_final_77hotels.json), run=price the
+                                 20-query price set, run=latest the last live
+                                 run (results.json)
   GET  /eval/inspect/{qid}     — live per-query trace: each system's ranked list
                                  with relevance flags, metrics, and the GraphRAG
                                  composite-score components
   POST /eval/run               — re-run the full evaluation and refresh results.json
+  GET  /eval/human/seeds       — held-out choice results over 50 person splits
+  GET  /eval/weights           — weights estimated from the choice study + gates
 
 Endpoints that touch Neo4j return 503 with a readable hint when the graph is
 unreachable or empty, so the UI can degrade gracefully.
@@ -16,7 +22,7 @@ from __future__ import annotations
 import json
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from evaluation.harness import (
     DEFAULT_GOLD_HUMAN,
@@ -33,6 +39,7 @@ from evaluation.human_eval import (
 )
 from evaluation.comparative import DEFAULT_COMPARATIVE_RESULTS
 
+
 logger = logging.getLogger("alma.eval")
 
 router = APIRouter(prefix="/eval", tags=["evaluation"])
@@ -47,14 +54,34 @@ def get_queryset() -> dict:
         raise HTTPException(status_code=404, detail="queryset.json not found") from exc
 
 
-@router.get("/results")
-def get_results() -> dict:
-    """Latest cached aggregate results. Returns {"available": false} when the
-    harness has not been run yet (so the UI can prompt for a live run)."""
-    if not DEFAULT_RESULTS.exists():
+EVAL_DIR = DEFAULT_RESULTS.parent
+# The thesis reports frozen runs, not whatever the last button press produced:
+# the live graph keeps changing (traffic, prices), so a fresh run drifts a few
+# thousandths from the numbers quoted in Chapter 5.
+RESULT_RUNS = {
+    "thesis": EVAL_DIR / "results_final_77hotels.json",
+    "price": EVAL_DIR / "results_price_77hotels.json",
+    "latest": DEFAULT_RESULTS,
+}
+DEFAULT_SEEDS_RESULTS = EVAL_DIR / "results_human_seeds.json"
+DEFAULT_WEIGHTS = EVAL_DIR.parent / "weight_elicitation" / "out" / "human_weights.json"
+
+
+def _read_json(path) -> dict:
+    if not path.exists():
         return {"available": False}
-    data = json.loads(DEFAULT_RESULTS.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
     data["available"] = True
+    data["source_file"] = path.name
+    return data
+
+
+@router.get("/results")
+def get_results(run: str = Query("thesis", pattern="^(thesis|price|latest)$")) -> dict:
+    """Cached aggregate results for one run. Returns {"available": false} when
+    that run has not been produced (so the UI can prompt for a live run)."""
+    data = _read_json(RESULT_RUNS[run])
+    data["run"] = run
     return data
 
 
@@ -109,6 +136,19 @@ def get_human_results() -> dict:
     if not DEFAULT_HUMAN_RESULTS.exists():
         return {"available": False}
     return json.loads(DEFAULT_HUMAN_RESULTS.read_text(encoding="utf-8"))
+
+
+@router.get("/human/seeds")
+def get_human_seeds() -> dict:
+    """Held-out choice results repeated over 50 random person splits."""
+    return _read_json(DEFAULT_SEEDS_RESULTS)
+
+
+@router.get("/weights")
+def get_weights() -> dict:
+    """Weights estimated from the choice study, per sort order, with the five
+    acceptance gates (G1-G5) they were tested against."""
+    return _read_json(DEFAULT_WEIGHTS)
 
 
 @router.get("/comparative/results")

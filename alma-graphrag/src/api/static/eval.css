@@ -533,3 +533,156 @@ tr.row-best td:first-child::after {
 #humanTaskList tbody tr {
   cursor: help; /* the full scenario text is the row's title attribute */
 }
+
+/* --- Thesis alignment (two routes, flow, diagnostics) --------------------- */
+.hidden {
+  display: none !important;
+}
+
+/* The principal research question, set apart the way the thesis sets it. */
+.principal-rq {
+  border: 1px solid rgba(185, 137, 87, 0.45);
+  border-left-width: 4px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, #120d08, #0a0706);
+  padding: 12px 16px;
+  margin: 4px 0 16px;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #f0d9bd;
+}
+
+.rq-label {
+  display: block;
+  font-style: normal;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+/* Two-lane evaluation workflow: Route 1 and Route 2 side by side, joined by
+   the statistics they share. Plain boxes and arrows, no library. */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.flow-lane {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #0a0706;
+  padding: 12px;
+  display: grid;
+  gap: 4px;
+  justify-items: stretch;
+}
+
+.flow-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e4b176;
+  margin-bottom: 4px;
+}
+
+.flow-node {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 8px 10px;
+  display: grid;
+  gap: 2px;
+}
+
+.flow-node b {
+  color: var(--text);
+  font-size: 0.86rem;
+}
+
+.flow-node span {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+/* The train/test step in each lane is the point readers look for first. */
+.flow-node.flow-key {
+  border-color: rgba(185, 137, 87, 0.7);
+  background: var(--accent-soft);
+}
+
+.flow-arrow {
+  text-align: center;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.flow-join {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sys-card.floor {
+  opacity: 0.85;
+}
+
+.example-bar {
+  margin-bottom: 8px;
+}
+
+.example-bar select {
+  max-width: 100%;
+}
+
+/* Diagnostic rows (LTR, ablations) sit apart from the comparison. */
+details.diag {
+  margin-top: 18px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+details.diag summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+tr.row-diag td,
+tr.row-extra td {
+  color: var(--muted);
+}
+
+tr.row-extra td.sys-name {
+  font-weight: 400 !important;
+  color: var(--muted) !important;
+}
+
+@media (max-width: 900px) {
+  .flow,
+  .flow-join {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dropdowns (run, worked example, inspector) in the page's dark theme. */
+.content select {
+  background: #0a0706;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.content select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}

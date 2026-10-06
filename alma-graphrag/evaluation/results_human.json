@@ -1,6 +1,7 @@
 {
   "available": true,
   "evaluation": "choice-based (human ground truth)",
+  "scoring_mode": "weighted",
   "material_version": "v4-rooms-20260818",
   "normalisation": "pct_rank",
   "anchor_fair": true,
@@ -33,6 +34,7 @@
     "WeightedGraphRAG[elicited]",
     "WeightedGraphRAG[blended]",
     "WeightedGraphRAG[balanced]",
+    "WeightedGraphRAG[human_informed]",
     "WeightedGraphRAG[human]",
     "WeightedGraphRAG[handset]",
     "WeightedGraphRAG[fitted-on-train]"
@@ -58,6 +60,13 @@
       "facility": 0.365,
       "economic": 0.311,
       "disruption": 0.15
+    },
+    "WeightedGraphRAG[human_informed]": {
+      "spatial": 0.2197,
+      "accessibility": 0.1758,
+      "facility": 0.2197,
+      "economic": 0.253,
+      "disruption": 0.1318
     },
     "WeightedGraphRAG[human]": {
       "spatial": 0.473,
@@ -131,6 +140,13 @@
       "MRR": 0.3615,
       "mean_rank": 8.7821
     },
+    "WeightedGraphRAG[human_informed]": {
+      "P@10": 0.0889,
+      "R@10": 0.8893,
+      "nDCG@10": 0.5221,
+      "MRR": 0.412,
+      "mean_rank": 5.7357
+    },
     "WeightedGraphRAG[human]": {
       "P@10": 0.0893,
       "R@10": 0.8929,
@@ -202,6 +218,13 @@
       "nDCG@10": 0.5557,
       "gradedNDCG@10": 0.6066,
       "MRR": 0.775
+    },
+    "WeightedGraphRAG[human_informed]": {
+      "P@10": 0.37,
+      "R@10": 0.8317,
+      "nDCG@10": 0.7272,
+      "gradedNDCG@10": 0.744,
+      "MRR": 0.8
     },
     "WeightedGraphRAG[human]": {
       "P@10": 0.37,
@@ -693,17 +716,24 @@
         "p": 0.0,
         "significant": true
       },
+      "WeightedGraphRAG[human_informed]": {
+        "mean_diff": 0.133,
+        "ci_low": 0.0914,
+        "ci_high": 0.1711,
+        "p": 0.0,
+        "significant": true
+      },
       "WeightedGraphRAG[human]": {
         "mean_diff": 0.0994,
-        "ci_low": 0.0544,
-        "ci_high": 0.1422,
+        "ci_low": 0.0549,
+        "ci_high": 0.1418,
         "p": 0.0,
         "significant": true
       },
       "WeightedGraphRAG[handset]": {
         "mean_diff": 0.0701,
-        "ci_low": 0.043,
-        "ci_high": 0.097,
+        "ci_low": 0.0419,
+        "ci_high": 0.0976,
         "p": 0.0,
         "significant": true
       }

@@ -16,54 +16,112 @@
       <div class="logo">ALMA</div>
       <div class="menu-title">Evaluation</div>
       <nav>
-        <a class="nav-link step-nav active" href="#" data-step="1">1 · Query Set &amp; Gold</a>
-        <a class="nav-link step-nav" href="#" data-step="2">2 · The Systems</a>
-        <a class="nav-link step-nav" href="#" data-step="3">3 · Metrics</a>
-        <a class="nav-link step-nav" href="#" data-step="4">4 · Run &amp; Results</a>
+        <a class="nav-link step-nav active" href="#" data-step="1">1 · Two Routes &amp; Queries</a>
+        <a class="nav-link step-nav" href="#" data-step="2">2 · The Methods</a>
+        <a class="nav-link step-nav" href="#" data-step="3">3 · Measures &amp; Score</a>
+        <a class="nav-link step-nav" href="#" data-step="4">4 · Route 1 Results</a>
         <a class="nav-link step-nav" href="#" data-step="5">5 · Per-Query Inspector</a>
-        <a class="nav-link step-nav" href="#" data-step="6">6 · Human Choices</a>
+        <a class="nav-link step-nav" href="#" data-step="6">6 · Route 2 Choice Study</a>
       </nav>
       <a class="nav-link back-link" href="./index.html">← Back to Console</a>
-      <p class="sidebar-note">Comparative retrieval evaluation</p>
+      <p class="sidebar-note">Thesis Chapter 5 · reproducible from the saved runs</p>
     </aside>
 
     <main class="content">
       <header class="page-head panel">
         <div>
-          <p class="kicker">Studio · RQ3 · Phase 5</p>
+          <p class="kicker">Thesis · Chapter 4–5 · Evaluation</p>
           <h1>Evaluation Walkthrough</h1>
-          <p class="muted">How ALMA-GraphRAG is measured against filter, keyword, semantic and hybrid retrieval baselines — step by step, on live data.</p>
+          <p class="muted">How ALMA-GraphRAG is tested along two separate routes: a rule-based benchmark
+            (Route 1) and a held-out human-choice study (Route 2). Every number here is read from the
+            same saved runs that the thesis reports.</p>
         </div>
         <div class="toolbar">
           <span class="pill" id="pillCity">city · —</span>
-          <span class="pill" id="pillK">K · —</span>
-          <span class="pill" id="pillGold">gold · —</span>
+          <span class="pill" id="pillK">k · —</span>
+          <span class="pill" id="pillGold">answer key · —</span>
+          <span class="pill" id="pillRun">run · —</span>
         </div>
       </header>
 
       <!-- Stepper -->
       <div class="stepper" id="stepper">
-        <button class="step-chip active" data-step="1"><b>1</b> Query Set &amp; Gold</button>
-        <button class="step-chip" data-step="2"><b>2</b> The Systems</button>
-        <button class="step-chip" data-step="3"><b>3</b> Metrics</button>
-        <button class="step-chip" data-step="4"><b>4</b> Run &amp; Results</button>
+        <button class="step-chip active" data-step="1"><b>1</b> Two Routes</button>
+        <button class="step-chip" data-step="2"><b>2</b> Methods</button>
+        <button class="step-chip" data-step="3"><b>3</b> Measures</button>
+        <button class="step-chip" data-step="4"><b>4</b> Route 1 Results</button>
         <button class="step-chip" data-step="5"><b>5</b> Inspector</button>
-        <button class="step-chip" data-step="6"><b>6</b> Human Choices</button>
+        <button class="step-chip" data-step="6"><b>6</b> Route 2 Choices</button>
       </div>
 
-      <!-- STEP 1 — QUERY SET & GOLD -->
+      <!-- STEP 1 — TWO ROUTES & QUERY SET -->
       <section class="step-panel active" data-step="1">
         <div class="panel">
-          <div class="panel-head"><h2>Step 1 — The query set &amp; gold standard</h2></div>
+          <div class="panel-head"><h2>Step 1 — Two evaluation routes</h2></div>
           <p class="muted step-lead">
-            Evaluation replays a fixed set of natural-language traveller questions against the
-            same city hotel pool for every system, so any difference in scores reflects the
-            <b>retrieval method only</b>. Each query ships with a <b>gold standard</b>: the set of
-            hotels that <i>should</i> be returned. Gold is <b>rule-based and graded</b> (0 / 1 / 2):
-            a hotel is <i>fully relevant</i> (2) when it satisfies every constraint strictly,
-            <i>partially relevant</i> (1) inside a tolerance band (price +15%, rating −0.2,
-            star −1, travel +2 min) — so no baseline's hard cut-offs act as a perfect oracle.
-            Human relevance labels supersede it per-query when <code>gold_human.json</code> is present.
+            The system is tested in two independent ways. <b>Route 1</b> checks rankings against an
+            answer key built from rules. <b>Route 2</b> checks rankings against what real people chose.
+            The two routes answer different questions, use different data and are never averaged
+            together; they share only the statistical tests.
+          </p>
+
+          <div class="principal-rq">
+            <span class="rq-label">Principal research question</span>
+            How can a live, weighted graph retrieval system model the linked and changing facts
+            behind hotel choice, so that it produces explainable rankings of usable hotels that are
+            better than filter-based and text-based search, and can its criterion weights be learned
+            from human choices?
+          </div>
+
+          <div class="flow" aria-label="Evaluation workflow">
+            <div class="flow-lane">
+              <div class="flow-title">Route 1 · rule-based benchmark</div>
+              <div class="flow-node"><b>Benchmark setup</b><span>77 hotels · 60 main + 20 price queries · saved query readings</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node"><b>Answer key from rules</b><span>Every hotel graded 0, 1 or 2 with tolerance bands</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node flow-key"><b>No training step</b><span>Hand-set weights · 1,000 random weight sets also checked</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node"><b>Rank and score</b><span>8 methods on the same hotels · P@10, R@10, nDCG@10, MRR</span></div>
+            </div>
+            <div class="flow-lane">
+              <div class="flow-title">Route 2 · human-choice study</div>
+              <div class="flow-node"><b>Choice study</b><span>2,232 choices from 241 people · 10 tasks × 32 real hotels</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node"><b>Participant filter</b><span>Attention check and speed rule leave 95 of 247 people</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node flow-key"><b>Train / test split by person</b><span>67 people to fit · 28 to test (280 choices) · 50 splits</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node"><b>Score real choices</b><span>Test people only · Hit@10 and choice nDCG@10</span></div>
+            </div>
+            <div class="flow-join">
+              <div class="flow-node"><b>Paired statistics (both routes)</b><span>Bootstrap 95% range · Wilcoxon test · Holm correction</span></div>
+              <div class="flow-node"><b>Stress tests (Route 1)</b><span>Remove one part at a time · random weights · 38 simulated road closures</span></div>
+            </div>
+          </div>
+
+          <h3 class="block-title">Where training and testing data come from</h3>
+          <p class="muted small">Nothing in Route 1 is fitted to the benchmark, so it needs no split. Every
+            fitted number in Route 2 is tested on people the fit never saw.</p>
+          <div class="table-wrap">
+            <table class="split-table">
+              <thead><tr><th>Part</th><th>Route</th><th>Training data</th><th>Testing data</th><th>Split</th></tr></thead>
+              <tbody>
+                <tr><td>Rule-based benchmark</td><td>1</td><td>None; weights are hand-set</td><td>60 main + 20 price queries</td><td>No split needed; 1,000 random weight sets checked</td></tr>
+                <tr><td>Weight estimation (gates G1–G5)</td><td>2</td><td>241 people, 2,232 choices</td><td>72 people held out</td><td>70 / 30 by person, plus 5-fold cross-validation</td></tr>
+                <tr><td>Held-out choice test</td><td>2</td><td>67 attentive people (669 choices)</td><td>28 attentive people (280 choices)</td><td>70 / 30 by person; repeated over 50 random splits</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="block-title">Route 1 query set &amp; answer key</h3>
+          <p class="muted step-lead">
+            Every method receives the same traveller questions and the same saved reading of each
+            question, so a difference in score comes from the ranking method only. The answer key is
+            <b>rule-based and graded</b>: a hotel is <i>fully relevant</i> (2) when it meets every
+            limit, <i>partly relevant</i> (1) when it misses a limit by no more than a tolerance band
+            (price +15%, rating −0.2, star −1, travel time +2 min, disruption +3 min), and not relevant
+            (0) otherwise. The bands stop any method's hard cut-off from acting as a perfect copy of the key.
           </p>
           <div id="qsStats" class="stats-grid"></div>
           <h3 class="block-title">Query categories</h3>
@@ -72,7 +130,7 @@
           <div class="table-wrap tall">
             <table id="qsTable">
               <thead>
-                <tr><th>ID</th><th>Question</th><th>Category</th><th>Gold constraints</th><th class="num"># rel</th><th>Source</th></tr>
+                <tr><th>ID</th><th>Question</th><th>Category</th><th>Answer-key limits</th><th class="num"># relevant</th><th>Source</th></tr>
               </thead>
               <tbody></tbody>
             </table>
@@ -80,141 +138,247 @@
         </div>
       </section>
 
-      <!-- STEP 2 — SYSTEMS -->
+      <!-- STEP 2 — METHODS -->
       <section class="step-panel" data-step="2">
         <div class="panel">
-          <div class="panel-head"><h2>Step 2 — The five systems being compared</h2></div>
+          <div class="panel-head"><h2>Step 2 — The eight methods being compared</h2></div>
           <p class="muted step-lead">
-            All five retrieve from the identical candidate pool and return a ranked top-K list of
-            hotel ids. They differ only in <b>what evidence they can see</b>.
+            All methods rank the identical pool of 77 Colombo hotels and return a top-10 list. They
+            differ only in <b>what evidence they can see</b>. Two floors (random, popularity) show
+            whether the query matters at all; filter-and-sort stands for current practice on booking
+            sites; four text methods stand for modern retrieval.
           </p>
           <div class="sys-cards">
-            <div class="sys-card">
-              <h3>Filter <span class="sys-tag">baseline</span></h3>
-              <p class="muted">Traditional filter-and-sort — the real-world OTA behaviour. Applies the structured constraints parsed from the query, then ranks survivors by rating (cheaper first on ties).</p>
-              <div class="sys-see">
-                <span class="chip good">price</span><span class="chip good">rating</span><span class="chip good">star</span>
-              </div>
-              <div class="sys-see">
-                <span class="chip blind">spatial</span><span class="chip blind">live traffic</span><span class="chip blind">disruption</span>
-              </div>
+            <div class="sys-card floor">
+              <h3>Random <span class="sys-tag">floor</span></h3>
+              <p class="muted">Shuffles the pool. Any method that does not beat it is broken.</p>
+            </div>
+            <div class="sys-card floor">
+              <h3>Popularity <span class="sys-tag">floor</span></h3>
+              <p class="muted">Ranks by guest rating and ignores the question. Exposes benchmarks where the query does not matter.</p>
             </div>
             <div class="sys-card">
-              <h3>Keyword <span class="sys-tag">baseline</span></h3>
-              <p class="muted">Lexical retrieval — Postgres full-text search (<code>tsvector</code> / <code>ts_rank</code>) over hotel name, description and amenity text. Matches exact word forms only: “quiet” does not match “peaceful”.</p>
-              <div class="sys-see">
-                <span class="chip good">keywords</span><span class="chip good">amenities</span>
-              </div>
-              <div class="sys-see">
-                <span class="chip blind">meaning</span><span class="chip blind">numeric price</span><span class="chip blind">travel time</span>
-              </div>
+              <h3>Filter-and-sort <span class="sys-tag">current practice</span></h3>
+              <p class="muted">The booking-site behaviour: apply the limits read from the question, then sort the survivors by rating (cheaper first on ties).</p>
+              <div class="sys-see"><span class="chip good">price</span><span class="chip good">rating</span><span class="chip good">star</span></div>
+              <div class="sys-see"><span class="chip blind">travel time</span><span class="chip blind">live traffic</span><span class="chip blind">disruption</span></div>
             </div>
             <div class="sys-card">
-              <h3>Semantic <span class="sys-tag">baseline</span></h3>
-              <p class="muted">Dense-vector retrieval — sentence-transformers embeddings (all-MiniLM-L6-v2, 384-d) indexed in pgvector, ranked by cosine similarity. Generalises over wording, capturing meaning rather than exact terms.</p>
-              <div class="sys-see">
-                <span class="chip good">meaning</span><span class="chip good">text</span><span class="chip good">attractions</span>
-              </div>
-              <div class="sys-see">
-                <span class="chip blind">numeric price</span><span class="chip blind">travel time</span>
-              </div>
+              <h3>Keyword <span class="sys-tag">text</span></h3>
+              <p class="muted">Postgres full-text search (<code>tsvector</code> / <code>ts_rank</code>) over name, description and facilities. Matches word forms only: “quiet” does not match “peaceful”. Note: <code>ts_rank</code> is not BM25 (no IDF or length normalization).</p>
+              <div class="sys-see"><span class="chip good">keywords</span><span class="chip good">facilities</span></div>
+              <div class="sys-see"><span class="chip blind">meaning</span><span class="chip blind">numeric price</span><span class="chip blind">travel time</span></div>
             </div>
             <div class="sys-card">
-              <h3>Hybrid <span class="sys-tag">baseline</span></h3>
-              <p class="muted">Reciprocal Rank Fusion of the keyword and semantic rankings — the standard strong lexical + dense retrieval baseline in modern RAG systems.</p>
-              <div class="sys-see">
-                <span class="chip good">keywords</span><span class="chip good">meaning</span>
-              </div>
-              <div class="sys-see">
-                <span class="chip blind">numeric price</span><span class="chip blind">travel time</span>
-              </div>
+              <h3>Meaning-based <span class="sys-tag">text</span></h3>
+              <p class="muted">Sentence embeddings (all-MiniLM-L6-v2, 384 dimensions) in pgvector, ranked by cosine similarity. Matches meaning rather than exact words.</p>
+              <div class="sys-see"><span class="chip good">meaning</span><span class="chip good">text</span></div>
+              <div class="sys-see"><span class="chip blind">numeric price</span><span class="chip blind">travel time</span></div>
+            </div>
+            <div class="sys-card">
+              <h3>Hybrid (RRF) <span class="sys-tag">text</span></h3>
+              <p class="muted">Reciprocal Rank Fusion of the keyword and meaning-based lists — the usual strong baseline in modern retrieval systems.</p>
+              <div class="sys-see"><span class="chip good">keywords</span><span class="chip good">meaning</span></div>
+              <div class="sys-see"><span class="chip blind">numeric price</span><span class="chip blind">travel time</span></div>
+            </div>
+            <div class="sys-card">
+              <h3>Cross-encoder <span class="sys-tag">text</span></h3>
+              <p class="muted">Re-reads the top 50 hybrid results with ms-marco-MiniLM-L-6-v2, judging question and hotel text together. The strongest text method available offline.</p>
+              <div class="sys-see"><span class="chip good">text relevance</span></div>
+              <div class="sys-see"><span class="chip blind">numeric limits</span><span class="chip blind">travel time</span></div>
             </div>
             <div class="sys-card highlight">
-              <h3>WeightedGraphRAG <span class="sys-tag accent">proposed</span></h3>
-              <p class="muted">Feasibility-first weighted multi-hop retriever. Scores each hotel on a composite of five sub-scores whose weights adapt to the query intent and traveller profile.</p>
-              <div class="sys-see">
-                <span class="chip good">spatial</span><span class="chip good">accessibility</span><span class="chip good">facility</span><span class="chip good">economic</span><span class="chip good">disruption</span>
-              </div>
-              <div class="sys-see">
-                <span class="chip good">live traffic</span><span class="chip good">events</span>
-              </div>
+              <h3>Weighted GraphRAG <span class="sys-tag accent">proposed</span></h3>
+              <p class="muted">Removes hotels that break a hard limit first, then scores each remaining hotel on five criteria from the knowledge graph. The weights shift with the question and the traveller profile.</p>
+              <div class="sys-see"><span class="chip good">spatial</span><span class="chip good">accessibility</span><span class="chip good">facility</span><span class="chip good">economic</span><span class="chip good">disruption</span></div>
+              <div class="sys-see"><span class="chip good">live traffic</span><span class="chip good">events</span></div>
             </div>
+          </div>
+          <div class="callout callout-warn">
+            <b>Diagnostic only: learning-to-rank (LTR).</b> The harness also trains a gradient-boosted
+            ranker on the same features. Its full version learns from the rule-based answer key and
+            sees the very fields the key grades on, so its high score is circular. It is shown in
+            Step 4 as a diagnostic and is not one of the eight compared methods, as in the thesis.
           </div>
         </div>
       </section>
 
-      <!-- STEP 3 — METRICS -->
+      <!-- STEP 3 — MEASURES & SCORE -->
       <section class="step-panel" data-step="3">
         <div class="panel">
-          <div class="panel-head"><h2>Step 3 — How each ranked list is scored</h2></div>
+          <div class="panel-head"><h2>Step 3 — How the score and the measures are worked out</h2></div>
           <p class="muted step-lead">
-            Evaluated at <b>K = 10</b>, per query, then averaged. Precision / Recall / MRR use
-            binary relevance (grade ≥ 1); <b>nDCG uses the graded gains</b> (2 = fully, 1 =
-            partially relevant), so ranking a fully-relevant hotel above a borderline one scores
-            higher. Differences vs GraphRAG are significance-tested (paired bootstrap + Wilcoxon).
+            The proposed method gives every usable hotel one score; the measures then check the top
+            ten of each method's list against the answer key (Route 1) or against real choices (Route 2).
+            All measures use k = 10 and are averaged over queries.
           </p>
+
+          <h3 class="block-title">The hotel score</h3>
           <div class="metric-cards">
             <div class="metric-card">
-              <h3>Precision@10</h3>
-              <div class="formula">P@10 = (relevant hotels in top-10) / 10</div>
-              <p class="muted">Of what we showed, how much was right. Rewards a clean top-10.</p>
+              <h3>1 · Usable set F(q)</h3>
+              <div class="formula">F(q) = { h ∈ H : c(h) = true for every hard limit c of q },  c(h) = false when the value is unknown</div>
+              <p class="muted">Remove before scoring: a hotel that breaks a hard limit cannot win its place back by scoring well on something else. If no hotel passes, the limits are relaxed and the answer says so.</p>
             </div>
             <div class="metric-card">
-              <h3>Recall@10</h3>
-              <div class="formula">R@10 = (relevant in top-10) / (all relevant)</div>
-              <p class="muted">Of everything relevant, how much we surfaced. Rewards coverage.</p>
+              <h3>2 · Combined score S(h | q)</h3>
+              <div class="formula">S(h | q) = Σ<sub>k</sub> w<sub>k</sub>(q) · x<sub>k</sub>(h),  k ∈ {spatial, accessibility, facility, economic, disruption},  Σ<sub>k</sub> w<sub>k</sub> = 1</div>
+              <p class="muted">x<sub>k</sub>(h) is the hotel's percentile position within F(q) on criterion k, from 0 to 1. Hand-set starting weights: spatial 0.25 · accessibility 0.20 · facility 0.25 · economic 0.15 · disruption 0.15.</p>
+            </div>
+          </div>
+          <h3 class="block-title">Weight adjustments for each kind of request (before rescaling to 1)</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Request reading</th><th>Adjustment</th></tr></thead>
+              <tbody>
+                <tr><td>Sort: cheapest</td><td>economic +0.20 · facility −0.05</td></tr>
+                <tr><td>Sort: highest rated</td><td>facility +0.20 · economic −0.05</td></tr>
+                <tr><td>Sort: most accessible</td><td>accessibility +0.20 · disruption +0.10</td></tr>
+                <tr><td>Travel time is a high priority</td><td>accessibility +0.15</td></tr>
+                <tr><td>Avoid traffic</td><td>disruption +0.15 · accessibility +0.05</td></tr>
+                <tr><td>Stay away from the center</td><td>disruption +0.10 · spatial −0.10</td></tr>
+                <tr><td>Facilities required</td><td>facility +0.10</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="block-title">Route 1 measures</h3>
+          <div class="metric-cards">
+            <div class="metric-card">
+              <h3>Precision@10 (P@10)</h3>
+              <div class="formula">P@10 = |R<sub>10</sub> ∩ G| / 10</div>
+              <p class="muted">Of the ten hotels shown, the share that are relevant (grade 1 or 2).</p>
             </div>
             <div class="metric-card">
-              <h3>nDCG@10 <span class="sys-tag">graded</span></h3>
-              <div class="formula">DCG = Σ  gain<sub>i</sub> / log<sub>2</sub>(i + 1)  ·  nDCG = DCG / ideal-DCG  ·  gain ∈ {0, 1, 2}</div>
-              <p class="muted">Rank-sensitive with graded gains: a fully-relevant hotel at rank 1 is worth more than a borderline one. The headline metric.</p>
+              <h3>Recall@10 (R@10)</h3>
+              <div class="formula">R@10 = |R<sub>10</sub> ∩ G| / |G|</div>
+              <p class="muted">Of all relevant hotels, the share in the top ten. With a typical 18 relevant hotels, the highest possible average is 0.632.</p>
+            </div>
+            <div class="metric-card">
+              <h3>nDCG@10 <span class="sys-tag">headline</span></h3>
+              <div class="formula">DCG@10 = Σ<sub>i=1..10</sub> g<sub>i</sub> / log<sub>2</sub>(i + 1)  ·  nDCG@10 = DCG@10 / IDCG@10  ·  g ∈ {0, 1, 2}</div>
+              <p class="muted">Rewards putting fully relevant hotels near the top. IDCG@10 is the score of the best possible order.</p>
             </div>
             <div class="metric-card">
               <h3>MRR</h3>
-              <div class="formula">MRR = 1 / (rank of first relevant hotel)</div>
-              <p class="muted">How quickly the first good answer appears. 1.0 means rank 1.</p>
+              <div class="formula">MRR = 1 / (rank of the first relevant hotel)</div>
+              <p class="muted">How quickly the first good answer appears. 1.0 means it was ranked first.</p>
             </div>
+          </div>
+
+          <h3 class="block-title">Route 2 measures and comparisons</h3>
+          <div class="metric-cards">
+            <div class="metric-card">
+              <h3>Hit@10</h3>
+              <div class="formula">Hit@10 = share of choices whose chosen hotel is in the top 10</div>
+              <p class="muted">With one chosen hotel per task, R@10 equals Hit@10 and P@10 is capped at 1/10. A random order of 32 hotels gives 0.3125.</p>
+            </div>
+            <div class="metric-card">
+              <h3>Choice nDCG@10 · average rank</h3>
+              <div class="formula">choice nDCG@10 = 1 / log<sub>2</sub>(rank + 1) if rank ≤ 10, else 0</div>
+              <p class="muted">Rewards placing the chosen hotel high. Average rank is out of 32 (random = 16.5); lower is better.</p>
+            </div>
+            <div class="metric-card">
+              <h3>Wins / ties / losses · effect size d<sub>z</sub></h3>
+              <div class="formula">d<sub>z</sub> = mean(Δ) / sd(Δ),  Δ = nDCG@10<sub>proposed</sub> − nDCG@10<sub>other</sub> per query</div>
+              <p class="muted">Counts the queries each side wins, and how large the paired difference is.</p>
+            </div>
+            <div class="metric-card">
+              <h3>Significance</h3>
+              <div class="formula">paired bootstrap 95% range · Wilcoxon signed-rank · Holm correction, α = 0.05</div>
+              <p class="muted">Route 2 resamples whole participants (5,000 resamples), so choices by one person stay together.</p>
+            </div>
+          </div>
+
+          <h3 class="block-title">Worked example on one query</h3>
+          <div class="toolbar example-bar">
+            <select id="exampleSelect" aria-label="Query for the worked example"></select>
+          </div>
+          <p id="exampleLead" class="muted small">Load the Route 1 results (Step 4) to fill this table.</p>
+          <div class="table-wrap">
+            <table id="exampleTable">
+              <thead><tr><th>Measure</th><th>Calculation</th><th class="num">Proposed</th><th class="num">Filter-and-sort</th></tr></thead>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </section>
 
-      <!-- STEP 4 — RUN & RESULTS -->
+      <!-- STEP 4 — ROUTE 1 RESULTS -->
       <section class="step-panel" data-step="4">
         <div class="panel">
           <div class="panel-head">
-            <h2>Step 4 — Run the evaluation</h2>
+            <h2>Step 4 — Route 1 results</h2>
             <div class="toolbar">
-              <button id="loadResultsBtn" class="btn btn-primary">Load latest</button>
+              <select id="runSelect" aria-label="Which saved run to show">
+                <option value="thesis">Thesis run · main set (60 queries)</option>
+                <option value="price">Thesis run · price set (20 queries)</option>
+                <option value="latest">Latest live run (results.json)</option>
+              </select>
+              <button id="loadResultsBtn" class="btn btn-primary">Load</button>
               <button id="runLiveBtn" class="btn btn-accent">Run live</button>
             </div>
           </div>
-          <p id="runStatus" class="muted step-lead">Load the last saved results, or run the harness live against Neo4j.</p>
+          <p id="runStatus" class="muted step-lead">The thesis run is the frozen result that Chapter 5 reports. A live run re-reads the graph, whose traffic and prices keep changing, so its numbers can drift by a few thousandths.</p>
           <div id="overallStats" class="stats-grid"></div>
+
           <h3 class="block-title">Overall — mean over all queries</h3>
           <div class="table-wrap">
             <table id="overallTable">
-              <thead><tr><th>System</th><th class="num">P@10</th><th class="num">R@10</th><th class="num">nDCG@10</th><th class="num">MRR</th></tr></thead>
+              <thead><tr><th>Method</th><th class="num">P@10</th><th class="num">R@10</th><th class="num">nDCG@10</th><th class="num">MRR</th><th class="num">Proposed vs this</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
-          <p class="table-note">★ marks the best system by nDCG@10 (headline metric, graded gains); bold values mark the best system per metric.</p>
+          <p class="table-note">★ marks the proposed method. Bold values are the best of the eight compared methods per column. “Proposed vs this” is the relative nDCG@10 gain of the proposed method.</p>
+
+          <h3 class="block-title">Query by query — proposed vs each method</h3>
+          <div class="table-wrap">
+            <table id="wtlTable">
+              <thead><tr><th>Compared with</th><th class="num">Wins / ties / losses</th><th class="num">Effect size d<sub>z</sub></th><th class="num">Relative gain</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
           <div id="sigBlock" class="hidden">
-            <h3 class="block-title">Statistical significance — paired vs GraphRAG</h3>
+            <h3 class="block-title">Statistical significance — paired against the proposed method</h3>
             <div class="table-wrap">
               <table id="sigTable">
-                <thead><tr><th>System</th><th class="num">Δ nDCG@10</th><th class="num">95% CI</th><th class="num">p (Wilcoxon)</th><th class="num">p (Holm)</th><th>Verdict</th></tr></thead>
+                <thead><tr><th>Comparison</th><th class="num">Mean difference</th><th class="num">95% range</th><th class="num">p (Wilcoxon)</th><th class="num">p (Holm)</th><th>Verdict</th></tr></thead>
                 <tbody></tbody>
               </table>
             </div>
-            <p class="table-note">Δ = GraphRAG − system on per-query nDCG@10 (positive = GraphRAG better). Paired bootstrap CI (10k resamples) and Wilcoxon signed-rank, Holm-corrected across comparisons; significant at α = 0.05.</p>
+            <p class="table-note">Difference = proposed − other on per-query nDCG@10 (positive = proposed better). Paired bootstrap with 10,000 resamples; Wilcoxon signed-rank, Holm-corrected; significant at α = 0.05.</p>
           </div>
+
           <h3 class="block-title">By category — mean nDCG@10</h3>
           <div class="table-wrap">
             <table id="categoryTable">
-              <thead><tr id="catHeadRow"><th>System</th></tr></thead>
+              <thead><tr id="catHeadRow"><th>Method</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
+
+          <div id="humanWeightsBlock" class="hidden">
+            <h3 class="block-title">Study weights inside the ranking system</h3>
+            <p class="muted small">Weights estimated from the Route 2 choice study, tested on the Route 1 benchmark. Accessibility is the mean over the accessibility queries.</p>
+            <div class="table-wrap">
+              <table id="humanWeightsTable">
+                <thead><tr><th>Weights used</th><th class="num">Main set</th><th class="num">Price set</th><th class="num">Accessibility</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <details id="diagBlock" class="diag">
+            <summary>Diagnostic rows (not part of the comparison)</summary>
+            <p class="muted small">LTR learns from the rule-based answer key, so its score is circular. “Without the neighbor estimate” turns off disruption diffusion between nearby hotels.</p>
+            <div class="table-wrap">
+              <table id="diagTable">
+                <thead><tr><th>Row</th><th class="num">P@10</th><th class="num">R@10</th><th class="num">nDCG@10</th><th class="num">MRR</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -229,9 +393,9 @@
             </div>
           </div>
           <p class="muted step-lead">
-            Pick a query to see exactly what each system returned, which results are gold hits
-            (<span class="hit-dot"></span> = relevant), and — for GraphRAG — the composite-score
-            components behind every ranking. This is the retrieval working live, end to end.
+            Pick a query to see exactly what each method returns now, which results are relevant
+            (<span class="hit-dot"></span> = in the answer key), and, for the proposed method, the five
+            criterion scores behind every hotel. This runs live against Neo4j and pgvector.
           </p>
           <div id="inspectHead" class="inspect-head"></div>
           <div id="inspectGrid" class="inspect-grid">
@@ -240,64 +404,83 @@
         </div>
       </section>
 
-      <!-- STEP 6 — CHOICE-BASED EVALUATION -->
+      <!-- STEP 6 — ROUTE 2 CHOICE STUDY -->
       <section class="step-panel" data-step="6">
         <div class="panel">
           <div class="panel-head">
-            <h2>Step 6 — Evaluated against real human choices</h2>
+            <h2>Step 6 — Route 2: held-out human choices</h2>
             <div class="toolbar">
-              <button id="loadHumanBtn" class="btn btn-primary">Load latest</button>
+              <button id="loadHumanBtn" class="btn btn-primary">Load saved</button>
               <button id="runHumanBtn" class="btn btn-accent">Run live</button>
             </div>
           </div>
           <p class="muted step-lead">
-            Steps 1&ndash;5 grade against <code>evaluation/gold.py</code> &mdash; rules we wrote.
-            This step grades against what <b>247 participants actually booked</b> in the
-            discrete-choice study. It answers a different question: not &ldquo;does the ranking
-            satisfy the stated constraints?&rdquo; but &ldquo;does it predict what people choose?&rdquo;
+            Route 1 grades against rules we wrote. Route 2 grades against the hotel each participant
+            chose in the discrete-choice study. It asks a different question: not “does the ranking
+            meet the stated limits?” but “does it predict what people pick?”. Only the 28 test
+            participants are scored; the 67 training participants are used only to fit weights.
           </p>
 
           <div class="callout callout-warn">
-            <b>Why both evaluations are reported.</b> The rule-based gold is nearly blind to
-            ranking: hard filtering prunes on the same predicates the gold grades on, so 45 of 60
-            queries score identically across every weight configuration. The choice data separates
-            them clearly &mdash; but it cannot measure price sensitivity (participants spent no real
-            money) and covers only ten scenarios. Neither replaces the other.
+            <b>Why both routes are reported.</b> The rule-based key is strict about limits but cannot
+            say which acceptable hotel a person prefers. The choice study can, but participants spent
+            no real money, the study covers ten scenarios in Colombo, and only 95 of 247 people passed
+            the attention and speed checks. Neither route replaces the other.
           </div>
 
           <div id="humanStats" class="stats-grid"></div>
-          <p id="humanStatus" class="muted step-lead">
-            Load the last saved run, or evaluate live against the study responses.
-          </p>
+          <p id="humanStatus" class="muted step-lead">Load the saved run, or evaluate live against the study responses.</p>
 
-          <h3 class="block-title">A &mdash; Per choice <span class="muted">(ground truth = the one hotel that participant booked)</span></h3>
-          <p class="muted small">
-            Exactly one relevant item per query, so <b>P@10 is capped at 1/32</b> and
-            <b>R@10 equals the hit rate</b>. Mean rank and MRR are the informative columns here.
-          </p>
+          <h3 class="block-title">A — Held-out choices <span class="muted">(ground truth = the one hotel each test participant chose)</span></h3>
           <div class="table-wrap">
             <table id="humanChoiceTable">
-              <thead><tr id="humanChoiceHead"><th>System</th></tr></thead>
+              <thead><tr><th>Method</th><th class="num">Choice nDCG@10</th><th class="num">Hit@10</th><th class="num">MRR</th><th class="num">Average rank</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="table-note">32 hotels per task, 280 test choices. The whole study weights were estimated from all 241 participants, who include the 28 test people, so that row is a comparison, not a clean test.</p>
+
+          <h3 class="block-title">B — Repeated over 50 random person splits</h3>
+          <div class="table-wrap">
+            <table id="seedsTable">
+              <thead><tr><th>Measure</th><th class="num">Hand-set</th><th class="num">Whole study weights</th><th class="num">Fitted on the 67</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p id="seedsNote" class="table-note"></p>
+
+          <h3 class="block-title">C — Weights estimated from the choice study</h3>
+          <p class="muted small">A conditional logit fitted separately for each sort order the participant used, then averaged. The rating-sorted group is dropped because screen position alone explained it.</p>
+          <div class="table-wrap">
+            <table id="weightsTable">
+              <thead><tr id="weightsHead"><th>Criterion</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
 
-          <h3 class="block-title">B &mdash; Per task <span class="muted">(ground truth = hotels the held-out group chose)</span></h3>
-          <p class="muted small">
-            Aggregating votes restores a multi-item gold set, which is what P/R/nDCG were designed
-            for. Graded nDCG uses the vote count as gain.
-          </p>
+          <h3 class="block-title">D — Acceptance gates (NFR-09)</h3>
+          <p class="muted small">A weight is used only if its criterion passes all five gates. None did, so the system keeps the hand-set weights; only the study's price weight is used, and only on price-focused queries.</p>
+          <div class="table-wrap">
+            <table id="gatesTable">
+              <thead><tr><th>Criterion</th><th class="num">G1 placebo</th><th class="num">G2 likelihood ratio</th><th class="num">G3 range</th><th class="num">G4 held-out fit</th><th class="num">G5 stability</th><th>Verdict</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p id="gatesNote" class="table-note"></p>
+
+          <h3 class="block-title">E — Per task <span class="muted">(ground truth = hotels the test group chose at least twice)</span></h3>
+          <p class="muted small">Pooling the votes gives each task several relevant hotels, which is what P@10, R@10 and nDCG@10 were designed for. Graded nDCG uses the vote count as the gain.</p>
           <div class="table-wrap">
             <table id="humanTaskTable">
-              <thead><tr id="humanTaskHead"><th>System</th></tr></thead>
+              <thead><tr><th>Method</th><th class="num">P@10</th><th class="num">R@10</th><th class="num">nDCG@10</th><th class="num">Graded nDCG@10</th><th class="num">MRR</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
 
-          <h3 class="block-title">C &mdash; Significance</h3>
+          <h3 class="block-title">F — Significance <span id="humanSigRef" class="muted"></span></h3>
           <div class="table-wrap">
             <table id="humanSigTable">
-              <thead><tr><th>vs</th><th>mean diff</th><th>95% CI</th><th>p</th><th></th></tr></thead>
+              <thead><tr><th>vs</th><th class="num">Mean difference</th><th class="num">95% range</th><th class="num">p</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -305,8 +488,8 @@
           <h3 class="block-title">The scenarios used as queries</h3>
           <div class="table-wrap">
             <table id="humanTaskList">
-              <thead><tr><th>Task</th><th>Persona</th><th>Anchor</th><th>Primary</th>
-                <th>Choices</th><th>Gold size</th><th>Top human pick</th></tr></thead>
+              <thead><tr><th>Task</th><th>Persona</th><th>Anchor</th><th>Main criterion</th>
+                <th class="num">Test choices</th><th class="num">Relevant hotels</th><th>Top human pick</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
